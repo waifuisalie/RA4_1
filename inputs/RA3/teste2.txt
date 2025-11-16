@@ -1,0 +1,48 @@
+# === OPERAÇÕES ARITMÉTICAS VÁLIDAS ===
+(5 3 +)
+(10.5 2.0 *)
+(15 4 -)
+(8.0 2.0 |)
+(20 3 /)
+(17 5 %)
+(2 3 ^)
+(100 50 +)
+
+# === OPERAÇÕES ARITMÉTICAS CORRIGIDAS ===
+(5 2 /)
+(10 3 %)
+(2 3 ^)
+
+# === DECLARAÇÃO DE VARIÁVEIS ===
+(42 X)
+(3.14 PI)
+(1 FLAG)
+(100 COUNTER)
+(0 SUM)
+(200 Y)
+(300 Z)
+
+# === USO DE VARIÁVEIS DECLARADAS ===
+(X)
+(PI)
+(FLAG)
+(COUNTER)
+(SUM)
+(Y)
+(Z)
+
+# === OPERAÇÕES DE COMPARAÇÃO ===
+(5 3 >)
+(10.5 2.0 <)
+(15 15 ==)
+(8.0 9.0 !=)
+(20 10 >=)
+(5 7 <=)
+
+# === OPERAÇÕES LÓGICAS ===
+((5 3 >) (10 5 <) &&)
+((2 4 ==) (8 3 >) ||)
+((10 0 >) !)
+
+# === EXPRESSÕES COMPLEXAS ===
+((((5 3 +) (2 *)) 10 +))

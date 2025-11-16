@@ -1,0 +1,118 @@
+{
+  "arvore_atribuida": [
+    {
+      "tipo_vertice": "LINHA",
+      "tipo_inferido": null,
+      "numero_linha": 1,
+      "filhos": []
+    },
+    {
+      "tipo_vertice": "LINHA",
+      "tipo_inferido": null,
+      "numero_linha": 2,
+      "filhos": []
+    },
+    {
+      "tipo_vertice": "LINHA",
+      "tipo_inferido": null,
+      "numero_linha": 3,
+      "filhos": []
+    },
+    {
+      "tipo_vertice": "LINHA",
+      "tipo_inferido": null,
+      "numero_linha": 4,
+      "filhos": []
+    },
+    {
+      "tipo_vertice": "LINHA",
+      "tipo_inferido": null,
+      "numero_linha": 5,
+      "filhos": []
+    },
+    {
+      "tipo_vertice": "LINHA",
+      "tipo_inferido": null,
+      "numero_linha": 6,
+      "filhos": []
+    },
+    {
+      "tipo_vertice": "LINHA",
+      "tipo_inferido": null,
+      "numero_linha": 7,
+      "filhos": []
+    },
+    {
+      "tipo_vertice": "LINHA",
+      "tipo_inferido": null,
+      "numero_linha": 8,
+      "filhos": []
+    },
+    {
+      "tipo_vertice": "LINHA",
+      "tipo_inferido": null,
+      "numero_linha": 9,
+      "filhos": []
+    },
+    {
+      "tipo_vertice": "LINHA",
+      "tipo_inferido": null,
+      "numero_linha": 10,
+      "filhos": []
+    },
+    {
+      "tipo_vertice": "LINHA",
+      "tipo_inferido": null,
+      "numero_linha": 11,
+      "filhos": []
+    },
+    {
+      "tipo_vertice": "LINHA",
+      "tipo_inferido": null,
+      "numero_linha": 12,
+      "filhos": []
+    },
+    {
+      "tipo_vertice": "LINHA",
+      "tipo_inferido": null,
+      "numero_linha": 13,
+      "filhos": []
+    },
+    {
+      "tipo_vertice": "LINHA",
+      "tipo_inferido": null,
+      "numero_linha": 14,
+      "filhos": []
+    },
+    {
+      "tipo_vertice": "LINHA",
+      "tipo_inferido": null,
+      "numero_linha": 15,
+      "filhos": []
+    },
+    {
+      "tipo_vertice": "LINHA",
+      "tipo_inferido": null,
+      "numero_linha": 16,
+      "filhos": []
+    },
+    {
+      "tipo_vertice": "LINHA",
+      "tipo_inferido": null,
+      "numero_linha": 17,
+      "filhos": []
+    },
+    {
+      "tipo_vertice": "LINHA",
+      "tipo_inferido": null,
+      "numero_linha": 18,
+      "filhos": []
+    },
+    {
+      "tipo_vertice": "LINHA",
+      "tipo_inferido": null,
+      "numero_linha": 19,
+      "filhos": []
+    }
+  ]
+}

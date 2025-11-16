@@ -1,0 +1,27 @@
+# === ERROS DE DIVISÃO INTEIRA COM TIPOS INCOMPATÍVEIS ===
+(5.5 2 /)
+(3.5 2 /)
+(10.5 3 /)
+
+# === ERROS DE RESTO COM TIPOS INCOMPATÍVEIS ===
+(10.5 3 %)
+(100 50.5 %)
+(15.8 4.2 %)
+
+# === ERROS DE POTENCIAÇÃO COM EXPOENTE INCOMPATÍVEL ===
+(2 3.5 ^)
+(2 -3 ^)
+(3 -2.5 ^)
+
+# === ERROS DE OPERAÇÕES ARITMÉTICAS COM BOOLEANOS ===
+((5 3 >) 2 +)
+((2 3 <) 5 -)
+((5 3 >) ! 10 +)
+
+# === ERROS DE OPERAÇÕES LÓGICAS COM TIPOS NUMÉRICOS ===
+(5 3 &&)
+((5.5 2.0 >) (10 5 *) ||)
+
+# === ERROS EM ESTRUTURAS DE CONTROLE ===
+((10) (5 3 +) (2 1 -) IFELSE)
+((10 X) ((5 3 >) 2 *) Y)

@@ -1,0 +1,24 @@
+# === VARIÁVEIS NÃO INICIALIZADAS ===
+(Y)
+(Z 2 +)
+(W 5 *)
+((A B +) C)
+
+# === USO DE VARIÁVEIS APÓS DECLARAÇÃO ===
+(10 X)
+((X Y >) TEST)
+(BOOL)
+
+# === USO INCORRETO DE RES ===
+(-1 RES)
+(100 RES)
+(0 RES)
+(-5 RES)
+((50 RES) D)
+
+# === ARMAZENAMENTO DE BOOLEANOS ===
+((5 3 >) BOOL)
+
+# === ESTRUTURAS DE CONTROLE COM ERROS ===
+((10) (5 3 +) WHILE)
+((3.5) (10) (20) IFELSE)

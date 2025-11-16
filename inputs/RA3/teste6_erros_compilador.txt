@@ -1,0 +1,89 @@
+# Caso 1: Caractere inválido @
+(5 @ 3)
+
+# Caso 2: Caractere inválido #
+(10 # 5)
+
+# Caso 3: Caractere inválido $
+(7 $ 2)
+
+# Caso 4: Número malformado com múltiplos pontos
+(3.14.15 X)
+
+# Caso 5: Número começando com ponto
+(..5 Y)
+
+# Caso 6: Número terminando com ponto
+(10. A)
+
+# Caso 7: Caractere inválido &
+(20 & 15)
+
+# Caso 8: Caractere inválido %% (operador duplicado incorreto)
+(8 %% 3)
+
+# Caso 9: Número malformado com espaços
+(5 . 5 X)
+
+# Caso 10: Múltiplos caracteres inválidos
+(@ # $ %)
+
+# Caso 11: Parêntese de abertura faltando
+5 3 +)
+
+# Caso 12: Parêntese de fechamento faltando
+((5 3 +)
+
+# Caso 13: Operador sem operandos suficientes
+(+)
+
+# Caso 14: Operador multiplicação sem operandos
+(*)
+
+# Caso 15: Notação infixa incorreta (deveria ser RPN)
+(5 + 3)
+
+# Caso 16: Notação infixa com subtração
+(10 - 5)
+
+# Caso 17: Falta de parênteses obrigatórios
+5 3 +
+
+# Caso 18: Operador no início (ordem incorreta)
+(+ 5 3)
+
+# Caso 19: Múltiplos operadores seguidos
+(5 3 + -)
+
+# Caso 20: Estrutura vazia
+()
+
+# Caso 21: Divisão inteira com operando real
+(5.5 2 /)
+
+# Caso 22: Operação resto com operando real
+(10.5 3 %)
+
+# Caso 23: Potenciação com expoente real (deve ser int)
+(2 3.5 ^)
+
+# Caso 24: Variável não inicializada
+(UNDEFINED_VAR)
+
+# Caso 25: Operador lógico AND com tipos numéricos
+(5 3 &&)
+
+# Caso 26: Operador lógico OR com tipos numéricos
+(10 20 ||)
+
+# Caso 27: IFELSE com ramos de tipos diferentes
+((5 3 >) (10) (5.5) IFELSE)
+
+# Caso 28: WHILE com condição não-booleana
+((5) (((X 1 +) X)) WHILE)
+
+# Caso 29: FOR com início de tipo incompatível (deve ser int ou real)
+((1.5) (10) (1) (((I 1 +) I)) FOR)
+
+# Caso 30: Tentativa de armazenar boolean em variável
+((5 3 >) X)

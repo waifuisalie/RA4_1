@@ -1,0 +1,53 @@
+# === DECLARAÇÃO E OPERAÇÕES BÁSICAS ===
+(10 A)
+(20 B)
+(5.5 X)
+(3.14 Y)
+(A B +)
+(X Y *)
+(A 2 -)
+(B 3 /)
+(X 2.0 |)
+
+# === PROMOÇÃO AUTOMÁTICA E COMPARAÇÕES ===
+(10 5.5 +)
+(3.14 2 *)
+(50.0 10 -)
+(A B >)
+(X Y <)
+(A 10 ==)
+(B 20 >=)
+(X 5.0 <=)
+
+# === OPERAÇÕES LÓGICAS E BOOLEANAS ===
+((A B >) (X Y <) &&)
+((A 10 ==) (B 20 >) ||)
+((X 5.0 >) !)
+((A B <) (X Y >=) &&)
+((10 5 >) (3.14 2.0 <) ||)
+
+# === ATRIBUIÇÕES E VARIÁVEIS ===
+((A B +) SUM)
+((X Y *) PRODUCT)
+(SUM)
+(PRODUCT)
+((SUM 10 +) RESULT)
+(RESULT)
+(100 COUNTER)
+(0 INDEX)
+
+# === ESTRUTURAS DE CONTROLE IFELSE ===
+((A B >) (100) (200) IFELSE)
+((X 5.0 <) (10) (20) IFELSE)
+((SUM 100 >=) ((SUM 10 -)) ((SUM 10 +)) IFELSE)
+((COUNTER 50 >) (1) (0) IFELSE)
+
+# === ESTRUTURAS DE CONTROLE WHILE ===
+((COUNTER 100 <) (((COUNTER 1 +) COUNTER)) WHILE)
+((INDEX 50 <) (((INDEX 2 +) INDEX)) WHILE)
+((A 200 <) (((A 5 +) A)) WHILE)
+
+# === ESTRUTURAS DE CONTROLE FOR ===
+((1) (10) (1) (((I 1 +) I)) FOR)
+((0) (20) (2) (((J 2 *) J)) FOR)
+((1) (5) (1) (((SUM K +) SUM)) FOR)
