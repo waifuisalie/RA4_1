@@ -3,739 +3,1195 @@
     {
       "tipo": "atribuicao",
       "destino": "t0",
-      "origem": "5",
+      "origem": "10",
+      "linha": 1,
+      "tipo_dado": "int"
+    },
+    {
+      "tipo": "copia",
+      "destino": "A",
+      "origem": "t0",
       "linha": 1,
       "tipo_dado": "int"
     },
     {
       "tipo": "atribuicao",
       "destino": "t1",
-      "origem": "3",
-      "linha": 1,
+      "origem": "20",
+      "linha": 2,
       "tipo_dado": "int"
     },
     {
-      "tipo": "operacao_binaria",
-      "resultado": "t2",
-      "operando1": "t0",
-      "operador": "+",
-      "operando2": "t1",
-      "linha": 1,
+      "tipo": "copia",
+      "destino": "B",
+      "origem": "t1",
+      "linha": 2,
       "tipo_dado": "int"
+    },
+    {
+      "tipo": "atribuicao",
+      "destino": "t2",
+      "origem": "5.5",
+      "linha": 3,
+      "tipo_dado": "real"
+    },
+    {
+      "tipo": "copia",
+      "destino": "X",
+      "origem": "t2",
+      "linha": 3,
+      "tipo_dado": "real"
     },
     {
       "tipo": "atribuicao",
       "destino": "t3",
-      "origem": "10.5",
-      "linha": 2,
+      "origem": "3.14",
+      "linha": 4,
       "tipo_dado": "real"
     },
     {
-      "tipo": "atribuicao",
-      "destino": "t4",
-      "origem": "2.0",
-      "linha": 2,
+      "tipo": "copia",
+      "destino": "Y",
+      "origem": "t3",
+      "linha": 4,
       "tipo_dado": "real"
     },
     {
       "tipo": "operacao_binaria",
+      "resultado": "t4",
+      "operando1": "A",
+      "operador": "+",
+      "operando2": "B",
+      "linha": 5,
+      "tipo_dado": "int"
+    },
+    {
+      "tipo": "operacao_binaria",
       "resultado": "t5",
-      "operando1": "t3",
+      "operando1": "X",
       "operador": "*",
-      "operando2": "t4",
-      "linha": 2,
+      "operando2": "Y",
+      "linha": 6,
       "tipo_dado": "real"
     },
     {
       "tipo": "atribuicao",
       "destino": "t6",
-      "origem": "100",
-      "linha": 3,
-      "tipo_dado": "int"
-    },
-    {
-      "tipo": "atribuicao",
-      "destino": "t7",
-      "origem": "50",
-      "linha": 3,
+      "origem": "2",
+      "linha": 7,
       "tipo_dado": "int"
     },
     {
       "tipo": "operacao_binaria",
-      "resultado": "t8",
-      "operando1": "t6",
-      "operador": "+",
-      "operando2": "t7",
-      "linha": 3,
+      "resultado": "t7",
+      "operando1": "A",
+      "operador": "-",
+      "operando2": "t6",
+      "linha": 7,
       "tipo_dado": "int"
     },
     {
       "tipo": "atribuicao",
-      "destino": "t9",
-      "origem": "15",
-      "linha": 4,
+      "destino": "t8",
+      "origem": "3",
+      "linha": 8,
+      "tipo_dado": "int"
+    },
+    {
+      "tipo": "operacao_binaria",
+      "resultado": "t9",
+      "operando1": "B",
+      "operador": "/",
+      "operando2": "t8",
+      "linha": 8,
       "tipo_dado": "int"
     },
     {
       "tipo": "atribuicao",
       "destino": "t10",
-      "origem": "7",
-      "linha": 4,
-      "tipo_dado": "int"
+      "origem": "2.0",
+      "linha": 9,
+      "tipo_dado": "real"
     },
     {
       "tipo": "operacao_binaria",
       "resultado": "t11",
-      "operando1": "t9",
-      "operador": "/",
+      "operando1": "X",
+      "operador": "|",
       "operando2": "t10",
-      "linha": 4,
-      "tipo_dado": "int"
+      "linha": 9,
+      "tipo_dado": "real"
     },
     {
       "tipo": "atribuicao",
       "destino": "t12",
-      "origem": "23",
-      "linha": 5,
+      "origem": "10",
+      "linha": 10,
       "tipo_dado": "int"
     },
     {
       "tipo": "atribuicao",
       "destino": "t13",
-      "origem": "6",
-      "linha": 5,
-      "tipo_dado": "int"
+      "origem": "5.5",
+      "linha": 10,
+      "tipo_dado": "real"
     },
     {
       "tipo": "operacao_binaria",
       "resultado": "t14",
       "operando1": "t12",
-      "operador": "%",
+      "operador": "+",
       "operando2": "t13",
-      "linha": 5,
-      "tipo_dado": "int"
+      "linha": 10,
+      "tipo_dado": "real"
     },
     {
       "tipo": "atribuicao",
       "destino": "t15",
-      "origem": "2.5",
-      "linha": 6,
+      "origem": "3.14",
+      "linha": 11,
       "tipo_dado": "real"
     },
     {
       "tipo": "atribuicao",
       "destino": "t16",
-      "origem": "3",
-      "linha": 6,
+      "origem": "2",
+      "linha": 11,
       "tipo_dado": "int"
     },
     {
       "tipo": "operacao_binaria",
       "resultado": "t17",
       "operando1": "t15",
-      "operador": "^",
+      "operador": "*",
       "operando2": "t16",
-      "linha": 6,
+      "linha": 11,
       "tipo_dado": "real"
     },
     {
       "tipo": "atribuicao",
       "destino": "t18",
-      "origem": "5.5",
-      "linha": 7,
+      "origem": "50.0",
+      "linha": 12,
       "tipo_dado": "real"
     },
     {
       "tipo": "atribuicao",
       "destino": "t19",
-      "origem": "3.2",
-      "linha": 7,
-      "tipo_dado": "real"
+      "origem": "10",
+      "linha": 12,
+      "tipo_dado": "int"
     },
     {
       "tipo": "operacao_binaria",
       "resultado": "t20",
       "operando1": "t18",
-      "operador": ">",
+      "operador": "-",
       "operando2": "t19",
-      "linha": 7,
+      "linha": 12,
+      "tipo_dado": "real"
+    },
+    {
+      "tipo": "operacao_binaria",
+      "resultado": "t21",
+      "operando1": "A",
+      "operador": ">",
+      "operando2": "B",
+      "linha": 13,
+      "tipo_dado": "boolean"
+    },
+    {
+      "tipo": "operacao_binaria",
+      "resultado": "t22",
+      "operando1": "X",
+      "operador": "<",
+      "operando2": "Y",
+      "linha": 14,
       "tipo_dado": "boolean"
     },
     {
       "tipo": "atribuicao",
-      "destino": "t21",
-      "origem": "5",
-      "linha": 8,
-      "tipo_dado": "int"
-    },
-    {
-      "tipo": "atribuicao",
-      "destino": "t22",
-      "origem": "3",
-      "linha": 8,
+      "destino": "t23",
+      "origem": "10",
+      "linha": 15,
       "tipo_dado": "int"
     },
     {
       "tipo": "operacao_binaria",
-      "resultado": "t23",
-      "operando1": "t21",
-      "operador": ">",
-      "operando2": "t22",
-      "linha": 8,
+      "resultado": "t24",
+      "operando1": "A",
+      "operador": "==",
+      "operando2": "t23",
+      "linha": 15,
       "tipo_dado": "boolean"
     },
     {
       "tipo": "atribuicao",
-      "destino": "t24",
-      "origem": "2",
-      "linha": 8,
-      "tipo_dado": "int"
-    },
-    {
-      "tipo": "atribuicao",
       "destino": "t25",
-      "origem": "1",
-      "linha": 8,
+      "origem": "20",
+      "linha": 16,
       "tipo_dado": "int"
     },
     {
       "tipo": "operacao_binaria",
       "resultado": "t26",
-      "operando1": "t24",
-      "operador": "<",
+      "operando1": "B",
+      "operador": ">=",
       "operando2": "t25",
-      "linha": 8,
+      "linha": 16,
+      "tipo_dado": "boolean"
+    },
+    {
+      "tipo": "atribuicao",
+      "destino": "t27",
+      "origem": "5.0",
+      "linha": 17,
+      "tipo_dado": "real"
+    },
+    {
+      "tipo": "operacao_binaria",
+      "resultado": "t28",
+      "operando1": "X",
+      "operador": "<=",
+      "operando2": "t27",
+      "linha": 17,
       "tipo_dado": "boolean"
     },
     {
       "tipo": "operacao_binaria",
-      "resultado": "t27",
-      "operando1": "t23",
+      "resultado": "t29",
+      "operando1": "A",
+      "operador": ">",
+      "operando2": "B",
+      "linha": 18,
+      "tipo_dado": "boolean"
+    },
+    {
+      "tipo": "operacao_binaria",
+      "resultado": "t30",
+      "operando1": "X",
+      "operador": "<",
+      "operando2": "Y",
+      "linha": 18,
+      "tipo_dado": "boolean"
+    },
+    {
+      "tipo": "operacao_binaria",
+      "resultado": "t31",
+      "operando1": "t29",
       "operador": "&&",
-      "operando2": "t26",
-      "linha": 8,
+      "operando2": "t30",
+      "linha": 18,
       "tipo_dado": "boolean"
     },
     {
       "tipo": "atribuicao",
-      "destino": "t28",
-      "origem": "10",
-      "linha": 9,
-      "tipo_dado": "int"
-    },
-    {
-      "tipo": "copia",
-      "destino": "X",
-      "origem": "t28",
-      "linha": 9,
-      "tipo_dado": "int"
-    },
-    {
-      "tipo": "atribuicao",
-      "destino": "t29",
-      "origem": "20",
-      "linha": 10,
-      "tipo_dado": "int"
-    },
-    {
-      "tipo": "copia",
-      "destino": "A",
-      "origem": "t29",
-      "linha": 10,
-      "tipo_dado": "int"
-    },
-    {
-      "tipo": "atribuicao",
-      "destino": "t30",
-      "origem": "10",
-      "linha": 11,
-      "tipo_dado": "int"
-    },
-    {
-      "tipo": "copia",
-      "destino": "I",
-      "origem": "t30",
-      "linha": 11,
-      "tipo_dado": "int"
-    },
-    {
-      "tipo": "atribuicao",
-      "destino": "t31",
-      "origem": "0",
-      "linha": 12,
-      "tipo_dado": "int"
-    },
-    {
-      "tipo": "copia",
-      "destino": "COUNTER",
-      "origem": "t31",
-      "linha": 12,
-      "tipo_dado": "int"
-    },
-    {
-      "tipo": "atribuicao",
       "destino": "t32",
-      "origem": "5",
-      "linha": 13,
+      "origem": "10",
+      "linha": 19,
       "tipo_dado": "int"
     },
     {
       "tipo": "operacao_binaria",
       "resultado": "t33",
-      "operando1": "X",
-      "operador": "+",
+      "operando1": "A",
+      "operador": "==",
       "operando2": "t32",
-      "linha": 13,
-      "tipo_dado": "int"
+      "linha": 19,
+      "tipo_dado": "boolean"
     },
     {
-      "tipo": "copia",
-      "destino": "Y",
-      "origem": "t33",
-      "linha": 13,
+      "tipo": "atribuicao",
+      "destino": "t34",
+      "origem": "20",
+      "linha": 19,
       "tipo_dado": "int"
     },
     {
       "tipo": "operacao_binaria",
-      "resultado": "t34",
-      "operando1": "A",
-      "operador": "-",
-      "operando2": "X",
-      "linha": 14,
-      "tipo_dado": "int"
+      "resultado": "t35",
+      "operando1": "B",
+      "operador": ">",
+      "operando2": "t34",
+      "linha": 19,
+      "tipo_dado": "boolean"
     },
     {
-      "tipo": "copia",
-      "destino": "B",
-      "origem": "t34",
-      "linha": 14,
-      "tipo_dado": "int"
-    },
-    {
-      "tipo": "atribuicao",
-      "destino": "t35",
-      "origem": "1",
-      "linha": 15,
-      "tipo_dado": "int"
-    },
-    {
-      "tipo": "atribuicao",
-      "destino": "t36",
-      "origem": "2",
-      "linha": 16,
-      "tipo_dado": "int"
-    },
-    {
-      "tipo": "rotulo",
-      "nome": "L0",
-      "linha": 17
+      "tipo": "operacao_binaria",
+      "resultado": "t36",
+      "operando1": "t33",
+      "operador": "||",
+      "operando2": "t35",
+      "linha": 19,
+      "tipo_dado": "boolean"
     },
     {
       "tipo": "atribuicao",
       "destino": "t37",
-      "origem": "5",
-      "linha": 17,
-      "tipo_dado": "int"
+      "origem": "5.0",
+      "linha": 20,
+      "tipo_dado": "real"
     },
     {
       "tipo": "operacao_binaria",
       "resultado": "t38",
-      "operando1": "COUNTER",
-      "operador": "<",
+      "operando1": "X",
+      "operador": ">",
       "operando2": "t37",
-      "linha": 17,
+      "linha": 20,
       "tipo_dado": "boolean"
     },
     {
-      "tipo": "se_nao_desvio",
-      "condicao": "t38",
-      "alvo": "L1",
-      "linha": 17
-    },
-    {
-      "tipo": "atribuicao",
-      "destino": "t39",
-      "origem": "1",
-      "linha": 17,
-      "tipo_dado": "int"
+      "tipo": "operacao_unaria",
+      "resultado": "t39",
+      "operador": "!",
+      "operando": "t38",
+      "linha": 20,
+      "tipo_dado": "boolean"
     },
     {
       "tipo": "operacao_binaria",
       "resultado": "t40",
-      "operando1": "COUNTER",
-      "operador": "+",
-      "operando2": "t39",
-      "linha": 17,
-      "tipo_dado": "int"
+      "operando1": "A",
+      "operador": "<",
+      "operando2": "B",
+      "linha": 21,
+      "tipo_dado": "boolean"
     },
     {
-      "tipo": "copia",
-      "destino": "COUNTER",
-      "origem": "t40",
-      "linha": 17,
-      "tipo_dado": "int"
-    },
-    {
-      "tipo": "desvio",
-      "alvo": "L0",
-      "linha": 17
-    },
-    {
-      "tipo": "rotulo",
-      "nome": "L1",
-      "linha": 17
-    },
-    {
-      "tipo": "rotulo",
-      "nome": "L2",
-      "linha": 18
-    },
-    {
-      "tipo": "atribuicao",
-      "destino": "t41",
-      "origem": "0",
-      "linha": 18,
-      "tipo_dado": "int"
+      "tipo": "operacao_binaria",
+      "resultado": "t41",
+      "operando1": "X",
+      "operador": ">=",
+      "operando2": "Y",
+      "linha": 21,
+      "tipo_dado": "boolean"
     },
     {
       "tipo": "operacao_binaria",
       "resultado": "t42",
-      "operando1": "B",
-      "operador": ">",
+      "operando1": "t40",
+      "operador": "&&",
       "operando2": "t41",
-      "linha": 18,
+      "linha": 21,
       "tipo_dado": "boolean"
-    },
-    {
-      "tipo": "se_nao_desvio",
-      "condicao": "t42",
-      "alvo": "L3",
-      "linha": 18
     },
     {
       "tipo": "atribuicao",
       "destino": "t43",
-      "origem": "1",
-      "linha": 18,
+      "origem": "10",
+      "linha": 22,
+      "tipo_dado": "int"
+    },
+    {
+      "tipo": "atribuicao",
+      "destino": "t44",
+      "origem": "5",
+      "linha": 22,
       "tipo_dado": "int"
     },
     {
       "tipo": "operacao_binaria",
-      "resultado": "t44",
-      "operando1": "B",
-      "operador": "-",
-      "operando2": "t43",
-      "linha": 18,
-      "tipo_dado": "int"
-    },
-    {
-      "tipo": "copia",
-      "destino": "B",
-      "origem": "t44",
-      "linha": 18,
-      "tipo_dado": "int"
-    },
-    {
-      "tipo": "desvio",
-      "alvo": "L2",
-      "linha": 18
-    },
-    {
-      "tipo": "rotulo",
-      "nome": "L3",
-      "linha": 18
-    },
-    {
-      "tipo": "atribuicao",
-      "destino": "t45",
-      "origem": "1",
-      "linha": 19,
-      "tipo_dado": "int"
+      "resultado": "t45",
+      "operando1": "t43",
+      "operador": ">",
+      "operando2": "t44",
+      "linha": 22,
+      "tipo_dado": "boolean"
     },
     {
       "tipo": "atribuicao",
       "destino": "t46",
-      "origem": "10",
-      "linha": 19,
-      "tipo_dado": "int"
+      "origem": "3.14",
+      "linha": 22,
+      "tipo_dado": "real"
     },
     {
       "tipo": "atribuicao",
       "destino": "t47",
-      "origem": "1",
-      "linha": 19,
-      "tipo_dado": "int"
+      "origem": "2.0",
+      "linha": 22,
+      "tipo_dado": "real"
     },
     {
-      "tipo": "copia",
-      "destino": "t48",
-      "origem": "t45",
-      "linha": 19,
-      "tipo_dado": "int"
-    },
-    {
-      "tipo": "rotulo",
-      "nome": "L4",
-      "linha": 19
+      "tipo": "operacao_binaria",
+      "resultado": "t48",
+      "operando1": "t46",
+      "operador": "<",
+      "operando2": "t47",
+      "linha": 22,
+      "tipo_dado": "boolean"
     },
     {
       "tipo": "operacao_binaria",
       "resultado": "t49",
-      "operando1": "t48",
-      "operador": "<=",
-      "operando2": "t46",
-      "linha": 19,
+      "operando1": "t45",
+      "operador": "||",
+      "operando2": "t48",
+      "linha": 22,
       "tipo_dado": "boolean"
     },
     {
-      "tipo": "se_nao_desvio",
-      "condicao": "t49",
-      "alvo": "L5",
-      "linha": 19
+      "tipo": "operacao_binaria",
+      "resultado": "t50",
+      "operando1": "A",
+      "operador": "+",
+      "operando2": "B",
+      "linha": 23,
+      "tipo_dado": "int"
     },
     {
-      "tipo": "atribuicao",
-      "destino": "t50",
-      "origem": "2",
-      "linha": 19,
+      "tipo": "copia",
+      "destino": "SUM",
+      "origem": "t50",
+      "linha": 23,
       "tipo_dado": "int"
     },
     {
       "tipo": "operacao_binaria",
       "resultado": "t51",
-      "operando1": "I",
+      "operando1": "X",
       "operador": "*",
-      "operando2": "t50",
-      "linha": 19,
+      "operando2": "Y",
+      "linha": 24,
+      "tipo_dado": "real"
+    },
+    {
+      "tipo": "copia",
+      "destino": "PRODUCT",
+      "origem": "t51",
+      "linha": 24,
+      "tipo_dado": "real"
+    },
+    {
+      "tipo": "atribuicao",
+      "destino": "t52",
+      "origem": "10",
+      "linha": 27,
       "tipo_dado": "int"
     },
     {
       "tipo": "operacao_binaria",
-      "resultado": "t52",
-      "operando1": "t48",
+      "resultado": "t53",
+      "operando1": "SUM",
       "operador": "+",
-      "operando2": "t47",
-      "linha": 19,
+      "operando2": "t52",
+      "linha": 27,
       "tipo_dado": "int"
     },
     {
       "tipo": "copia",
-      "destino": "t48",
-      "origem": "t52",
-      "linha": 19,
+      "destino": "RESULT",
+      "origem": "t53",
+      "linha": 27,
       "tipo_dado": "int"
-    },
-    {
-      "tipo": "desvio",
-      "alvo": "L4",
-      "linha": 19
-    },
-    {
-      "tipo": "rotulo",
-      "nome": "L5",
-      "linha": 19
     },
     {
       "tipo": "atribuicao",
-      "destino": "t53",
-      "origem": "15",
-      "linha": 20,
+      "destino": "t54",
+      "origem": "100",
+      "linha": 29,
       "tipo_dado": "int"
     },
     {
-      "tipo": "operacao_binaria",
-      "resultado": "t54",
-      "operando1": "X",
-      "operador": ">",
-      "operando2": "t53",
-      "linha": 20,
-      "tipo_dado": "boolean"
-    },
-    {
-      "tipo": "se_nao_desvio",
-      "condicao": "t54",
-      "alvo": "L6",
-      "linha": 20
+      "tipo": "copia",
+      "destino": "COUNTER",
+      "origem": "t54",
+      "linha": 29,
+      "tipo_dado": "int"
     },
     {
       "tipo": "atribuicao",
       "destino": "t55",
-      "origem": "100",
-      "linha": 20,
+      "origem": "0",
+      "linha": 30,
       "tipo_dado": "int"
     },
     {
-      "tipo": "desvio",
-      "alvo": "L7",
-      "linha": 20
-    },
-    {
-      "tipo": "rotulo",
-      "nome": "L6",
-      "linha": 20
-    },
-    {
-      "tipo": "atribuicao",
-      "destino": "t56",
-      "origem": "200",
-      "linha": 20,
-      "tipo_dado": "int"
-    },
-    {
-      "tipo": "rotulo",
-      "nome": "L7",
-      "linha": 20
-    },
-    {
-      "tipo": "atribuicao",
-      "destino": "t57",
-      "origem": "10",
-      "linha": 21,
+      "tipo": "copia",
+      "destino": "INDEX",
+      "origem": "t55",
+      "linha": 30,
       "tipo_dado": "int"
     },
     {
       "tipo": "operacao_binaria",
-      "resultado": "t58",
+      "resultado": "t56",
       "operando1": "A",
       "operador": ">",
-      "operando2": "t57",
-      "linha": 21,
-      "tipo_dado": "boolean"
-    },
-    {
-      "tipo": "atribuicao",
-      "destino": "t59",
-      "origem": "5",
-      "linha": 21,
-      "tipo_dado": "int"
-    },
-    {
-      "tipo": "operacao_binaria",
-      "resultado": "t60",
-      "operando1": "Y",
-      "operador": ">",
-      "operando2": "t59",
-      "linha": 21,
-      "tipo_dado": "boolean"
-    },
-    {
-      "tipo": "operacao_binaria",
-      "resultado": "t61",
-      "operando1": "t58",
-      "operador": "&&",
-      "operando2": "t60",
-      "linha": 21,
+      "operando2": "B",
+      "linha": 31,
       "tipo_dado": "boolean"
     },
     {
       "tipo": "se_nao_desvio",
-      "condicao": "t61",
-      "alvo": "L8",
-      "linha": 21
+      "condicao": "t56",
+      "alvo": "L0",
+      "linha": 31
+    },
+    {
+      "tipo": "atribuicao",
+      "destino": "t57",
+      "origem": "100",
+      "linha": 31,
+      "tipo_dado": "int"
+    },
+    {
+      "tipo": "desvio",
+      "alvo": "L1",
+      "linha": 31
+    },
+    {
+      "tipo": "rotulo",
+      "nome": "L0",
+      "linha": 31
+    },
+    {
+      "tipo": "atribuicao",
+      "destino": "t58",
+      "origem": "200",
+      "linha": 31,
+      "tipo_dado": "int"
+    },
+    {
+      "tipo": "rotulo",
+      "nome": "L1",
+      "linha": 31
+    },
+    {
+      "tipo": "atribuicao",
+      "destino": "t59",
+      "origem": "5.0",
+      "linha": 32,
+      "tipo_dado": "real"
     },
     {
       "tipo": "operacao_binaria",
-      "resultado": "t62",
-      "operando1": "A",
-      "operador": "+",
-      "operando2": "Y",
-      "linha": 21,
+      "resultado": "t60",
+      "operando1": "X",
+      "operador": "<",
+      "operando2": "t59",
+      "linha": 32,
+      "tipo_dado": "boolean"
+    },
+    {
+      "tipo": "se_nao_desvio",
+      "condicao": "t60",
+      "alvo": "L2",
+      "linha": 32
+    },
+    {
+      "tipo": "atribuicao",
+      "destino": "t61",
+      "origem": "10",
+      "linha": 32,
       "tipo_dado": "int"
+    },
+    {
+      "tipo": "desvio",
+      "alvo": "L3",
+      "linha": 32
+    },
+    {
+      "tipo": "rotulo",
+      "nome": "L2",
+      "linha": 32
+    },
+    {
+      "tipo": "atribuicao",
+      "destino": "t62",
+      "origem": "20",
+      "linha": 32,
+      "tipo_dado": "int"
+    },
+    {
+      "tipo": "rotulo",
+      "nome": "L3",
+      "linha": 32
     },
     {
       "tipo": "atribuicao",
       "destino": "t63",
-      "origem": "2.0",
-      "linha": 21,
-      "tipo_dado": "real"
+      "origem": "100",
+      "linha": 33,
+      "tipo_dado": "int"
     },
     {
       "tipo": "operacao_binaria",
       "resultado": "t64",
-      "operando1": "t62",
-      "operador": "|",
+      "operando1": "SUM",
+      "operador": ">=",
       "operando2": "t63",
-      "linha": 21,
-      "tipo_dado": "real"
+      "linha": 33,
+      "tipo_dado": "boolean"
     },
     {
-      "tipo": "desvio",
-      "alvo": "L9",
-      "linha": 21
-    },
-    {
-      "tipo": "rotulo",
-      "nome": "L8",
-      "linha": 21
-    },
-    {
-      "tipo": "operacao_binaria",
-      "resultado": "t65",
-      "operando1": "A",
-      "operador": "*",
-      "operando2": "Y",
-      "linha": 21,
-      "tipo_dado": "int"
-    },
-    {
-      "tipo": "rotulo",
-      "nome": "L9",
-      "linha": 21
+      "tipo": "se_nao_desvio",
+      "condicao": "t64",
+      "alvo": "L4",
+      "linha": 33
     },
     {
       "tipo": "atribuicao",
-      "destino": "t66",
-      "origem": "5",
-      "linha": 22,
+      "destino": "t65",
+      "origem": "10",
+      "linha": 33,
       "tipo_dado": "int"
+    },
+    {
+      "tipo": "operacao_binaria",
+      "resultado": "t66",
+      "operando1": "SUM",
+      "operador": "-",
+      "operando2": "t65",
+      "linha": 33,
+      "tipo_dado": "int"
+    },
+    {
+      "tipo": "desvio",
+      "alvo": "L5",
+      "linha": 33
+    },
+    {
+      "tipo": "rotulo",
+      "nome": "L4",
+      "linha": 33
     },
     {
       "tipo": "atribuicao",
       "destino": "t67",
-      "origem": "3",
-      "linha": 22,
+      "origem": "10",
+      "linha": 33,
       "tipo_dado": "int"
     },
     {
       "tipo": "operacao_binaria",
       "resultado": "t68",
-      "operando1": "t66",
+      "operando1": "SUM",
       "operador": "+",
       "operando2": "t67",
-      "linha": 22,
+      "linha": 33,
       "tipo_dado": "int"
+    },
+    {
+      "tipo": "rotulo",
+      "nome": "L5",
+      "linha": 33
     },
     {
       "tipo": "atribuicao",
       "destino": "t69",
+      "origem": "50",
+      "linha": 34,
+      "tipo_dado": "int"
+    },
+    {
+      "tipo": "operacao_binaria",
+      "resultado": "t70",
+      "operando1": "COUNTER",
+      "operador": ">",
+      "operando2": "t69",
+      "linha": 34,
+      "tipo_dado": "boolean"
+    },
+    {
+      "tipo": "se_nao_desvio",
+      "condicao": "t70",
+      "alvo": "L6",
+      "linha": 34
+    },
+    {
+      "tipo": "atribuicao",
+      "destino": "t71",
+      "origem": "1",
+      "linha": 34,
+      "tipo_dado": "int"
+    },
+    {
+      "tipo": "desvio",
+      "alvo": "L7",
+      "linha": 34
+    },
+    {
+      "tipo": "rotulo",
+      "nome": "L6",
+      "linha": 34
+    },
+    {
+      "tipo": "atribuicao",
+      "destino": "t72",
+      "origem": "0",
+      "linha": 34,
+      "tipo_dado": "int"
+    },
+    {
+      "tipo": "rotulo",
+      "nome": "L7",
+      "linha": 34
+    },
+    {
+      "tipo": "rotulo",
+      "nome": "L8",
+      "linha": 35
+    },
+    {
+      "tipo": "atribuicao",
+      "destino": "t73",
+      "origem": "100",
+      "linha": 35,
+      "tipo_dado": "int"
+    },
+    {
+      "tipo": "operacao_binaria",
+      "resultado": "t74",
+      "operando1": "COUNTER",
+      "operador": "<",
+      "operando2": "t73",
+      "linha": 35,
+      "tipo_dado": "boolean"
+    },
+    {
+      "tipo": "se_nao_desvio",
+      "condicao": "t74",
+      "alvo": "L9",
+      "linha": 35
+    },
+    {
+      "tipo": "atribuicao",
+      "destino": "t75",
+      "origem": "1",
+      "linha": 35,
+      "tipo_dado": "int"
+    },
+    {
+      "tipo": "operacao_binaria",
+      "resultado": "t76",
+      "operando1": "COUNTER",
+      "operador": "+",
+      "operando2": "t75",
+      "linha": 35,
+      "tipo_dado": "int"
+    },
+    {
+      "tipo": "copia",
+      "destino": "COUNTER",
+      "origem": "t76",
+      "linha": 35,
+      "tipo_dado": "int"
+    },
+    {
+      "tipo": "desvio",
+      "alvo": "L8",
+      "linha": 35
+    },
+    {
+      "tipo": "rotulo",
+      "nome": "L9",
+      "linha": 35
+    },
+    {
+      "tipo": "rotulo",
+      "nome": "L10",
+      "linha": 36
+    },
+    {
+      "tipo": "atribuicao",
+      "destino": "t77",
+      "origem": "50",
+      "linha": 36,
+      "tipo_dado": "int"
+    },
+    {
+      "tipo": "operacao_binaria",
+      "resultado": "t78",
+      "operando1": "INDEX",
+      "operador": "<",
+      "operando2": "t77",
+      "linha": 36,
+      "tipo_dado": "boolean"
+    },
+    {
+      "tipo": "se_nao_desvio",
+      "condicao": "t78",
+      "alvo": "L11",
+      "linha": 36
+    },
+    {
+      "tipo": "atribuicao",
+      "destino": "t79",
       "origem": "2",
-      "linha": 22,
+      "linha": 36,
+      "tipo_dado": "int"
+    },
+    {
+      "tipo": "operacao_binaria",
+      "resultado": "t80",
+      "operando1": "INDEX",
+      "operador": "+",
+      "operando2": "t79",
+      "linha": 36,
+      "tipo_dado": "int"
+    },
+    {
+      "tipo": "copia",
+      "destino": "INDEX",
+      "origem": "t80",
+      "linha": 36,
+      "tipo_dado": "int"
+    },
+    {
+      "tipo": "desvio",
+      "alvo": "L10",
+      "linha": 36
+    },
+    {
+      "tipo": "rotulo",
+      "nome": "L11",
+      "linha": 36
+    },
+    {
+      "tipo": "rotulo",
+      "nome": "L12",
+      "linha": 37
+    },
+    {
+      "tipo": "atribuicao",
+      "destino": "t81",
+      "origem": "200",
+      "linha": 37,
+      "tipo_dado": "int"
+    },
+    {
+      "tipo": "operacao_binaria",
+      "resultado": "t82",
+      "operando1": "A",
+      "operador": "<",
+      "operando2": "t81",
+      "linha": 37,
+      "tipo_dado": "boolean"
+    },
+    {
+      "tipo": "se_nao_desvio",
+      "condicao": "t82",
+      "alvo": "L13",
+      "linha": 37
+    },
+    {
+      "tipo": "atribuicao",
+      "destino": "t83",
+      "origem": "5",
+      "linha": 37,
+      "tipo_dado": "int"
+    },
+    {
+      "tipo": "operacao_binaria",
+      "resultado": "t84",
+      "operando1": "A",
+      "operador": "+",
+      "operando2": "t83",
+      "linha": 37,
+      "tipo_dado": "int"
+    },
+    {
+      "tipo": "copia",
+      "destino": "A",
+      "origem": "t84",
+      "linha": 37,
+      "tipo_dado": "int"
+    },
+    {
+      "tipo": "desvio",
+      "alvo": "L12",
+      "linha": 37
+    },
+    {
+      "tipo": "rotulo",
+      "nome": "L13",
+      "linha": 37
+    },
+    {
+      "tipo": "atribuicao",
+      "destino": "t85",
+      "origem": "1",
+      "linha": 38,
       "tipo_dado": "int"
     },
     {
       "tipo": "atribuicao",
-      "destino": "t70",
-      "origem": "4",
-      "linha": 22,
+      "destino": "t86",
+      "origem": "10",
+      "linha": 38,
+      "tipo_dado": "int"
+    },
+    {
+      "tipo": "atribuicao",
+      "destino": "t87",
+      "origem": "1",
+      "linha": 38,
+      "tipo_dado": "int"
+    },
+    {
+      "tipo": "copia",
+      "destino": "t88",
+      "origem": "t85",
+      "linha": 38,
+      "tipo_dado": "int"
+    },
+    {
+      "tipo": "rotulo",
+      "nome": "L14",
+      "linha": 38
+    },
+    {
+      "tipo": "operacao_binaria",
+      "resultado": "t89",
+      "operando1": "t88",
+      "operador": "<=",
+      "operando2": "t86",
+      "linha": 38,
+      "tipo_dado": "boolean"
+    },
+    {
+      "tipo": "se_nao_desvio",
+      "condicao": "t89",
+      "alvo": "L15",
+      "linha": 38
+    },
+    {
+      "tipo": "atribuicao",
+      "destino": "t90",
+      "origem": "1",
+      "linha": 38,
       "tipo_dado": "int"
     },
     {
       "tipo": "operacao_binaria",
-      "resultado": "t71",
-      "operando1": "t69",
-      "operador": "*",
-      "operando2": "t70",
-      "linha": 22,
+      "resultado": "t91",
+      "operando1": "I",
+      "operador": "+",
+      "operando2": "t90",
+      "linha": 38,
+      "tipo_dado": "int"
+    },
+    {
+      "tipo": "copia",
+      "destino": "I",
+      "origem": "t91",
+      "linha": 38,
       "tipo_dado": "int"
     },
     {
       "tipo": "operacao_binaria",
-      "resultado": "t72",
-      "operando1": "t68",
-      "operador": "*",
-      "operando2": "t71",
-      "linha": 22,
+      "resultado": "t92",
+      "operando1": "t88",
+      "operador": "+",
+      "operando2": "t87",
+      "linha": 38,
       "tipo_dado": "int"
+    },
+    {
+      "tipo": "copia",
+      "destino": "t88",
+      "origem": "t92",
+      "linha": 38,
+      "tipo_dado": "int"
+    },
+    {
+      "tipo": "desvio",
+      "alvo": "L14",
+      "linha": 38
+    },
+    {
+      "tipo": "rotulo",
+      "nome": "L15",
+      "linha": 38
+    },
+    {
+      "tipo": "atribuicao",
+      "destino": "t93",
+      "origem": "0",
+      "linha": 39,
+      "tipo_dado": "int"
+    },
+    {
+      "tipo": "atribuicao",
+      "destino": "t94",
+      "origem": "20",
+      "linha": 39,
+      "tipo_dado": "int"
+    },
+    {
+      "tipo": "atribuicao",
+      "destino": "t95",
+      "origem": "2",
+      "linha": 39,
+      "tipo_dado": "int"
+    },
+    {
+      "tipo": "copia",
+      "destino": "t96",
+      "origem": "t93",
+      "linha": 39,
+      "tipo_dado": "int"
+    },
+    {
+      "tipo": "rotulo",
+      "nome": "L16",
+      "linha": 39
+    },
+    {
+      "tipo": "operacao_binaria",
+      "resultado": "t97",
+      "operando1": "t96",
+      "operador": "<=",
+      "operando2": "t94",
+      "linha": 39,
+      "tipo_dado": "boolean"
+    },
+    {
+      "tipo": "se_nao_desvio",
+      "condicao": "t97",
+      "alvo": "L17",
+      "linha": 39
+    },
+    {
+      "tipo": "atribuicao",
+      "destino": "t98",
+      "origem": "2",
+      "linha": 39,
+      "tipo_dado": "int"
+    },
+    {
+      "tipo": "operacao_binaria",
+      "resultado": "t99",
+      "operando1": "J",
+      "operador": "*",
+      "operando2": "t98",
+      "linha": 39,
+      "tipo_dado": "int"
+    },
+    {
+      "tipo": "copia",
+      "destino": "J",
+      "origem": "t99",
+      "linha": 39,
+      "tipo_dado": "int"
+    },
+    {
+      "tipo": "operacao_binaria",
+      "resultado": "t100",
+      "operando1": "t96",
+      "operador": "+",
+      "operando2": "t95",
+      "linha": 39,
+      "tipo_dado": "int"
+    },
+    {
+      "tipo": "copia",
+      "destino": "t96",
+      "origem": "t100",
+      "linha": 39,
+      "tipo_dado": "int"
+    },
+    {
+      "tipo": "desvio",
+      "alvo": "L16",
+      "linha": 39
+    },
+    {
+      "tipo": "rotulo",
+      "nome": "L17",
+      "linha": 39
+    },
+    {
+      "tipo": "atribuicao",
+      "destino": "t101",
+      "origem": "1",
+      "linha": 40,
+      "tipo_dado": "int"
+    },
+    {
+      "tipo": "atribuicao",
+      "destino": "t102",
+      "origem": "5",
+      "linha": 40,
+      "tipo_dado": "int"
+    },
+    {
+      "tipo": "atribuicao",
+      "destino": "t103",
+      "origem": "1",
+      "linha": 40,
+      "tipo_dado": "int"
+    },
+    {
+      "tipo": "copia",
+      "destino": "t104",
+      "origem": "t101",
+      "linha": 40,
+      "tipo_dado": "int"
+    },
+    {
+      "tipo": "rotulo",
+      "nome": "L18",
+      "linha": 40
+    },
+    {
+      "tipo": "operacao_binaria",
+      "resultado": "t105",
+      "operando1": "t104",
+      "operador": "<=",
+      "operando2": "t102",
+      "linha": 40,
+      "tipo_dado": "boolean"
+    },
+    {
+      "tipo": "se_nao_desvio",
+      "condicao": "t105",
+      "alvo": "L19",
+      "linha": 40
+    },
+    {
+      "tipo": "operacao_binaria",
+      "resultado": "t106",
+      "operando1": "SUM",
+      "operador": "+",
+      "operando2": "K",
+      "linha": 40,
+      "tipo_dado": "int"
+    },
+    {
+      "tipo": "copia",
+      "destino": "SUM",
+      "origem": "t106",
+      "linha": 40,
+      "tipo_dado": "int"
+    },
+    {
+      "tipo": "operacao_binaria",
+      "resultado": "t107",
+      "operando1": "t104",
+      "operador": "+",
+      "operando2": "t103",
+      "linha": 40,
+      "tipo_dado": "int"
+    },
+    {
+      "tipo": "copia",
+      "destino": "t104",
+      "origem": "t107",
+      "linha": 40,
+      "tipo_dado": "int"
+    },
+    {
+      "tipo": "desvio",
+      "alvo": "L18",
+      "linha": 40
+    },
+    {
+      "tipo": "rotulo",
+      "nome": "L19",
+      "linha": 40
     }
   ]
 }
