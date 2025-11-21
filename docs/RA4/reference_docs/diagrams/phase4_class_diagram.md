@@ -236,14 +236,14 @@ classDiagram
     AssemblyGenerator --|> AssemblyGeneratorHelpers : Student 3 implements
     IntegrationManager --|> IntegrationHelpers : Student 4 implements
 
-    style TACGenerator fill:#fff4e6
-    style TACGeneratorHelpers fill:#fff4e6
-    style TACOptimizer fill:#e8f5e9
-    style TACOptimizerHelpers fill:#e8f5e9
-    style AssemblyGenerator fill:#f3e5f5
-    style AssemblyGeneratorHelpers fill:#f3e5f5
-    style IntegrationManager fill:#fce4ec
-    style IntegrationHelpers fill:#fce4ec
+    style TACGenerator fill:#b8860b,stroke:#ffd700,stroke-width:3px,color:#fff
+    style TACGeneratorHelpers fill:#b8860b,stroke:#ffd700,stroke-width:2px,color:#fff
+    style TACOptimizer fill:#2e7d32,stroke:#66bb6a,stroke-width:3px,color:#fff
+    style TACOptimizerHelpers fill:#2e7d32,stroke:#66bb6a,stroke-width:2px,color:#fff
+    style AssemblyGenerator fill:#6a1b9a,stroke:#ab47bc,stroke-width:3px,color:#fff
+    style AssemblyGeneratorHelpers fill:#6a1b9a,stroke:#ab47bc,stroke-width:2px,color:#fff
+    style IntegrationManager fill:#c62828,stroke:#ef5350,stroke-width:3px,color:#fff
+    style IntegrationHelpers fill:#c62828,stroke:#ef5350,stroke-width:2px,color:#fff
 ```
 
 ---
@@ -311,10 +311,10 @@ graph TD
 
     S4Call --> End([program.hex uploaded])
 
-    style Student1 fill:#fff4e6
-    style Student2 fill:#e8f5e9
-    style Student3 fill:#f3e5f5
-    style Student4 fill:#fce4ec
+    style Student1 fill:#b8860b,stroke:#ffd700,stroke-width:3px,color:#fff
+    style Student2 fill:#2e7d32,stroke:#66bb6a,stroke-width:3px,color:#fff
+    style Student3 fill:#6a1b9a,stroke:#ab47bc,stroke-width:3px,color:#fff
+    style Student4 fill:#c62828,stroke:#ef5350,stroke-width:3px,color:#fff
 ```
 
 ---
