@@ -10,7 +10,7 @@
 
 import json
 import os
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Optional
 
 from .tac_instructions import TACInstruction, instruction_from_dict, TACBinaryOp, TACAssignment, TACUnaryOp, TACIfGoto, TACIfFalseGoto, TACGoto
 from .erros_compilador import TACError, FileError, JSONError, ValidationError
@@ -218,8 +218,8 @@ class TACOptimizer:
         if not self.instructions:
             return 0
 
-        # Fase 1: Análise de liveness (variáveis utilizadas)
-        used_vars = self._analisar_liveness()
+        # Fase 1: Análise completa de liveness
+        liveness_info = self._analisar_liveness_completa()
 
         # Fase 2: Remover código morto e inalcançável
         novas_instrucoes = []
@@ -250,11 +250,12 @@ class TACOptimizer:
                 novas_instrucoes.append(instr)
                 continue
 
-            # Verificar se é uma atribuição a variável não utilizada
+            # Verificar se é uma atribuição a variável temporária não utilizada
             dest_var = getattr(instr, 'result', getattr(instr, 'dest', None))
-            if (dest_var and dest_var not in used_vars and dest_var.startswith('t') and
+            if (dest_var and dest_var.startswith('t') and 
+                dest_var not in liveness_info[idx]['live_out'] and
                 isinstance(instr, (TACAssignment, TACBinaryOp, TACUnaryOp)) and
-                getattr(instr, 'source', '') != ''):  # Não remover labels (source vazia) ou outputs
+                getattr(instr, 'source', '') != ''):  # Não remover labels (source vazia)
                 removidas += 1
                 continue
 
@@ -268,26 +269,120 @@ class TACOptimizer:
     # HELPERS PARA DEAD CODE ELIMINATION
     #########################
 
-    def _analisar_liveness(self) -> set:
-        """Analisa quais variáveis são utilizadas no código."""
-        used_vars = set()
+    def _analisar_liveness_completa(self) -> Dict[int, Dict[str, set]]:
+        """
+        Análise completa de liveness usando algoritmo backward.
         
-        # Coletar todas as variáveis utilizadas como operandos
-        for instr in self.instructions:
-            # Adicionar operandos utilizados
-            if hasattr(instr, 'operand1') and instr.operand1 and not TACInstruction.is_constant(instr.operand1):
-                used_vars.add(instr.operand1)
-            if hasattr(instr, 'operand2') and instr.operand2 and not TACInstruction.is_constant(instr.operand2):
-                used_vars.add(instr.operand2)
-            if hasattr(instr, 'operand') and instr.operand and not TACInstruction.is_constant(instr.operand):
-                used_vars.add(instr.operand)
-            if hasattr(instr, 'condition') and instr.condition and not TACInstruction.is_constant(instr.condition):
-                used_vars.add(instr.condition)
-            # Para assignments, adicionar source se não constante
-            if isinstance(instr, TACAssignment) and instr.source and not TACInstruction.is_constant(instr.source):
-                used_vars.add(instr.source)
+        Returns:
+            Dict[instr_index, {'live_in': set, 'live_out': set}]
+        """
+        if not self.instructions:
+            return {}
+        
+        n = len(self.instructions)
+        
+        # Inicializar live_out (conjunto vazio para todas)
+        live_out = [set() for _ in range(n)]
+        
+        # Mapear labels para índices
+        label_to_index = {}
+        for i, instr in enumerate(self.instructions):
+            if isinstance(instr, TACAssignment) and instr.source == '' and instr.dest:
+                label_to_index[instr.dest] = i
+        
+        # Algoritmo iterativo até ponto fixo
+        changed = True
+        while changed:
+            changed = False
+            
+            # Processar do fim para o início (backward)
+            for i in range(n - 1, -1, -1):
+                instr = self.instructions[i]
+                old_live_out = live_out[i].copy()
                 
-        return used_vars
+                # Calcular live_out baseado nos sucessores
+                new_live_out = set()
+                successors = self._get_successors(i, label_to_index)
+                
+                for succ in successors:
+                    if succ < n:
+                        new_live_out.update(live_out[succ])
+                
+                live_out[i] = new_live_out
+                
+                if live_out[i] != old_live_out:
+                    changed = True
+        
+        # Agora calcular live_in para cada instrução
+        result = {}
+        for i in range(n):
+            instr = self.instructions[i]
+            
+            # Calcular use[i] - variáveis usadas nesta instrução
+            use_vars = self._get_used_variables(instr)
+            
+            # Calcular def[i] - variável definida nesta instrução
+            def_var = self._get_defined_variable(instr)
+            
+            # live_in[i] = use[i] ∪ (live_out[i] - def[i])
+            live_in = use_vars.union(live_out[i])
+            if def_var:
+                live_in.discard(def_var)
+            
+            result[i] = {
+                'live_in': live_in,
+                'live_out': live_out[i]
+            }
+        
+        return result
+
+    #########################
+    # HELPERS PARA LIVENESS ANALYSIS
+    #########################
+
+    def _get_successors(self, index: int, label_to_index: Dict[str, int]) -> List[int]:
+        """
+        Retorna lista de índices dos sucessores da instrução no índice dado.
+        """
+        instr = self.instructions[index]
+        successors = []
+        
+        # Instruções de controle de fluxo
+        if isinstance(instr, TACGoto):
+            # Goto incondicional: só vai para o target
+            if instr.target in label_to_index:
+                successors.append(label_to_index[instr.target])
+        elif isinstance(instr, (TACIfGoto, TACIfFalseGoto)):
+            # If-goto: vai para target E para fall-through
+            if instr.target in label_to_index:
+                successors.append(label_to_index[instr.target])
+            if index < len(self.instructions) - 1:
+                successors.append(index + 1)
+        else:
+            # Instrução normal: sucessor é a próxima instrução
+            if index < len(self.instructions) - 1:
+                successors.append(index + 1)
+        
+        return successors
+    
+    def _get_used_variables(self, instr) -> set:
+        """Retorna conjunto de variáveis usadas pela instrução."""
+        used = set()
+        for attr in ['operand1', 'operand2', 'operand', 'condition', 'source']:
+            if hasattr(instr, attr):
+                var = getattr(instr, attr)
+                if var and not TACInstruction.is_constant(var):
+                    used.add(var)
+        return used
+    
+    def _get_defined_variable(self, instr) -> Optional[str]:
+        """Retorna variável definida pela instrução, se houver."""
+        for attr in ['result', 'dest']:
+            if hasattr(instr, attr):
+                var = getattr(instr, attr)
+                if var:
+                    return var
+        return None
 
     #########################
     # OTIMIZAÇÕES: JUMP ELIMINATION
