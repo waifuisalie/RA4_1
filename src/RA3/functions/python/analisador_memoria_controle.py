@@ -47,6 +47,7 @@ def analisarSemanticaMemoria(arvore_anotada_local: Dict[str, Any], seqs_map: Dic
             else:
                 try:
                     tabela_local.adicionarSimbolo(destino, fonte_tipo, inicializada=True, linha=num)
+                    if linha.get('filhos'): linha['filhos'][0]['tipo'] = fonte_tipo
                     linha['tipo'] = fonte_tipo
                 except ValueError as e:
                     erros_m.append({'linha': num, 'erro': f"ERRO SEMÂNTICO [Linha {num}]: {str(e)}\nContexto: ({destino})"})
@@ -57,7 +58,9 @@ def analisarSemanticaMemoria(arvore_anotada_local: Dict[str, Any], seqs_map: Dic
             if not tabela_local.existe(var) or not tabela_local.verificar_inicializacao(var):
                 erros_m.append({'linha': num, 'erro': f"ERRO SEMÂNTICO [Linha {num}]: Memória '{var}' utilizada sem inicialização\nContexto: ({var})"})
             else:
-                linha['tipo'] = tabela_local.obter_tipo(var)
+                tipo_var = tabela_local.obter_tipo(var)
+                if linha.get('filhos'): linha['filhos'][0]['tipo'] = tipo_var
+                linha['tipo'] = tipo_var
             continue
 
         if operador == 'RES' or (operador in [None, ''] and elementos and any(e.get('subtipo', '').endswith('_res') for e in elementos)):
@@ -98,7 +101,9 @@ def analisarSemanticaMemoria(arvore_anotada_local: Dict[str, Any], seqs_map: Dic
                 if not ref_l or ref_l.get('tipo') is None:
                     erros_m.append({'linha': num, 'erro': f"ERRO SEMÂNTICO [Linha {num}]: Referência RES aponta para linha sem tipo conhecido\nContexto: RES"})
                     continue
-                linha['tipo'] = ref_l.get('tipo')
+                tipo_ref = ref_l.get('tipo')
+                if linha.get('filhos'): linha['filhos'][0]['tipo'] = tipo_ref
+                linha['tipo'] = tipo_ref
                 continue
 
     return erros_m
@@ -176,16 +181,20 @@ def analisarSemanticaControle(arvore_anotada_local: Dict[str, Any], seqs_map: Di
                 elif false_branch.get('subtipo') == 'LINHA':
                     false_type, _, _ = avaliar_seq_tipo(false_branch.get('ast'), num, tabela_local)
                 
-                # IFELSE retorna o tipo comum entre os ramos
+                tipo_final = None
                 if true_type == false_type:
-                    linha['tipo'] = true_type
+                    tipo_final = true_type
                 elif true_type in [tipos.TYPE_INT, tipos.TYPE_REAL] and false_type in [tipos.TYPE_INT, tipos.TYPE_REAL]:
-                    # Promoção de tipos numéricos
-                    linha['tipo'] = tipos.TYPE_REAL  # int + real = real
+                    tipo_final = tipos.TYPE_REAL
                 else:
-                    linha['tipo'] = true_type or false_type  # fallback
+                    tipo_final = true_type or false_type
+
+                if linha.get('filhos'): linha['filhos'][0]['tipo'] = tipo_final # CORREÇÃO
+                linha['tipo'] = tipo_final
             else:
-                linha['tipo'] = tipos.TYPE_REAL  # fallback para casos malformados
+                # Fallback
+                if linha.get('filhos'): linha['filhos'][0]['tipo'] = tipos.TYPE_REAL
+                linha['tipo'] = tipos.TYPE_REAL
 
         if operador == 'WHILE':
             if len(elementos) < 2:
@@ -211,12 +220,12 @@ def analisarSemanticaControle(arvore_anotada_local: Dict[str, Any], seqs_map: Di
                 erros_c.append({'linha': num, 'erro': f"ERRO SEMÂNTICO [Linha {num}]: Condição WHILE inválida (não convertível para boolean)\nContexto: WHILE"})
                 continue
 
-            # WHILE retorna o tipo do corpo do loop (último valor calculado)
             if len(elementos) >= 2 and elementos[1].get('subtipo') == 'LINHA':
                 body_type, _, _ = avaliar_seq_tipo(elementos[1].get('ast'), num, tabela_local)
+                if linha.get('filhos'): linha['filhos'][0]['tipo'] = body_type # CORREÇÃO
                 linha['tipo'] = body_type
             else:
-                linha['tipo'] = None  # fallback para casos malformados
+                linha['tipo'] = None
 
         if operador == 'FOR':
             if len(elementos) < 4:
@@ -241,6 +250,7 @@ def analisarSemanticaControle(arvore_anotada_local: Dict[str, Any], seqs_map: Di
                 continue
             if elementos[3].get('subtipo') == 'LINHA':
                 body_t, _, _ = avaliar_seq_tipo(elementos[3].get('ast'), num, tabela_local)
+                if linha.get('filhos'): linha['filhos'][0]['tipo'] = body_t # CORREÇÃO
                 linha['tipo'] = body_t
 
     return erros_c
