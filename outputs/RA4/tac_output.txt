@@ -1,0 +1,114 @@
+TAC Output - Generated from arvore_atribuida.json
+Generated: 2025-11-21 16:10:35
+======================================================================
+
+Line  1: t0 = 5                    [type: int]
+Line  1: t1 = 3                    [type: int]
+Line  1: t2 = t0 + t1              [type: int]
+Line  2: t3 = 10.5                 [type: real]
+Line  2: t4 = 2.0                  [type: real]
+Line  2: t5 = t3 * t4              [type: real]
+Line  3: t6 = 100                  [type: int]
+Line  3: t7 = 50                   [type: int]
+Line  3: t8 = t6 + t7              [type: int]
+Line  4: t9 = 15                   [type: int]
+Line  4: t10 = 7                   [type: int]
+Line  4: t11 = t9 / t10            [type: int]
+Line  5: t12 = 23                  [type: int]
+Line  5: t13 = 6                   [type: int]
+Line  5: t14 = t12 % t13           [type: int]
+Line  6: t15 = 2.5                 [type: real]
+Line  6: t16 = 3                   [type: int]
+Line  6: t17 = t15 ^ t16           [type: real]
+Line  7: t18 = 5.5                 [type: real]
+Line  7: t19 = 3.2                 [type: real]
+Line  7: t20 = t18 > t19           [type: boolean]
+Line  8: t21 = 5                   [type: int]
+Line  8: t22 = 3                   [type: int]
+Line  8: t23 = t21 > t22           [type: boolean]
+Line  8: t24 = 2                   [type: int]
+Line  8: t25 = 1                   [type: int]
+Line  8: t26 = t24 < t25           [type: boolean]
+Line  8: t27 = t23 && t26          [type: boolean]
+Line  9: t28 = 10                  [type: int]
+Line  9: X = t28                   [type: int]
+Line 10: t29 = 20                  [type: int]
+Line 10: A = t29                   [type: int]
+Line 11: t30 = 10                  [type: int]
+Line 11: I = t30                   [type: int]
+Line 12: t31 = 0                   [type: int]
+Line 12: COUNTER = t31             [type: int]
+Line 13: t32 = 5                   [type: int]
+Line 13: t33 = X + t32             
+Line 13: Y = t33                   
+Line 14: t34 = A - X               
+Line 14: B = t34                   
+Line 15: t35 = 1                   [type: int]
+Line 16: t36 = 2                   [type: int]
+Line 17: L0:                       
+Line 17: t37 = 5                   [type: int]
+Line 17: t38 = COUNTER < t37       [type: boolean]
+Line 17: ifFalse t38 goto L1       
+Line 17: t39 = 1                   [type: int]
+Line 17: t40 = COUNTER + t39       
+Line 17: COUNTER = t40             
+Line 17: goto L0                   
+Line 17: L1:                       
+Line 18: L2:                       
+Line 18: t41 = 0                   [type: int]
+Line 18: t42 = B > t41             [type: boolean]
+Line 18: ifFalse t42 goto L3       
+Line 18: t43 = 1                   [type: int]
+Line 18: t44 = B - t43             
+Line 18: B = t44                   
+Line 18: goto L2                   
+Line 18: L3:                       
+Line 19: t45 = 1                   [type: int]
+Line 19: t46 = 10                  [type: int]
+Line 19: t47 = 1                   [type: int]
+Line 19: t48 = t45                 [type: int]
+Line 19: L4:                       
+Line 19: t49 = t48 <= t46          [type: boolean]
+Line 19: ifFalse t49 goto L5       
+Line 19: t50 = 2                   [type: int]
+Line 19: t51 = I * t50             
+Line 19: t52 = t48 + t47           [type: int]
+Line 19: t48 = t52                 [type: int]
+Line 19: goto L4                   
+Line 19: L5:                       
+Line 20: t53 = 15                  [type: int]
+Line 20: t54 = X > t53             [type: boolean]
+Line 20: ifFalse t54 goto L6       
+Line 20: t55 = 100                 [type: int]
+Line 20: goto L7                   
+Line 20: L6:                       
+Line 20: t56 = 200                 [type: int]
+Line 20: L7:                       
+Line 21: t57 = 10                  [type: int]
+Line 21: t58 = A > t57             [type: boolean]
+Line 21: t59 = 5                   [type: int]
+Line 21: t60 = Y > t59             [type: boolean]
+Line 21: t61 = t58 && t60          [type: boolean]
+Line 21: ifFalse t61 goto L8       
+Line 21: t62 = A + Y               
+Line 21: t63 = 2.0                 [type: real]
+Line 21: t64 = t62 | t63           
+Line 21: goto L9                   
+Line 21: L8:                       
+Line 21: t65 = A * Y               
+Line 21: L9:                       
+Line 22: t66 = 5                   [type: int]
+Line 22: t67 = 3                   [type: int]
+Line 22: t68 = t66 + t67           
+Line 22: t69 = 2                   [type: int]
+Line 22: t70 = 4                   [type: int]
+Line 22: t71 = t69 * t70           
+Line 22: t72 = t68 * t71           [type: int]
+
+======================================================================
+Statistics:
+  total_instructions: 102
+  temp_count: 73
+  label_count: 10
+  result_history_size: 19
+======================================================================

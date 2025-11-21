@@ -1,0 +1,45 @@
+# TESTE1 - CASOS BÁSICOS VÁLIDOS DO ANALISADOR SEMÂNTICO
+# Arquivo com casos fundamentais para validação básica do compilador
+# Testa operações simples e estruturas de controle básicas
+
+# === SEÇÃO 1: OPERAÇÕES ARITMÉTICAS BÁSICAS ===
+(5 3 +)
+(10.5 2.0 *)
+(100 50 +)
+(15 7 /)
+(23 6 %)
+(2.5 3 ^)
+
+# === SEÇÃO 2: OPERAÇÕES DE COMPARAÇÃO ===
+(5.5 3.2 >)
+
+# === SEÇÃO 3: OPERAÇÕES LÓGICAS ===
+((5 3 >) (2 1 <) &&)
+
+# === SEÇÃO 4: ATRIBUIÇÕES E VARIÁVEIS ===
+(10 X)
+(20 A)
+(10 I)
+(0 COUNTER)
+
+# === SEÇÃO 5: USO DE VARIÁVEIS ===
+((X 5 +) Y)
+((A X -) B)
+
+# === SEÇÃO 6: OPERAÇÕES COM RES ===
+(1 RES)
+(2 RES)
+
+# === SEÇÃO 7: ESTRUTURAS DE CONTROLE WHILE ===
+((COUNTER 5 <) (((COUNTER 1 +) COUNTER)) WHILE)
+((B 0 >) (((B 1 -) B)) WHILE)
+
+# === SEÇÃO 8: ESTRUTURAS DE CONTROLE FOR ===
+((1) (10) (1) (I 2 *) FOR)
+
+# === SEÇÃO 9: ESTRUTURAS DE CONTROLE IFELSE ===
+((X 15 >) (100) (200) IFELSE)
+(((A 10 >) (Y 5 >) &&) (((A Y +) 2.0 |)) ((A Y *)) IFELSE)
+
+# === SEÇÃO 10: EXPRESSÕES COMPLEXAS ===
+((5 3 +) (2 4 *) *)

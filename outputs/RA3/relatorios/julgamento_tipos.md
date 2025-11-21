@@ -1,32 +1,29 @@
 # Julgamento de Tipos
 
-**Gerado em:** 2025-11-21 15:43:36
+**Gerado em:** 2025-11-21 16:10:28
 
-**Total de expressões analisadas:** 35
+**Total de expressões analisadas:** 22
 
 ---
 
-## Linha 1: `(5 3.0 +)`
+## Linha 1: `(5 3 +)`
 
 ### Análise de Tipos:
 - **Operando 1:** `5` → tipo: `int`
     - `5` : `int`
-- **Operando 2:** `3.0` → tipo: `real`
-    - `3.0` : `real`
+- **Operando 2:** `3` → tipo: `int`
+    - `3` : `int`
 - **Operador:** `+`
 
 ### Regra Aplicada:
 
 ```
-Γ ⊢ e₁ : int    Γ ⊢ e₂ : real    (int, real ∈ {int, real})
+Γ ⊢ e₁ : int    Γ ⊢ e₂ : int    (int, int ∈ {int, real})
 ───────────────────────────────────────────────────────
-    Γ ⊢ (e₁ e₂ +) : promover_tipo(int, real)
+    Γ ⊢ (e₁ e₂ +) : promover_tipo(int, int)
 ```
 
-### Tipo Resultante: `real`
-
-### Observação:
-Tipo promovido de `int` para `real` devido a operando `real`.
+### Tipo Resultante: `int`
 
 ---
 
@@ -51,124 +48,7 @@ Tipo promovido de `int` para `real` devido a operando `real`.
 
 ---
 
-## Linha 3: `(15 4 -)`
-
-### Análise de Tipos:
-- **Operando 1:** `15` → tipo: `int`
-    - `15` : `int`
-- **Operando 2:** `4` → tipo: `int`
-    - `4` : `int`
-- **Operador:** `-`
-
-### Regra Aplicada:
-
-```
-Γ ⊢ e₁ : int    Γ ⊢ e₂ : int    (int, int ∈ {int, real})
-───────────────────────────────────────────────────────
-    Γ ⊢ (e₁ e₂ -) : promover_tipo(int, int)
-```
-
-### Tipo Resultante: `int`
-
----
-
-## Linha 4: `(8.0 2.0 |)`
-
-### Análise de Tipos:
-- **Operando 1:** `8.0` → tipo: `real`
-    - `8.0` : `real`
-- **Operando 2:** `2.0` → tipo: `real`
-    - `2.0` : `real`
-- **Operador:** `|`
-
-### Regra Aplicada:
-
-```
-Γ ⊢ e₁ : real    Γ ⊢ e₂ : real    (real, real ∈ {int, real})
-───────────────────────────────────────────────────────
-           Γ ⊢ (e₁ e₂ |) : real
-```
-
-### Tipo Resultante: `real`
-
-### Observação:
-Divisão real: resultado sempre `real`, independente dos tipos dos operandos.
-
----
-
-## Linha 5: `(20 3 /)`
-
-### Análise de Tipos:
-- **Operando 1:** `20` → tipo: `int`
-    - `20` : `int`
-- **Operando 2:** `3` → tipo: `int`
-    - `3` : `int`
-- **Operador:** `/`
-
-### Regra Aplicada:
-
-```
-Γ ⊢ e₁ : int    Γ ⊢ e₂ : int
-─────────────────────────────
-    Γ ⊢ (e₁ e₂ /) : int
-```
-
-### Tipo Resultante: `int`
-
-### Observação:
-Divisão inteira: ambos operandos devem ser `int`, resultado é `int`.
-
----
-
-## Linha 6: `(17 5 %)`
-
-### Análise de Tipos:
-- **Operando 1:** `17` → tipo: `int`
-    - `17` : `int`
-- **Operando 2:** `5` → tipo: `int`
-    - `5` : `int`
-- **Operador:** `%`
-
-### Regra Aplicada:
-
-```
-Γ ⊢ e₁ : int    Γ ⊢ e₂ : int
-─────────────────────────────
-    Γ ⊢ (e₁ e₂ %) : int
-```
-
-### Tipo Resultante: `int`
-
-### Observação:
-Resto da divisão: ambos operandos devem ser `int`, resultado é `int`.
-
----
-
-## Linha 7: `(2 3 ^)`
-
-### Análise de Tipos:
-- **Operando 1:** `2` → tipo: `int`
-    - `2` : `int`
-- **Operando 2:** `3` → tipo: `int`
-    - `3` : `int`
-- **Operador:** `^`
-
-### Regra Aplicada:
-
-```
-Γ ⊢ e₁ : T    Γ ⊢ e₂ : int    e₂ > 0    (T ∈ {int, real})
-──────────────────────────────────────────────────────────
-               Γ ⊢ (e₁ e₂ ^) : T
-```
-
-### Tipo Resultante: `int`
-
-### Observação:
-Potenciação: expoente deve ser `int` positivo, resultado tem tipo da base.
-
----
-
-## Linha 8: `(100 50 +)`
+## Linha 3: `(100 50 +)`
 
 ### Análise de Tipos:
 - **Operando 1:** `100` → tipo: `int`
@@ -189,13 +69,13 @@ Potenciação: expoente deve ser `int` positivo, resultado tem tipo da base.
 
 ---
 
-## Linha 9: `(5 2 /)`
+## Linha 4: `(15 7 /)`
 
 ### Análise de Tipos:
-- **Operando 1:** `5` → tipo: `int`
-    - `5` : `int`
-- **Operando 2:** `2` → tipo: `int`
-    - `2` : `int`
+- **Operando 1:** `15` → tipo: `int`
+    - `15` : `int`
+- **Operando 2:** `7` → tipo: `int`
+    - `7` : `int`
 - **Operador:** `/`
 
 ### Regra Aplicada:
@@ -213,13 +93,13 @@ Divisão inteira: ambos operandos devem ser `int`, resultado é `int`.
 
 ---
 
-## Linha 10: `(10 3 %)`
+## Linha 5: `(23 6 %)`
 
 ### Análise de Tipos:
-- **Operando 1:** `10` → tipo: `int`
-    - `10` : `int`
-- **Operando 2:** `3` → tipo: `int`
-    - `3` : `int`
+- **Operando 1:** `23` → tipo: `int`
+    - `23` : `int`
+- **Operando 2:** `6` → tipo: `int`
+    - `6` : `int`
 - **Operador:** `%`
 
 ### Regra Aplicada:
@@ -237,11 +117,11 @@ Resto da divisão: ambos operandos devem ser `int`, resultado é `int`.
 
 ---
 
-## Linha 11: `(2 3 ^)`
+## Linha 6: `(2.5 3 ^)`
 
 ### Análise de Tipos:
-- **Operando 1:** `2` → tipo: `int`
-    - `2` : `int`
+- **Operando 1:** `2.5` → tipo: `real`
+    - `2.5` : `real`
 - **Operando 2:** `3` → tipo: `int`
     - `3` : `int`
 - **Operador:** `^`
@@ -254,159 +134,29 @@ Resto da divisão: ambos operandos devem ser `int`, resultado é `int`.
                Γ ⊢ (e₁ e₂ ^) : T
 ```
 
-### Tipo Resultante: `int`
+### Tipo Resultante: `real`
+
+### Observação:
+Tipo promovido de `int` para `real` devido a operando `real`.
 
 ### Observação:
 Potenciação: expoente deve ser `int` positivo, resultado tem tipo da base.
 
 ---
 
-## Linha 12: `(42 X)`
+## Linha 7: `(5.5 3.2 >)`
 
 ### Análise de Tipos:
-- **Operando 1:** `42` → tipo: `int`
-- **Operando 2:** `X` → tipo: `int`
-
-### Tipo Resultante: `int`
-
----
-
-## Linha 13: `(3.14 PI)`
-
-### Análise de Tipos:
-- **Operando 1:** `3.14` → tipo: `real`
-- **Operando 2:** `PI` → tipo: `real`
-
-### Tipo Resultante: `real`
-
----
-
-## Linha 14: `(1 FLAG)`
-
-### Análise de Tipos:
-- **Operando 1:** `1` → tipo: `int`
-- **Operando 2:** `FLAG` → tipo: `int`
-
-### Tipo Resultante: `int`
-
----
-
-## Linha 15: `(100 COUNTER)`
-
-### Análise de Tipos:
-- **Operando 1:** `100` → tipo: `int`
-- **Operando 2:** `COUNTER` → tipo: `int`
-
-### Tipo Resultante: `int`
-
----
-
-## Linha 16: `(0 SUM)`
-
-### Análise de Tipos:
-- **Operando 1:** `0` → tipo: `int`
-- **Operando 2:** `SUM` → tipo: `int`
-
-### Tipo Resultante: `int`
-
----
-
-## Linha 17: `(200 Y)`
-
-### Análise de Tipos:
-- **Operando 1:** `200` → tipo: `int`
-- **Operando 2:** `Y` → tipo: `int`
-
-### Tipo Resultante: `int`
-
----
-
-## Linha 18: `(300 Z)`
-
-### Análise de Tipos:
-- **Operando 1:** `300` → tipo: `int`
-- **Operando 2:** `Z` → tipo: `int`
-
-### Tipo Resultante: `int`
-
----
-
-## Linha 19: `(X)`
-
-### Análise de Tipos:
-- **Operando 1:** `X` → tipo: `int`
-
-### Tipo Resultante: `int`
-
----
-
-## Linha 20: `(PI)`
-
-### Análise de Tipos:
-- **Operando 1:** `PI` → tipo: `real`
-
-### Tipo Resultante: `real`
-
----
-
-## Linha 21: `(FLAG)`
-
-### Análise de Tipos:
-- **Operando 1:** `FLAG` → tipo: `int`
-
-### Tipo Resultante: `int`
-
----
-
-## Linha 22: `(COUNTER)`
-
-### Análise de Tipos:
-- **Operando 1:** `COUNTER` → tipo: `int`
-
-### Tipo Resultante: `int`
-
----
-
-## Linha 23: `(SUM)`
-
-### Análise de Tipos:
-- **Operando 1:** `SUM` → tipo: `int`
-
-### Tipo Resultante: `int`
-
----
-
-## Linha 24: `(Y)`
-
-### Análise de Tipos:
-- **Operando 1:** `Y` → tipo: `int`
-
-### Tipo Resultante: `int`
-
----
-
-## Linha 25: `(Z)`
-
-### Análise de Tipos:
-- **Operando 1:** `Z` → tipo: `int`
-
-### Tipo Resultante: `int`
-
----
-
-## Linha 26: `(5 3 >)`
-
-### Análise de Tipos:
-- **Operando 1:** `5` → tipo: `int`
-    - `5` : `int`
-- **Operando 2:** `3` → tipo: `int`
-    - `3` : `int`
+- **Operando 1:** `5.5` → tipo: `real`
+    - `5.5` : `real`
+- **Operando 2:** `3.2` → tipo: `real`
+    - `3.2` : `real`
 - **Operador:** `>`
 
 ### Regra Aplicada:
 
 ```
-Γ ⊢ e₁ : int    Γ ⊢ e₂ : int    (int, int ∈ {int, real})
+Γ ⊢ e₁ : real    Γ ⊢ e₂ : real    (real, real ∈ {int, real})
 ─────────────────────────────────────────────────────
           Γ ⊢ (e₁ e₂ >) : boolean
 ```
@@ -418,136 +168,16 @@ Operador de comparação: resultado sempre `boolean`.
 
 ---
 
-## Linha 27: `(10.5 2.0 <)`
-
-### Análise de Tipos:
-- **Operando 1:** `10.5` → tipo: `real`
-    - `10.5` : `real`
-- **Operando 2:** `2.0` → tipo: `real`
-    - `2.0` : `real`
-- **Operador:** `<`
-
-### Regra Aplicada:
-
-```
-Γ ⊢ e₁ : real    Γ ⊢ e₂ : real    (real, real ∈ {int, real})
-─────────────────────────────────────────────────────
-          Γ ⊢ (e₁ e₂ <) : boolean
-```
-
-### Tipo Resultante: `boolean`
-
-### Observação:
-Operador de comparação: resultado sempre `boolean`.
-
----
-
-## Linha 28: `(15 15 ==)`
-
-### Análise de Tipos:
-- **Operando 1:** `15` → tipo: `int`
-    - `15` : `int`
-- **Operando 2:** `15` → tipo: `int`
-    - `15` : `int`
-- **Operador:** `==`
-
-### Regra Aplicada:
-
-```
-Γ ⊢ e₁ : int    Γ ⊢ e₂ : int    (int, int ∈ {int, real})
-─────────────────────────────────────────────────────
-          Γ ⊢ (e₁ e₂ ==) : boolean
-```
-
-### Tipo Resultante: `boolean`
-
-### Observação:
-Operador de comparação: resultado sempre `boolean`.
-
----
-
-## Linha 29: `(8.0 9.0 !=)`
-
-### Análise de Tipos:
-- **Operando 1:** `8.0` → tipo: `real`
-    - `8.0` : `real`
-- **Operando 2:** `9.0` → tipo: `real`
-    - `9.0` : `real`
-- **Operador:** `!=`
-
-### Regra Aplicada:
-
-```
-Γ ⊢ e₁ : real    Γ ⊢ e₂ : real    (real, real ∈ {int, real})
-─────────────────────────────────────────────────────
-          Γ ⊢ (e₁ e₂ !=) : boolean
-```
-
-### Tipo Resultante: `boolean`
-
-### Observação:
-Operador de comparação: resultado sempre `boolean`.
-
----
-
-## Linha 30: `(20 10 >=)`
-
-### Análise de Tipos:
-- **Operando 1:** `20` → tipo: `int`
-    - `20` : `int`
-- **Operando 2:** `10` → tipo: `int`
-    - `10` : `int`
-- **Operador:** `>=`
-
-### Regra Aplicada:
-
-```
-Γ ⊢ e₁ : int    Γ ⊢ e₂ : int    (int, int ∈ {int, real})
-─────────────────────────────────────────────────────
-          Γ ⊢ (e₁ e₂ >=) : boolean
-```
-
-### Tipo Resultante: `boolean`
-
-### Observação:
-Operador de comparação: resultado sempre `boolean`.
-
----
-
-## Linha 31: `(5 7 <=)`
-
-### Análise de Tipos:
-- **Operando 1:** `5` → tipo: `int`
-    - `5` : `int`
-- **Operando 2:** `7` → tipo: `int`
-    - `7` : `int`
-- **Operador:** `<=`
-
-### Regra Aplicada:
-
-```
-Γ ⊢ e₁ : int    Γ ⊢ e₂ : int    (int, int ∈ {int, real})
-─────────────────────────────────────────────────────
-          Γ ⊢ (e₁ e₂ <=) : boolean
-```
-
-### Tipo Resultante: `boolean`
-
-### Observação:
-Operador de comparação: resultado sempre `boolean`.
-
----
-
-## Linha 32: `((5 3 >) (10 5 <) &&)`
+## Linha 8: `((5 3 >) (2 1 <) &&)`
 
 ### Análise de Tipos:
 - **Operando 1:** `(5 3 >)` → tipo: `boolean`
     - `5` : `int`
     - `3` : `int`
     - Operador: `>`
-- **Operando 2:** `(10 5 <)` → tipo: `boolean`
-    - `10` : `int`
-    - `5` : `int`
+- **Operando 2:** `(2 1 <)` → tipo: `boolean`
+    - `2` : `int`
+    - `1` : `int`
     - Operador: `<`
 - **Operador:** `&&`
 
@@ -566,68 +196,225 @@ Operador lógico: resultado sempre `boolean`. Modo permissivo aceita conversão 
 
 ---
 
-## Linha 33: `((2 4 ==) (8 3 >) ||)`
+## Linha 9: `(10 X)`
 
 ### Análise de Tipos:
-- **Operando 1:** `(2 4 ==)` → tipo: `boolean`
-    - `2` : `int`
-    - `4` : `int`
-    - Operador: `==`
-- **Operando 2:** `(8 3 >)` → tipo: `boolean`
-    - `8` : `int`
-    - `3` : `int`
-    - Operador: `>`
-- **Operador:** `||`
+- **Operando 1:** `10` → tipo: `int`
+- **Operando 2:** `X` → tipo: `int`
+
+### Tipo Resultante: `int`
+
+---
+
+## Linha 10: `(20 A)`
+
+### Análise de Tipos:
+- **Operando 1:** `20` → tipo: `int`
+- **Operando 2:** `A` → tipo: `int`
+
+### Tipo Resultante: `int`
+
+---
+
+## Linha 11: `(10 I)`
+
+### Análise de Tipos:
+- **Operando 1:** `10` → tipo: `int`
+- **Operando 2:** `I` → tipo: `int`
+
+### Tipo Resultante: `int`
+
+---
+
+## Linha 12: `(0 COUNTER)`
+
+### Análise de Tipos:
+- **Operando 1:** `0` → tipo: `int`
+- **Operando 2:** `COUNTER` → tipo: `int`
+
+### Tipo Resultante: `int`
+
+---
+
+## Linha 13: `((X 5 +) Y)`
+
+### Análise de Tipos:
+- **Operando 1:** `(X 5 +)` → tipo: `int`
+    - `X` : `int`
+    - `5` : `int`
+    - Operador: `+`
+- **Operando 2:** `Y` → tipo: `int`
+
+### Tipo Resultante: `int`
+
+---
+
+## Linha 14: `((A X -) B)`
+
+### Análise de Tipos:
+- **Operando 1:** `(A X -)` → tipo: `int`
+    - `A` : `int`
+    - `X` : `int`
+    - Operador: `-`
+- **Operando 2:** `B` → tipo: `int`
+
+### Tipo Resultante: `int`
+
+---
+
+## Linha 15: `(1)`
+
+### Análise de Tipos:
+- **Operando 1:** `1` → tipo: `int`
+
+### Tipo Resultante: `int`
+
+---
+
+## Linha 16: `(2)`
+
+### Análise de Tipos:
+- **Operando 1:** `2` → tipo: `int`
+
+### Tipo Resultante: `int`
+
+---
+
+## Linha 17: `((COUNTER 5 <) ((COUNTER 1 +) COUNTER) WHILE)`
+
+### Análise de Tipos:
+- **Operando 1:** `(COUNTER 5 <)` → tipo: `boolean`
+    - `COUNTER` : `int`
+    - `5` : `int`
+    - Operador: `<`
+- **Operando 2:** `((COUNTER 1 +) COUNTER)` → tipo: `int`
+- **Operador:** `WHILE`
 
 ### Regra Aplicada:
 
 ```
-Γ ⊢ e₁ : boolean    Γ ⊢ e₂ : boolean    (boolean, boolean ∈ {int, real, boolean})
-──────────────────────────────────────────────────────────────
-           Γ ⊢ (e₁ e₂ ||) : boolean
+Γ ⊢ cond : Tcond    truthy(Tcond)    Γ ⊢ corpo : T
+──────────────────────────────────────────────────
+         Γ ⊢ (cond corpo WHILE) : T
 ```
 
-### Tipo Resultante: `boolean`
-
-### Observação:
-Operador lógico: resultado sempre `boolean`. Modo permissivo aceita conversão via truthiness.
+### Tipo Resultante: `int`
 
 ---
 
-## Linha 34: `((10 0 >) !)`
+## Linha 18: `((B 0 >) ((B 1 -) B) WHILE)`
 
 ### Análise de Tipos:
-- **Operando 1:** `(10 0 >)` → tipo: `boolean`
-    - `10` : `int`
+- **Operando 1:** `(B 0 >)` → tipo: `boolean`
+    - `B` : `int`
     - `0` : `int`
     - Operador: `>`
-- **Operador:** `!`
+- **Operando 2:** `((B 1 -) B)` → tipo: `int`
+- **Operador:** `WHILE`
 
 ### Regra Aplicada:
 
 ```
-Γ ⊢ e : boolean    (boolean ∈ {int, real, boolean})
-───────────────────────────────────────
-       Γ ⊢ (e !) : boolean
+Γ ⊢ cond : Tcond    truthy(Tcond)    Γ ⊢ corpo : T
+──────────────────────────────────────────────────
+         Γ ⊢ (cond corpo WHILE) : T
 ```
 
-### Tipo Resultante: `boolean`
-
-### Observação:
-Operador lógico: resultado sempre `boolean`. Modo permissivo aceita conversão via truthiness.
+### Tipo Resultante: `int`
 
 ---
 
-## Linha 35: `(((5 3 +) 2 +))`
+## Linha 19: `((1) (10) (1) (I 2 *) FOR)`
 
 ### Análise de Tipos:
-- **Operando 1:** `((5 3 +) 2 +)` → tipo: `None`
-    - `(5 3 +)` : `N/A`
-      - `5` : `int`
-      - `3` : `int`
-      - Operador: `+`
+- **Operando 1:** `(1)` → tipo: `int`
+- **Operando 2:** `(10)` → tipo: `int`
+- **Operando 3:** `(1)` → tipo: `int`
+- **Operando 4:** `(I 2 *)` → tipo: `int`
+    - `I` : `int`
     - `2` : `int`
+    - Operador: `*`
+- **Operador:** `FOR`
+
+### Regra Aplicada:
+
+```
+Γ ⊢ init : int    Γ ⊢ end : int    Γ ⊢ step : int    Γ ⊢ corpo : T
+────────────────────────────────────────────────────────────────
+              Γ ⊢ (init end step corpo FOR) : T
+```
+
+### Tipo Resultante: `int`
+
+---
+
+## Linha 20: `((X 15 >) (100) (200) IFELSE)`
+
+### Análise de Tipos:
+- **Operando 1:** `(X 15 >)` → tipo: `boolean`
+    - `X` : `int`
+    - `15` : `int`
+    - Operador: `>`
+- **Operando 2:** `(100)` → tipo: `int`
+- **Operando 3:** `(200)` → tipo: `int`
+- **Operador:** `IFELSE`
+
+### Regra Aplicada:
+
+```
+Γ ⊢ cond : Tcond    truthy(Tcond)    Γ ⊢ true : T    Γ ⊢ false : T
+────────────────────────────────────────────────────────────────
+           Γ ⊢ (cond true false IFELSE) : T
+```
+
+### Tipo Resultante: `int`
+
+---
+
+## Linha 21: `(((A 10 >) (Y 5 >) &&) ((A Y +) 2.0 |) (A Y *) IFELSE)`
+
+### Análise de Tipos:
+- **Operando 1:** `((A 10 >) (Y 5 >) &&)` → tipo: `boolean`
+    - Operador: `&&`
+- **Operando 2:** `((A Y +) 2.0 |)` → tipo: `real`
+- **Operando 3:** `(A Y *)` → tipo: `int`
+- **Operador:** `IFELSE`
+
+### Regra Aplicada:
+
+```
+Γ ⊢ cond : Tcond    truthy(Tcond)    Γ ⊢ true : T    Γ ⊢ false : T
+────────────────────────────────────────────────────────────────
+           Γ ⊢ (cond true false IFELSE) : T
+```
+
+### Tipo Resultante: `real`
+
+### Observação:
+Tipo promovido de `int` para `real` devido a operando `real`.
+
+---
+
+## Linha 22: `((5 3 +) (2 4 *) *)`
+
+### Análise de Tipos:
+- **Operando 1:** `(5 3 +)` → tipo: `int`
+    - `5` : `int`
+    - `3` : `int`
     - Operador: `+`
+- **Operando 2:** `(2 4 *)` → tipo: `int`
+    - `2` : `int`
+    - `4` : `int`
+    - Operador: `*`
+- **Operador:** `*`
+
+### Regra Aplicada:
+
+```
+Γ ⊢ e₁ : int    Γ ⊢ e₂ : int    (int, int ∈ {int, real})
+───────────────────────────────────────────────────────
+    Γ ⊢ (e₁ e₂ *) : promover_tipo(int, int)
+```
 
 ### Tipo Resultante: `int`
 
@@ -636,15 +423,15 @@ Operador lógico: resultado sempre `boolean`. Modo permissivo aceita conversão 
 ## Resumo de Tipos
 
 ### Estatísticas
-- **Total de expressões:** 35
-- **Com tipo definido:** 35
+- **Total de expressões:** 22
+- **Com tipo definido:** 22
 - **Sem tipo definido:** 0
-- **Promoções de tipo:** 1
+- **Promoções de tipo:** 2
 
 ### Distribuição de Tipos
-- `boolean`: 9 expressões (25.7%)
-- `int`: 21 expressões (60.0%)
-- `real`: 5 expressões (14.3%)
+- `boolean`: 2 expressões (9.1%)
+- `int`: 17 expressões (77.3%)
+- `real`: 3 expressões (13.6%)
 
 ### Tipos Utilizados
 - `boolean`

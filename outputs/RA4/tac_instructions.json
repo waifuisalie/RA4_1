@@ -1,0 +1,728 @@
+{
+  "metadata": {
+    "generated_at": "2025-11-21 16:10:35",
+    "source_ast": "C:\\Users\\Cliente\\Desktop\\2025-2\\Linguagens Formais e Compiladores\\RA4 Parte 1\\RA4_1\\outputs\\RA3\\arvore_atribuida.json",
+    "total_instructions": 102
+  },
+  "instructions": [
+    {
+      "line": 1,
+      "instruction": "t0 = 5",
+      "type": "TACAssignment",
+      "data_type": "int",
+      "dest": "t0",
+      "source": "5"
+    },
+    {
+      "line": 1,
+      "instruction": "t1 = 3",
+      "type": "TACAssignment",
+      "data_type": "int",
+      "dest": "t1",
+      "source": "3"
+    },
+    {
+      "line": 1,
+      "instruction": "t2 = t0 + t1",
+      "type": "TACBinaryOp",
+      "data_type": "int",
+      "operator": "+"
+    },
+    {
+      "line": 2,
+      "instruction": "t3 = 10.5",
+      "type": "TACAssignment",
+      "data_type": "real",
+      "dest": "t3",
+      "source": "10.5"
+    },
+    {
+      "line": 2,
+      "instruction": "t4 = 2.0",
+      "type": "TACAssignment",
+      "data_type": "real",
+      "dest": "t4",
+      "source": "2.0"
+    },
+    {
+      "line": 2,
+      "instruction": "t5 = t3 * t4",
+      "type": "TACBinaryOp",
+      "data_type": "real",
+      "operator": "*"
+    },
+    {
+      "line": 3,
+      "instruction": "t6 = 100",
+      "type": "TACAssignment",
+      "data_type": "int",
+      "dest": "t6",
+      "source": "100"
+    },
+    {
+      "line": 3,
+      "instruction": "t7 = 50",
+      "type": "TACAssignment",
+      "data_type": "int",
+      "dest": "t7",
+      "source": "50"
+    },
+    {
+      "line": 3,
+      "instruction": "t8 = t6 + t7",
+      "type": "TACBinaryOp",
+      "data_type": "int",
+      "operator": "+"
+    },
+    {
+      "line": 4,
+      "instruction": "t9 = 15",
+      "type": "TACAssignment",
+      "data_type": "int",
+      "dest": "t9",
+      "source": "15"
+    },
+    {
+      "line": 4,
+      "instruction": "t10 = 7",
+      "type": "TACAssignment",
+      "data_type": "int",
+      "dest": "t10",
+      "source": "7"
+    },
+    {
+      "line": 4,
+      "instruction": "t11 = t9 / t10",
+      "type": "TACBinaryOp",
+      "data_type": "int",
+      "operator": "/"
+    },
+    {
+      "line": 5,
+      "instruction": "t12 = 23",
+      "type": "TACAssignment",
+      "data_type": "int",
+      "dest": "t12",
+      "source": "23"
+    },
+    {
+      "line": 5,
+      "instruction": "t13 = 6",
+      "type": "TACAssignment",
+      "data_type": "int",
+      "dest": "t13",
+      "source": "6"
+    },
+    {
+      "line": 5,
+      "instruction": "t14 = t12 % t13",
+      "type": "TACBinaryOp",
+      "data_type": "int",
+      "operator": "%"
+    },
+    {
+      "line": 6,
+      "instruction": "t15 = 2.5",
+      "type": "TACAssignment",
+      "data_type": "real",
+      "dest": "t15",
+      "source": "2.5"
+    },
+    {
+      "line": 6,
+      "instruction": "t16 = 3",
+      "type": "TACAssignment",
+      "data_type": "int",
+      "dest": "t16",
+      "source": "3"
+    },
+    {
+      "line": 6,
+      "instruction": "t17 = t15 ^ t16",
+      "type": "TACBinaryOp",
+      "data_type": "real",
+      "operator": "^"
+    },
+    {
+      "line": 7,
+      "instruction": "t18 = 5.5",
+      "type": "TACAssignment",
+      "data_type": "real",
+      "dest": "t18",
+      "source": "5.5"
+    },
+    {
+      "line": 7,
+      "instruction": "t19 = 3.2",
+      "type": "TACAssignment",
+      "data_type": "real",
+      "dest": "t19",
+      "source": "3.2"
+    },
+    {
+      "line": 7,
+      "instruction": "t20 = t18 > t19",
+      "type": "TACBinaryOp",
+      "data_type": "boolean",
+      "operator": ">"
+    },
+    {
+      "line": 8,
+      "instruction": "t21 = 5",
+      "type": "TACAssignment",
+      "data_type": "int",
+      "dest": "t21",
+      "source": "5"
+    },
+    {
+      "line": 8,
+      "instruction": "t22 = 3",
+      "type": "TACAssignment",
+      "data_type": "int",
+      "dest": "t22",
+      "source": "3"
+    },
+    {
+      "line": 8,
+      "instruction": "t23 = t21 > t22",
+      "type": "TACBinaryOp",
+      "data_type": "boolean",
+      "operator": ">"
+    },
+    {
+      "line": 8,
+      "instruction": "t24 = 2",
+      "type": "TACAssignment",
+      "data_type": "int",
+      "dest": "t24",
+      "source": "2"
+    },
+    {
+      "line": 8,
+      "instruction": "t25 = 1",
+      "type": "TACAssignment",
+      "data_type": "int",
+      "dest": "t25",
+      "source": "1"
+    },
+    {
+      "line": 8,
+      "instruction": "t26 = t24 < t25",
+      "type": "TACBinaryOp",
+      "data_type": "boolean",
+      "operator": "<"
+    },
+    {
+      "line": 8,
+      "instruction": "t27 = t23 && t26",
+      "type": "TACBinaryOp",
+      "data_type": "boolean",
+      "operator": "&&"
+    },
+    {
+      "line": 9,
+      "instruction": "t28 = 10",
+      "type": "TACAssignment",
+      "data_type": "int",
+      "dest": "t28",
+      "source": "10"
+    },
+    {
+      "line": 9,
+      "instruction": "X = t28",
+      "type": "TACCopy",
+      "data_type": "int",
+      "dest": "X",
+      "source": "t28"
+    },
+    {
+      "line": 10,
+      "instruction": "t29 = 20",
+      "type": "TACAssignment",
+      "data_type": "int",
+      "dest": "t29",
+      "source": "20"
+    },
+    {
+      "line": 10,
+      "instruction": "A = t29",
+      "type": "TACCopy",
+      "data_type": "int",
+      "dest": "A",
+      "source": "t29"
+    },
+    {
+      "line": 11,
+      "instruction": "t30 = 10",
+      "type": "TACAssignment",
+      "data_type": "int",
+      "dest": "t30",
+      "source": "10"
+    },
+    {
+      "line": 11,
+      "instruction": "I = t30",
+      "type": "TACCopy",
+      "data_type": "int",
+      "dest": "I",
+      "source": "t30"
+    },
+    {
+      "line": 12,
+      "instruction": "t31 = 0",
+      "type": "TACAssignment",
+      "data_type": "int",
+      "dest": "t31",
+      "source": "0"
+    },
+    {
+      "line": 12,
+      "instruction": "COUNTER = t31",
+      "type": "TACCopy",
+      "data_type": "int",
+      "dest": "COUNTER",
+      "source": "t31"
+    },
+    {
+      "line": 13,
+      "instruction": "t32 = 5",
+      "type": "TACAssignment",
+      "data_type": "int",
+      "dest": "t32",
+      "source": "5"
+    },
+    {
+      "line": 13,
+      "instruction": "t33 = X + t32",
+      "type": "TACBinaryOp",
+      "operator": "+"
+    },
+    {
+      "line": 13,
+      "instruction": "Y = t33",
+      "type": "TACCopy",
+      "dest": "Y",
+      "source": "t33"
+    },
+    {
+      "line": 14,
+      "instruction": "t34 = A - X",
+      "type": "TACBinaryOp",
+      "operator": "-"
+    },
+    {
+      "line": 14,
+      "instruction": "B = t34",
+      "type": "TACCopy",
+      "dest": "B",
+      "source": "t34"
+    },
+    {
+      "line": 15,
+      "instruction": "t35 = 1",
+      "type": "TACAssignment",
+      "data_type": "int",
+      "dest": "t35",
+      "source": "1"
+    },
+    {
+      "line": 16,
+      "instruction": "t36 = 2",
+      "type": "TACAssignment",
+      "data_type": "int",
+      "dest": "t36",
+      "source": "2"
+    },
+    {
+      "line": 17,
+      "instruction": "L0:",
+      "type": "TACLabel"
+    },
+    {
+      "line": 17,
+      "instruction": "t37 = 5",
+      "type": "TACAssignment",
+      "data_type": "int",
+      "dest": "t37",
+      "source": "5"
+    },
+    {
+      "line": 17,
+      "instruction": "t38 = COUNTER < t37",
+      "type": "TACBinaryOp",
+      "data_type": "boolean",
+      "operator": "<"
+    },
+    {
+      "line": 17,
+      "instruction": "ifFalse t38 goto L1",
+      "type": "TACIfFalseGoto"
+    },
+    {
+      "line": 17,
+      "instruction": "t39 = 1",
+      "type": "TACAssignment",
+      "data_type": "int",
+      "dest": "t39",
+      "source": "1"
+    },
+    {
+      "line": 17,
+      "instruction": "t40 = COUNTER + t39",
+      "type": "TACBinaryOp",
+      "operator": "+"
+    },
+    {
+      "line": 17,
+      "instruction": "COUNTER = t40",
+      "type": "TACCopy",
+      "dest": "COUNTER",
+      "source": "t40"
+    },
+    {
+      "line": 17,
+      "instruction": "goto L0",
+      "type": "TACGoto"
+    },
+    {
+      "line": 17,
+      "instruction": "L1:",
+      "type": "TACLabel"
+    },
+    {
+      "line": 18,
+      "instruction": "L2:",
+      "type": "TACLabel"
+    },
+    {
+      "line": 18,
+      "instruction": "t41 = 0",
+      "type": "TACAssignment",
+      "data_type": "int",
+      "dest": "t41",
+      "source": "0"
+    },
+    {
+      "line": 18,
+      "instruction": "t42 = B > t41",
+      "type": "TACBinaryOp",
+      "data_type": "boolean",
+      "operator": ">"
+    },
+    {
+      "line": 18,
+      "instruction": "ifFalse t42 goto L3",
+      "type": "TACIfFalseGoto"
+    },
+    {
+      "line": 18,
+      "instruction": "t43 = 1",
+      "type": "TACAssignment",
+      "data_type": "int",
+      "dest": "t43",
+      "source": "1"
+    },
+    {
+      "line": 18,
+      "instruction": "t44 = B - t43",
+      "type": "TACBinaryOp",
+      "operator": "-"
+    },
+    {
+      "line": 18,
+      "instruction": "B = t44",
+      "type": "TACCopy",
+      "dest": "B",
+      "source": "t44"
+    },
+    {
+      "line": 18,
+      "instruction": "goto L2",
+      "type": "TACGoto"
+    },
+    {
+      "line": 18,
+      "instruction": "L3:",
+      "type": "TACLabel"
+    },
+    {
+      "line": 19,
+      "instruction": "t45 = 1",
+      "type": "TACAssignment",
+      "data_type": "int",
+      "dest": "t45",
+      "source": "1"
+    },
+    {
+      "line": 19,
+      "instruction": "t46 = 10",
+      "type": "TACAssignment",
+      "data_type": "int",
+      "dest": "t46",
+      "source": "10"
+    },
+    {
+      "line": 19,
+      "instruction": "t47 = 1",
+      "type": "TACAssignment",
+      "data_type": "int",
+      "dest": "t47",
+      "source": "1"
+    },
+    {
+      "line": 19,
+      "instruction": "t48 = t45",
+      "type": "TACCopy",
+      "data_type": "int",
+      "dest": "t48",
+      "source": "t45"
+    },
+    {
+      "line": 19,
+      "instruction": "L4:",
+      "type": "TACLabel"
+    },
+    {
+      "line": 19,
+      "instruction": "t49 = t48 <= t46",
+      "type": "TACBinaryOp",
+      "data_type": "boolean",
+      "operator": "<="
+    },
+    {
+      "line": 19,
+      "instruction": "ifFalse t49 goto L5",
+      "type": "TACIfFalseGoto"
+    },
+    {
+      "line": 19,
+      "instruction": "t50 = 2",
+      "type": "TACAssignment",
+      "data_type": "int",
+      "dest": "t50",
+      "source": "2"
+    },
+    {
+      "line": 19,
+      "instruction": "t51 = I * t50",
+      "type": "TACBinaryOp",
+      "operator": "*"
+    },
+    {
+      "line": 19,
+      "instruction": "t52 = t48 + t47",
+      "type": "TACBinaryOp",
+      "data_type": "int",
+      "operator": "+"
+    },
+    {
+      "line": 19,
+      "instruction": "t48 = t52",
+      "type": "TACCopy",
+      "data_type": "int",
+      "dest": "t48",
+      "source": "t52"
+    },
+    {
+      "line": 19,
+      "instruction": "goto L4",
+      "type": "TACGoto"
+    },
+    {
+      "line": 19,
+      "instruction": "L5:",
+      "type": "TACLabel"
+    },
+    {
+      "line": 20,
+      "instruction": "t53 = 15",
+      "type": "TACAssignment",
+      "data_type": "int",
+      "dest": "t53",
+      "source": "15"
+    },
+    {
+      "line": 20,
+      "instruction": "t54 = X > t53",
+      "type": "TACBinaryOp",
+      "data_type": "boolean",
+      "operator": ">"
+    },
+    {
+      "line": 20,
+      "instruction": "ifFalse t54 goto L6",
+      "type": "TACIfFalseGoto"
+    },
+    {
+      "line": 20,
+      "instruction": "t55 = 100",
+      "type": "TACAssignment",
+      "data_type": "int",
+      "dest": "t55",
+      "source": "100"
+    },
+    {
+      "line": 20,
+      "instruction": "goto L7",
+      "type": "TACGoto"
+    },
+    {
+      "line": 20,
+      "instruction": "L6:",
+      "type": "TACLabel"
+    },
+    {
+      "line": 20,
+      "instruction": "t56 = 200",
+      "type": "TACAssignment",
+      "data_type": "int",
+      "dest": "t56",
+      "source": "200"
+    },
+    {
+      "line": 20,
+      "instruction": "L7:",
+      "type": "TACLabel"
+    },
+    {
+      "line": 21,
+      "instruction": "t57 = 10",
+      "type": "TACAssignment",
+      "data_type": "int",
+      "dest": "t57",
+      "source": "10"
+    },
+    {
+      "line": 21,
+      "instruction": "t58 = A > t57",
+      "type": "TACBinaryOp",
+      "data_type": "boolean",
+      "operator": ">"
+    },
+    {
+      "line": 21,
+      "instruction": "t59 = 5",
+      "type": "TACAssignment",
+      "data_type": "int",
+      "dest": "t59",
+      "source": "5"
+    },
+    {
+      "line": 21,
+      "instruction": "t60 = Y > t59",
+      "type": "TACBinaryOp",
+      "data_type": "boolean",
+      "operator": ">"
+    },
+    {
+      "line": 21,
+      "instruction": "t61 = t58 && t60",
+      "type": "TACBinaryOp",
+      "data_type": "boolean",
+      "operator": "&&"
+    },
+    {
+      "line": 21,
+      "instruction": "ifFalse t61 goto L8",
+      "type": "TACIfFalseGoto"
+    },
+    {
+      "line": 21,
+      "instruction": "t62 = A + Y",
+      "type": "TACBinaryOp",
+      "operator": "+"
+    },
+    {
+      "line": 21,
+      "instruction": "t63 = 2.0",
+      "type": "TACAssignment",
+      "data_type": "real",
+      "dest": "t63",
+      "source": "2.0"
+    },
+    {
+      "line": 21,
+      "instruction": "t64 = t62 | t63",
+      "type": "TACBinaryOp",
+      "operator": "|"
+    },
+    {
+      "line": 21,
+      "instruction": "goto L9",
+      "type": "TACGoto"
+    },
+    {
+      "line": 21,
+      "instruction": "L8:",
+      "type": "TACLabel"
+    },
+    {
+      "line": 21,
+      "instruction": "t65 = A * Y",
+      "type": "TACBinaryOp",
+      "operator": "*"
+    },
+    {
+      "line": 21,
+      "instruction": "L9:",
+      "type": "TACLabel"
+    },
+    {
+      "line": 22,
+      "instruction": "t66 = 5",
+      "type": "TACAssignment",
+      "data_type": "int",
+      "dest": "t66",
+      "source": "5"
+    },
+    {
+      "line": 22,
+      "instruction": "t67 = 3",
+      "type": "TACAssignment",
+      "data_type": "int",
+      "dest": "t67",
+      "source": "3"
+    },
+    {
+      "line": 22,
+      "instruction": "t68 = t66 + t67",
+      "type": "TACBinaryOp",
+      "operator": "+"
+    },
+    {
+      "line": 22,
+      "instruction": "t69 = 2",
+      "type": "TACAssignment",
+      "data_type": "int",
+      "dest": "t69",
+      "source": "2"
+    },
+    {
+      "line": 22,
+      "instruction": "t70 = 4",
+      "type": "TACAssignment",
+      "data_type": "int",
+      "dest": "t70",
+      "source": "4"
+    },
+    {
+      "line": 22,
+      "instruction": "t71 = t69 * t70",
+      "type": "TACBinaryOp",
+      "operator": "*"
+    },
+    {
+      "line": 22,
+      "instruction": "t72 = t68 * t71",
+      "type": "TACBinaryOp",
+      "data_type": "int",
+      "operator": "*"
+    }
+  ],
+  "statistics": {
+    "total_instructions": 102,
+    "temp_count": 73,
+    "label_count": 10,
+    "result_history_size": 19
+  }
+}
