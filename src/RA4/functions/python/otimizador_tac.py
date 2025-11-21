@@ -55,42 +55,115 @@ class TACOptimizer:
     # MÉTODO PRINCIPAL DE OTIMIZAÇÃO
     #########################
 
-    def otimizarTAC(self) -> Dict[str, int]:
+    def otimizarTAC(self, file_name: str) -> Dict[str, int]:
         """
-        Aplica todas as otimizações TAC na ordem correta.
+        Aplica todas as otimizações TAC em múltiplas passadas até ponto fixo.
 
-        Ordem de aplicação:
-        1. Constant Folding - avalia operações constantes em tempo de compilação
-        2. Constant Propagation - propaga constantes conhecidas, substituindo variáveis
-        3. Dead Code Elimination - remove código morto e inalcançável
-        4. Jump Elimination - remove saltos redundantes e rótulos não utilizados
+        Ordem Ótima das Otimizações (baseada em dependências):
+        1. Constant Folding: Avalia operações constantes primeiro
+        2. Constant Propagation: Propaga constantes recém-criadas
+        3. Dead Code Elimination: Remove código morto após propagação
+        4. Jump Elimination: Remove saltos redundantes
+
+        Algoritmo Multi-Pass:
+        mudou = True
+        iteracao = 0
+
+        while mudou and iteracao < 100:
+            iteracao++
+            mudou = False
+
+            # Pass 1: Constant Folding
+            if otimizar_constant_folding():
+                mudou = True
+
+            # Pass 2: Constant Propagation
+            if otimizar_constant_propagation():
+                mudou = True
+
+            # Pass 3: Dead Code Elimination
+            if otimizar_dead_code_elimination():
+                mudou = True
+
+            # Pass 4: Jump Elimination
+            if otimizar_jump_elimination():
+                mudou = True
+
+        Args:
+            file_name: Nome do arquivo TAC original (para geração de relatórios)
 
         Returns:
             Dicionário com estatísticas das otimizações aplicadas
         """
         if not self.instructions:
-            return {'constant_folding': 0, 'constant_propagation': 0, 'dead_code_elimination': 0, 'jump_elimination': 0, 'total': 0}
+            return {'constant_folding': 0, 'constant_propagation': 0, 'dead_code_elimination': 0, 'jump_elimination': 0, 'total': 0, 'iterations': 0}
 
-        # 1. Constant Folding primeiro (avalia operações constantes)
-        foldings = self.otimizar_constant_folding()
+        # Estatísticas iniciais
+        initial_instructions = len(self.instructions)
+        initial_temporaries = self._contar_temporarios()
 
-        # 2. Constant Propagation depois (substitui variáveis por constantes)
-        propagations = self.otimizar_constant_propagation()
+        # Algoritmo multi-pass
+        mudou = True
+        iteracao = 0
+        total_foldings = 0
+        total_propagations = 0
+        total_dead_code = 0
+        total_jump_elim = 0
 
-        # 3. Dead Code Elimination (remove código morto e inalcançável)
-        dead_code = self.otimizar_dead_code_elimination()
+        while mudou and iteracao < 100:
+            iteracao += 1
+            mudou = False
 
-        # 4. Jump Elimination (remove saltos redundantes)
-        jump_elim = self.otimizar_jump_elimination()
+            # Pass 1: Constant Folding
+            foldings = self.otimizar_constant_folding()
+            if foldings > 0:
+                mudou = True
+                total_foldings += foldings
 
-        total_otimizacoes = propagations + foldings + dead_code + jump_elim
+            # Pass 2: Constant Propagation
+            propagations = self.otimizar_constant_propagation()
+            if propagations > 0:
+                mudou = True
+                total_propagations += propagations
+
+            # Pass 3: Dead Code Elimination
+            dead_code = self.otimizar_dead_code_elimination()
+            if dead_code > 0:
+                mudou = True
+                total_dead_code += dead_code
+
+            # Pass 4: Jump Elimination
+            jump_elim = self.otimizar_jump_elimination()
+            if jump_elim > 0:
+                mudou = True
+                total_jump_elim += jump_elim
+
+        # Estatísticas finais
+        final_instructions = len(self.instructions)
+        final_temporaries = self._contar_temporarios()
+
+        # Gerar relatórios
+        self._gerar_tac_otimizado_md(file_name)
+        self._gerar_tac_otimizado_json(file_name)
+        self._gerar_relatorio_otimizacoes_md(file_name, {
+            'initial_instructions': initial_instructions,
+            'final_instructions': final_instructions,
+            'initial_temporaries': initial_temporaries,
+            'final_temporaries': final_temporaries,
+            'foldings': total_foldings,
+            'propagations': total_propagations,
+            'dead_code': total_dead_code,
+            'jump_elim': total_jump_elim,
+            'iterations': iteracao
+        })
 
         return {
-            'constant_folding': foldings,
-            'constant_propagation': propagations,
-            'dead_code_elimination': dead_code,
-            'jump_elimination': jump_elim,
-            'total': total_otimizacoes
+            'constant_folding': total_foldings,
+            'constant_propagation': total_propagations,
+            'dead_code_elimination': total_dead_code,
+            'jump_elimination': total_jump_elim,
+            'total': total_foldings + total_propagations + total_dead_code + total_jump_elim,
+            'iterations': iteracao
         }
 
     #########################
@@ -559,3 +632,163 @@ class TACOptimizer:
             raise TACError(f"erro na conversão de operandos: {e}", instr.line)
         except Exception as e:
             raise TACError(f"erro inesperado na avaliação: {e}", instr.line)
+
+    #########################
+    # HELPERS PARA CONTAGEM
+    #########################
+
+    def _contar_temporarios(self) -> int:
+        """Conta o número de temporários únicos (variáveis começando com 't')."""
+        temporarios = set()
+        
+        for instr in self.instructions:
+            # Verificar resultado da instrução
+            if hasattr(instr, 'result') and instr.result and instr.result.startswith('t'):
+                temporarios.add(instr.result)
+            
+            # Verificar operandos
+            for attr in ['operand1', 'operand2', 'operand', 'condition', 'source']:
+                if hasattr(instr, attr):
+                    var = getattr(instr, attr)
+                    if isinstance(var, str) and var.startswith('t'):
+                        temporarios.add(var)
+        
+        return len(temporarios)
+
+    #########################
+    # GERAÇÃO DE RELATÓRIOS
+    #########################
+
+    def _gerar_tac_otimizado_md(self, file_name: str) -> None:
+        """Gera TAC_otimizado.md com representação legível do TAC otimizado."""
+        base_name = os.path.splitext(os.path.basename(file_name))[0]
+        output_dir = os.path.join(os.path.dirname(__file__), '..', '..', '..', '..', 'relatorios', 'RA4')
+        os.makedirs(output_dir, exist_ok=True)
+        output_file = os.path.join(output_dir, f'TAC_otimizado_{base_name}.md')
+
+        with open(output_file, 'w', encoding='utf-8') as f:
+            f.write(f'# TAC Otimizado - {base_name}\n\n')
+
+            # Representação das instruções otimizadas
+            for i, instr in enumerate(self.instructions, 1):
+                f.write(f'## Linha {i}: {instr.to_string()}\n\n')
+
+            # Estatísticas
+            f.write('## Estatísticas\n')
+            f.write(f'- Total de instruções: {len(self.instructions)}\n')
+            f.write(f'- Temporários criados: {self._contar_temporarios()}\n')
+
+    def _gerar_tac_otimizado_json(self, file_name: str) -> None:
+        """Gera TAC_otimizado.json com dados estruturados para o gerador Assembly."""
+        base_name = os.path.splitext(os.path.basename(file_name))[0]
+        output_dir = os.path.join(os.path.dirname(__file__), '..', '..', '..', '..', 'relatorios', 'RA4')
+        os.makedirs(output_dir, exist_ok=True)
+        output_file = os.path.join(output_dir, f'TAC_otimizado_{base_name}.json')
+
+        # Converter instruções para formato JSON
+        instructions_json = [instr.to_dict() for instr in self.instructions]
+
+        with open(output_file, 'w', encoding='utf-8') as f:
+            json.dump({'instructions': instructions_json}, f, indent=2, ensure_ascii=False)
+
+    def _gerar_relatorio_otimizacoes_md(self, file_name: str, stats: Dict[str, Any]) -> None:
+        """Gera relatorio_otimizacoes.md conforme especificação."""
+        base_name = os.path.splitext(os.path.basename(file_name))[0]
+        output_dir = os.path.join(os.path.dirname(__file__), '..', '..', '..', '..', 'relatorios', 'RA4')
+        os.makedirs(output_dir, exist_ok=True)
+        output_file = os.path.join(output_dir, f'relatorio_otimizacoes_{base_name}.md')
+
+        with open(output_file, 'w', encoding='utf-8') as f:
+            f.write(f'# Relatório de Otimizações - {base_name}\n\n')
+
+            # 1. Resumo Executivo
+            f.write('## 1. Resumo Executivo\n')
+            reducao = ((stats['initial_instructions'] - stats['final_instructions']) / stats['initial_instructions'] * 100) if stats['initial_instructions'] > 0 else 0
+            temporarios_eliminados = stats['initial_temporaries'] - stats['final_temporaries']
+            f.write(f'- Instruções antes: {stats["initial_instructions"]}\n')
+            f.write(f'- Instruções depois: {stats["final_instructions"]}\n')
+            f.write('.1f')
+            f.write(f'- Temporários eliminados: {temporarios_eliminados}\n\n')
+
+            # 2. Técnicas Implementadas
+            f.write('## 2. Técnicas Implementadas\n\n')
+
+            # 2.1 Constant Folding
+            f.write('### 2.1 Constant Folding\n')
+            f.write('**Descrição:** Avalia operações constantes em tempo de compilação, substituindo expressões por seus valores calculados.\n\n')
+            f.write('**Exemplo:**\n')
+            f.write('Antes:\n')
+            f.write('```\n')
+            f.write('t0 = 2\n')
+            f.write('t1 = 3\n')
+            f.write('t2 = t0 + t1\n')
+            f.write('```\n')
+            f.write('Depois:\n')
+            f.write('```\n')
+            f.write('t2 = 5\n')
+            f.write('```\n')
+            f.write(f'\n**Impacto:** {stats["foldings"]} operações constantes avaliadas\n\n')
+
+            # 2.2 Constant Propagation
+            f.write('### 2.2 Constant Propagation\n')
+            f.write('**Descrição:** Propaga constantes conhecidas, substituindo referências a variáveis constantes por seus valores.\n\n')
+            f.write('**Exemplo:**\n')
+            f.write('Antes:\n')
+            f.write('```\n')
+            f.write('t0 = 5\n')
+            f.write('t1 = t0 + 3\n')
+            f.write('t2 = t0 * 2\n')
+            f.write('```\n')
+            f.write('Depois:\n')
+            f.write('```\n')
+            f.write('t0 = 5\n')
+            f.write('t1 = 8\n')
+            f.write('t2 = 10\n')
+            f.write('```\n')
+            f.write(f'\n**Impacto:** {stats["propagations"]} propagações aplicadas\n\n')
+
+            # 2.3 Dead Code Elimination
+            f.write('### 2.3 Dead Code Elimination\n')
+            f.write('**Descrição:** Remove instruções que não afetam o resultado final do programa.\n\n')
+            f.write('**Exemplo:**\n')
+            f.write('Antes:\n')
+            f.write('```\n')
+            f.write('t0 = x + y\n')
+            f.write('t1 = t0 * 2\n')
+            f.write('result = t0 + 1\n')
+            f.write('```\n')
+            f.write('Depois:\n')
+            f.write('```\n')
+            f.write('t0 = x + y\n')
+            f.write('result = t0 + 1\n')
+            f.write('```\n')
+            f.write(f'\n**Impacto:** {stats["dead_code"]} instruções removidas\n\n')
+
+            # 2.4 Eliminação de Saltos Redundantes
+            f.write('### 2.4 Eliminação de Saltos Redundantes\n')
+            f.write('**Descrição:** Remove saltos desnecessários e rótulos não utilizados.\n\n')
+            f.write('**Exemplo:**\n')
+            f.write('Antes:\n')
+            f.write('```\n')
+            f.write('goto L1\n')
+            f.write('L1:\n')
+            f.write('t0 = 5\n')
+            f.write('```\n')
+            f.write('Depois:\n')
+            f.write('```\n')
+            f.write('t0 = 5\n')
+            f.write('```\n')
+            f.write(f'\n**Impacto:** {stats["jump_elim"]} saltos eliminados\n\n')
+
+            # 3. Estatísticas Detalhadas
+            f.write('## 3. Estatísticas Detalhadas\n')
+            f.write(f'- Número de instruções TAC antes: {stats["initial_instructions"]}\n')
+            f.write(f'- Número de instruções TAC depois: {stats["final_instructions"]}\n')
+            f.write(f'- Número de temporários eliminados: {temporarios_eliminados}\n')
+            f.write('.1f')
+            f.write(f'- Número de iterações até convergência: {stats["iterations"]}\n')
+            f.write('\n')
+
+            # 4. Análise do Impacto no Código Assembly Gerado
+            f.write('## 4. Análise do Impacto no Código Assembly Gerado\n')
+            f.write('[Análise pendente - aguardando implementação da geração de Assembly]\n')
