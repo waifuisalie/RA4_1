@@ -50,6 +50,23 @@ from .ast_traverser import (
     ASTTraverser,
 )
 
+from .tac_output import (
+    # Output serialization functions
+    to_json,
+    to_markdown,
+    save_json,
+    save_markdown,
+    save_tac_output,
+)
+
+from .gerador_tac import (
+    # Main TAC generation functions
+    gerarTAC,
+    gerarTAC_from_dict,
+    get_tac_as_text,
+    get_tac_with_lines,
+)
+
 __all__ = [
     # Base class
     "TACInstruction",
@@ -82,4 +99,17 @@ __all__ = [
     # TAC generation utilities
     "TACManager",
     "ASTTraverser",
+
+    # Output serialization functions
+    "to_json",
+    "to_markdown",
+    "save_json",
+    "save_markdown",
+    "save_tac_output",
+
+    # Main TAC generation functions
+    "gerarTAC",
+    "gerarTAC_from_dict",
+    "get_tac_as_text",
+    "get_tac_with_lines",
 ]

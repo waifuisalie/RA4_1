@@ -13,8 +13,12 @@ from .tac_manager import TACManager
 from .tac_instructions import (
     TACInstruction,
     TACAssignment,
+    TACCopy,
     TACBinaryOp,
     TACUnaryOp,
+    TACLabel,
+    TACGoto,
+    TACIfFalseGoto,
 )
 
 
@@ -280,21 +284,57 @@ class ASTTraverser:
 
     def _handle_logical_op(self, node: Dict[str, Any]) -> str:
         """
-        Handle logical operations: &&, ||
+        Handle logical operations: &&, || (binary) and ! (unary)
 
-        TODO: Implement in Issue 1.5
+        Issue 1.5 - Operações Lógicas
 
-        For now: stub implementation that processes children
+        Binary operators (&&, ||):
+            TAC: t2 = t0 && t1
+
+        Unary operator (!):
+            TAC: t1 = !t0
         """
         filhos = node["filhos"]
         numero_linha = node.get("numero_linha", 0)
         operador = node.get("operador", "")
 
-        # Process children
+        # Handle unary NOT operator (!)
+        if operador == "!":
+            if len(filhos) != 1:
+                raise ValueError(
+                    f"NOT operator '!' requires 1 operand, got {len(filhos)} "
+                    f"at line {numero_linha}"
+                )
+
+            # Process single operand
+            operand_temp = self._process_node(filhos[0])
+
+            # Generate unary TAC: result = !operand
+            result_temp = self.manager.new_temp()
+            self.instructions.append(
+                TACUnaryOp(
+                    result_temp,
+                    operador,
+                    operand_temp,
+                    numero_linha,
+                    "boolean"
+                )
+            )
+
+            return result_temp
+
+        # Handle binary operators (&& and ||)
+        if len(filhos) != 2:
+            raise ValueError(
+                f"Logical operator '{operador}' requires 2 operands, got {len(filhos)} "
+                f"at line {numero_linha}"
+            )
+
+        # Process children in post-order
         left_temp = self._process_node(filhos[0])
         right_temp = self._process_node(filhos[1])
 
-        # Generate logical TAC
+        # Generate binary logical TAC
         result_temp = self.manager.new_temp()
         self.instructions.append(
             TACBinaryOp(
@@ -313,48 +353,398 @@ class ASTTraverser:
         """
         Handle control flow structures: WHILE, FOR, IFELSE
 
-        TODO: Implement in Issue 1.7
+        Issue 1.7 - Control Flow
 
-        For now: raise NotImplementedError
+        Dispatches to specific handlers based on operator type.
         """
         operador = node.get("operador", "")
         numero_linha = node.get("numero_linha", 0)
 
-        raise NotImplementedError(
-            f"Control flow '{operador}' not yet implemented (Issue 1.7) "
-            f"at line {numero_linha}"
+        if operador == "IFELSE":
+            return self._handle_ifelse(node)
+        elif operador == "WHILE":
+            return self._handle_while(node)
+        elif operador == "FOR":
+            return self._handle_for(node)
+        else:
+            raise ValueError(
+                f"Unknown control flow operator '{operador}' "
+                f"at line {numero_linha}"
+            )
+
+    def _handle_ifelse(self, node: Dict[str, Any]) -> Optional[str]:
+        """
+        Handle IFELSE: (condition then_expr else_expr IFELSE)
+
+        Issue 1.7 - IFELSE Control Flow
+
+        TAC pattern:
+            <condition TAC>
+            if_false t_cond goto L_else
+            <then TAC>
+            goto L_end
+        L_else:
+            <else TAC>
+        L_end:
+
+        Args:
+            node: CONTROL_OP node with operator "IFELSE" and 3 children
+                  [condition, then_branch, else_branch]
+
+        Returns:
+            The temporary variable holding the result (from then or else branch)
+        """
+        filhos = node["filhos"]
+        numero_linha = node.get("numero_linha", 0)
+
+        if len(filhos) != 3:
+            raise ValueError(
+                f"IFELSE requires 3 operands (condition, then, else), got {len(filhos)} "
+                f"at line {numero_linha}"
+            )
+
+        condition_node = filhos[0]
+        then_node = filhos[1]
+        else_node = filhos[2]
+
+        # Generate labels
+        label_else = self.manager.new_label()
+        label_end = self.manager.new_label()
+
+        # Process condition
+        cond_temp = self._process_node(condition_node)
+
+        # Generate: if_false cond_temp goto label_else
+        self.instructions.append(
+            TACIfFalseGoto(cond_temp, label_else, numero_linha)
         )
+
+        # Process then branch
+        then_temp = self._process_node(then_node)
+
+        # Generate: goto label_end
+        self.instructions.append(
+            TACGoto(label_end, numero_linha)
+        )
+
+        # Generate: label_else:
+        self.instructions.append(
+            TACLabel(label_else, numero_linha)
+        )
+
+        # Process else branch
+        else_temp = self._process_node(else_node)
+
+        # Generate: label_end:
+        self.instructions.append(
+            TACLabel(label_end, numero_linha)
+        )
+
+        # Return the result (could be from either branch at runtime)
+        # For TAC purposes, we return the else_temp as the "last" value
+        return else_temp
+
+    def _handle_while(self, node: Dict[str, Any]) -> Optional[str]:
+        """
+        Handle WHILE: (condition body WHILE)
+
+        Issue 1.7 - WHILE Control Flow
+
+        TAC pattern:
+        L_start:
+            <condition TAC>
+            if_false t_cond goto L_end
+            <body TAC>
+            goto L_start
+        L_end:
+
+        Args:
+            node: CONTROL_OP node with operator "WHILE" and 2 children
+                  [condition, body]
+
+        Returns:
+            None (WHILE doesn't produce a value)
+        """
+        filhos = node["filhos"]
+        numero_linha = node.get("numero_linha", 0)
+
+        if len(filhos) != 2:
+            raise ValueError(
+                f"WHILE requires 2 operands (condition, body), got {len(filhos)} "
+                f"at line {numero_linha}"
+            )
+
+        condition_node = filhos[0]
+        body_node = filhos[1]
+
+        # Generate labels
+        label_start = self.manager.new_label()
+        label_end = self.manager.new_label()
+
+        # Generate: label_start:
+        self.instructions.append(
+            TACLabel(label_start, numero_linha)
+        )
+
+        # Process condition
+        cond_temp = self._process_node(condition_node)
+
+        # Generate: if_false cond_temp goto label_end
+        self.instructions.append(
+            TACIfFalseGoto(cond_temp, label_end, numero_linha)
+        )
+
+        # Process body
+        self._process_node(body_node)
+
+        # Generate: goto label_start
+        self.instructions.append(
+            TACGoto(label_start, numero_linha)
+        )
+
+        # Generate: label_end:
+        self.instructions.append(
+            TACLabel(label_end, numero_linha)
+        )
+
+        # WHILE doesn't produce a value
+        return None
+
+    def _handle_for(self, node: Dict[str, Any]) -> Optional[str]:
+        """
+        Handle FOR: (init end step body FOR)
+
+        Issue 1.7 - FOR Control Flow
+
+        FOR loop iterates from init to end with given step.
+
+        TAC pattern:
+            t_current = <init TAC>
+            t_end = <end TAC>
+            t_step = <step TAC>
+        L_start:
+            t_cond = t_current <= t_end
+            if_false t_cond goto L_end
+            <body TAC>
+            t_current = t_current + t_step
+            goto L_start
+        L_end:
+
+        Args:
+            node: CONTROL_OP node with operator "FOR" and 4 children
+                  [init, end, step, body]
+
+        Returns:
+            None (FOR doesn't produce a value)
+        """
+        filhos = node["filhos"]
+        numero_linha = node.get("numero_linha", 0)
+
+        if len(filhos) != 4:
+            raise ValueError(
+                f"FOR requires 4 operands (init, end, step, body), got {len(filhos)} "
+                f"at line {numero_linha}"
+            )
+
+        init_node = filhos[0]
+        end_node = filhos[1]
+        step_node = filhos[2]
+        body_node = filhos[3]
+
+        # Generate labels
+        label_start = self.manager.new_label()
+        label_end = self.manager.new_label()
+
+        # Process init, end, and step values
+        current_temp = self._process_node(init_node)
+        end_temp = self._process_node(end_node)
+        step_temp = self._process_node(step_node)
+
+        # Create a dedicated temp for the loop counter
+        loop_counter = self.manager.new_temp()
+        self.instructions.append(
+            TACCopy(loop_counter, current_temp, numero_linha, "int")
+        )
+
+        # Generate: label_start:
+        self.instructions.append(
+            TACLabel(label_start, numero_linha)
+        )
+
+        # Generate condition: t_cond = loop_counter <= end_temp
+        cond_temp = self.manager.new_temp()
+        self.instructions.append(
+            TACBinaryOp(
+                cond_temp,
+                loop_counter,
+                "<=",
+                end_temp,
+                numero_linha,
+                "boolean"
+            )
+        )
+
+        # Generate: if_false cond_temp goto label_end
+        self.instructions.append(
+            TACIfFalseGoto(cond_temp, label_end, numero_linha)
+        )
+
+        # Process body
+        self._process_node(body_node)
+
+        # Increment loop counter: loop_counter = loop_counter + step_temp
+        new_counter = self.manager.new_temp()
+        self.instructions.append(
+            TACBinaryOp(
+                new_counter,
+                loop_counter,
+                "+",
+                step_temp,
+                numero_linha,
+                "int"
+            )
+        )
+        self.instructions.append(
+            TACCopy(loop_counter, new_counter, numero_linha, "int")
+        )
+
+        # Generate: goto label_start
+        self.instructions.append(
+            TACGoto(label_start, numero_linha)
+        )
+
+        # Generate: label_end:
+        self.instructions.append(
+            TACLabel(label_end, numero_linha)
+        )
+
+        # FOR doesn't produce a value
+        return None
 
     def _handle_variable_assignment(self, node: Dict[str, Any]) -> str:
         """
         Handle variable assignments: (value variable)
 
+        Issue 1.6 - Variable Assignment
+
         Example: (10 X) means X = 10
+        In RPN: value comes first, then variable name
 
-        TODO: Implement properly in Issue 1.6
+        TAC generated:
+            t0 = 10
+            X = t0
 
-        For now: stub implementation that processes children
+        Args:
+            node: LINHA node with 2 children [value_expr, variable]
+
+        Returns:
+            The temporary variable holding the assigned value
         """
         filhos = node["filhos"]
+        numero_linha = node.get("numero_linha", 0)
 
-        # Process both children
-        if len(filhos) >= 2:
-            # First child is the value/expression
-            value_temp = self._process_node(filhos[0])
+        if len(filhos) < 2:
+            # Fallback: process all children
+            result = None
+            for child in filhos:
+                result = self._process_node(child)
+            return result
 
-            # Second child should be the variable
-            var_node = filhos[1]
-            if var_node.get("subtipo") == "variavel":
-                # This is a variable assignment
-                # For now, just return the value temp
-                # TODO: Generate proper assignment TAC in Issue 1.6
-                return value_temp
+        # First child is the value/expression
+        value_node = filhos[0]
+        # Second child should be the variable or RES command
+        var_node = filhos[1]
 
-        # Fallback: process all children
-        result = None
-        for child in filhos:
-            result = self._process_node(child)
-        return result
+        # Check if second child is RES command (Issue 1.6 - RES)
+        if var_node.get("valor") == "RES":
+            return self._handle_res_command(node)
+
+        # Check if this is indeed a variable assignment
+        if var_node.get("subtipo") != "variavel":
+            # Not a variable assignment, process all children
+            result = None
+            for child in filhos:
+                result = self._process_node(child)
+            return result
+
+        # Process the value expression
+        value_temp = self._process_node(value_node)
+
+        # Get the variable name
+        var_name = var_node["valor"]
+
+        # Get type info from the value node or expression
+        data_type = value_node.get("tipo_inferido")
+
+        # Generate TAC: variable = value_temp
+        self.instructions.append(
+            TACCopy(
+                var_name,
+                value_temp,
+                numero_linha,
+                data_type
+            )
+        )
+
+        # Return the value temp (the result of this expression)
+        return value_temp
+
+    def _handle_res_command(self, node: Dict[str, Any]) -> str:
+        """
+        Handle RES command: (index RES) - get historical result
+
+        Issue 1.6 - RES Command
+
+        RES retrieves a previously computed result from history.
+        In RPN: (1 RES) means get result at position 1 (0-indexed)
+                (RES) alone means get the last result
+
+        TAC generated:
+            t_new = t_previous  (copy from history)
+
+        Args:
+            node: LINHA node where second child is RES
+
+        Returns:
+            The temporary variable holding the retrieved result
+        """
+        filhos = node["filhos"]
+        numero_linha = node.get("numero_linha", 0)
+
+        # Get the index (first child)
+        index_node = filhos[0]
+        index_value = index_node.get("valor", "0")
+
+        try:
+            index = int(index_value)
+        except ValueError:
+            raise ValueError(
+                f"RES index must be an integer, got '{index_value}' "
+                f"at line {numero_linha}"
+            )
+
+        # Validate index is within history bounds
+        if index < 0 or index >= len(self._result_history):
+            raise ValueError(
+                f"RES index {index} out of bounds (history size: {len(self._result_history)}) "
+                f"at line {numero_linha}"
+            )
+
+        # Get the historical result temp
+        historical_temp = self._result_history[index]
+
+        # Generate TAC: new_temp = historical_temp
+        result_temp = self.manager.new_temp()
+        self.instructions.append(
+            TACCopy(
+                result_temp,
+                historical_temp,
+                numero_linha,
+                None  # Type unknown at this point
+            )
+        )
+
+        return result_temp
 
     # ========================================================================
     # UTILITY METHODS
