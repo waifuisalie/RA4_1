@@ -12,7 +12,7 @@ import json
 import os
 from typing import List, Dict, Any, Optional
 
-from .tac_instructions import TACInstruction, instruction_from_dict, TACBinaryOp, TACAssignment, TACUnaryOp, TACIfGoto, TACIfFalseGoto, TACGoto
+from .tac_instructions import TACInstruction, instruction_from_dict, TACBinaryOp, TACAssignment, TACUnaryOp, TACIfGoto, TACIfFalseGoto, TACGoto, TACLabel
 from .erros_compilador import TACError, FileError, JSONError, ValidationError
 
 
@@ -303,7 +303,7 @@ class TACOptimizer:
             # Se estamos pulando código inalcançável
             if skip_until_label:
                 # Verificar se encontrou o label alvo
-                if isinstance(instr, TACAssignment) and instr.source == '' and instr.dest == skip_until_label:
+                if isinstance(instr, TACLabel) and instr.name == skip_until_label:
                     skip_until_label = None  # Encontrou o label, para de pular
                 else:
                     removidas += 1
@@ -315,7 +315,7 @@ class TACOptimizer:
                 target = instr.target
                 label_found_later = False
                 for future_instr in self.instructions[idx+1:]:
-                    if isinstance(future_instr, TACAssignment) and future_instr.source == '' and future_instr.dest == target:
+                    if isinstance(future_instr, TACLabel) and future_instr.name == target:
                         label_found_later = True
                         break
                 if label_found_later:
@@ -325,10 +325,10 @@ class TACOptimizer:
 
             # Verificar se é uma atribuição a variável temporária não utilizada
             dest_var = getattr(instr, 'result', getattr(instr, 'dest', None))
-            if (dest_var and dest_var.startswith('t') and 
+            if (dest_var and dest_var.startswith('t') and
                 dest_var not in liveness_info[idx]['live_out'] and
                 isinstance(instr, (TACAssignment, TACBinaryOp, TACUnaryOp)) and
-                getattr(instr, 'source', '') != ''):  # Não remover labels (source vazia)
+                not isinstance(instr, TACLabel)):  # Don't remove labels
                 removidas += 1
                 continue
 
@@ -360,8 +360,8 @@ class TACOptimizer:
         # Mapear labels para índices
         label_to_index = {}
         for i, instr in enumerate(self.instructions):
-            if isinstance(instr, TACAssignment) and instr.source == '' and instr.dest:
-                label_to_index[instr.dest] = i
+            if isinstance(instr, TACLabel):
+                label_to_index[instr.name] = i
         
         # Algoritmo iterativo até ponto fixo
         changed = True
@@ -500,7 +500,7 @@ class TACOptimizer:
                     i += 1
                     continue
 
-            elif isinstance(instr, TACAssignment) and instr.source == '' and instr.dest not in referenced_labels:
+            elif isinstance(instr, TACLabel) and instr.name not in referenced_labels:
                 # Label não utilizado
                 removidas += 1
                 i += 1
@@ -531,8 +531,8 @@ class TACOptimizer:
         """Identifica todos os labels que existem fisicamente no código."""
         existentes = set()
         for instr in self.instructions:
-            if isinstance(instr, TACAssignment) and instr.source == '':
-                existentes.add(instr.dest)
+            if isinstance(instr, TACLabel):
+                existentes.add(instr.name)
         return existentes
 
     def _eh_salto_para_proxima_instrucao(self, current_index: int, target_label: str) -> bool:
@@ -540,10 +540,10 @@ class TACOptimizer:
         # Procurar o label alvo nas próximas instruções
         for j in range(current_index + 1, len(self.instructions)):
             next_instr = self.instructions[j]
-            if isinstance(next_instr, TACAssignment) and next_instr.source == '' and next_instr.dest == target_label:
+            if isinstance(next_instr, TACLabel) and next_instr.name == target_label:
                 # Encontrou o label na próxima instrução
                 return True
-            elif not (isinstance(next_instr, TACAssignment) and next_instr.source == ''):
+            elif not isinstance(next_instr, TACLabel):
                 # Encontrou uma instrução não-label, parar busca
                 break
         return False
