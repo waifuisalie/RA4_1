@@ -18,6 +18,17 @@ Tests for TAC (Three Address Code) instruction classes.
 - ✓ Optimization scenario analysis
 - ✓ JSON serialization/deserialization
 
+### `test_tac_manager.py`
+Tests for TAC Manager (temporary variable and label generation).
+
+**Tests:**
+- ✓ Temporary variable generation (t0, t1, t2, ...)
+- ✓ Label generation (L0, L1, L2, ...)
+- ✓ Counter reset functionality
+- ✓ Uniqueness guarantees
+- ✓ Statistics tracking
+- ✓ Integration scenarios (expressions, control flow, loops)
+
 ## Running Tests
 
 ### Recommended: Using pytest (Unit Test Framework)
@@ -73,14 +84,14 @@ With pytest, you should see:
 ```
 ======================== test session starts =========================
 platform linux -- Python 3.13.7, pytest-9.0.1, pluggy-1.6.0
-collected 44 items
+collected 77 items
 
-tests/RA4/test_tac_instructions.py::test_assignment_with_literal PASSED [ 2%]
-tests/RA4/test_tac_instructions.py::test_assignment_with_variable PASSED [ 4%]
+tests/RA4/test_tac_instructions.py::test_assignment_with_literal PASSED [ 1%]
+tests/RA4/test_tac_instructions.py::test_assignment_with_variable PASSED [ 2%]
 ...
-tests/RA4/test_tac_instructions.py::test_with_fixture PASSED [100%]
+tests/RA4/test_tac_manager.py::test_with_populated_manager_fixture PASSED [100%]
 
-======================== 44 passed in 0.07s ==========================
+======================== 77 passed in 0.08s ==========================
 ```
 
 ## Test Coverage
@@ -88,6 +99,7 @@ tests/RA4/test_tac_instructions.py::test_with_fixture PASSED [100%]
 | Component | Coverage | Status |
 |-----------|----------|--------|
 | TAC Instruction Classes | 100% | ✅ Complete |
+| TAC Manager (Temp/Label) | 100% | ✅ Complete |
 | TAC Generation | 0% | 🔜 Pending |
 | TAC Optimization | 0% | 🔜 Pending |
 | Assembly Generation | 0% | 🔜 Pending |
@@ -113,8 +125,8 @@ When adding new test files:
 ## Issue Tracking
 
 - [x] Issue 1.1: TAC Instruction Classes ✅ Complete
-- [ ] Issue 1.2: Temporary/Label Management 🔜 Next
-- [ ] Issue 1.3: AST Traversal Engine
+- [x] Issue 1.2: Temporary/Label Management ✅ Complete
+- [ ] Issue 1.3: AST Traversal Engine 🔜 Next
 - [ ] Issue 1.4-1.7: TAC Generation Logic
 - [ ] Issue 1.8: File Output
 

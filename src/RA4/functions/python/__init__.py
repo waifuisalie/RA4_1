@@ -40,6 +40,11 @@ from .tac_instructions import (
     instruction_from_dict,
 )
 
+from .tac_manager import (
+    # TAC generation utilities
+    TACManager,
+)
+
 __all__ = [
     # Base class
     "TACInstruction",
@@ -68,4 +73,7 @@ __all__ = [
 
     # Utility functions
     "instruction_from_dict",
+
+    # TAC generation utilities
+    "TACManager",
 ]
