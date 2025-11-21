@@ -62,7 +62,7 @@ def avaliar_expressao(tokens):
         elif token in variaveis:
             # Variável
             pilha.append(variaveis[token])
-        elif token in ['+', '-', '*', '/', '<=', '==']:
+        elif token in ['+', '-', '*', '/', '|', '<=', '==']:
             # Operação binária
             if len(pilha) >= 2:
                 b = pilha.pop()
@@ -73,7 +73,7 @@ def avaliar_expressao(tokens):
                     pilha.append(a - b)
                 elif token == '*':
                     pilha.append(a * b)
-                elif token == '/':
+                elif token == '/' or token == '|':
                     pilha.append(a / b)
                 elif token == '<=':
                     pilha.append(1 if a <= b else 0)
