@@ -1,268 +1,173 @@
-# TAC Output - arvore_atribuida.json
+# Saída TAC - arvore_atribuida.json
 
-**Generated:** 2025-11-21 18:22:49
+**Gerado:** 2025-11-21 18:43:46
 
-## Statistics
+## Estatísticas
 
-| Metric | Value |
-|--------|-------|
-| total_instructions | 166 |
-| temp_count | 108 |
-| label_count | 20 |
-| result_history_size | 34 |
+| Métrica | Valor |
+|---------|-------|
+| total_instrucoes | 102 |
+| contador_temp | 73 |
+| contador_rotulo | 10 |
+| tamanho_historico_resultados | 19 |
 
-## Instructions
+## Instruções
 
 ```
-# Line 1
-    t0 = 10  ; [int]
-    A = t0  ; [int]
+# Linha 1
+    t0 = 5  ; [int]
+    t1 = 3  ; [int]
+    t2 = t0 + t1  ; [int]
 
-# Line 2
-    t1 = 20  ; [int]
-    B = t1  ; [int]
+# Linha 2
+    t3 = 10.5  ; [real]
+    t4 = 2.0  ; [real]
+    t5 = t3 * t4  ; [real]
 
-# Line 3
-    t2 = 5.5  ; [real]
-    X = t2  ; [real]
+# Linha 3
+    t6 = 100  ; [int]
+    t7 = 50  ; [int]
+    t8 = t6 + t7  ; [int]
 
-# Line 4
-    t3 = 3.14  ; [real]
-    Y = t3  ; [real]
+# Linha 4
+    t9 = 15  ; [int]
+    t10 = 7  ; [int]
+    t11 = t9 / t10  ; [int]
 
-# Line 5
-    t4 = A + B  ; [int]
+# Linha 5
+    t12 = 23  ; [int]
+    t13 = 6  ; [int]
+    t14 = t12 % t13  ; [int]
 
-# Line 6
-    t5 = X * Y  ; [real]
+# Linha 6
+    t15 = 2.5  ; [real]
+    t16 = 3  ; [int]
+    t17 = t15 ^ t16  ; [real]
 
-# Line 7
-    t6 = 2  ; [int]
-    t7 = A - t6  ; [int]
+# Linha 7
+    t18 = 5.5  ; [real]
+    t19 = 3.2  ; [real]
+    t20 = t18 > t19  ; [boolean]
 
-# Line 8
-    t8 = 3  ; [int]
-    t9 = B / t8  ; [int]
+# Linha 8
+    t21 = 5  ; [int]
+    t22 = 3  ; [int]
+    t23 = t21 > t22  ; [boolean]
+    t24 = 2  ; [int]
+    t25 = 1  ; [int]
+    t26 = t24 < t25  ; [boolean]
+    t27 = t23 && t26  ; [boolean]
 
-# Line 9
-    t10 = 2.0  ; [real]
-    t11 = X | t10  ; [real]
+# Linha 9
+    t28 = 10  ; [int]
+    X = t28  ; [int]
 
-# Line 10
-    t12 = 10  ; [int]
-    t13 = 5.5  ; [real]
-    t14 = t12 + t13  ; [real]
+# Linha 10
+    t29 = 20  ; [int]
+    A = t29  ; [int]
 
-# Line 11
-    t15 = 3.14  ; [real]
-    t16 = 2  ; [int]
-    t17 = t15 * t16  ; [real]
+# Linha 11
+    t30 = 10  ; [int]
+    I = t30  ; [int]
 
-# Line 12
-    t18 = 50.0  ; [real]
-    t19 = 10  ; [int]
-    t20 = t18 - t19  ; [real]
+# Linha 12
+    t31 = 0  ; [int]
+    COUNTER = t31  ; [int]
 
-# Line 13
-    t21 = A > B  ; [boolean]
+# Linha 13
+    t32 = 5  ; [int]
+    t33 = X + t32  ; [int]
+    Y = t33  ; [int]
 
-# Line 14
-    t22 = X < Y  ; [boolean]
+# Linha 14
+    t34 = A - X  ; [int]
+    B = t34  ; [int]
 
-# Line 15
-    t23 = 10  ; [int]
-    t24 = A == t23  ; [boolean]
+# Linha 15
+    t35 = 1  ; [int]
 
-# Line 16
-    t25 = 20  ; [int]
-    t26 = B >= t25  ; [boolean]
+# Linha 16
+    t36 = 2  ; [int]
 
-# Line 17
-    t27 = 5.0  ; [real]
-    t28 = X <= t27  ; [boolean]
-
-# Line 18
-    t29 = A > B  ; [boolean]
-    t30 = X < Y  ; [boolean]
-    t31 = t29 && t30  ; [boolean]
-
-# Line 19
-    t32 = 10  ; [int]
-    t33 = A == t32  ; [boolean]
-    t34 = 20  ; [int]
-    t35 = B > t34  ; [boolean]
-    t36 = t33 || t35  ; [boolean]
-
-# Line 20
-    t37 = 5.0  ; [real]
-    t38 = X > t37  ; [boolean]
-    t39 = !t38  ; [boolean]
-
-# Line 21
-    t40 = A < B  ; [boolean]
-    t41 = X >= Y  ; [boolean]
-    t42 = t40 && t41  ; [boolean]
-
-# Line 22
-    t43 = 10  ; [int]
-    t44 = 5  ; [int]
-    t45 = t43 > t44  ; [boolean]
-    t46 = 3.14  ; [real]
-    t47 = 2.0  ; [real]
-    t48 = t46 < t47  ; [boolean]
-    t49 = t45 || t48  ; [boolean]
-
-# Line 23
-    t50 = A + B  ; [int]
-    SUM = t50  ; [int]
-
-# Line 24
-    t51 = X * Y  ; [real]
-    PRODUCT = t51  ; [real]
-
-# Line 27
-    t52 = 10  ; [int]
-    t53 = SUM + t52  ; [int]
-    RESULT = t53  ; [int]
-
-# Line 29
-    t54 = 100  ; [int]
-    COUNTER = t54  ; [int]
-
-# Line 30
-    t55 = 0  ; [int]
-    INDEX = t55  ; [int]
-
-# Line 31
-    t56 = A > B  ; [boolean]
-    ifFalse t56 goto L0
-    t57 = 100  ; [int]
-    goto L1
+# Linha 17
     L0:
-    t58 = 200  ; [int]
+    t37 = 5  ; [int]
+    t38 = COUNTER < t37  ; [boolean]
+    ifFalse t38 goto L1
+    t39 = 1  ; [int]
+    t40 = COUNTER + t39  ; [int]
+    COUNTER = t40  ; [int]
+    goto L0
     L1:
 
-# Line 32
-    t59 = 5.0  ; [real]
-    t60 = X < t59  ; [boolean]
-    ifFalse t60 goto L2
-    t61 = 10  ; [int]
-    goto L3
+# Linha 18
     L2:
-    t62 = 20  ; [int]
+    t41 = 0  ; [int]
+    t42 = B > t41  ; [boolean]
+    ifFalse t42 goto L3
+    t43 = 1  ; [int]
+    t44 = B - t43  ; [int]
+    B = t44  ; [int]
+    goto L2
     L3:
 
-# Line 33
-    t63 = 100  ; [int]
-    t64 = SUM >= t63  ; [boolean]
-    ifFalse t64 goto L4
-    t65 = 10  ; [int]
-    t66 = SUM - t65  ; [int]
-    goto L5
+# Linha 19
+    t45 = 1  ; [int]
+    t46 = 10  ; [int]
+    t47 = 1  ; [int]
+    t48 = t45  ; [int]
     L4:
-    t67 = 10  ; [int]
-    t68 = SUM + t67  ; [int]
+    t49 = t48 <= t46  ; [boolean]
+    ifFalse t49 goto L5
+    t50 = 2  ; [int]
+    t51 = I * t50  ; [int]
+    t52 = t48 + t47  ; [int]
+    t48 = t52  ; [int]
+    goto L4
     L5:
 
-# Line 34
-    t69 = 50  ; [int]
-    t70 = COUNTER > t69  ; [boolean]
-    ifFalse t70 goto L6
-    t71 = 1  ; [int]
+# Linha 20
+    t53 = 15  ; [int]
+    t54 = X > t53  ; [boolean]
+    ifFalse t54 goto L6
+    t55 = 100  ; [int]
     goto L7
     L6:
-    t72 = 0  ; [int]
+    t56 = 200  ; [int]
     L7:
 
-# Line 35
+# Linha 21
+    t57 = 10  ; [int]
+    t58 = A > t57  ; [boolean]
+    t59 = 5  ; [int]
+    t60 = Y > t59  ; [boolean]
+    t61 = t58 && t60  ; [boolean]
+    ifFalse t61 goto L8
+    t62 = A + Y  ; [int]
+    t63 = 2.0  ; [real]
+    t64 = t62 | t63  ; [real]
+    goto L9
     L8:
-    t73 = 100  ; [int]
-    t74 = COUNTER < t73  ; [boolean]
-    ifFalse t74 goto L9
-    t75 = 1  ; [int]
-    t76 = COUNTER + t75  ; [int]
-    COUNTER = t76  ; [int]
-    goto L8
+    t65 = A * Y  ; [int]
     L9:
 
-# Line 36
-    L10:
-    t77 = 50  ; [int]
-    t78 = INDEX < t77  ; [boolean]
-    ifFalse t78 goto L11
-    t79 = 2  ; [int]
-    t80 = INDEX + t79  ; [int]
-    INDEX = t80  ; [int]
-    goto L10
-    L11:
-
-# Line 37
-    L12:
-    t81 = 200  ; [int]
-    t82 = A < t81  ; [boolean]
-    ifFalse t82 goto L13
-    t83 = 5  ; [int]
-    t84 = A + t83  ; [int]
-    A = t84  ; [int]
-    goto L12
-    L13:
-
-# Line 38
-    t85 = 1  ; [int]
-    t86 = 10  ; [int]
-    t87 = 1  ; [int]
-    t88 = t85  ; [int]
-    L14:
-    t89 = t88 <= t86  ; [boolean]
-    ifFalse t89 goto L15
-    t90 = 1  ; [int]
-    t91 = I + t90  ; [int]
-    I = t91  ; [int]
-    t92 = t88 + t87  ; [int]
-    t88 = t92  ; [int]
-    goto L14
-    L15:
-
-# Line 39
-    t93 = 0  ; [int]
-    t94 = 20  ; [int]
-    t95 = 2  ; [int]
-    t96 = t93  ; [int]
-    L16:
-    t97 = t96 <= t94  ; [boolean]
-    ifFalse t97 goto L17
-    t98 = 2  ; [int]
-    t99 = J * t98  ; [int]
-    J = t99  ; [int]
-    t100 = t96 + t95  ; [int]
-    t96 = t100  ; [int]
-    goto L16
-    L17:
-
-# Line 40
-    t101 = 1  ; [int]
-    t102 = 5  ; [int]
-    t103 = 1  ; [int]
-    t104 = t101  ; [int]
-    L18:
-    t105 = t104 <= t102  ; [boolean]
-    ifFalse t105 goto L19
-    t106 = SUM + K  ; [int]
-    SUM = t106  ; [int]
-    t107 = t104 + t103  ; [int]
-    t104 = t107  ; [int]
-    goto L18
-    L19:
+# Linha 22
+    t66 = 5  ; [int]
+    t67 = 3  ; [int]
+    t68 = t66 + t67  ; [int]
+    t69 = 2  ; [int]
+    t70 = 4  ; [int]
+    t71 = t69 * t70  ; [int]
+    t72 = t68 * t71  ; [int]
 ```
 
-## Summary
+## Resumo
 
-- **Total Instructions:** 166
-- **Instruction Types:**
-  - TACAssignment: 54
-  - TACBinaryOp: 50
-  - TACCopy: 21
-  - TACGoto: 10
-  - TACIfFalseGoto: 10
-  - TACLabel: 20
-  - TACUnaryOp: 1
+- **Total de Instruções:** 102
+- **Tipos de Instrução:**
+  - TACAtribuicao: 43
+  - TACCopia: 10
+  - TACDesvio: 5
+  - TACOperacaoBinaria: 29
+  - TACRotulo: 10
+  - TACSeNaoDesvio: 5

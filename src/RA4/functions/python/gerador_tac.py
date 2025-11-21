@@ -1,255 +1,157 @@
 """
-TAC Generator - Main Entry Point for TAC Generation
-
-Issue 1.8 - Main Generator Function
-
-This module provides the main entry point for TAC generation from Phase 3's
-attributed AST. It orchestrates the entire TAC generation pipeline.
-
-Usage:
-    from src.RA4.functions.python.gerador_tac import gerarTAC
-
-    # Generate TAC from AST file
-    result = gerarTAC("outputs/RA3/arvore_atribuida.json", "outputs/RA4")
-
-    # Or from AST dictionary
-    result = gerarTAC(ast_dict, "outputs/RA4")
+Gerador TAC - Ponto de entrada para geração de código de três endereços.
 """
 
 import json
 from pathlib import Path
 from typing import Dict, Any, Union, List, Optional
 
-from .tac_manager import TACManager
-from .ast_traverser import ASTTraverser
-from .tac_instructions import TACInstruction
-from .tac_output import save_tac_output
+from .gerenciador_tac import GerenciadorTAC
+from .percorredor_ast import PercorredorAST
+from .instrucoes_tac import InstrucaoTAC
+from .saida_tac import salvar_saida_tac
 
 
 def gerarTAC(
-    ast_input: Union[str, Path, Dict[str, Any]],
-    output_dir: Union[str, Path] = "outputs/RA4",
-    save_output: bool = True,
-    source_file: Optional[str] = None
+    entrada_ast: Union[str, Path, Dict[str, Any]],
+    diretorio_saida: Union[str, Path] = "outputs/RA4",
+    salvar_saida: bool = True,
+    arquivo_fonte: Optional[str] = None
 ) -> Dict[str, Any]:
     """
-    Main function to generate TAC from attributed AST.
-
-    This is the primary entry point for Phase 4's TAC generation.
-    It takes the attributed AST from Phase 3 and generates Three Address Code.
+    Gera TAC a partir da AST atribuída.
 
     Args:
-        ast_input: Either:
-            - Path to arvore_atribuida.json file (str or Path)
-            - Dictionary containing the AST directly
-        output_dir: Directory to save output files (default: "outputs/RA4")
-        save_output: Whether to save TAC.json and TAC.md files (default: True)
-        source_file: Optional source file name for metadata
+        entrada_ast: Caminho para arvore_atribuida.json ou dicionário AST
+        diretorio_saida: Diretório para saídas (padrão: outputs/RA4)
+        salvar_saida: Se deve salvar TAC.json e TAC.txt
+        arquivo_fonte: Nome do arquivo fonte (opcional)
 
     Returns:
-        Dictionary containing:
-        {
-            "success": bool,
-            "instructions": List[TACInstruction],
-            "statistics": Dict[str, Any],
-            "output_files": Dict[str, Path] (if save_output=True),
-            "error": str (if success=False)
-        }
-
-    Example:
-        >>> result = gerarTAC("outputs/RA3/arvore_atribuida.json")
-        >>> if result["success"]:
-        ...     print(f"Generated {result['statistics']['total_instructions']} instructions")
-        ...     for instr in result["instructions"]:
-        ...         print(instr.to_string())
-
-    Raises:
-        FileNotFoundError: If AST file path doesn't exist
-        json.JSONDecodeError: If AST file contains invalid JSON
-        ValueError: If AST structure is invalid
+        {sucesso, instrucoes, estatisticas, arquivos_saida, erro}
     """
-    result = {
-        "success": False,
-        "instructions": [],
-        "statistics": {},
-        "output_files": None,
-        "error": None
+    resultado = {
+        "sucesso": False,
+        "instrucoes": [],
+        "estatisticas": {},
+        "arquivos_saida": None,
+        "erro": None
     }
 
     try:
-        # Load AST if path is provided
-        if isinstance(ast_input, (str, Path)):
-            ast_path = Path(ast_input)
-            if not ast_path.exists():
-                raise FileNotFoundError(f"AST file not found: {ast_path}")
+        # Carrega AST
+        if isinstance(entrada_ast, (str, Path)):
+            caminho_ast = Path(entrada_ast)
+            if not caminho_ast.exists():
+                raise FileNotFoundError(f"Arquivo AST não encontrado: {caminho_ast}")
 
-            with open(ast_path, 'r', encoding='utf-8') as f:
-                ast_dict = json.load(f)
+            with open(caminho_ast, 'r', encoding='utf-8') as f:
+                dicionario_ast = json.load(f)
 
-            # Extract source file name from path if not provided
-            if source_file is None:
-                source_file = ast_path.name
+            if arquivo_fonte is None:
+                arquivo_fonte = caminho_ast.name
         else:
-            ast_dict = ast_input
+            dicionario_ast = entrada_ast
 
-        # Validate AST structure
-        if not isinstance(ast_dict, dict):
-            raise ValueError("AST must be a dictionary")
+        # Valida AST
+        if not isinstance(dicionario_ast, dict):
+            raise ValueError("AST deve ser um dicionário")
 
-        if "arvore_atribuida" not in ast_dict:
-            raise ValueError("AST must contain 'arvore_atribuida' key")
+        if "arvore_atribuida" not in dicionario_ast:
+            raise ValueError("AST deve conter 'arvore_atribuida'")
 
-        # Create TAC generator components
-        manager = TACManager()
-        traverser = ASTTraverser(manager)
+        # Gera TAC
+        gerenciador = GerenciadorTAC()
+        percorredor = PercorredorAST(gerenciador)
+        instrucoes = percorredor.gerar_tac(dicionario_ast)
+        estatisticas = percorredor.obter_estatisticas()
 
-        # Generate TAC
-        instructions = traverser.generate_tac(ast_dict)
-        statistics = traverser.get_statistics()
+        resultado["sucesso"] = True
+        resultado["instrucoes"] = instrucoes
+        resultado["estatisticas"] = estatisticas
 
-        # Store results
-        result["success"] = True
-        result["instructions"] = instructions
-        result["statistics"] = statistics
-
-        # Save output files if requested
-        if save_output:
-            output_path = Path(output_dir)
-            output_files = save_tac_output(
-                instructions,
-                output_path,
-                statistics,
-                source_file
-            )
-            result["output_files"] = output_files
+        # Salva saída
+        if salvar_saida:
+            caminho_saida = Path(diretorio_saida)
+            arquivos_saida = salvar_saida_tac(instrucoes, caminho_saida)
+            resultado["arquivos_saida"] = arquivos_saida
 
     except FileNotFoundError as e:
-        result["error"] = str(e)
+        resultado["erro"] = str(e)
     except json.JSONDecodeError as e:
-        result["error"] = f"Invalid JSON in AST file: {e}"
+        resultado["erro"] = f"JSON inválido: {e}"
     except ValueError as e:
-        result["error"] = f"Invalid AST structure: {e}"
+        resultado["erro"] = f"AST inválida: {e}"
     except NotImplementedError as e:
-        result["error"] = f"Unimplemented feature: {e}"
+        resultado["erro"] = f"Não implementado: {e}"
     except Exception as e:
-        result["error"] = f"Unexpected error: {type(e).__name__}: {e}"
+        resultado["erro"] = f"Erro: {type(e).__name__}: {e}"
 
-    return result
+    return resultado
 
 
-def gerarTAC_from_dict(
-    ast_dict: Dict[str, Any],
-    output_dir: Union[str, Path] = "outputs/RA4",
-    save_output: bool = True
+def gerarTAC_de_dicionario(
+    dicionario_ast: Dict[str, Any],
+    diretorio_saida: Union[str, Path] = "outputs/RA4",
+    salvar_saida: bool = True
 ) -> Dict[str, Any]:
-    """
-    Convenience function to generate TAC directly from AST dictionary.
-
-    Args:
-        ast_dict: Dictionary containing the attributed AST
-        output_dir: Directory to save output files
-        save_output: Whether to save output files
-
-    Returns:
-        Same as gerarTAC()
-    """
-    return gerarTAC(ast_dict, output_dir, save_output)
+    """Gera TAC a partir de dicionário AST."""
+    return gerarTAC(dicionario_ast, diretorio_saida, salvar_saida)
 
 
-def get_tac_as_text(instructions: List[TACInstruction]) -> str:
-    """
-    Convert TAC instructions to simple text format.
-
-    Args:
-        instructions: List of TACInstruction objects
-
-    Returns:
-        String with one instruction per line
-
-    Example:
-        >>> text = get_tac_as_text(instructions)
-        >>> print(text)
-        t0 = 5
-        t1 = 3
-        t2 = t0 + t1
-    """
-    return "\n".join(instr.to_string() for instr in instructions)
+def obter_tac_como_texto(instrucoes: List[InstrucaoTAC]) -> str:
+    """Converte instruções TAC para texto simples."""
+    return "\n".join(instr.para_string() for instr in instrucoes)
 
 
-def get_tac_with_lines(instructions: List[TACInstruction]) -> str:
-    """
-    Convert TAC instructions to text with line number annotations.
+def obter_tac_com_linhas(instrucoes: List[InstrucaoTAC]) -> str:
+    """Converte instruções TAC para texto com números de linha."""
+    linhas = []
+    linha_atual = None
 
-    Args:
-        instructions: List of TACInstruction objects
+    for instr in instrucoes:
+        num_linha = getattr(instr, 'linha', 0)
+        if num_linha != linha_atual:
+            if linha_atual is not None:
+                linhas.append("")
+            linhas.append(f"# Linha {num_linha}")
+            linha_atual = num_linha
 
-    Returns:
-        String with line annotations and instructions
+        info_tipo = ""
+        if hasattr(instr, 'tipo_dado') and instr.tipo_dado:
+            info_tipo = f"  ; [{instr.tipo_dado}]"
 
-    Example:
-        >>> text = get_tac_with_lines(instructions)
-        >>> print(text)
-        # Line 1
-        t0 = 5
-        t1 = 3
-        t2 = t0 + t1
-        # Line 2
-        ...
-    """
-    lines = []
-    current_line = None
+        linhas.append(f"    {instr.para_string()}{info_tipo}")
 
-    for instr in instructions:
-        line_num = getattr(instr, 'line', 0)
-        if line_num != current_line:
-            if current_line is not None:
-                lines.append("")
-            lines.append(f"# Line {line_num}")
-            current_line = line_num
-
-        type_info = ""
-        if hasattr(instr, 'data_type') and instr.data_type:
-            type_info = f"  ; [{instr.data_type}]"
-
-        lines.append(f"    {instr.to_string()}{type_info}")
-
-    return "\n".join(lines)
+    return "\n".join(linhas)
 
 
-# Main execution for standalone testing
 if __name__ == "__main__":
     import sys
 
-    # Default paths
-    default_ast = Path("outputs/RA3/arvore_atribuida.json")
-    default_output = Path("outputs/RA4")
+    ast_padrao = Path("outputs/RA3/arvore_atribuida.json")
+    saida_padrao = Path("outputs/RA4")
 
-    # Parse command line arguments
-    ast_path = Path(sys.argv[1]) if len(sys.argv) > 1 else default_ast
-    output_path = Path(sys.argv[2]) if len(sys.argv) > 2 else default_output
+    caminho_ast = Path(sys.argv[1]) if len(sys.argv) > 1 else ast_padrao
+    caminho_saida = Path(sys.argv[2]) if len(sys.argv) > 2 else saida_padrao
 
-    print(f"TAC Generator")
-    print(f"Input: {ast_path}")
-    print(f"Output: {output_path}")
+    print(f"Gerador TAC")
+    print(f"Entrada: {caminho_ast}")
+    print(f"Saída: {caminho_saida}")
     print("-" * 50)
 
-    # Generate TAC
-    result = gerarTAC(ast_path, output_path)
+    resultado = gerarTAC(caminho_ast, caminho_saida)
 
-    if result["success"]:
-        print(f"Success! Generated {result['statistics']['total_instructions']} instructions")
+    if resultado["sucesso"]:
+        print(f"Gerou {resultado['estatisticas']['total_instrucoes']} instruções")
         print()
-        print("Statistics:")
-        for key, value in result["statistics"].items():
-            print(f"  {key}: {value}")
+        print("Arquivos de saída:")
+        for fmt, caminho in resultado["arquivos_saida"].items():
+            print(f"  {fmt}: {caminho}")
         print()
-        print("Output files:")
-        for fmt, path in result["output_files"].items():
-            print(f"  {fmt}: {path}")
-        print()
-        print("TAC Output:")
+        print("TAC:")
         print("-" * 50)
-        print(get_tac_with_lines(result["instructions"]))
+        print(obter_tac_com_linhas(resultado["instrucoes"]))
     else:
-        print(f"Error: {result['error']}")
+        print(f"Erro: {resultado['erro']}")
         sys.exit(1)
