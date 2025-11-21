@@ -12,7 +12,7 @@ import json
 import os
 from typing import List, Dict, Any
 
-from .tac_instructions import TACInstruction, instruction_from_dict, TACBinaryOp, TACAssignment, TACUnaryOp, TACIfGoto, TACIfFalseGoto
+from .tac_instructions import TACInstruction, instruction_from_dict, TACBinaryOp, TACAssignment, TACUnaryOp, TACIfGoto, TACIfFalseGoto, TACGoto
 from .erros_compilador import TACError, FileError, JSONError, ValidationError
 
 
@@ -62,12 +62,13 @@ class TACOptimizer:
         Ordem de aplicação:
         1. Constant Folding - avalia operações constantes em tempo de compilação
         2. Constant Propagation - propaga constantes conhecidas, substituindo variáveis
+        3. Dead Code Elimination - remove código morto e inalcançável
 
         Returns:
             Dicionário com estatísticas das otimizações aplicadas
         """
         if not self.instructions:
-            return {'constant_folding': 0, 'constant_propagation': 0, 'total': 0}
+            return {'constant_folding': 0, 'constant_propagation': 0, 'dead_code_elimination': 0, 'total': 0}
 
         # 1. Constant Folding primeiro (avalia operações constantes)
         foldings = self.otimizar_constant_folding()
@@ -75,11 +76,15 @@ class TACOptimizer:
         # 2. Constant Propagation depois (substitui variáveis por constantes)
         propagations = self.otimizar_constant_propagation()
 
-        total_otimizacoes = propagations + foldings
+        # 3. Dead Code Elimination (remove código morto e inalcançável)
+        dead_code = self.otimizar_dead_code_elimination()
+
+        total_otimizacoes = propagations + foldings + dead_code
 
         return {
             'constant_folding': foldings,
             'constant_propagation': propagations,
+            'dead_code_elimination': dead_code,
             'total': total_otimizacoes
         }
 
@@ -189,6 +194,95 @@ class TACOptimizer:
                     return TACIfFalseGoto(condition=nova_cond, target=instr.target, line=instr.line), True
 
         return instr, False
+
+    #########################
+    # OTIMIZAÇÕES: DEAD CODE ELIMINATION
+    #########################
+
+    def otimizar_dead_code_elimination(self) -> int:
+        """
+        Aplica dead code elimination: remove código morto e inalcançável.
+
+        Remove:
+        - Atribuições a variáveis nunca utilizadas
+        - Código após saltos incondicionais (goto)
+
+        Returns:
+            Número de instruções removidas
+        """
+        if not self.instructions:
+            return 0
+
+        # Fase 1: Análise de liveness (variáveis utilizadas)
+        used_vars = self._analisar_liveness()
+
+        # Fase 2: Remover código morto e inalcançável
+        novas_instrucoes = []
+        removidas = 0
+        skip_until_label = None
+
+        for idx, instr in enumerate(self.instructions):
+            # Se estamos pulando código inalcançável
+            if skip_until_label:
+                # Verificar se encontrou o label alvo
+                if isinstance(instr, TACAssignment) and instr.source == '' and instr.dest == skip_until_label:
+                    skip_until_label = None  # Encontrou o label, para de pular
+                else:
+                    removidas += 1
+                    continue
+
+            # Verificar se é um goto incondicional
+            if isinstance(instr, TACGoto):
+                # Verificar se o label alvo existe depois nesta sequência linear
+                target = instr.target
+                label_found_later = False
+                for future_instr in self.instructions[idx+1:]:
+                    if isinstance(future_instr, TACAssignment) and future_instr.source == '' and future_instr.dest == target:
+                        label_found_later = True
+                        break
+                if label_found_later:
+                    skip_until_label = instr.target
+                novas_instrucoes.append(instr)
+                continue
+
+            # Verificar se é uma atribuição a variável não utilizada
+            dest_var = getattr(instr, 'result', getattr(instr, 'dest', None))
+            if (dest_var and dest_var not in used_vars and dest_var.startswith('t') and
+                isinstance(instr, (TACAssignment, TACBinaryOp, TACUnaryOp)) and
+                getattr(instr, 'source', '') != ''):  # Não remover labels (source vazia) ou outputs
+                removidas += 1
+                continue
+
+            # Manter instrução
+            novas_instrucoes.append(instr)
+
+        self.instructions = novas_instrucoes
+        return removidas
+
+    #########################
+    # HELPERS PARA DEAD CODE ELIMINATION
+    #########################
+
+    def _analisar_liveness(self) -> set:
+        """Analisa quais variáveis são utilizadas no código."""
+        used_vars = set()
+        
+        # Coletar todas as variáveis utilizadas como operandos
+        for instr in self.instructions:
+            # Adicionar operandos utilizados
+            if hasattr(instr, 'operand1') and instr.operand1 and not TACInstruction.is_constant(instr.operand1):
+                used_vars.add(instr.operand1)
+            if hasattr(instr, 'operand2') and instr.operand2 and not TACInstruction.is_constant(instr.operand2):
+                used_vars.add(instr.operand2)
+            if hasattr(instr, 'operand') and instr.operand and not TACInstruction.is_constant(instr.operand):
+                used_vars.add(instr.operand)
+            if hasattr(instr, 'condition') and instr.condition and not TACInstruction.is_constant(instr.condition):
+                used_vars.add(instr.condition)
+            # Para assignments, adicionar source se não constante
+            if isinstance(instr, TACAssignment) and instr.source and not TACInstruction.is_constant(instr.source):
+                used_vars.add(instr.source)
+                
+        return used_vars
 
     #########################
     # OTIMIZAÇÕES: CONSTANT FOLDING
