@@ -1,6 +1,6 @@
 # Árvore Sintática Abstrata Atribuída
 
-**Gerado em:** 2025-11-21 16:10:28
+**Gerado em:** 2025-11-21 18:24:03
 
 ## Resumo
 
@@ -110,10 +110,10 @@ LINHA : boolean
 ```
 LINHA : boolean
   LOGIC_OP (&&) : boolean
-    COMP_OP (>)
+    COMP_OP (>) : boolean
       LINHA : int [5] {numero_inteiro}
       LINHA : int [3] {numero_inteiro}
-    COMP_OP (<)
+    COMP_OP (<) : boolean
       LINHA : int [2] {numero_inteiro}
       LINHA : int [1] {numero_inteiro}
 ```
@@ -128,7 +128,7 @@ LINHA : boolean
 LINHA : int
   LINHA
     LINHA : int [10] {numero_inteiro}
-    LINHA [X] {variavel}
+    LINHA : int [X] {variavel}
 ```
 
 ### Linha 10
@@ -141,7 +141,7 @@ LINHA : int
 LINHA : int
   LINHA
     LINHA : int [20] {numero_inteiro}
-    LINHA [A] {variavel}
+    LINHA : int [A] {variavel}
 ```
 
 ### Linha 11
@@ -154,7 +154,7 @@ LINHA : int
 LINHA : int
   LINHA
     LINHA : int [10] {numero_inteiro}
-    LINHA [I] {variavel}
+    LINHA : int [I] {variavel}
 ```
 
 ### Linha 12
@@ -167,7 +167,7 @@ LINHA : int
 LINHA : int
   LINHA
     LINHA : int [0] {numero_inteiro}
-    LINHA [COUNTER] {variavel}
+    LINHA : int [COUNTER] {variavel}
 ```
 
 ### Linha 13
@@ -179,10 +179,10 @@ LINHA : int
 ```
 LINHA : int
   LINHA
-    ARITH_OP (+)
-      LINHA [X] {variavel}
+    ARITH_OP (+) : int
+      LINHA : int [X] {variavel}
       LINHA : int [5] {numero_inteiro}
-    LINHA [Y] {variavel}
+    LINHA : int [Y] {variavel}
 ```
 
 ### Linha 14
@@ -194,10 +194,10 @@ LINHA : int
 ```
 LINHA : int
   LINHA
-    ARITH_OP (-)
-      LINHA [A] {variavel}
-      LINHA [X] {variavel}
-    LINHA [B] {variavel}
+    ARITH_OP (-) : int
+      LINHA : int [A] {variavel}
+      LINHA : int [X] {variavel}
+    LINHA : int [B] {variavel}
 ```
 
 ### Linha 15
@@ -233,15 +233,15 @@ LINHA : int
 ```
 LINHA : int
   CONTROL_OP (WHILE)
-    COMP_OP (<)
-      LINHA [COUNTER] {variavel}
+    COMP_OP (<) : boolean
+      LINHA : int [COUNTER] {variavel}
       LINHA : int [5] {numero_inteiro}
     LINHA
       LINHA
-        ARITH_OP (+)
-          LINHA [COUNTER] {variavel}
+        ARITH_OP (+) : int
+          LINHA : int [COUNTER] {variavel}
           LINHA : int [1] {numero_inteiro}
-        LINHA [COUNTER] {variavel}
+        LINHA : int [COUNTER] {variavel}
 ```
 
 ### Linha 18
@@ -253,15 +253,15 @@ LINHA : int
 ```
 LINHA : int
   CONTROL_OP (WHILE)
-    COMP_OP (>)
-      LINHA [B] {variavel}
+    COMP_OP (>) : boolean
+      LINHA : int [B] {variavel}
       LINHA : int [0] {numero_inteiro}
     LINHA
       LINHA
-        ARITH_OP (-)
-          LINHA [B] {variavel}
+        ARITH_OP (-) : int
+          LINHA : int [B] {variavel}
           LINHA : int [1] {numero_inteiro}
-        LINHA [B] {variavel}
+        LINHA : int [B] {variavel}
 ```
 
 ### Linha 19
@@ -279,8 +279,8 @@ LINHA : int
       LINHA : int [10] {numero_inteiro}
     LINHA
       LINHA : int [1] {numero_inteiro}
-    ARITH_OP (*)
-      LINHA [I] {variavel}
+    ARITH_OP (*) : int
+      LINHA : int [I] {variavel}
       LINHA : int [2] {numero_inteiro}
 ```
 
@@ -293,8 +293,8 @@ LINHA : int
 ```
 LINHA : int
   CONTROL_OP (IFELSE)
-    COMP_OP (>)
-      LINHA [X] {variavel}
+    COMP_OP (>) : boolean
+      LINHA : int [X] {variavel}
       LINHA : int [15] {numero_inteiro}
     LINHA
       LINHA : int [100] {numero_inteiro}
@@ -311,23 +311,23 @@ LINHA : int
 ```
 LINHA : real
   CONTROL_OP (IFELSE)
-    LOGIC_OP (&&)
-      COMP_OP (>)
-        LINHA [A] {variavel}
+    LOGIC_OP (&&) : boolean
+      COMP_OP (>) : boolean
+        LINHA : int [A] {variavel}
         LINHA : int [10] {numero_inteiro}
-      COMP_OP (>)
-        LINHA [Y] {variavel}
+      COMP_OP (>) : boolean
+        LINHA : int [Y] {variavel}
         LINHA : int [5] {numero_inteiro}
     LINHA
-      ARITH_OP (|)
-        ARITH_OP (+)
-          LINHA [A] {variavel}
-          LINHA [Y] {variavel}
+      ARITH_OP (|) : real
+        ARITH_OP (+) : int
+          LINHA : int [A] {variavel}
+          LINHA : int [Y] {variavel}
         LINHA : real [2.0] {numero_real}
     LINHA
-      ARITH_OP (*)
-        LINHA [A] {variavel}
-        LINHA [Y] {variavel}
+      ARITH_OP (*) : int
+        LINHA : int [A] {variavel}
+        LINHA : int [Y] {variavel}
 ```
 
 ### Linha 22
@@ -339,10 +339,10 @@ LINHA : real
 ```
 LINHA : int
   ARITH_OP (*) : int
-    ARITH_OP (+)
+    ARITH_OP (+) : int
       LINHA : int [5] {numero_inteiro}
       LINHA : int [3] {numero_inteiro}
-    ARITH_OP (*)
+    ARITH_OP (*) : int
       LINHA : int [2] {numero_inteiro}
       LINHA : int [4] {numero_inteiro}
 ```

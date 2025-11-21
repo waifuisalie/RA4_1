@@ -257,6 +257,7 @@ def avaliar_seq_tipo(seq: Dict[str, Any], linha_atual: int, tabela: TabelaSimbol
                 return (None, tipos_ops, vals)
             try:
                 tipo_resultado = tipos.tipo_resultado_aritmetica(left, right, operador)
+                seq['tipo'] = tipo_resultado
                 return (tipo_resultado, tipos_ops, vals)
             except ValueError as ve:
                 raise ErroSemantico(linha_atual, str(ve), _construir_contexto_expressao(seq))
@@ -267,6 +268,7 @@ def avaliar_seq_tipo(seq: Dict[str, Any], linha_atual: int, tabela: TabelaSimbol
                 return (None, tipos_ops, vals)
             try:
                 tipo_resultado = tipos.tipo_resultado_comparacao(left, right)
+                seq['tipo'] = tipo_resultado
                 return (tipo_resultado, tipos_ops, vals)
             except ValueError as ve:
                 raise ErroSemantico(linha_atual, str(ve), _construir_contexto_expressao(seq))
@@ -278,6 +280,7 @@ def avaliar_seq_tipo(seq: Dict[str, Any], linha_atual: int, tabela: TabelaSimbol
                     return (None, tipos_ops, vals)
                 try:
                     tipo_resultado = tipos.tipo_resultado_logico(a, b)
+                    seq['tipo'] = tipo_resultado
                     return (tipo_resultado, tipos_ops, vals)
                 except ValueError as ve:
                     raise ErroSemantico(linha_atual, str(ve), _construir_contexto_expressao(seq))
@@ -287,6 +290,7 @@ def avaliar_seq_tipo(seq: Dict[str, Any], linha_atual: int, tabela: TabelaSimbol
                     return (None, tipos_ops, vals)
                 try:
                     tipo_resultado = tipos.tipo_resultado_logico_unario(a)
+                    seq['tipo'] = tipo_resultado
                     return (tipo_resultado, tipos_ops, vals)
                 except ValueError as ve:
                     raise ErroSemantico(linha_atual, str(ve), _construir_contexto_expressao(seq))

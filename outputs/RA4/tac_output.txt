@@ -1,5 +1,5 @@
 TAC Output - Generated from arvore_atribuida.json
-Generated: 2025-11-21 16:10:35
+Generated: 2025-11-21 18:24:20
 ======================================================================
 
 Line  1: t0 = 5                    [type: int]
@@ -39,10 +39,10 @@ Line 11: I = t30                   [type: int]
 Line 12: t31 = 0                   [type: int]
 Line 12: COUNTER = t31             [type: int]
 Line 13: t32 = 5                   [type: int]
-Line 13: t33 = X + t32             
-Line 13: Y = t33                   
-Line 14: t34 = A - X               
-Line 14: B = t34                   
+Line 13: t33 = X + t32             [type: int]
+Line 13: Y = t33                   [type: int]
+Line 14: t34 = A - X               [type: int]
+Line 14: B = t34                   [type: int]
 Line 15: t35 = 1                   [type: int]
 Line 16: t36 = 2                   [type: int]
 Line 17: L0:                       
@@ -50,8 +50,8 @@ Line 17: t37 = 5                   [type: int]
 Line 17: t38 = COUNTER < t37       [type: boolean]
 Line 17: ifFalse t38 goto L1       
 Line 17: t39 = 1                   [type: int]
-Line 17: t40 = COUNTER + t39       
-Line 17: COUNTER = t40             
+Line 17: t40 = COUNTER + t39       [type: int]
+Line 17: COUNTER = t40             [type: int]
 Line 17: goto L0                   
 Line 17: L1:                       
 Line 18: L2:                       
@@ -59,8 +59,8 @@ Line 18: t41 = 0                   [type: int]
 Line 18: t42 = B > t41             [type: boolean]
 Line 18: ifFalse t42 goto L3       
 Line 18: t43 = 1                   [type: int]
-Line 18: t44 = B - t43             
-Line 18: B = t44                   
+Line 18: t44 = B - t43             [type: int]
+Line 18: B = t44                   [type: int]
 Line 18: goto L2                   
 Line 18: L3:                       
 Line 19: t45 = 1                   [type: int]
@@ -71,7 +71,7 @@ Line 19: L4:
 Line 19: t49 = t48 <= t46          [type: boolean]
 Line 19: ifFalse t49 goto L5       
 Line 19: t50 = 2                   [type: int]
-Line 19: t51 = I * t50             
+Line 19: t51 = I * t50             [type: int]
 Line 19: t52 = t48 + t47           [type: int]
 Line 19: t48 = t52                 [type: int]
 Line 19: goto L4                   
@@ -90,19 +90,19 @@ Line 21: t59 = 5                   [type: int]
 Line 21: t60 = Y > t59             [type: boolean]
 Line 21: t61 = t58 && t60          [type: boolean]
 Line 21: ifFalse t61 goto L8       
-Line 21: t62 = A + Y               
+Line 21: t62 = A + Y               [type: int]
 Line 21: t63 = 2.0                 [type: real]
-Line 21: t64 = t62 | t63           
+Line 21: t64 = t62 | t63           [type: real]
 Line 21: goto L9                   
 Line 21: L8:                       
-Line 21: t65 = A * Y               
+Line 21: t65 = A * Y               [type: int]
 Line 21: L9:                       
 Line 22: t66 = 5                   [type: int]
 Line 22: t67 = 3                   [type: int]
-Line 22: t68 = t66 + t67           
+Line 22: t68 = t66 + t67           [type: int]
 Line 22: t69 = 2                   [type: int]
 Line 22: t70 = 4                   [type: int]
-Line 22: t71 = t69 * t70           
+Line 22: t71 = t69 * t70           [type: int]
 Line 22: t72 = t68 * t71           [type: int]
 
 ======================================================================

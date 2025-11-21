@@ -229,7 +229,7 @@
           "filhos": [
             {
               "tipo_vertice": "COMP_OP",
-              "tipo_inferido": null,
+              "tipo_inferido": "boolean",
               "numero_linha": 8,
               "filhos": [
                 {
@@ -253,7 +253,7 @@
             },
             {
               "tipo_vertice": "COMP_OP",
-              "tipo_inferido": null,
+              "tipo_inferido": "boolean",
               "numero_linha": 8,
               "filhos": [
                 {
@@ -300,7 +300,7 @@
             },
             {
               "tipo_vertice": "LINHA",
-              "tipo_inferido": null,
+              "tipo_inferido": "int",
               "numero_linha": 9,
               "filhos": [],
               "valor": "X",
@@ -330,7 +330,7 @@
             },
             {
               "tipo_vertice": "LINHA",
-              "tipo_inferido": null,
+              "tipo_inferido": "int",
               "numero_linha": 10,
               "filhos": [],
               "valor": "A",
@@ -360,7 +360,7 @@
             },
             {
               "tipo_vertice": "LINHA",
-              "tipo_inferido": null,
+              "tipo_inferido": "int",
               "numero_linha": 11,
               "filhos": [],
               "valor": "I",
@@ -390,7 +390,7 @@
             },
             {
               "tipo_vertice": "LINHA",
-              "tipo_inferido": null,
+              "tipo_inferido": "int",
               "numero_linha": 12,
               "filhos": [],
               "valor": "COUNTER",
@@ -412,12 +412,12 @@
           "filhos": [
             {
               "tipo_vertice": "ARITH_OP",
-              "tipo_inferido": null,
+              "tipo_inferido": "int",
               "numero_linha": 13,
               "filhos": [
                 {
                   "tipo_vertice": "LINHA",
-                  "tipo_inferido": null,
+                  "tipo_inferido": "int",
                   "numero_linha": 13,
                   "filhos": [],
                   "valor": "X",
@@ -436,7 +436,7 @@
             },
             {
               "tipo_vertice": "LINHA",
-              "tipo_inferido": null,
+              "tipo_inferido": "int",
               "numero_linha": 13,
               "filhos": [],
               "valor": "Y",
@@ -458,12 +458,12 @@
           "filhos": [
             {
               "tipo_vertice": "ARITH_OP",
-              "tipo_inferido": null,
+              "tipo_inferido": "int",
               "numero_linha": 14,
               "filhos": [
                 {
                   "tipo_vertice": "LINHA",
-                  "tipo_inferido": null,
+                  "tipo_inferido": "int",
                   "numero_linha": 14,
                   "filhos": [],
                   "valor": "A",
@@ -471,7 +471,7 @@
                 },
                 {
                   "tipo_vertice": "LINHA",
-                  "tipo_inferido": null,
+                  "tipo_inferido": "int",
                   "numero_linha": 14,
                   "filhos": [],
                   "valor": "X",
@@ -482,7 +482,7 @@
             },
             {
               "tipo_vertice": "LINHA",
-              "tipo_inferido": null,
+              "tipo_inferido": "int",
               "numero_linha": 14,
               "filhos": [],
               "valor": "B",
@@ -548,12 +548,12 @@
           "filhos": [
             {
               "tipo_vertice": "COMP_OP",
-              "tipo_inferido": null,
+              "tipo_inferido": "boolean",
               "numero_linha": 17,
               "filhos": [
                 {
                   "tipo_vertice": "LINHA",
-                  "tipo_inferido": null,
+                  "tipo_inferido": "int",
                   "numero_linha": 17,
                   "filhos": [],
                   "valor": "COUNTER",
@@ -582,12 +582,12 @@
                   "filhos": [
                     {
                       "tipo_vertice": "ARITH_OP",
-                      "tipo_inferido": null,
+                      "tipo_inferido": "int",
                       "numero_linha": 17,
                       "filhos": [
                         {
                           "tipo_vertice": "LINHA",
-                          "tipo_inferido": null,
+                          "tipo_inferido": "int",
                           "numero_linha": 17,
                           "filhos": [],
                           "valor": "COUNTER",
@@ -606,7 +606,7 @@
                     },
                     {
                       "tipo_vertice": "LINHA",
-                      "tipo_inferido": null,
+                      "tipo_inferido": "int",
                       "numero_linha": 17,
                       "filhos": [],
                       "valor": "COUNTER",
@@ -633,12 +633,12 @@
           "filhos": [
             {
               "tipo_vertice": "COMP_OP",
-              "tipo_inferido": null,
+              "tipo_inferido": "boolean",
               "numero_linha": 18,
               "filhos": [
                 {
                   "tipo_vertice": "LINHA",
-                  "tipo_inferido": null,
+                  "tipo_inferido": "int",
                   "numero_linha": 18,
                   "filhos": [],
                   "valor": "B",
@@ -667,12 +667,12 @@
                   "filhos": [
                     {
                       "tipo_vertice": "ARITH_OP",
-                      "tipo_inferido": null,
+                      "tipo_inferido": "int",
                       "numero_linha": 18,
                       "filhos": [
                         {
                           "tipo_vertice": "LINHA",
-                          "tipo_inferido": null,
+                          "tipo_inferido": "int",
                           "numero_linha": 18,
                           "filhos": [],
                           "valor": "B",
@@ -691,7 +691,7 @@
                     },
                     {
                       "tipo_vertice": "LINHA",
-                      "tipo_inferido": null,
+                      "tipo_inferido": "int",
                       "numero_linha": 18,
                       "filhos": [],
                       "valor": "B",
@@ -763,12 +763,12 @@
             },
             {
               "tipo_vertice": "ARITH_OP",
-              "tipo_inferido": null,
+              "tipo_inferido": "int",
               "numero_linha": 19,
               "filhos": [
                 {
                   "tipo_vertice": "LINHA",
-                  "tipo_inferido": null,
+                  "tipo_inferido": "int",
                   "numero_linha": 19,
                   "filhos": [],
                   "valor": "I",
@@ -802,12 +802,12 @@
           "filhos": [
             {
               "tipo_vertice": "COMP_OP",
-              "tipo_inferido": null,
+              "tipo_inferido": "boolean",
               "numero_linha": 20,
               "filhos": [
                 {
                   "tipo_vertice": "LINHA",
-                  "tipo_inferido": null,
+                  "tipo_inferido": "int",
                   "numero_linha": 20,
                   "filhos": [],
                   "valor": "X",
@@ -871,17 +871,17 @@
           "filhos": [
             {
               "tipo_vertice": "LOGIC_OP",
-              "tipo_inferido": null,
+              "tipo_inferido": "boolean",
               "numero_linha": 21,
               "filhos": [
                 {
                   "tipo_vertice": "COMP_OP",
-                  "tipo_inferido": null,
+                  "tipo_inferido": "boolean",
                   "numero_linha": 21,
                   "filhos": [
                     {
                       "tipo_vertice": "LINHA",
-                      "tipo_inferido": null,
+                      "tipo_inferido": "int",
                       "numero_linha": 21,
                       "filhos": [],
                       "valor": "A",
@@ -900,12 +900,12 @@
                 },
                 {
                   "tipo_vertice": "COMP_OP",
-                  "tipo_inferido": null,
+                  "tipo_inferido": "boolean",
                   "numero_linha": 21,
                   "filhos": [
                     {
                       "tipo_vertice": "LINHA",
-                      "tipo_inferido": null,
+                      "tipo_inferido": "int",
                       "numero_linha": 21,
                       "filhos": [],
                       "valor": "Y",
@@ -932,17 +932,17 @@
               "filhos": [
                 {
                   "tipo_vertice": "ARITH_OP",
-                  "tipo_inferido": null,
+                  "tipo_inferido": "real",
                   "numero_linha": 21,
                   "filhos": [
                     {
                       "tipo_vertice": "ARITH_OP",
-                      "tipo_inferido": null,
+                      "tipo_inferido": "int",
                       "numero_linha": 21,
                       "filhos": [
                         {
                           "tipo_vertice": "LINHA",
-                          "tipo_inferido": null,
+                          "tipo_inferido": "int",
                           "numero_linha": 21,
                           "filhos": [],
                           "valor": "A",
@@ -950,7 +950,7 @@
                         },
                         {
                           "tipo_vertice": "LINHA",
-                          "tipo_inferido": null,
+                          "tipo_inferido": "int",
                           "numero_linha": 21,
                           "filhos": [],
                           "valor": "Y",
@@ -979,12 +979,12 @@
               "filhos": [
                 {
                   "tipo_vertice": "ARITH_OP",
-                  "tipo_inferido": null,
+                  "tipo_inferido": "int",
                   "numero_linha": 21,
                   "filhos": [
                     {
                       "tipo_vertice": "LINHA",
-                      "tipo_inferido": null,
+                      "tipo_inferido": "int",
                       "numero_linha": 21,
                       "filhos": [],
                       "valor": "A",
@@ -992,7 +992,7 @@
                     },
                     {
                       "tipo_vertice": "LINHA",
-                      "tipo_inferido": null,
+                      "tipo_inferido": "int",
                       "numero_linha": 21,
                       "filhos": [],
                       "valor": "Y",
@@ -1020,7 +1020,7 @@
           "filhos": [
             {
               "tipo_vertice": "ARITH_OP",
-              "tipo_inferido": null,
+              "tipo_inferido": "int",
               "numero_linha": 22,
               "filhos": [
                 {
@@ -1044,7 +1044,7 @@
             },
             {
               "tipo_vertice": "ARITH_OP",
-              "tipo_inferido": null,
+              "tipo_inferido": "int",
               "numero_linha": 22,
               "filhos": [
                 {

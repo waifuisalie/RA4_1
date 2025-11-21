@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "generated_at": "2025-11-21 16:10:35",
+    "generated_at": "2025-11-21 18:24:20",
     "source_ast": "C:\\Users\\Cliente\\Desktop\\2025-2\\Linguagens Formais e Compiladores\\RA4 Parte 1\\RA4_1\\outputs\\RA3\\arvore_atribuida.json",
     "total_instructions": 102
   },
@@ -295,12 +295,14 @@
       "line": 13,
       "instruction": "t33 = X + t32",
       "type": "TACBinaryOp",
+      "data_type": "int",
       "operator": "+"
     },
     {
       "line": 13,
       "instruction": "Y = t33",
       "type": "TACCopy",
+      "data_type": "int",
       "dest": "Y",
       "source": "t33"
     },
@@ -308,12 +310,14 @@
       "line": 14,
       "instruction": "t34 = A - X",
       "type": "TACBinaryOp",
+      "data_type": "int",
       "operator": "-"
     },
     {
       "line": 14,
       "instruction": "B = t34",
       "type": "TACCopy",
+      "data_type": "int",
       "dest": "B",
       "source": "t34"
     },
@@ -370,12 +374,14 @@
       "line": 17,
       "instruction": "t40 = COUNTER + t39",
       "type": "TACBinaryOp",
+      "data_type": "int",
       "operator": "+"
     },
     {
       "line": 17,
       "instruction": "COUNTER = t40",
       "type": "TACCopy",
+      "data_type": "int",
       "dest": "COUNTER",
       "source": "t40"
     },
@@ -426,12 +432,14 @@
       "line": 18,
       "instruction": "t44 = B - t43",
       "type": "TACBinaryOp",
+      "data_type": "int",
       "operator": "-"
     },
     {
       "line": 18,
       "instruction": "B = t44",
       "type": "TACCopy",
+      "data_type": "int",
       "dest": "B",
       "source": "t44"
     },
@@ -506,6 +514,7 @@
       "line": 19,
       "instruction": "t51 = I * t50",
       "type": "TACBinaryOp",
+      "data_type": "int",
       "operator": "*"
     },
     {
@@ -630,6 +639,7 @@
       "line": 21,
       "instruction": "t62 = A + Y",
       "type": "TACBinaryOp",
+      "data_type": "int",
       "operator": "+"
     },
     {
@@ -644,6 +654,7 @@
       "line": 21,
       "instruction": "t64 = t62 | t63",
       "type": "TACBinaryOp",
+      "data_type": "real",
       "operator": "|"
     },
     {
@@ -660,6 +671,7 @@
       "line": 21,
       "instruction": "t65 = A * Y",
       "type": "TACBinaryOp",
+      "data_type": "int",
       "operator": "*"
     },
     {
@@ -687,6 +699,7 @@
       "line": 22,
       "instruction": "t68 = t66 + t67",
       "type": "TACBinaryOp",
+      "data_type": "int",
       "operator": "+"
     },
     {
@@ -709,6 +722,7 @@
       "line": 22,
       "instruction": "t71 = t69 * t70",
       "type": "TACBinaryOp",
+      "data_type": "int",
       "operator": "*"
     },
     {

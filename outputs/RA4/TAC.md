@@ -1,6 +1,6 @@
 # TAC Output - arvore_atribuida.json
 
-**Generated:** 2025-11-21 15:23:14
+**Generated:** 2025-11-21 18:22:49
 
 ## Statistics
 
@@ -113,17 +113,17 @@
     t49 = t45 || t48  ; [boolean]
 
 # Line 23
-    t50 = A + B
-    SUM = t50
+    t50 = A + B  ; [int]
+    SUM = t50  ; [int]
 
 # Line 24
-    t51 = X * Y
-    PRODUCT = t51
+    t51 = X * Y  ; [real]
+    PRODUCT = t51  ; [real]
 
 # Line 27
     t52 = 10  ; [int]
-    t53 = SUM + t52
-    RESULT = t53
+    t53 = SUM + t52  ; [int]
+    RESULT = t53  ; [int]
 
 # Line 29
     t54 = 100  ; [int]
@@ -157,11 +157,11 @@
     t64 = SUM >= t63  ; [boolean]
     ifFalse t64 goto L4
     t65 = 10  ; [int]
-    t66 = SUM - t65
+    t66 = SUM - t65  ; [int]
     goto L5
     L4:
     t67 = 10  ; [int]
-    t68 = SUM + t67
+    t68 = SUM + t67  ; [int]
     L5:
 
 # Line 34
@@ -180,8 +180,8 @@
     t74 = COUNTER < t73  ; [boolean]
     ifFalse t74 goto L9
     t75 = 1  ; [int]
-    t76 = COUNTER + t75
-    COUNTER = t76
+    t76 = COUNTER + t75  ; [int]
+    COUNTER = t76  ; [int]
     goto L8
     L9:
 
@@ -191,8 +191,8 @@
     t78 = INDEX < t77  ; [boolean]
     ifFalse t78 goto L11
     t79 = 2  ; [int]
-    t80 = INDEX + t79
-    INDEX = t80
+    t80 = INDEX + t79  ; [int]
+    INDEX = t80  ; [int]
     goto L10
     L11:
 
@@ -202,8 +202,8 @@
     t82 = A < t81  ; [boolean]
     ifFalse t82 goto L13
     t83 = 5  ; [int]
-    t84 = A + t83
-    A = t84
+    t84 = A + t83  ; [int]
+    A = t84  ; [int]
     goto L12
     L13:
 
@@ -216,8 +216,8 @@
     t89 = t88 <= t86  ; [boolean]
     ifFalse t89 goto L15
     t90 = 1  ; [int]
-    t91 = I + t90
-    I = t91
+    t91 = I + t90  ; [int]
+    I = t91  ; [int]
     t92 = t88 + t87  ; [int]
     t88 = t92  ; [int]
     goto L14
@@ -232,8 +232,8 @@
     t97 = t96 <= t94  ; [boolean]
     ifFalse t97 goto L17
     t98 = 2  ; [int]
-    t99 = J * t98
-    J = t99
+    t99 = J * t98  ; [int]
+    J = t99  ; [int]
     t100 = t96 + t95  ; [int]
     t96 = t100  ; [int]
     goto L16
@@ -247,8 +247,8 @@
     L18:
     t105 = t104 <= t102  ; [boolean]
     ifFalse t105 goto L19
-    t106 = SUM + K
-    SUM = t106
+    t106 = SUM + K  ; [int]
+    SUM = t106  ; [int]
     t107 = t104 + t103  ; [int]
     t104 = t107  ; [int]
     goto L18

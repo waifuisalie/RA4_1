@@ -1,6 +1,6 @@
 # Julgamento de Tipos
 
-**Gerado em:** 2025-11-21 16:10:28
+**Gerado em:** 2025-11-21 18:24:03
 
 **Total de expressões analisadas:** 22
 
@@ -175,10 +175,12 @@ Operador de comparação: resultado sempre `boolean`.
     - `5` : `int`
     - `3` : `int`
     - Operador: `>`
+    - Resultado: `boolean`
 - **Operando 2:** `(2 1 <)` → tipo: `boolean`
     - `2` : `int`
     - `1` : `int`
     - Operador: `<`
+    - Resultado: `boolean`
 - **Operador:** `&&`
 
 ### Regra Aplicada:
@@ -243,6 +245,7 @@ Operador lógico: resultado sempre `boolean`. Modo permissivo aceita conversão 
     - `X` : `int`
     - `5` : `int`
     - Operador: `+`
+    - Resultado: `int`
 - **Operando 2:** `Y` → tipo: `int`
 
 ### Tipo Resultante: `int`
@@ -256,6 +259,7 @@ Operador lógico: resultado sempre `boolean`. Modo permissivo aceita conversão 
     - `A` : `int`
     - `X` : `int`
     - Operador: `-`
+    - Resultado: `int`
 - **Operando 2:** `B` → tipo: `int`
 
 ### Tipo Resultante: `int`
@@ -287,6 +291,7 @@ Operador lógico: resultado sempre `boolean`. Modo permissivo aceita conversão 
     - `COUNTER` : `int`
     - `5` : `int`
     - Operador: `<`
+    - Resultado: `boolean`
 - **Operando 2:** `((COUNTER 1 +) COUNTER)` → tipo: `int`
 - **Operador:** `WHILE`
 
@@ -309,6 +314,7 @@ Operador lógico: resultado sempre `boolean`. Modo permissivo aceita conversão 
     - `B` : `int`
     - `0` : `int`
     - Operador: `>`
+    - Resultado: `boolean`
 - **Operando 2:** `((B 1 -) B)` → tipo: `int`
 - **Operador:** `WHILE`
 
@@ -334,6 +340,7 @@ Operador lógico: resultado sempre `boolean`. Modo permissivo aceita conversão 
     - `I` : `int`
     - `2` : `int`
     - Operador: `*`
+    - Resultado: `int`
 - **Operador:** `FOR`
 
 ### Regra Aplicada:
@@ -355,6 +362,7 @@ Operador lógico: resultado sempre `boolean`. Modo permissivo aceita conversão 
     - `X` : `int`
     - `15` : `int`
     - Operador: `>`
+    - Resultado: `boolean`
 - **Operando 2:** `(100)` → tipo: `int`
 - **Operando 3:** `(200)` → tipo: `int`
 - **Operador:** `IFELSE`
@@ -376,6 +384,7 @@ Operador lógico: resultado sempre `boolean`. Modo permissivo aceita conversão 
 ### Análise de Tipos:
 - **Operando 1:** `((A 10 >) (Y 5 >) &&)` → tipo: `boolean`
     - Operador: `&&`
+    - Resultado: `boolean`
 - **Operando 2:** `((A Y +) 2.0 |)` → tipo: `real`
 - **Operando 3:** `(A Y *)` → tipo: `int`
 - **Operador:** `IFELSE`
@@ -402,10 +411,12 @@ Tipo promovido de `int` para `real` devido a operando `real`.
     - `5` : `int`
     - `3` : `int`
     - Operador: `+`
+    - Resultado: `int`
 - **Operando 2:** `(2 4 *)` → tipo: `int`
     - `2` : `int`
     - `4` : `int`
     - Operador: `*`
+    - Resultado: `int`
 - **Operador:** `*`
 
 ### Regra Aplicada:

@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "generated_at": "2025-11-21T15:23:14.859335",
+    "generated_at": "2025-11-21T18:22:49.260164",
     "generator": "RA4 TAC Generator",
     "version": "1.0",
     "source_file": "arvore_atribuida.json"
@@ -450,14 +450,14 @@
       "operator": "+",
       "operand2": "B",
       "line": 23,
-      "data_type": null
+      "data_type": "int"
     },
     {
       "type": "copy",
       "dest": "SUM",
       "source": "t50",
       "line": 23,
-      "data_type": null
+      "data_type": "int"
     },
     {
       "type": "binary_op",
@@ -466,14 +466,14 @@
       "operator": "*",
       "operand2": "Y",
       "line": 24,
-      "data_type": null
+      "data_type": "real"
     },
     {
       "type": "copy",
       "dest": "PRODUCT",
       "source": "t51",
       "line": 24,
-      "data_type": null
+      "data_type": "real"
     },
     {
       "type": "assignment",
@@ -489,14 +489,14 @@
       "operator": "+",
       "operand2": "t52",
       "line": 27,
-      "data_type": null
+      "data_type": "int"
     },
     {
       "type": "copy",
       "dest": "RESULT",
       "source": "t53",
       "line": 27,
-      "data_type": null
+      "data_type": "int"
     },
     {
       "type": "assignment",
@@ -657,7 +657,7 @@
       "operator": "-",
       "operand2": "t65",
       "line": 33,
-      "data_type": null
+      "data_type": "int"
     },
     {
       "type": "goto",
@@ -683,7 +683,7 @@
       "operator": "+",
       "operand2": "t67",
       "line": 33,
-      "data_type": null
+      "data_type": "int"
     },
     {
       "type": "label",
@@ -782,14 +782,14 @@
       "operator": "+",
       "operand2": "t75",
       "line": 35,
-      "data_type": null
+      "data_type": "int"
     },
     {
       "type": "copy",
       "dest": "COUNTER",
       "source": "t76",
       "line": 35,
-      "data_type": null
+      "data_type": "int"
     },
     {
       "type": "goto",
@@ -842,14 +842,14 @@
       "operator": "+",
       "operand2": "t79",
       "line": 36,
-      "data_type": null
+      "data_type": "int"
     },
     {
       "type": "copy",
       "dest": "INDEX",
       "source": "t80",
       "line": 36,
-      "data_type": null
+      "data_type": "int"
     },
     {
       "type": "goto",
@@ -902,14 +902,14 @@
       "operator": "+",
       "operand2": "t83",
       "line": 37,
-      "data_type": null
+      "data_type": "int"
     },
     {
       "type": "copy",
       "dest": "A",
       "source": "t84",
       "line": 37,
-      "data_type": null
+      "data_type": "int"
     },
     {
       "type": "goto",
@@ -983,14 +983,14 @@
       "operator": "+",
       "operand2": "t90",
       "line": 38,
-      "data_type": null
+      "data_type": "int"
     },
     {
       "type": "copy",
       "dest": "I",
       "source": "t91",
       "line": 38,
-      "data_type": null
+      "data_type": "int"
     },
     {
       "type": "binary_op",
@@ -1080,14 +1080,14 @@
       "operator": "*",
       "operand2": "t98",
       "line": 39,
-      "data_type": null
+      "data_type": "int"
     },
     {
       "type": "copy",
       "dest": "J",
       "source": "t99",
       "line": 39,
-      "data_type": null
+      "data_type": "int"
     },
     {
       "type": "binary_op",
@@ -1170,14 +1170,14 @@
       "operator": "+",
       "operand2": "K",
       "line": 40,
-      "data_type": null
+      "data_type": "int"
     },
     {
       "type": "copy",
       "dest": "SUM",
       "source": "t106",
       "line": 40,
-      "data_type": null
+      "data_type": "int"
     },
     {
       "type": "binary_op",
