@@ -1,3 +1,13 @@
-# Dependências para testes unitários
-pytest>=7.0.0
+# RA4_Compiladores - Python Dependencies
+#
+# Install all dependencies:
+#   pip install -r requirements.txt
+#
+# Or with virtual environment:
+#   python -m venv venv
+#   source venv/bin/activate  # On Windows: venv\Scripts\activate
+#   pip install -r requirements.txt
+
+# Testing framework
+pytest>=9.0.0
 pytest-cov>=4.0.0
