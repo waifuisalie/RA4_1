@@ -92,11 +92,11 @@ def _parse_valor_literal(token: Dict[str, Any]) -> Any:
         # Para numero_inteiro e numero_inteiro_res, sempre retorna int
         if token.get('subtipo') in ['numero_inteiro', 'numero_inteiro_res']:
             return int(raw)
-        # Para numero_real e numero_real_res, verifica se é inteiro ou real
-        f = float(raw)
-        if float(f).is_integer():
-            return int(f)
-        return f
+        # Para numero_real e numero_real_res, sempre retorna float
+        elif token.get('subtipo') in ['numero_real', 'numero_real_res']:
+            return float(raw)
+        # Fallback: tentar float
+        return float(raw)
     except Exception:
         try:
             return float(raw)
@@ -357,6 +357,8 @@ def analisarSemantica(arvoreSintatica: Dict[str, Any], gramatica: Optional[Dict]
                     if len(operandos_av) == 1 and operador == '-':
                         a = operandos_av[0]
                         tipo_res = a['tipo']
+                        # Propagate type to operation node
+                        seq['tipo'] = tipo_res
                         historico_tipos[num] = tipo_res
                         nova_linha = dict(linha_ast)
                         nova_linha['tipo'] = tipo_res
@@ -373,6 +375,8 @@ def analisarSemantica(arvoreSintatica: Dict[str, Any], gramatica: Optional[Dict]
                         except ValueError as ve:
                             raise ErroSemantico(num, str(ve), _construir_contexto_expressao(linha_ast))
 
+                    # Propagate type to operation node
+                    seq['tipo'] = tipo_res
                     historico_tipos[num] = tipo_res
                     nova_linha = dict(linha_ast)
                     nova_linha['tipo'] = tipo_res
@@ -388,6 +392,8 @@ def analisarSemantica(arvoreSintatica: Dict[str, Any], gramatica: Optional[Dict]
                             tipo_res = tipos.tipo_resultado_comparacao(left['tipo'], right['tipo'])
                         except ValueError as ve:
                             raise ErroSemantico(num, str(ve), _construir_contexto_expressao(linha_ast))
+                    # Propagate type to operation node
+                    seq['tipo'] = tipo_res
                     historico_tipos[num] = tipo_res
                     nova_linha = dict(linha_ast)
                     nova_linha['tipo'] = tipo_res
@@ -406,6 +412,8 @@ def analisarSemantica(arvoreSintatica: Dict[str, Any], gramatica: Optional[Dict]
                                 tipo_res = tipos.tipo_resultado_logico(a['tipo'], b['tipo'])
                             except ValueError as ve:
                                 raise ErroSemantico(num, str(ve), _construir_contexto_expressao(linha_ast))
+                        # Propagate type to operation node
+                        seq['tipo'] = tipo_res
                         historico_tipos[num] = tipo_res
                         nova_linha = dict(linha_ast)
                         nova_linha['tipo'] = tipo_res
@@ -422,6 +430,8 @@ def analisarSemantica(arvoreSintatica: Dict[str, Any], gramatica: Optional[Dict]
                                 tipo_res = tipos.tipo_resultado_logico_unario(a['tipo'])
                             except ValueError as ve:
                                 raise ErroSemantico(num, str(ve), _construir_contexto_expressao(linha_ast))
+                        # Propagate type to operation node
+                        seq['tipo'] = tipo_res
                         historico_tipos[num] = tipo_res
                         nova_linha = dict(linha_ast)
                         nova_linha['tipo'] = tipo_res

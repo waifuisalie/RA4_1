@@ -119,6 +119,16 @@ def _construir_no_atribuido(no: Dict[str, Any], numero_linha: int) -> Dict[str, 
     # Valor se for terminal
     valor = no.get('valor')
 
+    # Inferir tipo para literais (nós LINHA com valor mas sem operador)
+    subtipo = no.get('subtipo')
+    if tipo_vertice == 'LINHA' and valor is not None and not operador and tipo_inferido is None:
+        # Este é um literal - inferir tipo do subtipo
+        if subtipo in ['numero_inteiro', 'numero_inteiro_res']:
+            tipo_inferido = tipos.TYPE_INT
+        elif subtipo in ['numero_real', 'numero_real_res']:
+            tipo_inferido = tipos.TYPE_REAL
+        # Variáveis não recebem tipo_inferido aqui pois precisam de tabela de símbolos
+
     # Construir o nó atribuído
     no_atribuido = {
         'tipo_vertice': tipo_vertice,
@@ -134,7 +144,6 @@ def _construir_no_atribuido(no: Dict[str, Any], numero_linha: int) -> Dict[str, 
         no_atribuido['valor'] = valor
 
     # Adicionar subtipo se existir (para operandos)
-    subtipo = no.get('subtipo')
     if subtipo:
         no_atribuido['subtipo'] = subtipo
 
