@@ -63,12 +63,13 @@ class TACOptimizer:
         1. Constant Folding - avalia operações constantes em tempo de compilação
         2. Constant Propagation - propaga constantes conhecidas, substituindo variáveis
         3. Dead Code Elimination - remove código morto e inalcançável
+        4. Jump Elimination - remove saltos redundantes e rótulos não utilizados
 
         Returns:
             Dicionário com estatísticas das otimizações aplicadas
         """
         if not self.instructions:
-            return {'constant_folding': 0, 'constant_propagation': 0, 'dead_code_elimination': 0, 'total': 0}
+            return {'constant_folding': 0, 'constant_propagation': 0, 'dead_code_elimination': 0, 'jump_elimination': 0, 'total': 0}
 
         # 1. Constant Folding primeiro (avalia operações constantes)
         foldings = self.otimizar_constant_folding()
@@ -79,12 +80,16 @@ class TACOptimizer:
         # 3. Dead Code Elimination (remove código morto e inalcançável)
         dead_code = self.otimizar_dead_code_elimination()
 
-        total_otimizacoes = propagations + foldings + dead_code
+        # 4. Jump Elimination (remove saltos redundantes)
+        jump_elim = self.otimizar_jump_elimination()
+
+        total_otimizacoes = propagations + foldings + dead_code + jump_elim
 
         return {
             'constant_folding': foldings,
             'constant_propagation': propagations,
             'dead_code_elimination': dead_code,
+            'jump_elimination': jump_elim,
             'total': total_otimizacoes
         }
 
@@ -283,6 +288,97 @@ class TACOptimizer:
                 used_vars.add(instr.source)
                 
         return used_vars
+
+    #########################
+    # OTIMIZAÇÕES: JUMP ELIMINATION
+    #########################
+
+    def otimizar_jump_elimination(self) -> int:
+        """
+        Aplica jump elimination: remove saltos redundantes e rótulos não utilizados.
+
+        Remove:
+        - Saltos para a próxima instrução (goto L1; L1:)
+        - Saltos para rótulos inexistentes
+        - Rótulos não utilizados
+
+        Returns:
+            Número de instruções removidas
+        """
+        if not self.instructions:
+            return 0
+
+        # Identificar labels para análise
+        referenced_labels = self._identificar_labels_referenciados()
+        existing_labels = self._identificar_labels_existentes()
+
+        # Filtrar instruções, removendo saltos redundantes e labels não utilizados
+        novas_instrucoes = []
+        i = 0
+        removidas = 0
+
+        while i < len(self.instructions):
+            instr = self.instructions[i]
+
+            if isinstance(instr, TACGoto):
+                # Salto para próxima instrução (remover goto + label)
+                if self._eh_salto_para_proxima_instrucao(i, instr.target):
+                    removidas += 2
+                    i += 2  # Pular goto e label
+                    continue
+                # Salto para label inexistente
+                elif instr.target not in existing_labels:
+                    removidas += 1
+                    i += 1
+                    continue
+
+            elif isinstance(instr, TACAssignment) and instr.source == '' and instr.dest not in referenced_labels:
+                # Label não utilizado
+                removidas += 1
+                i += 1
+                continue
+
+            # Manter instrução
+            novas_instrucoes.append(instr)
+            i += 1
+
+        self.instructions = novas_instrucoes
+        return removidas
+
+    #########################
+    # HELPERS PARA JUMP ELIMINATION
+    #########################
+
+    def _identificar_labels_referenciados(self) -> set:
+        """Identifica todos os labels que são referenciados por gotos."""
+        referenced = set()
+        for instr in self.instructions:
+            if isinstance(instr, TACGoto):
+                referenced.add(instr.target)
+            elif hasattr(instr, 'target') and instr.target:
+                referenced.add(instr.target)
+        return referenced
+
+    def _identificar_labels_existentes(self) -> set:
+        """Identifica todos os labels que existem fisicamente no código."""
+        existentes = set()
+        for instr in self.instructions:
+            if isinstance(instr, TACAssignment) and instr.source == '':
+                existentes.add(instr.dest)
+        return existentes
+
+    def _eh_salto_para_proxima_instrucao(self, current_index: int, target_label: str) -> bool:
+        """Verifica se um goto salta para a próxima instrução (label)."""
+        # Procurar o label alvo nas próximas instruções
+        for j in range(current_index + 1, len(self.instructions)):
+            next_instr = self.instructions[j]
+            if isinstance(next_instr, TACAssignment) and next_instr.source == '' and next_instr.dest == target_label:
+                # Encontrou o label na próxima instrução
+                return True
+            elif not (isinstance(next_instr, TACAssignment) and next_instr.source == ''):
+                # Encontrou uma instrução não-label, parar busca
+                break
+        return False
 
     #########################
     # OTIMIZAÇÕES: CONSTANT FOLDING
