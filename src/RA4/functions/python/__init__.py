@@ -45,6 +45,11 @@ from .tac_manager import (
     TACManager,
 )
 
+from .ast_traverser import (
+    # AST traversal and TAC generation
+    ASTTraverser,
+)
+
 __all__ = [
     # Base class
     "TACInstruction",
@@ -76,4 +81,5 @@ __all__ = [
 
     # TAC generation utilities
     "TACManager",
+    "ASTTraverser",
 ]
