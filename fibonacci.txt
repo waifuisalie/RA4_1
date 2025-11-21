@@ -3,8 +3,8 @@
 (1 FIB_1)
 # Contador de posição
 (2 COUNTER)
-# Limite = 15
-(15 LIMIT)
+# Limite = 24
+(24 LIMIT)
 
 # Laço WHILE: enquanto COUNTER <= LIMIT
 # Corpo: FIB_NEXT = FIB_0 + FIB_1

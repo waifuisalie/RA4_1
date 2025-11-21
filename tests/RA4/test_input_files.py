@@ -187,28 +187,28 @@ def interpretar_rpn(operacoes_lidas):
 class TestRPNInterpreter:
     """Testes unitários para o interpretador RPN"""
 
-    def test_fatorial_12(self):
-        """Testa cálculo de fatorial de 12"""
+    def test_fatorial_8(self):
+        """Testa cálculo de fatorial de 8"""
         arquivo = BASE_DIR / "inputs" / "RA4" / "fatorial.txt"
         operacoes_lidas = lerArquivo(str(arquivo))
 
         resultado = interpretar_rpn(operacoes_lidas)
 
-        assert resultado['RESULT'] == 479001600  # 12!
-        assert resultado['COUNTER'] == 13  # Para após 12
-        assert resultado['LIMIT'] == 12
+        assert resultado['RESULT'] == 40320  # 8!
+        assert resultado['COUNTER'] == 9  # Para após 8
+        assert resultado['LIMIT'] == 8
 
-    def test_fibonacci_15(self):
-        """Testa sequência de Fibonacci até posição 15"""
+    def test_fibonacci_24(self):
+        """Testa sequência de Fibonacci até posição 24"""
         arquivo = BASE_DIR / "inputs" / "RA4" / "fibonacci.txt"
         operacoes_lidas = lerArquivo(str(arquivo))
 
         resultado = interpretar_rpn(operacoes_lidas)
 
-        assert resultado['FIB_1'] == 610  # F(15) = 610
-        assert resultado['FIB_0'] == 377  # F(14) = 377
-        assert resultado['COUNTER'] == 16  # Para após 15
-        assert resultado['LIMIT'] == 15
+        assert resultado['FIB_1'] == 46368  # F(24) = 46368
+        assert resultado['FIB_0'] == 28657  # F(23) = 28657
+        assert resultado['COUNTER'] == 25  # Para após 24
+        assert resultado['LIMIT'] == 24
 
     def test_taylor_cos(self):
         """Testa cálculo da série de Taylor para cos(1.0)"""
