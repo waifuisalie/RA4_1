@@ -1,0 +1,71 @@
+# Convenções de Registradores AVR - Arduino Uno (ATmega328P)
+
+## 1. Visão Geral
+
+Este documento descreve as convenções de uso de registradores adotadas para a geração de código Assembly AVR neste compilador. O ATmega328P possui 32 registradores de 8 bits (R0-R31) de propósito geral com acesso em um único ciclo de clock.
+
+## 2. Mapa de Alocação de Registradores
+
+| Registrador(es) | Uso | Descrição |
+|-----------------|-----|-----------|
+| R0-R1 | Multiplicação | Resultado de operações MUL (definido pelo hardware) |
+| R2-R15 | Reservados | Variáveis locais e uso futuro |
+| R16-R23 | Temporários | Variáveis temporárias e computação geral |
+| R24-R25 | Parâmetros/Retorno | Parâmetros de função e valores de retorno (16-bit) |
+| R26-R27 (X) | Ponteiro | Acesso à memória e addressing indireto |
+| R28-R29 (Y) | Frame Pointer | Variáveis locais na pilha |
+| R30-R31 (Z) | Ponteiro Auxiliar | Lookup de programa e addressing indireto |
+
+## 3. Justificativa
+
+### Restrições de Hardware
+- **R0-R1**: As instruções de multiplicação (MUL, MULS, MULSU, FMUL, etc.) armazenam automaticamente o resultado de 16 bits em R1:R0.
+- **R16-R31**: Apenas estes registradores suportam instruções com operandos imediatos (LDI, ANDI, ORI, SUBI, CPI, etc.).
+- **R26-R31**: Formam três pares de ponteiros de 16 bits (X, Y, Z) para addressing indireto.
+
+### Escolhas de Alocação
+- **R16-R23 (Temporários)**: Permitem operações imediatas e são suficientes para expressões aritméticas complexas.
+- **R24-R25 (Parâmetros/Retorno)**: Convenção padrão AVR-GCC para passagem de parâmetros e valores de retorno.
+- **X, Y, Z (Ponteiros)**: Utilizados para acesso à memória, sendo Y preferido para frame pointer por suportar displacement.
+
+## 4. Exemplos de Uso
+
+### Exemplo 1: Operação Aritmética com Temporários
+```asm
+; TAC: t2 = t0 + t1
+; t0 em R16, t1 em R17, t2 em R18
+
+ldi r16, 5          ; t0 = 5
+ldi r17, 3          ; t1 = 3
+add r18, r16        ; r18 = r16 + r17
+add r18, r17        ; t2 = t0 + t1 (resultado em R18)
+```
+
+### Exemplo 2: Acesso à Memória com Ponteiro X
+```asm
+; TAC: MEM[endereco] = t1
+; t1 em R16, endereço em X (R27:R26)
+
+ldi r26, lo8(0x0100)    ; X baixo = byte baixo do endereço
+ldi r27, hi8(0x0100)    ; X alto = byte alto do endereço
+st X, r16               ; Armazena R16 no endereço apontado por X
+```
+
+### Exemplo 3: Multiplicação
+```asm
+; TAC: t2 = t0 * t1
+; t0 em R16, t1 em R17, resultado em R1:R0
+
+mul r16, r17        ; R1:R0 = R16 × R17 (16-bit resultado)
+mov r18, r0         ; t2 = byte baixo (se 8-bit é suficiente)
+; ou usar ambos R1:R0 se precisar 16-bit
+```
+
+## 5. Observações Importantes
+
+- **Preservação de Registradores**: Funções devem preservar R2-R17 e R28-R29 (salvar/restaurar na pilha).
+- **Volatilidade**: R18-R27 e R30-R31 são considerados voláteis (caller-saved).
+- **Stack Pointer**: O ponteiro de pilha (SP) é gerenciado pelo hardware nos registradores SPH:SPL (não é um registrador de propósito geral).
+- **Instruções Limitadas**: R0-R15 não podem usar LDI, ANDI, ORI, SBCI, SUBI, CPI - apenas instruções entre registradores.
+
+---
