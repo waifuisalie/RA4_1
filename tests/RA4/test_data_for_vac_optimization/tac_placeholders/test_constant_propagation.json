@@ -1,0 +1,12 @@
+{
+  "instructions": [
+    {"type": "assignment", "dest": "t0", "source": "5", "line": 1},
+    {"type": "assignment", "dest": "t1", "source": "3", "line": 2},
+    {"type": "binary_op", "result": "t2", "operand1": "t0", "operator": "+", "operand2": "t1", "line": 3},
+    {"type": "binary_op", "result": "t3", "operand1": "t0", "operator": "*", "operand2": "t1", "line": 4},
+    {"type": "assignment", "dest": "t4", "source": "10", "line": 5},
+    {"type": "binary_op", "result": "t5", "operand1": "t4", "operator": "-", "operand2": "t0", "line": 6},
+    {"type": "assignment", "dest": "t0", "source": "t2", "line": 7},
+    {"type": "binary_op", "result": "t6", "operand1": "t0", "operator": "+", "operand2": "t1", "line": 8}
+  ]
+}
