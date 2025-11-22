@@ -1,6 +1,6 @@
 # TAC Output - Generated from arvore_atribuida.json
 
-**Generated:** 2025-11-22 12:51:17
+**Generated:** 2025-11-22 14:28:54
 
 ---
 
