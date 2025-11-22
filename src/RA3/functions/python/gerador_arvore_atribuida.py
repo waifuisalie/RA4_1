@@ -24,12 +24,13 @@ ROOT_ARVORE_ATRIBUIDA_JSON = PROJECT_ROOT / "arvore_atribuida.json"
 OUT_RELATORIOS_DIR = OUTPUTS_DIR / "RA3" / "relatorios"
 ROOT_RELATORIOS_DIR = PROJECT_ROOT / "relatorios"
 
-def gerarArvoreAtribuida(arvoreAnotada: Dict[str, Any]) -> Dict[str, Any]:
+def gerarArvoreAtribuida(arvoreAnotada: Dict[str, Any], tabela_simbolos=None) -> Dict[str, Any]:
     """
     Constrói a árvore sintática abstrata atribuída final a partir da árvore anotada.
 
     Args:
         arvoreAnotada: Árvore sintática anotada pela análise semântica
+        tabela_simbolos: Tabela de símbolos para consultar tipos de variáveis
 
     Returns:
         Árvore sintática abstrata atribuída final
@@ -44,19 +45,20 @@ def gerarArvoreAtribuida(arvoreAnotada: Dict[str, Any]) -> Dict[str, Any]:
         tipo = linha.get('tipo')
 
         # Construir a estrutura completa da árvore atribuída para esta linha
-        raiz_linha = _construir_no_atribuido(linha, numero_linha)
+        raiz_linha = _construir_no_atribuido(linha, numero_linha, tabela_simbolos)
         arvore_atribuida.append(raiz_linha)
 
     return {'arvore_atribuida': arvore_atribuida}
 
 
-def _construir_no_atribuido(no: Dict[str, Any], numero_linha: int) -> Dict[str, Any]:
+def _construir_no_atribuido(no: Dict[str, Any], numero_linha: int, tabela_simbolos=None) -> Dict[str, Any]:
     """
     Constrói recursivamente um nó da árvore atribuída.
 
     Args:
         no: Nó da árvore anotada
         numero_linha: Número da linha para referência
+        tabela_simbolos: Tabela de símbolos para consultar tipos de variáveis
 
     Returns:
         Nó da árvore atribuída com tipo, filhos, etc.
@@ -89,7 +91,7 @@ def _construir_no_atribuido(no: Dict[str, Any], numero_linha: int) -> Dict[str, 
     # Se tem filhos diretos (estrutura de árvore)
     if 'filhos' in no and no['filhos']:
         for filho in no['filhos']:
-            filhos.append(_construir_no_atribuido(filho, numero_linha))
+            filhos.append(_construir_no_atribuido(filho, numero_linha, tabela_simbolos))
     # Se tem elementos (estrutura convertida)
     elif 'elementos' in no:
         for elemento in no['elementos']:
@@ -102,7 +104,7 @@ def _construir_no_atribuido(no: Dict[str, Any], numero_linha: int) -> Dict[str, 
                         'elementos': elemento.get('elementos', []),
                         'operador': elemento.get('operador')
                     }
-                    filhos.append(_construir_no_atribuido(no_subexpressao, numero_linha))
+                    filhos.append(_construir_no_atribuido(no_subexpressao, numero_linha, tabela_simbolos))
                 else:
                     # Operando simples
                     no_elemento = {
@@ -111,15 +113,15 @@ def _construir_no_atribuido(no: Dict[str, Any], numero_linha: int) -> Dict[str, 
                         'subtipo': elemento.get('subtipo'),
                         'valor': elemento.get('valor')
                     }
-                    filhos.append(_construir_no_atribuido(no_elemento, numero_linha))
+                    filhos.append(_construir_no_atribuido(no_elemento, numero_linha, tabela_simbolos))
             else:
                 # Elemento não-dicionário (fallback)
-                filhos.append(_construir_no_atribuido({'valor': str(elemento)}, numero_linha))
+                filhos.append(_construir_no_atribuido({'valor': str(elemento)}, numero_linha, tabela_simbolos))
 
     # Valor se for terminal
     valor = no.get('valor')
 
-    # Inferir tipo para literais (nós LINHA com valor mas sem operador)
+    # Inferir tipo para literais e variáveis (nós LINHA com valor mas sem operador)
     subtipo = no.get('subtipo')
     if tipo_vertice == 'LINHA' and valor is not None and not operador and tipo_inferido is None:
         # Este é um literal - inferir tipo do subtipo
@@ -127,7 +129,27 @@ def _construir_no_atribuido(no: Dict[str, Any], numero_linha: int) -> Dict[str, 
             tipo_inferido = tipos.TYPE_INT
         elif subtipo in ['numero_real', 'numero_real_res']:
             tipo_inferido = tipos.TYPE_REAL
-        # Variáveis não recebem tipo_inferido aqui pois precisam de tabela de símbolos
+        # Consultar tabela de símbolos para variáveis
+        elif subtipo == 'variavel' and tabela_simbolos:
+            try:
+                if tabela_simbolos.existe(valor):
+                    tipo_inferido = tabela_simbolos.obter_tipo(valor)
+            except Exception:
+                pass  # Manter tipo_inferido como None se houver erro
+
+    # Inferir tipo para operações baseado nos filhos (quando tipo_inferido não foi preenchido)
+    if tipo_inferido is None and filhos and operador:
+        tipos_filhos = [f.get('tipo_inferido') for f in filhos if f.get('tipo_inferido')]
+        if tipos_filhos:
+            if tipo_vertice == "ARITH_OP":
+                # Operações aritméticas: real se algum operando for real, senão int
+                if tipos.TYPE_REAL in tipos_filhos:
+                    tipo_inferido = tipos.TYPE_REAL
+                elif all(t == tipos.TYPE_INT for t in tipos_filhos):
+                    tipo_inferido = tipos.TYPE_INT
+            elif tipo_vertice in ["COMP_OP", "LOGIC_OP"]:
+                # Operações de comparação e lógicas sempre retornam boolean
+                tipo_inferido = tipos.TYPE_BOOLEAN
 
     # Construir o nó atribuído
     no_atribuido = {
@@ -1211,8 +1233,8 @@ def executar_geracao_arvore_atribuida(resultado_semantico: Dict[str, Any]) -> Di
         erros_sematicos = resultado_semantico.get('erros', [])
         tabela_simbolos = resultado_semantico.get('tabela_simbolos')
 
-        # Gerar árvore atribuída
-        arvore_atribuida = gerarArvoreAtribuida(arvore_anotada)
+        # Gerar árvore atribuída (passando tabela de símbolos para propagar tipos de variáveis)
+        arvore_atribuida = gerarArvoreAtribuida(arvore_anotada, tabela_simbolos)
 
         # Salvar árvore atribuída
         salvarArvoreAtribuida(arvore_atribuida)

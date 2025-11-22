@@ -1,33 +1,27 @@
-"""
-TAC Manager - Temporary Variable and Label Management
+#!/usr/bin/env python3
 
-This module provides utilities for generating unique temporary variables and labels
-during TAC (Three Address Code) generation.
-"""
+# Integrantes do grupo (ordem alfabética):
+# Breno Rossi Duarte - breno-rossi
+# Francisco Bley Ruthes - fbleyruthes
+# Rafael Olivare Piveta - RafaPiveta
+# Stefan Benjamim Seixas Lourenco Rodrigues - waifuisalie
+#
+# Nome do grupo no Canvas: RA4_1
 
 from typing import Dict, Any
 
+#########################
+# CLASSE: TACManager
+#########################
 
 class TACManager:
     """
-    Manager for generating unique temporary variables and labels for TAC generation.
-
-    This class maintains counters for temporary variables (t0, t1, t2, ...)
-    and labels (L0, L1, L2, ...) 
-
-    Usage:
-        manager = TACManager()
-        temp1 = manager.new_temp()  # Returns "t0"
-        temp2 = manager.new_temp()  # Returns "t1"
-        label1 = manager.new_label()  # Returns "L0"
-
-        # Reset for new program
-        manager.reset_counters()
-        temp3 = manager.new_temp()  # Returns "t0" again
+    Gerenciador de TAC - Responsável por gerar variáveis temporárias e labels únicos.
+    Mantém contadores para t0, t1... e L0, L1...
     """
 
     def __init__(self):
-        """Initialize the TAC manager with counters set to 0."""
+        """Inicializa contadores zerados."""
         self._temp_counter = 0
         self._label_counter = 0
         self._total_temps_created = 0
@@ -35,19 +29,7 @@ class TACManager:
 
     def new_temp(self) -> str:
         """
-        Generate a new unique temporary variable name.
-
-        Follows the convention: t0, t1, t2, ...
-
-        Returns:
-            str: A unique temporary variable name (e.g., "t0", "t1", etc.)
-
-        Example:
-            >>> manager = TACManager()
-            >>> manager.new_temp()
-            't0'
-            >>> manager.new_temp()
-            't1'
+        Gera e retorna uma nova variável temporária única (ex: 't0').
         """
         temp_name = f"t{self._temp_counter}"
         self._temp_counter += 1
@@ -56,19 +38,7 @@ class TACManager:
 
     def new_label(self) -> str:
         """
-        Generate a new unique label name.
-
-        Follows the convention: L0, L1, L2, ...
-
-        Returns:
-            str: A unique label name (e.g., "L0", "L1", etc.)
-
-        Example:
-            >>> manager = TACManager()
-            >>> manager.new_label()
-            'L0'
-            >>> manager.new_label()
-            'L1'
+        Gera e retorna um novo label único (ex: 'L0').
         """
         label_name = f"L{self._label_counter}"
         self._label_counter += 1
@@ -77,77 +47,23 @@ class TACManager:
 
     def reset_counters(self) -> None:
         """
-        Reset the temporary variable and label counters to 0.
-
-        This should be called when starting to process a new program
-        to ensure temporary and label names start from t0 and L0.
-
-        Note: This does NOT reset the total statistics counters.
-
-        Example:
-            >>> manager = TACManager()
-            >>> manager.new_temp()  # Returns "t0"
-            't0'
-            >>> manager.new_temp()  # Returns "t1"
-            't1'
-            >>> manager.reset_counters()
-            >>> manager.new_temp()  # Returns "t0" again
-            't0'
+        Reinicia os contadores de temporários e labels para 0.
+        Útil ao iniciar o processamento de um novo programa.
         """
         self._temp_counter = 0
         self._label_counter = 0
 
     def get_temp_count(self) -> int:
-        """
-        Get the current temporary variable counter value.
-
-        Returns:
-            int: The next temporary variable number to be generated
-
-        Example:
-            >>> manager = TACManager()
-            >>> manager.new_temp()
-            't0'
-            >>> manager.get_temp_count()
-            1
-        """
+        """Retorna o valor atual do contador de temporários."""
         return self._temp_counter
 
     def get_label_count(self) -> int:
-        """
-        Get the current label counter value.
-
-        Returns:
-            int: The next label number to be generated
-
-        Example:
-            >>> manager = TACManager()
-            >>> manager.new_label()
-            'L0'
-            >>> manager.get_label_count()
-            1
-        """
+        """Retorna o valor atual do contador de labels."""
         return self._label_counter
 
     def get_statistics(self) -> Dict[str, Any]:
         """
-        Get statistics about temporary variables and labels created.
-
-        Returns:
-            dict: Statistics including:
-                - current_temp_count: Current temp counter value
-                - current_label_count: Current label counter value
-                - total_temps_created: Total temps created (across resets)
-                - total_labels_created: Total labels created (across resets)
-
-        Example:
-            >>> manager = TACManager()
-            >>> manager.new_temp()
-            't0'
-            >>> manager.new_label()
-            'L0'
-            >>> manager.get_statistics()
-            {'current_temp_count': 1, 'current_label_count': 1, 'total_temps_created': 1, 'total_labels_created': 1}
+        Retorna estatísticas de uso (contadores atuais e totais criados).
         """
         return {
             "current_temp_count": self._temp_counter,
@@ -157,12 +73,6 @@ class TACManager:
         }
 
     def __repr__(self) -> str:
-        """
-        String representation of the TACManager.
-
-        Returns:
-            str: A string showing current counter values
-        """
         return (f"TACManager(temp_counter={self._temp_counter}, "
                 f"label_counter={self._label_counter}, "
                 f"total_temps={self._total_temps_created}, "

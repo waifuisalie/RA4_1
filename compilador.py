@@ -35,6 +35,7 @@ from src.RA2.functions.python.construirTabelaLL1 import construirTabelaLL1
 from src.RA2.functions.python.parsear import parsear_todas_linhas
 from src.RA3.functions.python.analisador_semantico import analisarSemanticaDaJsonRA2
 from src.RA3.functions.python.gerador_arvore_atribuida import executar_geracao_arvore_atribuida
+from src.RA4.functions.python.gerador_tac import gerarTAC
 
 BASE_DIR    = Path(__file__).resolve().parent        # raiz do repo
 OUT_TOKENS  = BASE_DIR / "outputs" / "RA1" / "tokens" / "tokens_gerados.txt"
@@ -337,6 +338,39 @@ def executar_ra3_analise_semantica():
         # Continue execution even if semantic analysis fails
 
 
+def executar_ra4_geracao_tac():
+    """Executa a geração de TAC (RA4)
+
+    Carrega a árvore atribuída do RA3 e gera código TAC.
+
+    Output Files:
+        - outputs/RA4/tac_instructions.json
+        - outputs/RA4/tac_output.md
+    """
+    print("\n--- RA4: GERAÇÃO DE TAC ---")
+
+    try:
+        ast_path = BASE_DIR / "outputs" / "RA3" / "arvore_atribuida.json"
+        output_dir = BASE_DIR / "outputs" / "RA4"
+
+        result = gerarTAC(ast_path, output_dir, save_output=True, source_file=str(ast_path))
+
+        if result["success"]:
+            print(f"    [OK] {result['statistics']['total_instructions']} instruções TAC geradas")
+            print(f"    [OK] Arquivos salvos em: {output_dir.relative_to(BASE_DIR)}")
+            print("      - tac_instructions.json")
+            print("      - tac_output.md")
+        else:
+            print(f"    [ERROR] {result['error']}")
+
+    except FileNotFoundError:
+        print(f"  [ERROR] Arquivo de árvore atribuída não encontrado")
+        print("  Certifique-se de que a análise semântica (RA3) foi executada corretamente.")
+    except Exception as e:
+        print(f"  [ERROR] ERRO na geração de TAC: {e}")
+        traceback.print_exc()
+
+
 def main():
     """Função principal do compilador
 
@@ -396,6 +430,9 @@ def main():
 
     # Fase 6: Análise semântica (RA3)
     executar_ra3_analise_semantica()
+
+    # Fase 7: Geração de TAC (RA4)
+    executar_ra4_geracao_tac()
 
 
 if __name__ == "__main__":
