@@ -12,8 +12,13 @@ import json
 import os
 from typing import List, Dict, Any, Optional
 
-from .tac_instructions import TACInstruction, instruction_from_dict, TACBinaryOp, TACAssignment, TACUnaryOp, TACIfGoto, TACIfFalseGoto, TACGoto
-from .erros_compilador import TACError, FileError, JSONError, ValidationError
+# IMPORTS CORRIGIDOS (Sem pontos relativos)
+from tac_instructions import (
+    TACInstruction, instruction_from_dict, TACBinaryOp, 
+    TACAssignment, TACUnaryOp, TACIfGoto, TACIfFalseGoto, 
+    TACGoto, TACLabel, TACCopy
+)
+from erros_compilador import TACError, FileError, JSONError, ValidationError
 
 
 #########################
@@ -58,42 +63,6 @@ class TACOptimizer:
     def otimizarTAC(self, file_name: str) -> Dict[str, int]:
         """
         Aplica todas as otimizações TAC em múltiplas passadas até ponto fixo.
-
-        Ordem Ótima das Otimizações (baseada em dependências):
-        1. Constant Folding: Avalia operações constantes primeiro
-        2. Constant Propagation: Propaga constantes recém-criadas
-        3. Dead Code Elimination: Remove código morto após propagação
-        4. Jump Elimination: Remove saltos redundantes
-
-        Algoritmo Multi-Pass:
-        mudou = True
-        iteracao = 0
-
-        while mudou and iteracao < 100:
-            iteracao++
-            mudou = False
-
-            # Pass 1: Constant Folding
-            if otimizar_constant_folding():
-                mudou = True
-
-            # Pass 2: Constant Propagation
-            if otimizar_constant_propagation():
-                mudou = True
-
-            # Pass 3: Dead Code Elimination
-            if otimizar_dead_code_elimination():
-                mudou = True
-
-            # Pass 4: Jump Elimination
-            if otimizar_jump_elimination():
-                mudou = True
-
-        Args:
-            file_name: Nome do arquivo TAC original (para geração de relatórios)
-
-        Returns:
-            Dicionário com estatísticas das otimizações aplicadas
         """
         if not self.instructions:
             return {'constant_folding': 0, 'constant_propagation': 0, 'dead_code_elimination': 0, 'jump_elimination': 0, 'total': 0, 'iterations': 0}
@@ -157,7 +126,10 @@ class TACOptimizer:
             'iterations': iteracao
         })
 
+        # Retorno corrigido com as chaves que o teste espera
         return {
+            'initial_instructions': initial_instructions,
+            'final_instructions': final_instructions,
             'constant_folding': total_foldings,
             'constant_propagation': total_propagations,
             'dead_code_elimination': total_dead_code,
@@ -191,17 +163,6 @@ class TACOptimizer:
     def otimizar_constant_propagation(self) -> int:
         """
         Aplica constant propagation: substitui referências a variáveis constantes por seus valores.
-
-        Exemplo:
-        Antes: t1 = 5
-               t2 = t1 + 3
-               t3 = t1 * 2
-        Depois: t1 = 5
-                t2 = 5 + 3
-                t3 = 5 * 2
-
-        Returns:
-            Número de propagações aplicadas
         """
         if not self.instructions:
             return 0
@@ -230,7 +191,8 @@ class TACOptimizer:
 
         # Atualiza mapa de constantes
         if dest_var:
-            if isinstance(instr, TACAssignment) and TACInstruction.is_constant(instr.source):
+            # Aceita TACAssignment OU TACCopy para armazenar constantes no mapa
+            if isinstance(instr, (TACAssignment, TACCopy)) and TACInstruction.is_constant(instr.source):
                 mapa_constantes[dest_var] = instr.source
             elif dest_var in mapa_constantes:
                 del mapa_constantes[dest_var]
@@ -271,6 +233,28 @@ class TACOptimizer:
                 else:
                     return TACIfFalseGoto(condition=nova_cond, target=instr.target, line=instr.line), True
 
+        # CORREÇÃO CRÍTICA: Propagação em TACCopy -> converte para TACAssignment se virar constante
+        elif isinstance(instr, TACCopy):
+             novo_source = mapa_constantes.get(instr.source, instr.source)
+             
+             if novo_source != instr.source:
+                 # Se o novo valor for constante numérica, vira Assignment
+                 if TACInstruction.is_constant(novo_source):
+                     return TACAssignment(
+                        dest=instr.dest, 
+                        source=novo_source, 
+                        line=instr.line, 
+                        data_type=instr.data_type
+                     ), True
+                 else:
+                     # Se ainda for variável, mantém Copy
+                     return TACCopy(
+                        dest=instr.dest, 
+                        source=novo_source, 
+                        line=instr.line, 
+                        data_type=instr.data_type
+                     ), True
+
         return instr, False
 
     #########################
@@ -280,13 +264,6 @@ class TACOptimizer:
     def otimizar_dead_code_elimination(self) -> int:
         """
         Aplica dead code elimination: remove código morto e inalcançável.
-
-        Remove:
-        - Atribuições a variáveis nunca utilizadas
-        - Código após saltos incondicionais (goto)
-
-        Returns:
-            Número de instruções removidas
         """
         if not self.instructions:
             return 0
@@ -302,8 +279,14 @@ class TACOptimizer:
         for idx, instr in enumerate(self.instructions):
             # Se estamos pulando código inalcançável
             if skip_until_label:
-                # Verificar se encontrou o label alvo
-                if isinstance(instr, TACAssignment) and instr.source == '' and instr.dest == skip_until_label:
+                # Verificar se encontrou o label alvo (TACLabel ou legado)
+                found_label = False
+                if isinstance(instr, TACLabel) and instr.name == skip_until_label:
+                    found_label = True
+                elif isinstance(instr, TACAssignment) and instr.source == '' and instr.dest == skip_until_label:
+                    found_label = True
+                
+                if found_label:
                     skip_until_label = None  # Encontrou o label, para de pular
                 else:
                     removidas += 1
@@ -315,9 +298,13 @@ class TACOptimizer:
                 target = instr.target
                 label_found_later = False
                 for future_instr in self.instructions[idx+1:]:
-                    if isinstance(future_instr, TACAssignment) and future_instr.source == '' and future_instr.dest == target:
+                    if isinstance(future_instr, TACLabel) and future_instr.name == target:
                         label_found_later = True
                         break
+                    elif isinstance(future_instr, TACAssignment) and future_instr.source == '' and future_instr.dest == target:
+                        label_found_later = True
+                        break
+                
                 if label_found_later:
                     skip_until_label = instr.target
                 novas_instrucoes.append(instr)
@@ -327,8 +314,8 @@ class TACOptimizer:
             dest_var = getattr(instr, 'result', getattr(instr, 'dest', None))
             if (dest_var and dest_var.startswith('t') and 
                 dest_var not in liveness_info[idx]['live_out'] and
-                isinstance(instr, (TACAssignment, TACBinaryOp, TACUnaryOp)) and
-                getattr(instr, 'source', '') != ''):  # Não remover labels (source vazia)
+                isinstance(instr, (TACAssignment, TACCopy, TACBinaryOp, TACUnaryOp)) and
+                getattr(instr, 'source', '') != ''):  # Não remover labels
                 removidas += 1
                 continue
 
@@ -343,12 +330,7 @@ class TACOptimizer:
     #########################
 
     def _analisar_liveness_completa(self) -> Dict[int, Dict[str, set]]:
-        """
-        Análise completa de liveness usando algoritmo backward.
-        
-        Returns:
-            Dict[instr_index, {'live_in': set, 'live_out': set}]
-        """
+        """Análise completa de liveness usando algoritmo backward."""
         if not self.instructions:
             return {}
         
@@ -360,7 +342,9 @@ class TACOptimizer:
         # Mapear labels para índices
         label_to_index = {}
         for i, instr in enumerate(self.instructions):
-            if isinstance(instr, TACAssignment) and instr.source == '' and instr.dest:
+            if isinstance(instr, TACLabel):
+                label_to_index[instr.name] = i
+            elif isinstance(instr, TACAssignment) and instr.source == '' and instr.dest:
                 label_to_index[instr.dest] = i
         
         # Algoritmo iterativo até ponto fixo
@@ -414,25 +398,20 @@ class TACOptimizer:
     #########################
 
     def _get_successors(self, index: int, label_to_index: Dict[str, int]) -> List[int]:
-        """
-        Retorna lista de índices dos sucessores da instrução no índice dado.
-        """
+        """Retorna lista de índices dos sucessores."""
         instr = self.instructions[index]
         successors = []
         
         # Instruções de controle de fluxo
         if isinstance(instr, TACGoto):
-            # Goto incondicional: só vai para o target
             if instr.target in label_to_index:
                 successors.append(label_to_index[instr.target])
         elif isinstance(instr, (TACIfGoto, TACIfFalseGoto)):
-            # If-goto: vai para target E para fall-through
             if instr.target in label_to_index:
                 successors.append(label_to_index[instr.target])
             if index < len(self.instructions) - 1:
                 successors.append(index + 1)
         else:
-            # Instrução normal: sucessor é a próxima instrução
             if index < len(self.instructions) - 1:
                 successors.append(index + 1)
         
@@ -444,12 +423,16 @@ class TACOptimizer:
         for attr in ['operand1', 'operand2', 'operand', 'condition', 'source']:
             if hasattr(instr, attr):
                 var = getattr(instr, attr)
-                if var and not TACInstruction.is_constant(var):
-                    used.add(var)
+                # Verifica se é string e não constante numérica
+                if var and isinstance(var, str) and not TACInstruction.is_constant(var):
+                    if var != '': 
+                        used.add(var)
         return used
     
     def _get_defined_variable(self, instr) -> Optional[str]:
         """Retorna variável definida pela instrução, se houver."""
+        if isinstance(instr, TACLabel):
+            return None
         for attr in ['result', 'dest']:
             if hasattr(instr, attr):
                 var = getattr(instr, attr)
@@ -464,14 +447,6 @@ class TACOptimizer:
     def otimizar_jump_elimination(self) -> int:
         """
         Aplica jump elimination: remove saltos redundantes e rótulos não utilizados.
-
-        Remove:
-        - Saltos para a próxima instrução (goto L1; L1:)
-        - Saltos para rótulos inexistentes
-        - Rótulos não utilizados
-
-        Returns:
-            Número de instruções removidas
         """
         if not self.instructions:
             return 0
@@ -489,7 +464,7 @@ class TACOptimizer:
             instr = self.instructions[i]
 
             if isinstance(instr, TACGoto):
-                # Salto para próxima instrução (remover goto + label)
+                # Salto para próxima instrução
                 if self._eh_salto_para_proxima_instrucao(i, instr.target):
                     removidas += 2
                     i += 2  # Pular goto e label
@@ -500,8 +475,12 @@ class TACOptimizer:
                     i += 1
                     continue
 
+            # Remove label não utilizado (TACLabel ou legado)
+            elif isinstance(instr, TACLabel) and instr.name not in referenced_labels:
+                removidas += 1
+                i += 1
+                continue
             elif isinstance(instr, TACAssignment) and instr.source == '' and instr.dest not in referenced_labels:
-                # Label não utilizado
                 removidas += 1
                 i += 1
                 continue
@@ -531,20 +510,22 @@ class TACOptimizer:
         """Identifica todos os labels que existem fisicamente no código."""
         existentes = set()
         for instr in self.instructions:
-            if isinstance(instr, TACAssignment) and instr.source == '':
+            if isinstance(instr, TACLabel):
+                existentes.add(instr.name)
+            elif isinstance(instr, TACAssignment) and instr.source == '':
                 existentes.add(instr.dest)
         return existentes
 
     def _eh_salto_para_proxima_instrucao(self, current_index: int, target_label: str) -> bool:
         """Verifica se um goto salta para a próxima instrução (label)."""
-        # Procurar o label alvo nas próximas instruções
         for j in range(current_index + 1, len(self.instructions)):
             next_instr = self.instructions[j]
-            if isinstance(next_instr, TACAssignment) and next_instr.source == '' and next_instr.dest == target_label:
-                # Encontrou o label na próxima instrução
+            if isinstance(next_instr, TACLabel) and next_instr.name == target_label:
                 return True
-            elif not (isinstance(next_instr, TACAssignment) and next_instr.source == ''):
-                # Encontrou uma instrução não-label, parar busca
+            elif isinstance(next_instr, TACAssignment) and next_instr.source == '' and next_instr.dest == target_label:
+                return True
+            # Se não for label, paramos
+            elif not (isinstance(next_instr, TACLabel) or (isinstance(next_instr, TACAssignment) and next_instr.source == '')):
                 break
         return False
 
@@ -555,11 +536,6 @@ class TACOptimizer:
     def otimizar_constant_folding(self) -> int:
         """
         Aplica constant folding: avalia expressões constantes em tempo de compilação.
-        
-        Exemplo: t1 = 2 + 3 → t1 = 5
-        
-        Returns:
-            Número de otimizações aplicadas
         """
         if not self.instructions:
             return 0
@@ -707,7 +683,7 @@ class TACOptimizer:
             temporarios_eliminados = stats['initial_temporaries'] - stats['final_temporaries']
             f.write(f'- Instruções antes: {stats["initial_instructions"]}\n')
             f.write(f'- Instruções depois: {stats["final_instructions"]}\n')
-            f.write('.1f')
+            f.write(f'- Redução de instruções: {reducao:.1f}%\n')
             f.write(f'- Temporários eliminados: {temporarios_eliminados}\n\n')
 
             # 2. Técnicas Implementadas
@@ -785,7 +761,7 @@ class TACOptimizer:
             f.write(f'- Número de instruções TAC antes: {stats["initial_instructions"]}\n')
             f.write(f'- Número de instruções TAC depois: {stats["final_instructions"]}\n')
             f.write(f'- Número de temporários eliminados: {temporarios_eliminados}\n')
-            f.write('.1f')
+            f.write(f'- Redução percentual: {reducao:.1f}%\n')
             f.write(f'- Número de iterações até convergência: {stats["iterations"]}\n')
             f.write('\n')
 

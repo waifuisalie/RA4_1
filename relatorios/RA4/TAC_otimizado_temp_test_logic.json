@@ -1,0 +1,17 @@
+{
+  "instructions": [
+    {
+      "type": "assignment",
+      "dest": "VAR_TESTE",
+      "source": "30.0",
+      "line": 4,
+      "data_type": "int"
+    },
+    {
+      "type": "return",
+      "value": "VAR_TESTE",
+      "line": 7,
+      "data_type": null
+    }
+  ]
+}
