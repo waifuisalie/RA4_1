@@ -1,7 +1,12 @@
-TAC Output - Generated from arvore_atribuida.json
-Generated: 2025-11-22 11:46:31
-======================================================================
+# TAC Output - Generated from arvore_atribuida.json
 
+**Generated:** 2025-11-22 12:51:17
+
+---
+
+## Instructions
+
+```
 Line  1: t0 = 5                    [type: int]
 Line  1: t1 = 3                    [type: int]
 Line  1: t2 = t0 + t1              [type: int]
@@ -106,11 +111,13 @@ Line 23: t71 = 2                   [type: int]
 Line 23: t72 = 4                   [type: int]
 Line 23: t73 = t71 * t72           [type: int]
 Line 23: t74 = t70 * t73           [type: int]
+```
 
-======================================================================
-Statistics:
-  total_instructions: 104
-  temp_count: 75
-  label_count: 10
-  result_history_size: 20
-======================================================================
+---
+
+## Statistics
+
+- **total_instructions:** 104
+- **temp_count:** 75
+- **label_count:** 10
+- **result_history_size:** 20

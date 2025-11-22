@@ -1,751 +1,761 @@
 {
   "metadata": {
-    "generated_at": "2025-11-22 11:46:31",
+    "generated_at": "2025-11-22 12:51:17",
     "source_ast": "C:\\Users\\Cliente\\Desktop\\2025-2\\Linguagens Formais e Compiladores\\RA4 Corre\u00e7\u00e3o Parte 1\\RA4_1\\outputs\\RA3\\arvore_atribuida.json",
     "total_instructions": 104
   },
   "instructions": [
     {
-      "line": 1,
-      "instruction": "t0 = 5",
-      "type": "TACAssignment",
-      "data_type": "int",
+      "type": "assignment",
       "dest": "t0",
-      "source": "5"
+      "source": "5",
+      "line": 1,
+      "data_type": "int"
     },
     {
-      "line": 1,
-      "instruction": "t1 = 3",
-      "type": "TACAssignment",
-      "data_type": "int",
+      "type": "assignment",
       "dest": "t1",
-      "source": "3"
-    },
-    {
+      "source": "3",
       "line": 1,
-      "instruction": "t2 = t0 + t1",
-      "type": "TACBinaryOp",
-      "data_type": "int",
-      "operator": "+"
+      "data_type": "int"
     },
     {
-      "line": 2,
-      "instruction": "t3 = 10.5",
-      "type": "TACAssignment",
-      "data_type": "real",
+      "type": "binary_op",
+      "result": "t2",
+      "operand1": "t0",
+      "operator": "+",
+      "operand2": "t1",
+      "line": 1,
+      "data_type": "int"
+    },
+    {
+      "type": "assignment",
       "dest": "t3",
-      "source": "10.5"
+      "source": "10.5",
+      "line": 2,
+      "data_type": "real"
     },
     {
-      "line": 2,
-      "instruction": "t4 = 2.0",
-      "type": "TACAssignment",
-      "data_type": "real",
+      "type": "assignment",
       "dest": "t4",
-      "source": "2.0"
-    },
-    {
+      "source": "2.0",
       "line": 2,
-      "instruction": "t5 = t3 * t4",
-      "type": "TACBinaryOp",
-      "data_type": "real",
-      "operator": "*"
+      "data_type": "real"
     },
     {
-      "line": 3,
-      "instruction": "t6 = 100",
-      "type": "TACAssignment",
-      "data_type": "int",
+      "type": "binary_op",
+      "result": "t5",
+      "operand1": "t3",
+      "operator": "*",
+      "operand2": "t4",
+      "line": 2,
+      "data_type": "real"
+    },
+    {
+      "type": "assignment",
       "dest": "t6",
-      "source": "100"
+      "source": "100",
+      "line": 3,
+      "data_type": "int"
     },
     {
-      "line": 3,
-      "instruction": "t7 = 50",
-      "type": "TACAssignment",
-      "data_type": "int",
+      "type": "assignment",
       "dest": "t7",
-      "source": "50"
-    },
-    {
+      "source": "50",
       "line": 3,
-      "instruction": "t8 = t6 + t7",
-      "type": "TACBinaryOp",
-      "data_type": "int",
-      "operator": "+"
+      "data_type": "int"
     },
     {
-      "line": 4,
-      "instruction": "t9 = 15",
-      "type": "TACAssignment",
-      "data_type": "int",
+      "type": "binary_op",
+      "result": "t8",
+      "operand1": "t6",
+      "operator": "+",
+      "operand2": "t7",
+      "line": 3,
+      "data_type": "int"
+    },
+    {
+      "type": "assignment",
       "dest": "t9",
-      "source": "15"
+      "source": "15",
+      "line": 4,
+      "data_type": "int"
     },
     {
-      "line": 4,
-      "instruction": "t10 = 7",
-      "type": "TACAssignment",
-      "data_type": "int",
+      "type": "assignment",
       "dest": "t10",
-      "source": "7"
-    },
-    {
+      "source": "7",
       "line": 4,
-      "instruction": "t11 = t9 / t10",
-      "type": "TACBinaryOp",
-      "data_type": "int",
-      "operator": "/"
+      "data_type": "int"
     },
     {
-      "line": 5,
-      "instruction": "t12 = 23",
-      "type": "TACAssignment",
-      "data_type": "int",
+      "type": "binary_op",
+      "result": "t11",
+      "operand1": "t9",
+      "operator": "/",
+      "operand2": "t10",
+      "line": 4,
+      "data_type": "int"
+    },
+    {
+      "type": "assignment",
       "dest": "t12",
-      "source": "23"
+      "source": "23",
+      "line": 5,
+      "data_type": "int"
     },
     {
-      "line": 5,
-      "instruction": "t13 = 6",
-      "type": "TACAssignment",
-      "data_type": "int",
+      "type": "assignment",
       "dest": "t13",
-      "source": "6"
-    },
-    {
+      "source": "6",
       "line": 5,
-      "instruction": "t14 = t12 % t13",
-      "type": "TACBinaryOp",
-      "data_type": "int",
-      "operator": "%"
+      "data_type": "int"
     },
     {
-      "line": 6,
-      "instruction": "t15 = 2.5",
-      "type": "TACAssignment",
-      "data_type": "real",
+      "type": "binary_op",
+      "result": "t14",
+      "operand1": "t12",
+      "operator": "%",
+      "operand2": "t13",
+      "line": 5,
+      "data_type": "int"
+    },
+    {
+      "type": "assignment",
       "dest": "t15",
-      "source": "2.5"
+      "source": "2.5",
+      "line": 6,
+      "data_type": "real"
     },
     {
-      "line": 6,
-      "instruction": "t16 = 3",
-      "type": "TACAssignment",
-      "data_type": "int",
+      "type": "assignment",
       "dest": "t16",
-      "source": "3"
-    },
-    {
+      "source": "3",
       "line": 6,
-      "instruction": "t17 = t15 ^ t16",
-      "type": "TACBinaryOp",
-      "data_type": "real",
-      "operator": "^"
+      "data_type": "int"
     },
     {
-      "line": 7,
-      "instruction": "t18 = 5.5",
-      "type": "TACAssignment",
-      "data_type": "real",
+      "type": "binary_op",
+      "result": "t17",
+      "operand1": "t15",
+      "operator": "^",
+      "operand2": "t16",
+      "line": 6,
+      "data_type": "real"
+    },
+    {
+      "type": "assignment",
       "dest": "t18",
-      "source": "5.5"
+      "source": "5.5",
+      "line": 7,
+      "data_type": "real"
     },
     {
-      "line": 7,
-      "instruction": "t19 = 3.2",
-      "type": "TACAssignment",
-      "data_type": "real",
+      "type": "assignment",
       "dest": "t19",
-      "source": "3.2"
-    },
-    {
+      "source": "3.2",
       "line": 7,
-      "instruction": "t20 = t18 > t19",
-      "type": "TACBinaryOp",
-      "data_type": "boolean",
-      "operator": ">"
+      "data_type": "real"
     },
     {
-      "line": 8,
-      "instruction": "t21 = 3",
-      "type": "TACAssignment",
-      "data_type": "int",
+      "type": "binary_op",
+      "result": "t20",
+      "operand1": "t18",
+      "operator": ">",
+      "operand2": "t19",
+      "line": 7,
+      "data_type": "boolean"
+    },
+    {
+      "type": "assignment",
       "dest": "t21",
-      "source": "3"
-    },
-    {
+      "source": "3",
       "line": 8,
-      "instruction": "t22 = !t21",
-      "type": "TACUnaryOp",
-      "data_type": "boolean",
-      "operator": "!"
+      "data_type": "int"
     },
     {
-      "line": 9,
-      "instruction": "t23 = 5",
-      "type": "TACAssignment",
-      "data_type": "int",
+      "type": "unary_op",
+      "result": "t22",
+      "operator": "!",
+      "operand": "t21",
+      "line": 8,
+      "data_type": "boolean"
+    },
+    {
+      "type": "assignment",
       "dest": "t23",
-      "source": "5"
+      "source": "5",
+      "line": 9,
+      "data_type": "int"
     },
     {
-      "line": 9,
-      "instruction": "t24 = 3",
-      "type": "TACAssignment",
-      "data_type": "int",
+      "type": "assignment",
       "dest": "t24",
-      "source": "3"
+      "source": "3",
+      "line": 9,
+      "data_type": "int"
     },
     {
+      "type": "binary_op",
+      "result": "t25",
+      "operand1": "t23",
+      "operator": ">",
+      "operand2": "t24",
       "line": 9,
-      "instruction": "t25 = t23 > t24",
-      "type": "TACBinaryOp",
-      "data_type": "boolean",
-      "operator": ">"
+      "data_type": "boolean"
     },
     {
-      "line": 9,
-      "instruction": "t26 = 2",
-      "type": "TACAssignment",
-      "data_type": "int",
+      "type": "assignment",
       "dest": "t26",
-      "source": "2"
+      "source": "2",
+      "line": 9,
+      "data_type": "int"
     },
     {
-      "line": 9,
-      "instruction": "t27 = 1",
-      "type": "TACAssignment",
-      "data_type": "int",
+      "type": "assignment",
       "dest": "t27",
-      "source": "1"
-    },
-    {
+      "source": "1",
       "line": 9,
-      "instruction": "t28 = t26 < t27",
-      "type": "TACBinaryOp",
-      "data_type": "boolean",
-      "operator": "<"
+      "data_type": "int"
     },
     {
+      "type": "binary_op",
+      "result": "t28",
+      "operand1": "t26",
+      "operator": "<",
+      "operand2": "t27",
       "line": 9,
-      "instruction": "t29 = t25 && t28",
-      "type": "TACBinaryOp",
-      "data_type": "boolean",
-      "operator": "&&"
+      "data_type": "boolean"
     },
     {
-      "line": 10,
-      "instruction": "t30 = 10",
-      "type": "TACAssignment",
-      "data_type": "int",
+      "type": "binary_op",
+      "result": "t29",
+      "operand1": "t25",
+      "operator": "&&",
+      "operand2": "t28",
+      "line": 9,
+      "data_type": "boolean"
+    },
+    {
+      "type": "assignment",
       "dest": "t30",
-      "source": "10"
-    },
-    {
+      "source": "10",
       "line": 10,
-      "instruction": "X = t30",
-      "type": "TACCopy",
-      "data_type": "int",
+      "data_type": "int"
+    },
+    {
+      "type": "copy",
       "dest": "X",
-      "source": "t30"
+      "source": "t30",
+      "line": 10,
+      "data_type": "int"
     },
     {
-      "line": 11,
-      "instruction": "t31 = 20",
-      "type": "TACAssignment",
-      "data_type": "int",
+      "type": "assignment",
       "dest": "t31",
-      "source": "20"
-    },
-    {
+      "source": "20",
       "line": 11,
-      "instruction": "A = t31",
-      "type": "TACCopy",
-      "data_type": "int",
+      "data_type": "int"
+    },
+    {
+      "type": "copy",
       "dest": "A",
-      "source": "t31"
+      "source": "t31",
+      "line": 11,
+      "data_type": "int"
     },
     {
-      "line": 12,
-      "instruction": "t32 = 10",
-      "type": "TACAssignment",
-      "data_type": "int",
+      "type": "assignment",
       "dest": "t32",
-      "source": "10"
-    },
-    {
+      "source": "10",
       "line": 12,
-      "instruction": "I = t32",
-      "type": "TACCopy",
-      "data_type": "int",
+      "data_type": "int"
+    },
+    {
+      "type": "copy",
       "dest": "I",
-      "source": "t32"
+      "source": "t32",
+      "line": 12,
+      "data_type": "int"
     },
     {
-      "line": 13,
-      "instruction": "t33 = 0",
-      "type": "TACAssignment",
-      "data_type": "int",
+      "type": "assignment",
       "dest": "t33",
-      "source": "0"
-    },
-    {
+      "source": "0",
       "line": 13,
-      "instruction": "COUNTER = t33",
-      "type": "TACCopy",
-      "data_type": "int",
-      "dest": "COUNTER",
-      "source": "t33"
+      "data_type": "int"
     },
     {
-      "line": 14,
-      "instruction": "t34 = 5",
-      "type": "TACAssignment",
-      "data_type": "int",
+      "type": "copy",
+      "dest": "COUNTER",
+      "source": "t33",
+      "line": 13,
+      "data_type": "int"
+    },
+    {
+      "type": "assignment",
       "dest": "t34",
-      "source": "5"
+      "source": "5",
+      "line": 14,
+      "data_type": "int"
     },
     {
+      "type": "binary_op",
+      "result": "t35",
+      "operand1": "X",
+      "operator": "+",
+      "operand2": "t34",
       "line": 14,
-      "instruction": "t35 = X + t34",
-      "type": "TACBinaryOp",
-      "data_type": "int",
-      "operator": "+"
+      "data_type": "int"
     },
     {
-      "line": 14,
-      "instruction": "Y = t35",
-      "type": "TACCopy",
-      "data_type": "int",
+      "type": "copy",
       "dest": "Y",
-      "source": "t35"
+      "source": "t35",
+      "line": 14,
+      "data_type": "int"
     },
     {
+      "type": "binary_op",
+      "result": "t36",
+      "operand1": "A",
+      "operator": "-",
+      "operand2": "X",
       "line": 15,
-      "instruction": "t36 = A - X",
-      "type": "TACBinaryOp",
-      "data_type": "int",
-      "operator": "-"
+      "data_type": "int"
     },
     {
-      "line": 15,
-      "instruction": "B = t36",
-      "type": "TACCopy",
-      "data_type": "int",
+      "type": "copy",
       "dest": "B",
-      "source": "t36"
+      "source": "t36",
+      "line": 15,
+      "data_type": "int"
     },
     {
-      "line": 16,
-      "instruction": "t37 = 1",
-      "type": "TACAssignment",
-      "data_type": "int",
+      "type": "assignment",
       "dest": "t37",
-      "source": "1"
+      "source": "1",
+      "line": 16,
+      "data_type": "int"
     },
     {
-      "line": 17,
-      "instruction": "t38 = 2",
-      "type": "TACAssignment",
-      "data_type": "int",
+      "type": "assignment",
       "dest": "t38",
-      "source": "2"
+      "source": "2",
+      "line": 17,
+      "data_type": "int"
     },
     {
-      "line": 18,
-      "instruction": "L0:",
-      "type": "TACLabel"
+      "type": "label",
+      "name": "L0",
+      "line": 18
     },
     {
-      "line": 18,
-      "instruction": "t39 = 5",
-      "type": "TACAssignment",
-      "data_type": "int",
+      "type": "assignment",
       "dest": "t39",
-      "source": "5"
+      "source": "5",
+      "line": 18,
+      "data_type": "int"
     },
     {
+      "type": "binary_op",
+      "result": "t40",
+      "operand1": "COUNTER",
+      "operator": "<",
+      "operand2": "t39",
       "line": 18,
-      "instruction": "t40 = COUNTER < t39",
-      "type": "TACBinaryOp",
-      "data_type": "boolean",
-      "operator": "<"
+      "data_type": "boolean"
     },
     {
-      "line": 18,
-      "instruction": "ifFalse t40 goto L1",
-      "type": "TACIfFalseGoto"
+      "type": "if_false_goto",
+      "condition": "t40",
+      "target": "L1",
+      "line": 18
     },
     {
-      "line": 18,
-      "instruction": "t41 = 1",
-      "type": "TACAssignment",
-      "data_type": "int",
+      "type": "assignment",
       "dest": "t41",
-      "source": "1"
+      "source": "1",
+      "line": 18,
+      "data_type": "int"
     },
     {
+      "type": "binary_op",
+      "result": "t42",
+      "operand1": "COUNTER",
+      "operator": "+",
+      "operand2": "t41",
       "line": 18,
-      "instruction": "t42 = COUNTER + t41",
-      "type": "TACBinaryOp",
-      "data_type": "int",
-      "operator": "+"
+      "data_type": "int"
     },
     {
-      "line": 18,
-      "instruction": "COUNTER = t42",
-      "type": "TACCopy",
-      "data_type": "int",
+      "type": "copy",
       "dest": "COUNTER",
-      "source": "t42"
-    },
-    {
+      "source": "t42",
       "line": 18,
-      "instruction": "goto L0",
-      "type": "TACGoto"
+      "data_type": "int"
     },
     {
-      "line": 18,
-      "instruction": "L1:",
-      "type": "TACLabel"
+      "type": "goto",
+      "target": "L0",
+      "line": 18
     },
     {
-      "line": 19,
-      "instruction": "L2:",
-      "type": "TACLabel"
+      "type": "label",
+      "name": "L1",
+      "line": 18
     },
     {
-      "line": 19,
-      "instruction": "t43 = 0",
-      "type": "TACAssignment",
-      "data_type": "int",
+      "type": "label",
+      "name": "L2",
+      "line": 19
+    },
+    {
+      "type": "assignment",
       "dest": "t43",
-      "source": "0"
+      "source": "0",
+      "line": 19,
+      "data_type": "int"
     },
     {
+      "type": "binary_op",
+      "result": "t44",
+      "operand1": "B",
+      "operator": ">",
+      "operand2": "t43",
       "line": 19,
-      "instruction": "t44 = B > t43",
-      "type": "TACBinaryOp",
-      "data_type": "boolean",
-      "operator": ">"
+      "data_type": "boolean"
     },
     {
-      "line": 19,
-      "instruction": "ifFalse t44 goto L3",
-      "type": "TACIfFalseGoto"
+      "type": "if_false_goto",
+      "condition": "t44",
+      "target": "L3",
+      "line": 19
     },
     {
-      "line": 19,
-      "instruction": "t45 = 1",
-      "type": "TACAssignment",
-      "data_type": "int",
+      "type": "assignment",
       "dest": "t45",
-      "source": "1"
+      "source": "1",
+      "line": 19,
+      "data_type": "int"
     },
     {
+      "type": "binary_op",
+      "result": "t46",
+      "operand1": "B",
+      "operator": "-",
+      "operand2": "t45",
       "line": 19,
-      "instruction": "t46 = B - t45",
-      "type": "TACBinaryOp",
-      "data_type": "int",
-      "operator": "-"
+      "data_type": "int"
     },
     {
-      "line": 19,
-      "instruction": "B = t46",
-      "type": "TACCopy",
-      "data_type": "int",
+      "type": "copy",
       "dest": "B",
-      "source": "t46"
-    },
-    {
+      "source": "t46",
       "line": 19,
-      "instruction": "goto L2",
-      "type": "TACGoto"
+      "data_type": "int"
     },
     {
-      "line": 19,
-      "instruction": "L3:",
-      "type": "TACLabel"
+      "type": "goto",
+      "target": "L2",
+      "line": 19
     },
     {
-      "line": 20,
-      "instruction": "t47 = 1",
-      "type": "TACAssignment",
-      "data_type": "int",
+      "type": "label",
+      "name": "L3",
+      "line": 19
+    },
+    {
+      "type": "assignment",
       "dest": "t47",
-      "source": "1"
+      "source": "1",
+      "line": 20,
+      "data_type": "int"
     },
     {
-      "line": 20,
-      "instruction": "t48 = 10",
-      "type": "TACAssignment",
-      "data_type": "int",
+      "type": "assignment",
       "dest": "t48",
-      "source": "10"
+      "source": "10",
+      "line": 20,
+      "data_type": "int"
     },
     {
-      "line": 20,
-      "instruction": "t49 = 1",
-      "type": "TACAssignment",
-      "data_type": "int",
+      "type": "assignment",
       "dest": "t49",
-      "source": "1"
+      "source": "1",
+      "line": 20,
+      "data_type": "int"
     },
     {
-      "line": 20,
-      "instruction": "t50 = t47",
-      "type": "TACCopy",
-      "data_type": "int",
+      "type": "copy",
       "dest": "t50",
-      "source": "t47"
+      "source": "t47",
+      "line": 20,
+      "data_type": "int"
     },
     {
-      "line": 20,
-      "instruction": "L4:",
-      "type": "TACLabel"
+      "type": "label",
+      "name": "L4",
+      "line": 20
     },
     {
+      "type": "binary_op",
+      "result": "t51",
+      "operand1": "t50",
+      "operator": "<=",
+      "operand2": "t48",
       "line": 20,
-      "instruction": "t51 = t50 <= t48",
-      "type": "TACBinaryOp",
-      "data_type": "boolean",
-      "operator": "<="
+      "data_type": "boolean"
     },
     {
-      "line": 20,
-      "instruction": "ifFalse t51 goto L5",
-      "type": "TACIfFalseGoto"
+      "type": "if_false_goto",
+      "condition": "t51",
+      "target": "L5",
+      "line": 20
     },
     {
-      "line": 20,
-      "instruction": "t52 = 2",
-      "type": "TACAssignment",
-      "data_type": "int",
+      "type": "assignment",
       "dest": "t52",
-      "source": "2"
+      "source": "2",
+      "line": 20,
+      "data_type": "int"
     },
     {
+      "type": "binary_op",
+      "result": "t53",
+      "operand1": "I",
+      "operator": "*",
+      "operand2": "t52",
       "line": 20,
-      "instruction": "t53 = I * t52",
-      "type": "TACBinaryOp",
-      "data_type": "int",
-      "operator": "*"
+      "data_type": "int"
     },
     {
+      "type": "binary_op",
+      "result": "t54",
+      "operand1": "t50",
+      "operator": "+",
+      "operand2": "t49",
       "line": 20,
-      "instruction": "t54 = t50 + t49",
-      "type": "TACBinaryOp",
-      "data_type": "int",
-      "operator": "+"
+      "data_type": "int"
     },
     {
-      "line": 20,
-      "instruction": "t50 = t54",
-      "type": "TACCopy",
-      "data_type": "int",
+      "type": "copy",
       "dest": "t50",
-      "source": "t54"
-    },
-    {
+      "source": "t54",
       "line": 20,
-      "instruction": "goto L4",
-      "type": "TACGoto"
+      "data_type": "int"
     },
     {
-      "line": 20,
-      "instruction": "L5:",
-      "type": "TACLabel"
+      "type": "goto",
+      "target": "L4",
+      "line": 20
     },
     {
-      "line": 21,
-      "instruction": "t55 = 15",
-      "type": "TACAssignment",
-      "data_type": "int",
+      "type": "label",
+      "name": "L5",
+      "line": 20
+    },
+    {
+      "type": "assignment",
       "dest": "t55",
-      "source": "15"
+      "source": "15",
+      "line": 21,
+      "data_type": "int"
     },
     {
+      "type": "binary_op",
+      "result": "t56",
+      "operand1": "X",
+      "operator": ">",
+      "operand2": "t55",
       "line": 21,
-      "instruction": "t56 = X > t55",
-      "type": "TACBinaryOp",
-      "data_type": "boolean",
-      "operator": ">"
+      "data_type": "boolean"
     },
     {
-      "line": 21,
-      "instruction": "ifFalse t56 goto L6",
-      "type": "TACIfFalseGoto"
+      "type": "if_false_goto",
+      "condition": "t56",
+      "target": "L6",
+      "line": 21
     },
     {
-      "line": 21,
-      "instruction": "t57 = 100",
-      "type": "TACAssignment",
-      "data_type": "int",
+      "type": "assignment",
       "dest": "t57",
-      "source": "100"
+      "source": "100",
+      "line": 21,
+      "data_type": "int"
     },
     {
-      "line": 21,
-      "instruction": "goto L7",
-      "type": "TACGoto"
+      "type": "goto",
+      "target": "L7",
+      "line": 21
     },
     {
-      "line": 21,
-      "instruction": "L6:",
-      "type": "TACLabel"
+      "type": "label",
+      "name": "L6",
+      "line": 21
     },
     {
-      "line": 21,
-      "instruction": "t58 = 200",
-      "type": "TACAssignment",
-      "data_type": "int",
+      "type": "assignment",
       "dest": "t58",
-      "source": "200"
-    },
-    {
+      "source": "200",
       "line": 21,
-      "instruction": "L7:",
-      "type": "TACLabel"
+      "data_type": "int"
     },
     {
-      "line": 22,
-      "instruction": "t59 = 10",
-      "type": "TACAssignment",
-      "data_type": "int",
+      "type": "label",
+      "name": "L7",
+      "line": 21
+    },
+    {
+      "type": "assignment",
       "dest": "t59",
-      "source": "10"
+      "source": "10",
+      "line": 22,
+      "data_type": "int"
     },
     {
+      "type": "binary_op",
+      "result": "t60",
+      "operand1": "A",
+      "operator": ">",
+      "operand2": "t59",
       "line": 22,
-      "instruction": "t60 = A > t59",
-      "type": "TACBinaryOp",
-      "data_type": "boolean",
-      "operator": ">"
+      "data_type": "boolean"
     },
     {
-      "line": 22,
-      "instruction": "t61 = 5",
-      "type": "TACAssignment",
-      "data_type": "int",
+      "type": "assignment",
       "dest": "t61",
-      "source": "5"
+      "source": "5",
+      "line": 22,
+      "data_type": "int"
     },
     {
+      "type": "binary_op",
+      "result": "t62",
+      "operand1": "Y",
+      "operator": ">",
+      "operand2": "t61",
       "line": 22,
-      "instruction": "t62 = Y > t61",
-      "type": "TACBinaryOp",
-      "data_type": "boolean",
-      "operator": ">"
+      "data_type": "boolean"
     },
     {
+      "type": "binary_op",
+      "result": "t63",
+      "operand1": "t60",
+      "operator": "&&",
+      "operand2": "t62",
       "line": 22,
-      "instruction": "t63 = t60 && t62",
-      "type": "TACBinaryOp",
-      "data_type": "boolean",
-      "operator": "&&"
+      "data_type": "boolean"
     },
     {
-      "line": 22,
-      "instruction": "ifFalse t63 goto L8",
-      "type": "TACIfFalseGoto"
+      "type": "if_false_goto",
+      "condition": "t63",
+      "target": "L8",
+      "line": 22
     },
     {
+      "type": "binary_op",
+      "result": "t64",
+      "operand1": "A",
+      "operator": "+",
+      "operand2": "Y",
       "line": 22,
-      "instruction": "t64 = A + Y",
-      "type": "TACBinaryOp",
-      "data_type": "int",
-      "operator": "+"
+      "data_type": "int"
     },
     {
-      "line": 22,
-      "instruction": "t65 = 2.0",
-      "type": "TACAssignment",
-      "data_type": "real",
+      "type": "assignment",
       "dest": "t65",
-      "source": "2.0"
-    },
-    {
+      "source": "2.0",
       "line": 22,
-      "instruction": "t66 = t64 | t65",
-      "type": "TACBinaryOp",
-      "data_type": "real",
-      "operator": "|"
+      "data_type": "real"
     },
     {
+      "type": "binary_op",
+      "result": "t66",
+      "operand1": "t64",
+      "operator": "|",
+      "operand2": "t65",
       "line": 22,
-      "instruction": "goto L9",
-      "type": "TACGoto"
+      "data_type": "real"
     },
     {
+      "type": "goto",
+      "target": "L9",
+      "line": 22
+    },
+    {
+      "type": "label",
+      "name": "L8",
+      "line": 22
+    },
+    {
+      "type": "binary_op",
+      "result": "t67",
+      "operand1": "A",
+      "operator": "*",
+      "operand2": "Y",
       "line": 22,
-      "instruction": "L8:",
-      "type": "TACLabel"
+      "data_type": "int"
     },
     {
-      "line": 22,
-      "instruction": "t67 = A * Y",
-      "type": "TACBinaryOp",
-      "data_type": "int",
-      "operator": "*"
+      "type": "label",
+      "name": "L9",
+      "line": 22
     },
     {
-      "line": 22,
-      "instruction": "L9:",
-      "type": "TACLabel"
-    },
-    {
-      "line": 23,
-      "instruction": "t68 = 5",
-      "type": "TACAssignment",
-      "data_type": "int",
+      "type": "assignment",
       "dest": "t68",
-      "source": "5"
+      "source": "5",
+      "line": 23,
+      "data_type": "int"
     },
     {
-      "line": 23,
-      "instruction": "t69 = 3",
-      "type": "TACAssignment",
-      "data_type": "int",
+      "type": "assignment",
       "dest": "t69",
-      "source": "3"
+      "source": "3",
+      "line": 23,
+      "data_type": "int"
     },
     {
+      "type": "binary_op",
+      "result": "t70",
+      "operand1": "t68",
+      "operator": "+",
+      "operand2": "t69",
       "line": 23,
-      "instruction": "t70 = t68 + t69",
-      "type": "TACBinaryOp",
-      "data_type": "int",
-      "operator": "+"
+      "data_type": "int"
     },
     {
-      "line": 23,
-      "instruction": "t71 = 2",
-      "type": "TACAssignment",
-      "data_type": "int",
+      "type": "assignment",
       "dest": "t71",
-      "source": "2"
+      "source": "2",
+      "line": 23,
+      "data_type": "int"
     },
     {
-      "line": 23,
-      "instruction": "t72 = 4",
-      "type": "TACAssignment",
-      "data_type": "int",
+      "type": "assignment",
       "dest": "t72",
-      "source": "4"
+      "source": "4",
+      "line": 23,
+      "data_type": "int"
     },
     {
+      "type": "binary_op",
+      "result": "t73",
+      "operand1": "t71",
+      "operator": "*",
+      "operand2": "t72",
       "line": 23,
-      "instruction": "t73 = t71 * t72",
-      "type": "TACBinaryOp",
-      "data_type": "int",
-      "operator": "*"
+      "data_type": "int"
     },
     {
+      "type": "binary_op",
+      "result": "t74",
+      "operand1": "t70",
+      "operator": "*",
+      "operand2": "t73",
       "line": 23,
-      "instruction": "t74 = t70 * t73",
-      "type": "TACBinaryOp",
-      "data_type": "int",
-      "operator": "*"
+      "data_type": "int"
     }
   ],
   "statistics": {
