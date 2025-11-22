@@ -44,6 +44,10 @@ class GeradorAssembly:
         # Acumulador de linhas Assembly geradas durante spill
         self._pending_spill_code: List[str] = []
 
+        # Rotinas auxiliares necessárias (serão geradas no epílogo)
+        # Ex: {"mul16", "div16", "exp16"}
+        self._routines_needed: set = set()
+
     # =========================================================================
     # FUNÇÃO PRINCIPAL - INTERFACE PÚBLICA
     # =========================================================================
@@ -354,39 +358,218 @@ class GeradorAssembly:
 
         Returns:
             Linhas Assembly geradas
+        """
+        operator = instr["operator"]
 
-        Note:
-            Implementação completa de operadores será em sub-issue 3.4
+        # Despachar para função específica de cada operador
+        if operator == "+":
+            return self._processar_adicao_16bit(instr)
+        elif operator == "-":
+            return self._processar_subtracao_16bit(instr)
+        elif operator == "*":
+            return self._processar_multiplicacao_16bit(instr)
+        elif operator == "/":
+            return self._processar_divisao_16bit(instr)
+        elif operator == "%":
+            return self._processar_modulo_16bit(instr)
+        elif operator == "^":
+            return self._processar_exponenciacao_16bit(instr)
+        elif operator == "|":
+            # Divisão real - deferred para Sub-issue 3.5 (fixed-point)
+            line = instr.get("line", "?")
+            return [
+                f"    ; TAC linha {line}: {instr['result']} = {instr['operand1']} | {instr['operand2']}",
+                f"    ; TODO: Divisão real (|) - Implementar em Sub-issue 3.5 (fixed-point)",
+                ""
+            ]
+        else:
+            line = instr.get("line", "?")
+            return [
+                f"    ; TAC linha {line}: {instr['result']} = {instr['operand1']} {operator} {instr['operand2']}",
+                f"    ; ERRO: Operador '{operator}' não reconhecido!",
+                ""
+            ]
+
+    def _processar_adicao_16bit(self, instr: Dict[str, Any]) -> List[str]:
+        """
+        Processa adição 16-bit: result = op1 + op2
+
+        Usa instruções ADD (low byte) e ADC (high byte com carry).
+
+        Args:
+            instr: {"type": "binary_op", "result": "t2", "operand1": "t0",
+                    "operator": "+", "operand2": "t1", "line": 2}
+
+        Returns:
+            Linhas Assembly geradas
         """
         result = instr["result"]
         op1 = instr["operand1"]
-        operator = instr["operator"]
         op2 = instr["operand2"]
         line = instr.get("line", "?")
 
-        asm = [f"    ; TAC linha {line}: {result} = {op1} {operator} {op2}"]
+        asm = [f"    ; TAC linha {line}: {result} = {op1} + {op2}"]
 
-        # TODO: Implementar operadores completos no sub-issue 3.4
-        # Por enquanto, apenas soma básica
-        if operator == "+":
-            # Obter registradores dos operandos
-            op1_low, op1_high = self._get_reg_pair(op1)
-            op2_low, op2_high = self._get_reg_pair(op2)
-            res_low, res_high = self._get_reg_pair(result)
+        # Obter registradores dos operandos
+        op1_low, op1_high = self._get_reg_pair(op1)
+        op2_low, op2_high = self._get_reg_pair(op2)
+        res_low, res_high = self._get_reg_pair(result)
 
-            asm.extend([
-                f"    ; Soma 16-bit: {result} = {op1} + {op2}",
-                f"    add r{op1_low}, r{op2_low}   ; Low byte com carry",
-                f"    adc r{op1_high}, r{op2_high} ; High byte com carry",
-                f"    mov r{res_low}, r{op1_low}   ; Resultado em {result}",
-                f"    mov r{res_high}, r{op1_high}",
-                ""
-            ])
-        else:
-            asm.append(f"    ; TODO: Implementar operador '{operator}' no sub-issue 3.4")
-            asm.append("")
+        asm.extend([
+            f"    ; Soma 16-bit: {result} = {op1} + {op2}",
+            f"    add r{op1_low}, r{op2_low}   ; Low byte com carry",
+            f"    adc r{op1_high}, r{op2_high} ; High byte com carry",
+            f"    mov r{res_low}, r{op1_low}   ; Resultado em {result}",
+            f"    mov r{res_high}, r{op1_high}",
+            ""
+        ])
 
         return asm
+
+    def _processar_subtracao_16bit(self, instr: Dict[str, Any]) -> List[str]:
+        """
+        Processa subtração 16-bit: result = op1 - op2
+
+        Usa instruções SUB (low byte) e SBC (high byte com carry/borrow).
+
+        Args:
+            instr: {"type": "binary_op", "result": "t2", "operand1": "t0",
+                    "operator": "-", "operand2": "t1", "line": 2}
+
+        Returns:
+            Linhas Assembly geradas
+        """
+        result = instr["result"]
+        op1 = instr["operand1"]
+        op2 = instr["operand2"]
+        line = instr.get("line", "?")
+
+        asm = [f"    ; TAC linha {line}: {result} = {op1} - {op2}"]
+
+        # Obter registradores dos operandos
+        op1_low, op1_high = self._get_reg_pair(op1)
+        op2_low, op2_high = self._get_reg_pair(op2)
+        res_low, res_high = self._get_reg_pair(result)
+
+        asm.extend([
+            f"    ; Subtração 16-bit: {result} = {op1} - {op2}",
+            f"    sub r{op1_low}, r{op2_low}   ; Low byte com borrow",
+            f"    sbc r{op1_high}, r{op2_high} ; High byte com borrow",
+            f"    mov r{res_low}, r{op1_low}   ; Resultado em {result}",
+            f"    mov r{res_high}, r{op1_high}",
+            ""
+        ])
+
+        return asm
+
+    def _processar_multiplicacao_16bit(self, instr: Dict[str, Any]) -> List[str]:
+        """
+        Processa multiplicação 16-bit: result = op1 * op2
+
+        Usa rotina auxiliar mul16 que será gerada no epílogo.
+        Convenção: op1 em R18:R19, op2 em R20:R21, resultado em R24:R25
+
+        Args:
+            instr: Instrução TAC de multiplicação
+
+        Returns:
+            Linhas Assembly geradas
+        """
+        result = instr["result"]
+        op1 = instr["operand1"]
+        op2 = instr["operand2"]
+        line = instr.get("line", "?")
+
+        # Registrar que precisamos da rotina mul16
+        self._routines_needed.add("mul16")
+
+        asm = [f"    ; TAC linha {line}: {result} = {op1} * {op2}"]
+
+        # Obter registradores dos operandos
+        op1_low, op1_high = self._get_reg_pair(op1)
+        op2_low, op2_high = self._get_reg_pair(op2)
+        res_low, res_high = self._get_reg_pair(result)
+
+        asm.extend([
+            f"    ; Multiplicação 16-bit: {result} = {op1} * {op2}",
+            f"    ; Preparar parâmetros para mul16",
+            f"    mov r18, r{op1_low}   ; Parâmetro 1 (low)",
+            f"    mov r19, r{op1_high}  ; Parâmetro 1 (high)",
+            f"    mov r20, r{op2_low}   ; Parâmetro 2 (low)",
+            f"    mov r21, r{op2_high}  ; Parâmetro 2 (high)",
+            f"    rcall mul16           ; Chamar rotina (resultado em R24:R25)",
+            f"    mov r{res_low}, r24   ; Copiar resultado",
+            f"    mov r{res_high}, r25",
+            ""
+        ])
+
+        return asm
+
+    def _processar_divisao_16bit(self, instr: Dict[str, Any]) -> List[str]:
+        """
+        Processa divisão inteira 16-bit: result = op1 / op2
+
+        Args:
+            instr: Instrução TAC de divisão
+
+        Returns:
+            Linhas Assembly geradas
+        """
+        result = instr["result"]
+        op1 = instr["operand1"]
+        op2 = instr["operand2"]
+        line = instr.get("line", "?")
+
+        # TODO: Implementar na Fase 3
+        return [
+            f"    ; TAC linha {line}: {result} = {op1} / {op2}",
+            f"    ; TODO: Implementar divisão 16-bit (Fase 3)",
+            ""
+        ]
+
+    def _processar_modulo_16bit(self, instr: Dict[str, Any]) -> List[str]:
+        """
+        Processa módulo 16-bit: result = op1 % op2
+
+        Args:
+            instr: Instrução TAC de módulo
+
+        Returns:
+            Linhas Assembly geradas
+        """
+        result = instr["result"]
+        op1 = instr["operand1"]
+        op2 = instr["operand2"]
+        line = instr.get("line", "?")
+
+        # TODO: Implementar na Fase 3
+        return [
+            f"    ; TAC linha {line}: {result} = {op1} % {op2}",
+            f"    ; TODO: Implementar módulo 16-bit (Fase 3)",
+            ""
+        ]
+
+    def _processar_exponenciacao_16bit(self, instr: Dict[str, Any]) -> List[str]:
+        """
+        Processa exponenciação 16-bit: result = op1 ^ op2
+
+        Args:
+            instr: Instrução TAC de exponenciação
+
+        Returns:
+            Linhas Assembly geradas
+        """
+        result = instr["result"]
+        op1 = instr["operand1"]
+        op2 = instr["operand2"]
+        line = instr.get("line", "?")
+
+        # TODO: Implementar na Fase 4
+        return [
+            f"    ; TAC linha {line}: {result} = {op1} ^ {op2}",
+            f"    ; TODO: Implementar exponenciação 16-bit (Fase 4)",
+            ""
+        ]
 
     def _processar_label(self, instr: Dict[str, Any]) -> List[str]:
         """
@@ -464,20 +647,144 @@ class GeradorAssembly:
         Gera epílogo do programa Assembly (finalização).
 
         Inclui:
+        - Rotinas auxiliares necessárias (mul16, div16, etc.)
         - Loop infinito (fim do programa)
 
         Returns:
             Linhas do epílogo
         """
-        return [
+        epilogo = [
             "    ; ==== FIM DO CÓDIGO GERADO ====",
-            "",
+            ""
+        ]
+
+        # Gerar rotinas auxiliares necessárias
+        if "mul16" in self._routines_needed:
+            epilogo.extend(self._gerar_rotina_multiplicacao_16bit())
+
+        if "div16" in self._routines_needed:
+            epilogo.extend(self._gerar_rotina_divisao_16bit())
+
+        if "exp16" in self._routines_needed:
+            epilogo.extend(self._gerar_rotina_exponenciacao())
+
+        # Loop infinito (fim do programa)
+        epilogo.extend([
             "fim:",
             "    rjmp fim   ; Loop infinito",
             "",
             "; ====================================================================",
             "; Fim do programa",
             "; ===================================================================="
+        ])
+
+        return epilogo
+
+    # =========================================================================
+    # ROTINAS AUXILIARES DE OPERAÇÕES COMPLEXAS (PRIVADOS)
+    # =========================================================================
+
+    def _gerar_rotina_multiplicacao_16bit(self) -> List[str]:
+        """
+        Gera rotina auxiliar para multiplicação 16-bit × 16-bit = 16-bit (unsigned).
+
+        Algoritmo: (AH:AL) × (BH:BL) = AH×BH×2^16 + AH×BL×2^8 + AL×BH×2^8 + AL×BL
+        Simplificado para 16-bit: descarta AH×BH (overflow), mantém apenas 16 bits baixos.
+
+        Convenção de chamada:
+        - Entrada: R18:R19 (operando 1), R20:R21 (operando 2)
+        - Saída: R24:R25 (resultado 16-bit)
+        - Usa: R0, R1 (resultado de MUL), R22, R23 (temporários)
+
+        Returns:
+            Linhas Assembly da rotina
+        """
+        return [
+            "; ====================================================================",
+            "; mul16: Multiplicação 16-bit × 16-bit = 16-bit (unsigned)",
+            "; Entrada: R18:R19 (op1), R20:R21 (op2)",
+            "; Saída: R24:R25 (resultado)",
+            "; Usa: R0, R1, R22, R23",
+            "; ====================================================================",
+            "mul16:",
+            "    ; Salvar registradores que serão modificados",
+            "    push r22",
+            "    push r23",
+            "",
+            "    ; Zerar acumulador resultado",
+            "    clr r24",
+            "    clr r25",
+            "",
+            "    ; Produto parcial 1: AL × BL (contribui totalmente)",
+            "    mul r18, r20      ; R1:R0 = AL × BL",
+            "    mov r24, r0       ; Byte baixo do resultado",
+            "    mov r22, r1       ; Byte alto vai para temporário",
+            "",
+            "    ; Produto parcial 2: AL × BH (contribui byte baixo para byte alto do resultado)",
+            "    mul r18, r21      ; R1:R0 = AL × BH",
+            "    add r22, r0       ; Somar byte baixo ao acumulador",
+            "    adc r25, r1       ; Somar byte alto com carry",
+            "",
+            "    ; Produto parcial 3: AH × BL (contribui byte baixo para byte alto do resultado)",
+            "    mul r19, r20      ; R1:R0 = AH × BL",
+            "    add r22, r0       ; Somar byte baixo ao acumulador",
+            "    adc r25, r1       ; Somar byte alto com carry",
+            "",
+            "    ; Produto parcial 4: AH × BH (descartado - overflow além de 16 bits)",
+            "    ; Não precisamos calcular pois descartamos resultado > 16 bits",
+            "",
+            "    ; Mover acumulador para resultado final",
+            "    mov r25, r22      ; Byte alto do resultado",
+            "",
+            "    ; Restaurar registradores",
+            "    pop r23",
+            "    pop r22",
+            "",
+            "    ; Limpar R0 e R1 (boa prática após MUL)",
+            "    clr r1",
+            "",
+            "    ret",
+            ""
+        ]
+
+    def _gerar_rotina_divisao_16bit(self) -> List[str]:
+        """
+        Gera rotina auxiliar para divisão 16-bit ÷ 16-bit = quociente e resto.
+
+        TODO: Implementar na Fase 3
+
+        Returns:
+            Linhas Assembly da rotina
+        """
+        return [
+            "; ====================================================================",
+            "; div16: Divisão 16-bit ÷ 16-bit (unsigned)",
+            "; TODO: Implementar na Fase 3",
+            "; ====================================================================",
+            "div16:",
+            "    ; TODO: Implementar algoritmo de divisão (shift-subtract)",
+            "    ret",
+            ""
+        ]
+
+    def _gerar_rotina_exponenciacao(self) -> List[str]:
+        """
+        Gera rotina auxiliar para exponenciação 16-bit ^ 16-bit.
+
+        TODO: Implementar na Fase 4
+
+        Returns:
+            Linhas Assembly da rotina
+        """
+        return [
+            "; ====================================================================",
+            "; exp16: Exponenciação 16-bit ^ 16-bit",
+            "; TODO: Implementar na Fase 4",
+            "; ====================================================================",
+            "exp16:",
+            "    ; TODO: Implementar loop de multiplicação",
+            "    ret",
+            ""
         ]
 
 

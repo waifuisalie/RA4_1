@@ -127,9 +127,58 @@ def test_constant_vs_variable():
     print("✓ Teste 4 passou: Constantes e variáveis diferenciadas!")
 
 
+def test_subtraction():
+    """Testa operação de subtração 16-bit"""
+    print("\n=== Teste 5: Subtração (10 - 3 = 7) ===")
+
+    tac_sub = {
+        "instructions": [
+            {"type": "assignment", "dest": "t0", "source": "10", "line": 1},
+            {"type": "assignment", "dest": "t1", "source": "3", "line": 2},
+            {"type": "binary_op", "result": "t2", "operand1": "t0",
+             "operator": "-", "operand2": "t1", "line": 3}
+        ]
+    }
+
+    gerador = GeradorAssembly()
+    assembly = gerador.gerarAssembly(tac_sub)
+
+    print(assembly)
+
+    # Verificar instruções de subtração
+    assert "sub r" in assembly
+    assert "sbc r" in assembly
+    print("✓ Teste 5 passou: Subtração implementada com SUB/SBC!")
+
+
+def test_multiplication():
+    """Testa operação de multiplicação 16-bit"""
+    print("\n=== Teste 6: Multiplicação (6 * 7 = 42) ===")
+
+    tac_mul = {
+        "instructions": [
+            {"type": "assignment", "dest": "t0", "source": "6", "line": 1},
+            {"type": "assignment", "dest": "t1", "source": "7", "line": 2},
+            {"type": "binary_op", "result": "t2", "operand1": "t0",
+             "operator": "*", "operand2": "t1", "line": 3}
+        ]
+    }
+
+    gerador = GeradorAssembly()
+    assembly = gerador.gerarAssembly(tac_mul)
+
+    print(assembly)
+
+    # Verificar chamada para rotina mul16
+    assert "rcall mul16" in assembly
+    assert "mul16:" in assembly  # Rotina deve ser gerada
+    assert "mul r" in assembly   # Instrução MUL deve estar na rotina
+    print("✓ Teste 6 passou: Multiplicação implementada com rotina mul16!")
+
+
 if __name__ == "__main__":
     print("=" * 70)
-    print("TESTES DO GERADOR DE ASSEMBLY - SUB-ISSUE 3.2")
+    print("TESTES DO GERADOR DE ASSEMBLY - SUB-ISSUES 3.2, 3.3, 3.4")
     print("=" * 70)
 
     try:
@@ -137,6 +186,8 @@ if __name__ == "__main__":
         test_register_allocator_with_spill()
         test_example_from_issue()
         test_constant_vs_variable()
+        test_subtraction()
+        test_multiplication()
 
         print("\n" + "=" * 70)
         print("✅ TODOS OS TESTES PASSARAM!")
