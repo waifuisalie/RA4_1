@@ -738,6 +738,87 @@
     },
     {
       "numero_linha": 8,
+      "expressao_original": "( 3 ! )",
+      "tokens": [
+        "(",
+        "3",
+        "!",
+        ")"
+      ],
+      "arvore": {
+        "label": "PROGRAM",
+        "filhos": [
+          {
+            "label": "LINHA",
+            "filhos": [
+              {
+                "label": "(",
+                "filhos": []
+              },
+              {
+                "label": "SEQUENCIA",
+                "filhos": [
+                  {
+                    "label": "OPERANDO",
+                    "filhos": [
+                      {
+                        "label": "numero_inteiro",
+                        "filhos": []
+                      },
+                      {
+                        "label": "OPERANDO_OPCIONAL",
+                        "filhos": [
+                          {
+                            "label": "epsilon",
+                            "filhos": []
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "label": "SEQUENCIA_PRIME",
+                    "filhos": [
+                      {
+                        "label": "OPERADOR_FINAL",
+                        "filhos": [
+                          {
+                            "label": "LOGIC_OP",
+                            "filhos": [
+                              {
+                                "label": "!",
+                                "filhos": []
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "label": ")",
+                "filhos": []
+              }
+            ]
+          },
+          {
+            "label": "PROGRAM_PRIME",
+            "filhos": [
+              {
+                "label": "epsilon",
+                "filhos": []
+              }
+            ]
+          }
+        ]
+      },
+      "derivacao_passos": 9,
+      "sucesso": true
+    },
+    {
+      "numero_linha": 9,
       "expressao_original": "( ( 5 3 > ) ( 2 1 < ) && )",
       "tokens": [
         "(",
@@ -980,7 +1061,7 @@
       "sucesso": true
     },
     {
-      "numero_linha": 9,
+      "numero_linha": 10,
       "expressao_original": "( 10 X )",
       "tokens": [
         "(",
@@ -1074,7 +1155,7 @@
       "sucesso": true
     },
     {
-      "numero_linha": 10,
+      "numero_linha": 11,
       "expressao_original": "( 20 A )",
       "tokens": [
         "(",
@@ -1168,7 +1249,7 @@
       "sucesso": true
     },
     {
-      "numero_linha": 11,
+      "numero_linha": 12,
       "expressao_original": "( 10 I )",
       "tokens": [
         "(",
@@ -1262,7 +1343,7 @@
       "sucesso": true
     },
     {
-      "numero_linha": 12,
+      "numero_linha": 13,
       "expressao_original": "( 0 COUNTER )",
       "tokens": [
         "(",
@@ -1356,7 +1437,7 @@
       "sucesso": true
     },
     {
-      "numero_linha": 13,
+      "numero_linha": 14,
       "expressao_original": "( ( X 5 + ) Y )",
       "tokens": [
         "(",
@@ -1519,7 +1600,7 @@
       "sucesso": true
     },
     {
-      "numero_linha": 14,
+      "numero_linha": 15,
       "expressao_original": "( ( A X - ) B )",
       "tokens": [
         "(",
@@ -1682,7 +1763,7 @@
       "sucesso": true
     },
     {
-      "numero_linha": 15,
+      "numero_linha": 16,
       "expressao_original": "( 1 RES )",
       "tokens": [
         "(",
@@ -1753,7 +1834,7 @@
       "sucesso": true
     },
     {
-      "numero_linha": 16,
+      "numero_linha": 17,
       "expressao_original": "( 2 RES )",
       "tokens": [
         "(",
@@ -1824,7 +1905,7 @@
       "sucesso": true
     },
     {
-      "numero_linha": 17,
+      "numero_linha": 18,
       "expressao_original": "( ( COUNTER 5 < ) ( ( ( COUNTER 1 + ) COUNTER ) ) WHILE )",
       "tokens": [
         "(",
@@ -2159,7 +2240,7 @@
       "sucesso": true
     },
     {
-      "numero_linha": 18,
+      "numero_linha": 19,
       "expressao_original": "( ( B 0 > ) ( ( ( B 1 - ) B ) ) WHILE )",
       "tokens": [
         "(",
@@ -2494,7 +2575,7 @@
       "sucesso": true
     },
     {
-      "numero_linha": 19,
+      "numero_linha": 20,
       "expressao_original": "( ( 1 ) ( 10 ) ( 1 ) ( I 2 * ) FOR )",
       "tokens": [
         "(",
@@ -2818,7 +2899,7 @@
       "sucesso": true
     },
     {
-      "numero_linha": 20,
+      "numero_linha": 21,
       "expressao_original": "( ( X 15 > ) ( 100 ) ( 200 ) IFELSE )",
       "tokens": [
         "(",
@@ -3084,7 +3165,7 @@
       "sucesso": true
     },
     {
-      "numero_linha": 21,
+      "numero_linha": 22,
       "expressao_original": "( ( ( A 10 > ) ( Y 5 > ) && ) ( ( ( A Y + ) 2.0 | ) ) ( ( A Y * ) ) IFELSE )",
       "tokens": [
         "(",
@@ -3695,7 +3776,7 @@
       "sucesso": true
     },
     {
-      "numero_linha": 22,
+      "numero_linha": 23,
       "expressao_original": "( ( 5 3 + ) ( 2 4 * ) * )",
       "tokens": [
         "(",
@@ -3939,8 +4020,8 @@
     }
   ],
   "estatisticas": {
-    "total_linhas": 22,
-    "linhas_validas": 22,
+    "total_linhas": 23,
+    "linhas_validas": 23,
     "linhas_com_erro": 0
   }
 }

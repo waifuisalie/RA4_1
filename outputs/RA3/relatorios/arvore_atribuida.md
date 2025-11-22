@@ -1,11 +1,11 @@
 # Árvore Sintática Abstrata Atribuída
 
-**Gerado em:** 2025-11-21 18:24:03
+**Gerado em:** 2025-11-22 11:46:29
 
 ## Resumo
 
-- **Total de linhas:** 22
-- **Linhas com tipo definido:** 22
+- **Total de linhas:** 23
+- **Linhas com tipo definido:** 23
 - **Linhas sem tipo definido:** 0
 
 ## Detalhes da Árvore Atribuída por Linha
@@ -109,6 +109,18 @@ LINHA : boolean
 
 ```
 LINHA : boolean
+  LOGIC_OP (!) : boolean
+    LINHA : int [3] {numero_inteiro}
+```
+
+### Linha 9
+
+**Tipo Resultado:** `boolean`
+
+**Estrutura da Árvore:**
+
+```
+LINHA : boolean
   LOGIC_OP (&&) : boolean
     COMP_OP (>) : boolean
       LINHA : int [5] {numero_inteiro}
@@ -118,7 +130,7 @@ LINHA : boolean
       LINHA : int [1] {numero_inteiro}
 ```
 
-### Linha 9
+### Linha 10
 
 **Tipo Resultado:** `int`
 
@@ -131,7 +143,7 @@ LINHA : int
     LINHA : int [X] {variavel}
 ```
 
-### Linha 10
+### Linha 11
 
 **Tipo Resultado:** `int`
 
@@ -144,7 +156,7 @@ LINHA : int
     LINHA : int [A] {variavel}
 ```
 
-### Linha 11
+### Linha 12
 
 **Tipo Resultado:** `int`
 
@@ -157,7 +169,7 @@ LINHA : int
     LINHA : int [I] {variavel}
 ```
 
-### Linha 12
+### Linha 13
 
 **Tipo Resultado:** `int`
 
@@ -170,7 +182,7 @@ LINHA : int
     LINHA : int [COUNTER] {variavel}
 ```
 
-### Linha 13
+### Linha 14
 
 **Tipo Resultado:** `int`
 
@@ -185,7 +197,7 @@ LINHA : int
     LINHA : int [Y] {variavel}
 ```
 
-### Linha 14
+### Linha 15
 
 **Tipo Resultado:** `int`
 
@@ -200,7 +212,7 @@ LINHA : int
     LINHA : int [B] {variavel}
 ```
 
-### Linha 15
+### Linha 16
 
 **Tipo Resultado:** `int`
 
@@ -212,7 +224,7 @@ LINHA : int
     LINHA : int [1] {numero_inteiro_res}
 ```
 
-### Linha 16
+### Linha 17
 
 **Tipo Resultado:** `int`
 
@@ -224,7 +236,7 @@ LINHA : int
     LINHA : int [2] {numero_inteiro_res}
 ```
 
-### Linha 17
+### Linha 18
 
 **Tipo Resultado:** `int`
 
@@ -244,7 +256,7 @@ LINHA : int
         LINHA : int [COUNTER] {variavel}
 ```
 
-### Linha 18
+### Linha 19
 
 **Tipo Resultado:** `int`
 
@@ -264,7 +276,7 @@ LINHA : int
         LINHA : int [B] {variavel}
 ```
 
-### Linha 19
+### Linha 20
 
 **Tipo Resultado:** `int`
 
@@ -284,7 +296,7 @@ LINHA : int
       LINHA : int [2] {numero_inteiro}
 ```
 
-### Linha 20
+### Linha 21
 
 **Tipo Resultado:** `int`
 
@@ -302,7 +314,7 @@ LINHA : int
       LINHA : int [200] {numero_inteiro}
 ```
 
-### Linha 21
+### Linha 22
 
 **Tipo Resultado:** `real`
 
@@ -330,7 +342,7 @@ LINHA : real
         LINHA : int [Y] {variavel}
 ```
 
-### Linha 22
+### Linha 23
 
 **Tipo Resultado:** `int`
 

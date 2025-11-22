@@ -1,8 +1,8 @@
 # Julgamento de Tipos
 
-**Gerado em:** 2025-11-21 18:24:03
+**Gerado em:** 2025-11-22 11:46:29
 
-**Total de expressões analisadas:** 22
+**Total de expressões analisadas:** 23
 
 ---
 
@@ -168,7 +168,29 @@ Operador de comparação: resultado sempre `boolean`.
 
 ---
 
-## Linha 8: `((5 3 >) (2 1 <) &&)`
+## Linha 8: `(3 !)`
+
+### Análise de Tipos:
+- **Operando 1:** `3` → tipo: `int`
+    - `3` : `int`
+- **Operador:** `!`
+
+### Regra Aplicada:
+
+```
+Γ ⊢ e : int    (int ∈ {int, real, boolean})
+───────────────────────────────────────
+       Γ ⊢ (e !) : boolean
+```
+
+### Tipo Resultante: `boolean`
+
+### Observação:
+Operador lógico: resultado sempre `boolean`. Modo permissivo aceita conversão via truthiness.
+
+---
+
+## Linha 9: `((5 3 >) (2 1 <) &&)`
 
 ### Análise de Tipos:
 - **Operando 1:** `(5 3 >)` → tipo: `boolean`
@@ -198,7 +220,7 @@ Operador lógico: resultado sempre `boolean`. Modo permissivo aceita conversão 
 
 ---
 
-## Linha 9: `(10 X)`
+## Linha 10: `(10 X)`
 
 ### Análise de Tipos:
 - **Operando 1:** `10` → tipo: `int`
@@ -208,7 +230,7 @@ Operador lógico: resultado sempre `boolean`. Modo permissivo aceita conversão 
 
 ---
 
-## Linha 10: `(20 A)`
+## Linha 11: `(20 A)`
 
 ### Análise de Tipos:
 - **Operando 1:** `20` → tipo: `int`
@@ -218,7 +240,7 @@ Operador lógico: resultado sempre `boolean`. Modo permissivo aceita conversão 
 
 ---
 
-## Linha 11: `(10 I)`
+## Linha 12: `(10 I)`
 
 ### Análise de Tipos:
 - **Operando 1:** `10` → tipo: `int`
@@ -228,7 +250,7 @@ Operador lógico: resultado sempre `boolean`. Modo permissivo aceita conversão 
 
 ---
 
-## Linha 12: `(0 COUNTER)`
+## Linha 13: `(0 COUNTER)`
 
 ### Análise de Tipos:
 - **Operando 1:** `0` → tipo: `int`
@@ -238,7 +260,7 @@ Operador lógico: resultado sempre `boolean`. Modo permissivo aceita conversão 
 
 ---
 
-## Linha 13: `((X 5 +) Y)`
+## Linha 14: `((X 5 +) Y)`
 
 ### Análise de Tipos:
 - **Operando 1:** `(X 5 +)` → tipo: `int`
@@ -252,7 +274,7 @@ Operador lógico: resultado sempre `boolean`. Modo permissivo aceita conversão 
 
 ---
 
-## Linha 14: `((A X -) B)`
+## Linha 15: `((A X -) B)`
 
 ### Análise de Tipos:
 - **Operando 1:** `(A X -)` → tipo: `int`
@@ -266,7 +288,7 @@ Operador lógico: resultado sempre `boolean`. Modo permissivo aceita conversão 
 
 ---
 
-## Linha 15: `(1)`
+## Linha 16: `(1)`
 
 ### Análise de Tipos:
 - **Operando 1:** `1` → tipo: `int`
@@ -275,7 +297,7 @@ Operador lógico: resultado sempre `boolean`. Modo permissivo aceita conversão 
 
 ---
 
-## Linha 16: `(2)`
+## Linha 17: `(2)`
 
 ### Análise de Tipos:
 - **Operando 1:** `2` → tipo: `int`
@@ -284,7 +306,7 @@ Operador lógico: resultado sempre `boolean`. Modo permissivo aceita conversão 
 
 ---
 
-## Linha 17: `((COUNTER 5 <) ((COUNTER 1 +) COUNTER) WHILE)`
+## Linha 18: `((COUNTER 5 <) ((COUNTER 1 +) COUNTER) WHILE)`
 
 ### Análise de Tipos:
 - **Operando 1:** `(COUNTER 5 <)` → tipo: `boolean`
@@ -307,7 +329,7 @@ Operador lógico: resultado sempre `boolean`. Modo permissivo aceita conversão 
 
 ---
 
-## Linha 18: `((B 0 >) ((B 1 -) B) WHILE)`
+## Linha 19: `((B 0 >) ((B 1 -) B) WHILE)`
 
 ### Análise de Tipos:
 - **Operando 1:** `(B 0 >)` → tipo: `boolean`
@@ -330,7 +352,7 @@ Operador lógico: resultado sempre `boolean`. Modo permissivo aceita conversão 
 
 ---
 
-## Linha 19: `((1) (10) (1) (I 2 *) FOR)`
+## Linha 20: `((1) (10) (1) (I 2 *) FOR)`
 
 ### Análise de Tipos:
 - **Operando 1:** `(1)` → tipo: `int`
@@ -355,7 +377,7 @@ Operador lógico: resultado sempre `boolean`. Modo permissivo aceita conversão 
 
 ---
 
-## Linha 20: `((X 15 >) (100) (200) IFELSE)`
+## Linha 21: `((X 15 >) (100) (200) IFELSE)`
 
 ### Análise de Tipos:
 - **Operando 1:** `(X 15 >)` → tipo: `boolean`
@@ -379,7 +401,7 @@ Operador lógico: resultado sempre `boolean`. Modo permissivo aceita conversão 
 
 ---
 
-## Linha 21: `(((A 10 >) (Y 5 >) &&) ((A Y +) 2.0 |) (A Y *) IFELSE)`
+## Linha 22: `(((A 10 >) (Y 5 >) &&) ((A Y +) 2.0 |) (A Y *) IFELSE)`
 
 ### Análise de Tipos:
 - **Operando 1:** `((A 10 >) (Y 5 >) &&)` → tipo: `boolean`
@@ -404,7 +426,7 @@ Tipo promovido de `int` para `real` devido a operando `real`.
 
 ---
 
-## Linha 22: `((5 3 +) (2 4 *) *)`
+## Linha 23: `((5 3 +) (2 4 *) *)`
 
 ### Análise de Tipos:
 - **Operando 1:** `(5 3 +)` → tipo: `int`
@@ -434,15 +456,15 @@ Tipo promovido de `int` para `real` devido a operando `real`.
 ## Resumo de Tipos
 
 ### Estatísticas
-- **Total de expressões:** 22
-- **Com tipo definido:** 22
+- **Total de expressões:** 23
+- **Com tipo definido:** 23
 - **Sem tipo definido:** 0
 - **Promoções de tipo:** 2
 
 ### Distribuição de Tipos
-- `boolean`: 2 expressões (9.1%)
-- `int`: 17 expressões (77.3%)
-- `real`: 3 expressões (13.6%)
+- `boolean`: 3 expressões (13.0%)
+- `int`: 17 expressões (73.9%)
+- `real`: 3 expressões (13.0%)
 
 ### Tipos Utilizados
 - `boolean`

@@ -1,5 +1,5 @@
 TAC Output - Generated from arvore_atribuida.json
-Generated: 2025-11-21 18:24:20
+Generated: 2025-11-22 11:46:31
 ======================================================================
 
 Line  1: t0 = 5                    [type: int]
@@ -23,92 +23,94 @@ Line  6: t17 = t15 ^ t16           [type: real]
 Line  7: t18 = 5.5                 [type: real]
 Line  7: t19 = 3.2                 [type: real]
 Line  7: t20 = t18 > t19           [type: boolean]
-Line  8: t21 = 5                   [type: int]
-Line  8: t22 = 3                   [type: int]
-Line  8: t23 = t21 > t22           [type: boolean]
-Line  8: t24 = 2                   [type: int]
-Line  8: t25 = 1                   [type: int]
-Line  8: t26 = t24 < t25           [type: boolean]
-Line  8: t27 = t23 && t26          [type: boolean]
-Line  9: t28 = 10                  [type: int]
-Line  9: X = t28                   [type: int]
-Line 10: t29 = 20                  [type: int]
-Line 10: A = t29                   [type: int]
-Line 11: t30 = 10                  [type: int]
-Line 11: I = t30                   [type: int]
-Line 12: t31 = 0                   [type: int]
-Line 12: COUNTER = t31             [type: int]
-Line 13: t32 = 5                   [type: int]
-Line 13: t33 = X + t32             [type: int]
-Line 13: Y = t33                   [type: int]
-Line 14: t34 = A - X               [type: int]
-Line 14: B = t34                   [type: int]
-Line 15: t35 = 1                   [type: int]
-Line 16: t36 = 2                   [type: int]
-Line 17: L0:                       
-Line 17: t37 = 5                   [type: int]
-Line 17: t38 = COUNTER < t37       [type: boolean]
-Line 17: ifFalse t38 goto L1       
-Line 17: t39 = 1                   [type: int]
-Line 17: t40 = COUNTER + t39       [type: int]
-Line 17: COUNTER = t40             [type: int]
-Line 17: goto L0                   
-Line 17: L1:                       
-Line 18: L2:                       
-Line 18: t41 = 0                   [type: int]
-Line 18: t42 = B > t41             [type: boolean]
-Line 18: ifFalse t42 goto L3       
-Line 18: t43 = 1                   [type: int]
-Line 18: t44 = B - t43             [type: int]
-Line 18: B = t44                   [type: int]
-Line 18: goto L2                   
-Line 18: L3:                       
+Line  8: t21 = 3                   [type: int]
+Line  8: t22 = !t21                [type: boolean]
+Line  9: t23 = 5                   [type: int]
+Line  9: t24 = 3                   [type: int]
+Line  9: t25 = t23 > t24           [type: boolean]
+Line  9: t26 = 2                   [type: int]
+Line  9: t27 = 1                   [type: int]
+Line  9: t28 = t26 < t27           [type: boolean]
+Line  9: t29 = t25 && t28          [type: boolean]
+Line 10: t30 = 10                  [type: int]
+Line 10: X = t30                   [type: int]
+Line 11: t31 = 20                  [type: int]
+Line 11: A = t31                   [type: int]
+Line 12: t32 = 10                  [type: int]
+Line 12: I = t32                   [type: int]
+Line 13: t33 = 0                   [type: int]
+Line 13: COUNTER = t33             [type: int]
+Line 14: t34 = 5                   [type: int]
+Line 14: t35 = X + t34             [type: int]
+Line 14: Y = t35                   [type: int]
+Line 15: t36 = A - X               [type: int]
+Line 15: B = t36                   [type: int]
+Line 16: t37 = 1                   [type: int]
+Line 17: t38 = 2                   [type: int]
+Line 18: L0:                       
+Line 18: t39 = 5                   [type: int]
+Line 18: t40 = COUNTER < t39       [type: boolean]
+Line 18: ifFalse t40 goto L1       
+Line 18: t41 = 1                   [type: int]
+Line 18: t42 = COUNTER + t41       [type: int]
+Line 18: COUNTER = t42             [type: int]
+Line 18: goto L0                   
+Line 18: L1:                       
+Line 19: L2:                       
+Line 19: t43 = 0                   [type: int]
+Line 19: t44 = B > t43             [type: boolean]
+Line 19: ifFalse t44 goto L3       
 Line 19: t45 = 1                   [type: int]
-Line 19: t46 = 10                  [type: int]
-Line 19: t47 = 1                   [type: int]
-Line 19: t48 = t45                 [type: int]
-Line 19: L4:                       
-Line 19: t49 = t48 <= t46          [type: boolean]
-Line 19: ifFalse t49 goto L5       
-Line 19: t50 = 2                   [type: int]
-Line 19: t51 = I * t50             [type: int]
-Line 19: t52 = t48 + t47           [type: int]
-Line 19: t48 = t52                 [type: int]
-Line 19: goto L4                   
-Line 19: L5:                       
-Line 20: t53 = 15                  [type: int]
-Line 20: t54 = X > t53             [type: boolean]
-Line 20: ifFalse t54 goto L6       
-Line 20: t55 = 100                 [type: int]
-Line 20: goto L7                   
-Line 20: L6:                       
-Line 20: t56 = 200                 [type: int]
-Line 20: L7:                       
-Line 21: t57 = 10                  [type: int]
-Line 21: t58 = A > t57             [type: boolean]
-Line 21: t59 = 5                   [type: int]
-Line 21: t60 = Y > t59             [type: boolean]
-Line 21: t61 = t58 && t60          [type: boolean]
-Line 21: ifFalse t61 goto L8       
-Line 21: t62 = A + Y               [type: int]
-Line 21: t63 = 2.0                 [type: real]
-Line 21: t64 = t62 | t63           [type: real]
-Line 21: goto L9                   
-Line 21: L8:                       
-Line 21: t65 = A * Y               [type: int]
-Line 21: L9:                       
-Line 22: t66 = 5                   [type: int]
-Line 22: t67 = 3                   [type: int]
-Line 22: t68 = t66 + t67           [type: int]
-Line 22: t69 = 2                   [type: int]
-Line 22: t70 = 4                   [type: int]
-Line 22: t71 = t69 * t70           [type: int]
-Line 22: t72 = t68 * t71           [type: int]
+Line 19: t46 = B - t45             [type: int]
+Line 19: B = t46                   [type: int]
+Line 19: goto L2                   
+Line 19: L3:                       
+Line 20: t47 = 1                   [type: int]
+Line 20: t48 = 10                  [type: int]
+Line 20: t49 = 1                   [type: int]
+Line 20: t50 = t47                 [type: int]
+Line 20: L4:                       
+Line 20: t51 = t50 <= t48          [type: boolean]
+Line 20: ifFalse t51 goto L5       
+Line 20: t52 = 2                   [type: int]
+Line 20: t53 = I * t52             [type: int]
+Line 20: t54 = t50 + t49           [type: int]
+Line 20: t50 = t54                 [type: int]
+Line 20: goto L4                   
+Line 20: L5:                       
+Line 21: t55 = 15                  [type: int]
+Line 21: t56 = X > t55             [type: boolean]
+Line 21: ifFalse t56 goto L6       
+Line 21: t57 = 100                 [type: int]
+Line 21: goto L7                   
+Line 21: L6:                       
+Line 21: t58 = 200                 [type: int]
+Line 21: L7:                       
+Line 22: t59 = 10                  [type: int]
+Line 22: t60 = A > t59             [type: boolean]
+Line 22: t61 = 5                   [type: int]
+Line 22: t62 = Y > t61             [type: boolean]
+Line 22: t63 = t60 && t62          [type: boolean]
+Line 22: ifFalse t63 goto L8       
+Line 22: t64 = A + Y               [type: int]
+Line 22: t65 = 2.0                 [type: real]
+Line 22: t66 = t64 | t65           [type: real]
+Line 22: goto L9                   
+Line 22: L8:                       
+Line 22: t67 = A * Y               [type: int]
+Line 22: L9:                       
+Line 23: t68 = 5                   [type: int]
+Line 23: t69 = 3                   [type: int]
+Line 23: t70 = t68 + t69           [type: int]
+Line 23: t71 = 2                   [type: int]
+Line 23: t72 = 4                   [type: int]
+Line 23: t73 = t71 * t72           [type: int]
+Line 23: t74 = t70 * t73           [type: int]
 
 ======================================================================
 Statistics:
-  total_instructions: 102
-  temp_count: 73
+  total_instructions: 104
+  temp_count: 75
   label_count: 10
-  result_history_size: 19
+  result_history_size: 20
 ======================================================================

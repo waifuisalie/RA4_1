@@ -12,6 +12,7 @@
 
 # === SEÇÃO 2: OPERAÇÕES DE COMPARAÇÃO ===
 (5.5 3.2 >)
+(3 !)
 
 # === SEÇÃO 3: OPERAÇÕES LÓGICAS ===
 ((5 3 >) (2 1 <) &&)
