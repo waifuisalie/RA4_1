@@ -1,8 +1,15 @@
 {
   "metadata": {
-    "generated_at": "2025-11-22 16:18:27",
-    "source_ast": "C:\\Users\\Cliente\\Desktop\\2025-2\\Linguagens Formais e Compiladores\\RA4 Correção Parte 1\\RA4_1\\outputs\\RA3\\arvore_atribuida.json",
-    "total_instructions": 91
+    "generated_at": "2025-11-22T16:41:26.625795",
+    "generator": "RA4 TAC Generator",
+    "version": "1.0",
+    "source_file": "C:\\Users\\Cliente\\Desktop\\2025-2\\Linguagens Formais e Compiladores\\RA4 Correção Parte 1\\RA4_1\\outputs\\RA3\\arvore_atribuida.json"
+  },
+  "statistics": {
+    "total_instructions": 104,
+    "temp_count": 75,
+    "label_count": 10,
+    "result_history_size": 20
   },
   "instructions": [
     {
@@ -15,9 +22,9 @@
     {
       "type": "assignment",
       "dest": "t1",
-      "source": "3.0",
+      "source": "3",
       "line": 1,
-      "data_type": "real"
+      "data_type": "int"
     },
     {
       "type": "binary_op",
@@ -26,7 +33,7 @@
       "operator": "+",
       "operand2": "t1",
       "line": 1,
-      "data_type": "real"
+      "data_type": "int"
     },
     {
       "type": "assignment",
@@ -54,14 +61,14 @@
     {
       "type": "assignment",
       "dest": "t6",
-      "source": "15",
+      "source": "100",
       "line": 3,
       "data_type": "int"
     },
     {
       "type": "assignment",
       "dest": "t7",
-      "source": "4",
+      "source": "50",
       "line": 3,
       "data_type": "int"
     },
@@ -69,7 +76,7 @@
       "type": "binary_op",
       "result": "t8",
       "operand1": "t6",
-      "operator": "-",
+      "operator": "+",
       "operand2": "t7",
       "line": 3,
       "data_type": "int"
@@ -77,37 +84,37 @@
     {
       "type": "assignment",
       "dest": "t9",
-      "source": "8.0",
+      "source": "15",
       "line": 4,
-      "data_type": "real"
+      "data_type": "int"
     },
     {
       "type": "assignment",
       "dest": "t10",
-      "source": "2.0",
+      "source": "7",
       "line": 4,
-      "data_type": "real"
+      "data_type": "int"
     },
     {
       "type": "binary_op",
       "result": "t11",
       "operand1": "t9",
-      "operator": "|",
+      "operator": "/",
       "operand2": "t10",
       "line": 4,
-      "data_type": "real"
+      "data_type": "int"
     },
     {
       "type": "assignment",
       "dest": "t12",
-      "source": "20",
+      "source": "23",
       "line": 5,
       "data_type": "int"
     },
     {
       "type": "assignment",
       "dest": "t13",
-      "source": "3",
+      "source": "6",
       "line": 5,
       "data_type": "int"
     },
@@ -115,7 +122,7 @@
       "type": "binary_op",
       "result": "t14",
       "operand1": "t12",
-      "operator": "/",
+      "operator": "%",
       "operand2": "t13",
       "line": 5,
       "data_type": "int"
@@ -123,14 +130,14 @@
     {
       "type": "assignment",
       "dest": "t15",
-      "source": "17",
+      "source": "2.5",
       "line": 6,
-      "data_type": "int"
+      "data_type": "real"
     },
     {
       "type": "assignment",
       "dest": "t16",
-      "source": "5",
+      "source": "3",
       "line": 6,
       "data_type": "int"
     },
@@ -138,178 +145,195 @@
       "type": "binary_op",
       "result": "t17",
       "operand1": "t15",
-      "operator": "%",
+      "operator": "^",
       "operand2": "t16",
       "line": 6,
-      "data_type": "int"
+      "data_type": "real"
     },
     {
       "type": "assignment",
       "dest": "t18",
-      "source": "2",
+      "source": "5.5",
       "line": 7,
-      "data_type": "int"
+      "data_type": "real"
     },
     {
       "type": "assignment",
       "dest": "t19",
-      "source": "3",
+      "source": "3.2",
       "line": 7,
-      "data_type": "int"
+      "data_type": "real"
     },
     {
       "type": "binary_op",
       "result": "t20",
       "operand1": "t18",
-      "operator": "^",
+      "operator": ">",
       "operand2": "t19",
       "line": 7,
-      "data_type": "int"
+      "data_type": "boolean"
     },
     {
       "type": "assignment",
       "dest": "t21",
-      "source": "100",
+      "source": "3",
       "line": 8,
       "data_type": "int"
+    },
+    {
+      "type": "unary_op",
+      "result": "t22",
+      "operator": "!",
+      "operand": "t21",
+      "line": 8,
+      "data_type": "boolean"
     },
     {
       "type": "assignment",
-      "dest": "t22",
-      "source": "50",
-      "line": 8,
-      "data_type": "int"
-    },
-    {
-      "type": "binary_op",
-      "result": "t23",
-      "operand1": "t21",
-      "operator": "+",
-      "operand2": "t22",
-      "line": 8,
-      "data_type": "int"
-    },
-    {
-      "type": "assignment",
-      "dest": "t24",
+      "dest": "t23",
       "source": "5",
       "line": 9,
       "data_type": "int"
     },
     {
       "type": "assignment",
-      "dest": "t25",
-      "source": "2",
+      "dest": "t24",
+      "source": "3",
       "line": 9,
       "data_type": "int"
     },
     {
       "type": "binary_op",
-      "result": "t26",
-      "operand1": "t24",
-      "operator": "/",
-      "operand2": "t25",
+      "result": "t25",
+      "operand1": "t23",
+      "operator": ">",
+      "operand2": "t24",
+      "line": 9,
+      "data_type": "boolean"
+    },
+    {
+      "type": "assignment",
+      "dest": "t26",
+      "source": "2",
       "line": 9,
       "data_type": "int"
     },
     {
       "type": "assignment",
       "dest": "t27",
+      "source": "1",
+      "line": 9,
+      "data_type": "int"
+    },
+    {
+      "type": "binary_op",
+      "result": "t28",
+      "operand1": "t26",
+      "operator": "<",
+      "operand2": "t27",
+      "line": 9,
+      "data_type": "boolean"
+    },
+    {
+      "type": "binary_op",
+      "result": "t29",
+      "operand1": "t25",
+      "operator": "&&",
+      "operand2": "t28",
+      "line": 9,
+      "data_type": "boolean"
+    },
+    {
+      "type": "assignment",
+      "dest": "t30",
       "source": "10",
       "line": 10,
       "data_type": "int"
     },
     {
-      "type": "assignment",
-      "dest": "t28",
-      "source": "3",
+      "type": "copy",
+      "dest": "X",
+      "source": "t30",
       "line": 10,
-      "data_type": "int"
-    },
-    {
-      "type": "binary_op",
-      "result": "t29",
-      "operand1": "t27",
-      "operator": "%",
-      "operand2": "t28",
-      "line": 10,
-      "data_type": "int"
-    },
-    {
-      "type": "assignment",
-      "dest": "t30",
-      "source": "2",
-      "line": 11,
       "data_type": "int"
     },
     {
       "type": "assignment",
       "dest": "t31",
-      "source": "3",
+      "source": "20",
       "line": 11,
       "data_type": "int"
     },
     {
-      "type": "binary_op",
-      "result": "t32",
-      "operand1": "t30",
-      "operator": "^",
-      "operand2": "t31",
+      "type": "copy",
+      "dest": "A",
+      "source": "t31",
       "line": 11,
+      "data_type": "int"
+    },
+    {
+      "type": "assignment",
+      "dest": "t32",
+      "source": "10",
+      "line": 12,
+      "data_type": "int"
+    },
+    {
+      "type": "copy",
+      "dest": "I",
+      "source": "t32",
+      "line": 12,
       "data_type": "int"
     },
     {
       "type": "assignment",
       "dest": "t33",
-      "source": "42",
-      "line": 12,
-      "data_type": "int"
-    },
-    {
-      "type": "copy",
-      "dest": "X",
-      "source": "t33",
-      "line": 12,
-      "data_type": "int"
-    },
-    {
-      "type": "assignment",
-      "dest": "t34",
-      "source": "3.14",
+      "source": "0",
       "line": 13,
-      "data_type": "real"
-    },
-    {
-      "type": "copy",
-      "dest": "PI",
-      "source": "t34",
-      "line": 13,
-      "data_type": "real"
-    },
-    {
-      "type": "assignment",
-      "dest": "t35",
-      "source": "1",
-      "line": 14,
-      "data_type": "int"
-    },
-    {
-      "type": "copy",
-      "dest": "FLAG",
-      "source": "t35",
-      "line": 14,
-      "data_type": "int"
-    },
-    {
-      "type": "assignment",
-      "dest": "t36",
-      "source": "100",
-      "line": 15,
       "data_type": "int"
     },
     {
       "type": "copy",
       "dest": "COUNTER",
+      "source": "t33",
+      "line": 13,
+      "data_type": "int"
+    },
+    {
+      "type": "assignment",
+      "dest": "t34",
+      "source": "5",
+      "line": 14,
+      "data_type": "int"
+    },
+    {
+      "type": "binary_op",
+      "result": "t35",
+      "operand1": "X",
+      "operator": "+",
+      "operand2": "t34",
+      "line": 14,
+      "data_type": "int"
+    },
+    {
+      "type": "copy",
+      "dest": "Y",
+      "source": "t35",
+      "line": 14,
+      "data_type": "int"
+    },
+    {
+      "type": "binary_op",
+      "result": "t36",
+      "operand1": "A",
+      "operator": "-",
+      "operand2": "X",
+      "line": 15,
+      "data_type": "int"
+    },
+    {
+      "type": "copy",
+      "dest": "B",
       "source": "t36",
       "line": 15,
       "data_type": "int"
@@ -317,391 +341,428 @@
     {
       "type": "assignment",
       "dest": "t37",
-      "source": "0",
-      "line": 16,
-      "data_type": "int"
-    },
-    {
-      "type": "copy",
-      "dest": "SUM",
-      "source": "t37",
+      "source": "1",
       "line": 16,
       "data_type": "int"
     },
     {
       "type": "assignment",
       "dest": "t38",
-      "source": "200",
+      "source": "2",
       "line": 17,
       "data_type": "int"
     },
     {
-      "type": "copy",
-      "dest": "Y",
-      "source": "t38",
-      "line": 17,
-      "data_type": "int"
+      "type": "label",
+      "name": "L0",
+      "line": 18
     },
     {
       "type": "assignment",
       "dest": "t39",
-      "source": "300",
-      "line": 18,
-      "data_type": "int"
-    },
-    {
-      "type": "copy",
-      "dest": "Z",
-      "source": "t39",
-      "line": 18,
-      "data_type": "int"
-    },
-    {
-      "type": "assignment",
-      "dest": "t40",
       "source": "5",
-      "line": 26,
+      "line": 18,
       "data_type": "int"
+    },
+    {
+      "type": "binary_op",
+      "result": "t40",
+      "operand1": "COUNTER",
+      "operator": "<",
+      "operand2": "t39",
+      "line": 18,
+      "data_type": "boolean"
+    },
+    {
+      "type": "if_false_goto",
+      "condition": "t40",
+      "target": "L1",
+      "line": 18
     },
     {
       "type": "assignment",
       "dest": "t41",
-      "source": "3",
-      "line": 26,
+      "source": "1",
+      "line": 18,
       "data_type": "int"
     },
     {
       "type": "binary_op",
       "result": "t42",
-      "operand1": "t40",
-      "operator": ">",
+      "operand1": "COUNTER",
+      "operator": "+",
       "operand2": "t41",
-      "line": 26,
-      "data_type": "boolean"
+      "line": 18,
+      "data_type": "int"
+    },
+    {
+      "type": "copy",
+      "dest": "COUNTER",
+      "source": "t42",
+      "line": 18,
+      "data_type": "int"
+    },
+    {
+      "type": "goto",
+      "target": "L0",
+      "line": 18
+    },
+    {
+      "type": "label",
+      "name": "L1",
+      "line": 18
+    },
+    {
+      "type": "label",
+      "name": "L2",
+      "line": 19
     },
     {
       "type": "assignment",
       "dest": "t43",
-      "source": "10.5",
-      "line": 27,
-      "data_type": "real"
-    },
-    {
-      "type": "assignment",
-      "dest": "t44",
-      "source": "2.0",
-      "line": 27,
-      "data_type": "real"
+      "source": "0",
+      "line": 19,
+      "data_type": "int"
     },
     {
       "type": "binary_op",
-      "result": "t45",
-      "operand1": "t43",
-      "operator": "<",
-      "operand2": "t44",
-      "line": 27,
+      "result": "t44",
+      "operand1": "B",
+      "operator": ">",
+      "operand2": "t43",
+      "line": 19,
       "data_type": "boolean"
     },
     {
+      "type": "if_false_goto",
+      "condition": "t44",
+      "target": "L3",
+      "line": 19
+    },
+    {
       "type": "assignment",
-      "dest": "t46",
-      "source": "15",
-      "line": 28,
+      "dest": "t45",
+      "source": "1",
+      "line": 19,
       "data_type": "int"
+    },
+    {
+      "type": "binary_op",
+      "result": "t46",
+      "operand1": "B",
+      "operator": "-",
+      "operand2": "t45",
+      "line": 19,
+      "data_type": "int"
+    },
+    {
+      "type": "copy",
+      "dest": "B",
+      "source": "t46",
+      "line": 19,
+      "data_type": "int"
+    },
+    {
+      "type": "goto",
+      "target": "L2",
+      "line": 19
+    },
+    {
+      "type": "label",
+      "name": "L3",
+      "line": 19
     },
     {
       "type": "assignment",
       "dest": "t47",
-      "source": "15",
-      "line": 28,
+      "source": "1",
+      "line": 20,
       "data_type": "int"
     },
     {
-      "type": "binary_op",
-      "result": "t48",
-      "operand1": "t46",
-      "operator": "==",
-      "operand2": "t47",
-      "line": 28,
-      "data_type": "boolean"
+      "type": "assignment",
+      "dest": "t48",
+      "source": "10",
+      "line": 20,
+      "data_type": "int"
     },
     {
       "type": "assignment",
       "dest": "t49",
-      "source": "8.0",
-      "line": 29,
-      "data_type": "real"
+      "source": "1",
+      "line": 20,
+      "data_type": "int"
     },
     {
-      "type": "assignment",
+      "type": "copy",
       "dest": "t50",
-      "source": "9.0",
-      "line": 29,
-      "data_type": "real"
+      "source": "t47",
+      "line": 20,
+      "data_type": "int"
+    },
+    {
+      "type": "label",
+      "name": "L4",
+      "line": 20
     },
     {
       "type": "binary_op",
       "result": "t51",
-      "operand1": "t49",
-      "operator": "!=",
-      "operand2": "t50",
-      "line": 29,
+      "operand1": "t50",
+      "operator": "<=",
+      "operand2": "t48",
+      "line": 20,
       "data_type": "boolean"
+    },
+    {
+      "type": "if_false_goto",
+      "condition": "t51",
+      "target": "L5",
+      "line": 20
     },
     {
       "type": "assignment",
       "dest": "t52",
-      "source": "20",
-      "line": 30,
+      "source": "2",
+      "line": 20,
       "data_type": "int"
     },
     {
-      "type": "assignment",
-      "dest": "t53",
-      "source": "10",
-      "line": 30,
+      "type": "binary_op",
+      "result": "t53",
+      "operand1": "I",
+      "operator": "*",
+      "operand2": "t52",
+      "line": 20,
       "data_type": "int"
     },
     {
       "type": "binary_op",
       "result": "t54",
-      "operand1": "t52",
-      "operator": ">=",
-      "operand2": "t53",
-      "line": 30,
-      "data_type": "boolean"
+      "operand1": "t50",
+      "operator": "+",
+      "operand2": "t49",
+      "line": 20,
+      "data_type": "int"
+    },
+    {
+      "type": "copy",
+      "dest": "t50",
+      "source": "t54",
+      "line": 20,
+      "data_type": "int"
+    },
+    {
+      "type": "goto",
+      "target": "L4",
+      "line": 20
+    },
+    {
+      "type": "label",
+      "name": "L5",
+      "line": 20
     },
     {
       "type": "assignment",
       "dest": "t55",
-      "source": "5",
-      "line": 31,
-      "data_type": "int"
-    },
-    {
-      "type": "assignment",
-      "dest": "t56",
-      "source": "7",
-      "line": 31,
+      "source": "15",
+      "line": 21,
       "data_type": "int"
     },
     {
       "type": "binary_op",
-      "result": "t57",
-      "operand1": "t55",
-      "operator": "<=",
-      "operand2": "t56",
-      "line": 31,
+      "result": "t56",
+      "operand1": "X",
+      "operator": ">",
+      "operand2": "t55",
+      "line": 21,
       "data_type": "boolean"
+    },
+    {
+      "type": "if_false_goto",
+      "condition": "t56",
+      "target": "L6",
+      "line": 21
+    },
+    {
+      "type": "assignment",
+      "dest": "t57",
+      "source": "100",
+      "line": 21,
+      "data_type": "int"
+    },
+    {
+      "type": "goto",
+      "target": "L7",
+      "line": 21
+    },
+    {
+      "type": "label",
+      "name": "L6",
+      "line": 21
     },
     {
       "type": "assignment",
       "dest": "t58",
-      "source": "5",
-      "line": 32,
+      "source": "200",
+      "line": 21,
       "data_type": "int"
+    },
+    {
+      "type": "label",
+      "name": "L7",
+      "line": 21
     },
     {
       "type": "assignment",
       "dest": "t59",
-      "source": "3",
-      "line": 32,
+      "source": "10",
+      "line": 22,
       "data_type": "int"
     },
     {
       "type": "binary_op",
       "result": "t60",
-      "operand1": "t58",
+      "operand1": "A",
       "operator": ">",
       "operand2": "t59",
-      "line": 32,
+      "line": 22,
       "data_type": "boolean"
     },
     {
       "type": "assignment",
       "dest": "t61",
-      "source": "10",
-      "line": 32,
+      "source": "5",
+      "line": 22,
       "data_type": "int"
     },
     {
-      "type": "assignment",
-      "dest": "t62",
-      "source": "5",
-      "line": 32,
-      "data_type": "int"
+      "type": "binary_op",
+      "result": "t62",
+      "operand1": "Y",
+      "operator": ">",
+      "operand2": "t61",
+      "line": 22,
+      "data_type": "boolean"
     },
     {
       "type": "binary_op",
       "result": "t63",
-      "operand1": "t61",
-      "operator": "<",
+      "operand1": "t60",
+      "operator": "&&",
       "operand2": "t62",
-      "line": 32,
+      "line": 22,
       "data_type": "boolean"
+    },
+    {
+      "type": "if_false_goto",
+      "condition": "t63",
+      "target": "L8",
+      "line": 22
     },
     {
       "type": "binary_op",
       "result": "t64",
-      "operand1": "t60",
-      "operator": "&&",
-      "operand2": "t63",
-      "line": 32,
-      "data_type": "boolean"
+      "operand1": "A",
+      "operator": "+",
+      "operand2": "Y",
+      "line": 22,
+      "data_type": "int"
     },
     {
       "type": "assignment",
       "dest": "t65",
-      "source": "2",
-      "line": 33,
-      "data_type": "int"
+      "source": "2.0",
+      "line": 22,
+      "data_type": "real"
     },
     {
-      "type": "assignment",
-      "dest": "t66",
-      "source": "4",
-      "line": 33,
-      "data_type": "int"
+      "type": "binary_op",
+      "result": "t66",
+      "operand1": "t64",
+      "operator": "|",
+      "operand2": "t65",
+      "line": 22,
+      "data_type": "real"
+    },
+    {
+      "type": "goto",
+      "target": "L9",
+      "line": 22
+    },
+    {
+      "type": "label",
+      "name": "L8",
+      "line": 22
     },
     {
       "type": "binary_op",
       "result": "t67",
-      "operand1": "t65",
-      "operator": "==",
-      "operand2": "t66",
-      "line": 33,
-      "data_type": "boolean"
+      "operand1": "A",
+      "operator": "*",
+      "operand2": "Y",
+      "line": 22,
+      "data_type": "int"
+    },
+    {
+      "type": "label",
+      "name": "L9",
+      "line": 22
     },
     {
       "type": "assignment",
       "dest": "t68",
-      "source": "8",
-      "line": 33,
+      "source": "5",
+      "line": 23,
       "data_type": "int"
     },
     {
       "type": "assignment",
       "dest": "t69",
       "source": "3",
-      "line": 33,
+      "line": 23,
       "data_type": "int"
     },
     {
       "type": "binary_op",
       "result": "t70",
       "operand1": "t68",
-      "operator": ">",
+      "operator": "+",
       "operand2": "t69",
-      "line": 33,
-      "data_type": "boolean"
-    },
-    {
-      "type": "binary_op",
-      "result": "t71",
-      "operand1": "t67",
-      "operator": "||",
-      "operand2": "t70",
-      "line": 33,
-      "data_type": "boolean"
-    },
-    {
-      "type": "assignment",
-      "dest": "t72",
-      "source": "10",
-      "line": 34,
+      "line": 23,
       "data_type": "int"
     },
     {
       "type": "assignment",
-      "dest": "t73",
-      "source": "0",
-      "line": 34,
+      "dest": "t71",
+      "source": "2",
+      "line": 23,
+      "data_type": "int"
+    },
+    {
+      "type": "assignment",
+      "dest": "t72",
+      "source": "4",
+      "line": 23,
+      "data_type": "int"
+    },
+    {
+      "type": "binary_op",
+      "result": "t73",
+      "operand1": "t71",
+      "operator": "*",
+      "operand2": "t72",
+      "line": 23,
       "data_type": "int"
     },
     {
       "type": "binary_op",
       "result": "t74",
-      "operand1": "t72",
-      "operator": ">",
-      "operand2": "t73",
-      "line": 34,
-      "data_type": "boolean"
-    },
-    {
-      "type": "unary_op",
-      "result": "t75",
-      "operator": "!",
-      "operand": "t74",
-      "line": 34,
-      "data_type": "boolean"
-    },
-    {
-      "type": "assignment",
-      "dest": "t76",
-      "source": "5",
-      "line": 35,
-      "data_type": "int"
-    },
-    {
-      "type": "assignment",
-      "dest": "t77",
-      "source": "3",
-      "line": 35,
-      "data_type": "int"
-    },
-    {
-      "type": "binary_op",
-      "result": "t78",
-      "operand1": "t76",
-      "operator": "+",
-      "operand2": "t77",
-      "line": 35,
-      "data_type": "int"
-    },
-    {
-      "type": "assignment",
-      "dest": "t79",
-      "source": "2",
-      "line": 35,
-      "data_type": "int"
-    },
-    {
-      "type": "assignment",
-      "dest": "t80",
-      "source": "1",
-      "line": 35,
-      "data_type": "int"
-    },
-    {
-      "type": "binary_op",
-      "result": "t81",
-      "operand1": "t79",
+      "operand1": "t70",
       "operator": "*",
-      "operand2": "t80",
-      "line": 35,
-      "data_type": "int"
-    },
-    {
-      "type": "assignment",
-      "dest": "t82",
-      "source": "2",
-      "line": 35,
-      "data_type": "int"
-    },
-    {
-      "type": "binary_op",
-      "result": "t83",
-      "operand1": "t81",
-      "operator": "+",
-      "operand2": "t82",
-      "line": 35,
+      "operand2": "t73",
+      "line": 23,
       "data_type": "int"
     }
-  ],
-  "statistics": {
-    "total_instructions": 91,
-    "temp_count": 84,
-    "label_count": 0,
-    "result_history_size": 35
-  }
+  ]
 }

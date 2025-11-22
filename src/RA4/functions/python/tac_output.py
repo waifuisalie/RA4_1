@@ -58,58 +58,40 @@ def to_markdown(
     # Cabeçalho
     lines.append(f"# {title}")
     lines.append("")
-    lines.append(f"**Gerado em:** {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+    lines.append(f"**Generated:** {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+    lines.append("")
+    lines.append("---")
+    lines.append("")
+
+    # Seção de Instruções
+    lines.append("## Instructions")
+    lines.append("")
+    lines.append("```")
+
+    for instr in instructions:
+        # Formato simples: Line X: instruction [type: type]
+        line_num = getattr(instr, 'line', 0)
+        instr_str = instr.to_string()
+        type_info = getattr(instr, 'data_type', '')
+
+        # Formata com alinhamento
+        line_prefix = f"Line {line_num:2d}: "
+        instr_padded = f"{instr_str:<25}"
+        type_suffix = f"[type: {type_info}]" if type_info else ""
+
+        lines.append(f"{line_prefix}{instr_padded}{type_suffix}")
+
+    lines.append("```")
+    lines.append("")
+    lines.append("---")
     lines.append("")
 
     # Seção de Estatísticas
+    lines.append("## Statistics")
+    lines.append("")
     if statistics:
-        lines.append("## Estatísticas")
-        lines.append("")
-        lines.append("| Métrica | Valor |")
-        lines.append("|---------|-------|")
         for key, value in statistics.items():
-            lines.append(f"| {key} | {value} |")
-        lines.append("")
-
-    # Seção de Instruções
-    lines.append("## Instruções")
-    lines.append("")
-    lines.append("```")
-
-    current_line = None
-    for instr in instructions:
-        # Adiciona separador visual quando muda a linha fonte
-        if hasattr(instr, 'line') and instr.line != current_line:
-            if current_line is not None:
-                lines.append("")  # Linha em branco
-            lines.append(f"# Linha {instr.line}")
-            current_line = instr.line
-
-        # Formata instrução com anotação de tipo
-        instr_str = instr.to_string()
-        type_info = ""
-        if hasattr(instr, 'data_type') and instr.data_type:
-            type_info = f"  ; [{instr.data_type}]"
-
-        lines.append(f"    {instr_str}{type_info}")
-
-    lines.append("```")
-    lines.append("")
-
-    # Resumo final
-    lines.append("## Resumo")
-    lines.append("")
-    lines.append(f"- **Total de Instruções:** {len(instructions)}")
-
-    # Contagem por tipo
-    type_counts = {}
-    for instr in instructions:
-        instr_type = type(instr).__name__
-        type_counts[instr_type] = type_counts.get(instr_type, 0) + 1
-
-    lines.append("- **Tipos de Instrução:**")
-    for instr_type, count in sorted(type_counts.items()):
-        lines.append(f"  - {instr_type}: {count}")
+            lines.append(f"- **{key}:** {value}")
 
     return "\n".join(lines)
 
@@ -168,8 +150,8 @@ def save_tac_output(
     if source_file:
         metadata["source_file"] = source_file
 
-    json_path = output_dir / "TAC.json"
-    md_path = output_dir / "TAC.md"
+    json_path = output_dir / "tac_instructions.json"
+    md_path = output_dir / "tac_output.md"
 
     title = "TAC Output"
     if source_file:
