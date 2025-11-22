@@ -1,17 +1,18 @@
 # Tabela de Símbolos
 
-**Gerado em:** 2025-11-22 14:28:51
+**Gerado em:** 2025-11-22 16:26:31
 
-## Símbolos Registrados (6)
+## Símbolos Registrados (7)
 
 | Nome | Tipo | Inicializado | Linha | Usos |
 |------|------|--------------|-------|------|
-| `A` | `int` |   Sim | 11 | 0 |
-| `B` | `int` |   Sim | 15 | 0 |
-| `COUNTER` | `int` |   Sim | 13 | 0 |
-| `I` | `int` |   Sim | 12 | 0 |
-| `X` | `int` |   Sim | 10 | 0 |
-| `Y` | `int` |   Sim | 14 | 0 |
+| `COUNTER` | `int` |   Sim | 15 | 0 |
+| `FLAG` | `int` |   Sim | 14 | 0 |
+| `PI` | `real` |   Sim | 13 | 0 |
+| `SUM` | `int` |   Sim | 16 | 0 |
+| `X` | `int` |   Sim | 12 | 0 |
+| `Y` | `int` |   Sim | 17 | 0 |
+| `Z` | `int` |   Sim | 18 | 0 |
 
 ---
 *Relatório gerado automaticamente pelo Compilador RA3_1*

@@ -1,3 +1,13 @@
+#!/usr/bin/env python3
+
+# Integrantes do grupo (ordem alfabética):
+# Breno Rossi Duarte - breno-rossi
+# Francisco Bley Ruthes - fbleyruthes
+# Rafael Olivare Piveta - RafaPiveta
+# Stefan Benjamim Seixas Lourenco Rodrigues - waifuisalie
+#
+# Nome do grupo no Canvas: RA4_1
+
 """
 RA4 - Fase 4: Módulo de Geração de Código
 

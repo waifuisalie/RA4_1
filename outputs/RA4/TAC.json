@@ -1,8 +1,15 @@
 {
   "metadata": {
-    "generated_at": "2025-11-22 16:18:27",
-    "source_ast": "C:\\Users\\Cliente\\Desktop\\2025-2\\Linguagens Formais e Compiladores\\RA4 Correção Parte 1\\RA4_1\\outputs\\RA3\\arvore_atribuida.json",
-    "total_instructions": 91
+    "generated_at": "2025-11-22T16:26:31.895287",
+    "generator": "RA4 TAC Generator",
+    "version": "1.0",
+    "source_file": "C:\\Users\\Cliente\\Desktop\\2025-2\\Linguagens Formais e Compiladores\\RA4 Correção Parte 1\\RA4_1\\outputs\\RA3\\arvore_atribuida.json"
+  },
+  "statistics": {
+    "total_instructions": 91,
+    "temp_count": 84,
+    "label_count": 0,
+    "result_history_size": 35
   },
   "instructions": [
     {
@@ -697,11 +704,5 @@
       "line": 35,
       "data_type": "int"
     }
-  ],
-  "statistics": {
-    "total_instructions": 91,
-    "temp_count": 84,
-    "label_count": 0,
-    "result_history_size": 35
-  }
+  ]
 }
