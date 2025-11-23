@@ -50,13 +50,25 @@ TEST7_SRC = test7_div_by_zero.s
 TEST7_ELF = test7_div_by_zero.elf
 TEST7_HEX = test7_div_by_zero.hex
 
+TEST8_SRC = test8_comparison_eq.s
+TEST8_ELF = test8_comparison_eq.elf
+TEST8_HEX = test8_comparison_eq.hex
+
+TEST9_SRC = test9_comparison_lt.s
+TEST9_ELF = test9_comparison_lt.elf
+TEST9_HEX = test9_comparison_lt.hex
+
+TEST10_SRC = test10_comparison_ge.s
+TEST10_ELF = test10_comparison_ge.elf
+TEST10_HEX = test10_comparison_ge.hex
+
 # ====================================================================
 # Targets Principais
 # ====================================================================
 
-.PHONY: all test1 test2 test3 test4 test5 test6 test7 upload1 upload2 upload3 upload4 upload5 upload6 upload7 monitor clean help
+.PHONY: all test1 test2 test3 test4 test5 test6 test7 test8 test9 test10 upload1 upload2 upload3 upload4 upload5 upload6 upload7 upload8 upload9 upload10 monitor clean help
 
-all: test1 test2 test3 test4 test5 test6 test7
+all: test1 test2 test3 test4 test5 test6 test7 test8 test9 test10
 
 help:
 	@echo "====================================================================="
@@ -70,6 +82,9 @@ help:
 	@echo "  make test5      - Compila Test 5 (Division: 1234 / 56 = 22)"
 	@echo "  make test6      - Compila Test 6 (Modulo: 1234 % 56 = 2)"
 	@echo "  make test7      - Compila Test 7 (Div by zero: 100 / 0 = 65535)"
+	@echo "  make test8      - Compila Test 8 (Comparison ==: 1 0)"
+	@echo "  make test9      - Compila Test 9 (Comparison <: 1 0)"
+	@echo "  make test10     - Compila Test 10 (Comparison >=: 1 0 1)"
 	@echo "  make upload1    - Upload Test 1 para Arduino"
 	@echo "  make upload2    - Upload Test 2 para Arduino"
 	@echo "  make upload3    - Upload Test 3 para Arduino"
@@ -77,6 +92,9 @@ help:
 	@echo "  make upload5    - Upload Test 5 para Arduino"
 	@echo "  make upload6    - Upload Test 6 para Arduino"
 	@echo "  make upload7    - Upload Test 7 para Arduino"
+	@echo "  make upload8    - Upload Test 8 para Arduino"
+	@echo "  make upload9    - Upload Test 9 para Arduino"
+	@echo "  make upload10   - Upload Test 10 para Arduino"
 	@echo "  make monitor    - Abre monitor serial (115200 baud)"
 	@echo "  make clean      - Remove arquivos compilados"
 	@echo ""
@@ -115,6 +133,18 @@ test6: $(TEST6_HEX)
 test7: $(TEST7_HEX)
 	@echo "✓ Test 7 compilado com sucesso!"
 	@echo "  Saída esperada: 'Teste 7: 100 / 0 = ?\\r\\nResultado: 65535 (ERRO)\\r\\n'"
+
+test8: $(TEST8_HEX)
+	@echo "✓ Test 8 compilado com sucesso!"
+	@echo "  Saída esperada: '1 0\\r\\n' (100==100=1, 100==99=0)"
+
+test9: $(TEST9_HEX)
+	@echo "✓ Test 9 compilado com sucesso!"
+	@echo "  Saída esperada: '1 0\\r\\n' (50<100=1, 100<50=0)"
+
+test10: $(TEST10_HEX)
+	@echo "✓ Test 10 compilado com sucesso!"
+	@echo "  Saída esperada: '1 0 1\\r\\n' (100>=50=1, 50>=100=0, 100>=100=1)"
 
 $(TEST1_ELF): $(TEST1_SRC)
 	@echo "Compilando $(TEST1_SRC)..."
@@ -172,6 +202,30 @@ $(TEST7_HEX): $(TEST7_ELF)
 	@echo "Gerando HEX para Test 7..."
 	$(OBJCOPY) -O ihex $< $@
 
+$(TEST8_ELF): $(TEST8_SRC)
+	@echo "Compilando $(TEST8_SRC)..."
+	$(CC) $(LDFLAGS) -o $@ $<
+
+$(TEST8_HEX): $(TEST8_ELF)
+	@echo "Gerando HEX para Test 8..."
+	$(OBJCOPY) -O ihex $< $@
+
+$(TEST9_ELF): $(TEST9_SRC)
+	@echo "Compilando $(TEST9_SRC)..."
+	$(CC) $(LDFLAGS) -o $@ $<
+
+$(TEST9_HEX): $(TEST9_ELF)
+	@echo "Gerando HEX para Test 9..."
+	$(OBJCOPY) -O ihex $< $@
+
+$(TEST10_ELF): $(TEST10_SRC)
+	@echo "Compilando $(TEST10_SRC)..."
+	$(CC) $(LDFLAGS) -o $@ $<
+
+$(TEST10_HEX): $(TEST10_ELF)
+	@echo "Gerando HEX para Test 10..."
+	$(OBJCOPY) -O ihex $< $@
+
 # ====================================================================
 # Upload para Arduino
 # ====================================================================
@@ -211,6 +265,21 @@ upload7: $(TEST7_HEX)
 	$(AVRDUDE) -c $(PROGRAMMER) -p $(MCU) -P $(PORT) -b 115200 -U flash:w:$<
 	@echo "✓ Upload concluído! Execute 'make monitor' para ver a saída serial."
 
+upload8: $(TEST8_HEX)
+	@echo "Fazendo upload de Test 8 para $(PORT)..."
+	$(AVRDUDE) -c $(PROGRAMMER) -p $(MCU) -P $(PORT) -b 115200 -U flash:w:$<
+	@echo "✓ Upload concluído! Execute 'make monitor' para ver a saída serial."
+
+upload9: $(TEST9_HEX)
+	@echo "Fazendo upload de Test 9 para $(PORT)..."
+	$(AVRDUDE) -c $(PROGRAMMER) -p $(MCU) -P $(PORT) -b 115200 -U flash:w:$<
+	@echo "✓ Upload concluído! Execute 'make monitor' para ver a saída serial."
+
+upload10: $(TEST10_HEX)
+	@echo "Fazendo upload de Test 10 para $(PORT)..."
+	$(AVRDUDE) -c $(PROGRAMMER) -p $(MCU) -P $(PORT) -b 115200 -U flash:w:$<
+	@echo "✓ Upload concluído! Execute 'make monitor' para ver a saída serial."
+
 # ====================================================================
 # Monitor Serial
 # ====================================================================
@@ -247,3 +316,9 @@ run5: test5 upload5 monitor
 run6: test6 upload6 monitor
 
 run7: test7 upload7 monitor
+
+run8: test8 upload8 monitor
+
+run9: test9 upload9 monitor
+
+run10: test10 upload10 monitor
