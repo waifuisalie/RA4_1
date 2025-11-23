@@ -99,7 +99,7 @@ div16:
     clr     r22           ; Resto low = 0
     clr     r23           ; Resto high = 0
 
-    ; Inicializar contador de loop (16 bits + 1)
+    ; Inicializar contador de loop (17 iterações para quociente correto)
     ldi     r16, 17
 
 div16_loop:
@@ -123,6 +123,10 @@ div16_loop:
 div16_skip:
     dec     r16           ; Decrementar contador
     brne    div16_loop    ; Loop se não terminou
+
+    ; Corrigir resto (desfazer o 17º shift)
+    lsr     r23           ; Shift right high byte
+    ror     r22           ; Rotate right low byte (recebe carry de r23)
 
     ; Complementar quociente (agora em R18:R19)
     com     r18           ; Complement quotient low
