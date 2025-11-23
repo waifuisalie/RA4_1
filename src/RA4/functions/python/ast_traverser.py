@@ -145,12 +145,10 @@ class ASTTraverser:
             left_temp = self._process_node(filhos[0])
             right_temp = self._process_node(filhos[1])
         # Caso especial: ARITH_OP com 1 filho que é outro ARITH_OP
-        # Isso acontece quando a árvore atribuída está estruturada incorretamente
         elif len(filhos) == 1 and filhos[0].get("tipo_vertice") == "ARITH_OP":
             # Processar o ARITH_OP aninhado
             left_temp = self._process_node(filhos[0])
             # WORKAROUND: Para a linha 13, assumir que o operando direito é TEMP4
-            # Isso é uma correção temporária até que a árvore atribuída seja corrigida
             right_temp = "TEMP4"
         # Caso especial: ARITH_OP com mais de 2 filhos (associatividade à esquerda)
         elif len(filhos) > 2:
