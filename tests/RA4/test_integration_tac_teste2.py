@@ -86,14 +86,14 @@ class TestIntegrationTAC:
         assert line_numbers == sorted(line_numbers), \
             "Line numbers should be in order"
 
-    def test_arithmetic_line_1_type_promotion(self, arithmetic_only_ast, tac_generator):
+    def test_arithmetic_line_1_addition(self, arithmetic_only_ast, tac_generator):
         """
-        Test Line 1: (5 3.0 +) with type promotion.
+        Test Line 1: (5 3 +) - simple integer addition.
 
         Expected TAC:
           t0 = 5    (int)
-          t1 = 3.0  (real)
-          t2 = t0 + t1  (promoted to real)
+          t1 = 3    (int)
+          t2 = t0 + t1  (int)
         """
         instructions = tac_generator.generate_tac(arithmetic_only_ast)
 
@@ -103,13 +103,13 @@ class TestIntegrationTAC:
 
         # Check instruction strings
         assert line_1_instrs[0].to_string() == "t0 = 5"
-        assert line_1_instrs[1].to_string() == "t1 = 3.0"
+        assert line_1_instrs[1].to_string() == "t1 = 3"
         assert line_1_instrs[2].to_string() == "t2 = t0 + t1"
 
-        # Check data types
+        # Check data types - all integers
         assert line_1_instrs[0].data_type == "int", "5 should be int"
-        assert line_1_instrs[1].data_type == "real", "3.0 should be real"
-        assert line_1_instrs[2].data_type == "real", "Result should be promoted to real"
+        assert line_1_instrs[1].data_type == "int", "3 should be int"
+        assert line_1_instrs[2].data_type == "int", "Result should be int"
 
     def test_all_arithmetic_operators_present(self, arithmetic_only_ast, tac_generator):
         """Test that all 7 arithmetic operators are generated correctly."""
@@ -155,11 +155,11 @@ class TestIntegrationTAC:
         assert literal_nodes[1].get("tipo_inferido") is not None, \
             "Second literal should have tipo_inferido"
 
-        # Verify the types are correct (Line 1 is: 5 3.0 +)
+        # Verify the types are correct (Line 1 is: 5 3 +)
         assert literal_nodes[0]["tipo_inferido"] == "int", \
             "5 should have tipo_inferido='int'"
-        assert literal_nodes[1]["tipo_inferido"] == "real", \
-            "3.0 should have tipo_inferido='real'"
+        assert literal_nodes[1]["tipo_inferido"] == "int", \
+            "3 should have tipo_inferido='int'"
 
         # And TAC generation should still work
         instructions = tac_generator.generate_tac(arithmetic_only_ast)
@@ -220,36 +220,36 @@ class TestIntegrationTAC:
         assert True
 
     def test_specific_operations(self, arithmetic_only_ast, tac_generator):
-        """Test specific operations to verify correctness."""
+        """Test specific operations to verify correctness based on current AST."""
         instructions = tac_generator.generate_tac(arithmetic_only_ast)
 
-        # Line 1: (5.0 3 +) → t2 = t0 + t1 (real)
+        # Line 1: (5 3 +) → addition (int)
         line_1 = [i for i in instructions if i.line == 1]
         assert any('+' in i.to_string() for i in line_1), "Line 1 should have addition"
 
-        # Line 2: (10.5 2.0 *) → multiplication
+        # Line 2: (10.5 2.0 *) → multiplication (real)
         line_2 = [i for i in instructions if i.line == 2]
         assert any('*' in i.to_string() for i in line_2), "Line 2 should have multiplication"
 
-        # Line 3: (15 4 -) → subtraction
+        # Line 3: (100 50 +) → addition (int)
         line_3 = [i for i in instructions if i.line == 3]
-        assert any('-' in i.to_string() for i in line_3), "Line 3 should have subtraction"
+        assert any('+' in i.to_string() for i in line_3), "Line 3 should have addition"
 
-        # Line 4: (8.0 2.0 |) → real division
+        # Line 4: (15 7 /) → integer division
         line_4 = [i for i in instructions if i.line == 4]
-        assert any('|' in i.to_string() for i in line_4), "Line 4 should have real division"
+        assert any('/' in i.to_string() for i in line_4), "Line 4 should have integer division"
 
-        # Line 5: (20 3 /) → integer division
+        # Line 5: (23 6 %) → modulo
         line_5 = [i for i in instructions if i.line == 5]
-        assert any('/' in i.to_string() for i in line_5), "Line 5 should have integer division"
+        assert any('%' in i.to_string() for i in line_5), "Line 5 should have modulo"
 
-        # Line 6: (17 5 %) → modulo
+        # Line 6: (2.5 3 ^) → exponentiation (real)
         line_6 = [i for i in instructions if i.line == 6]
-        assert any('%' in i.to_string() for i in line_6), "Line 6 should have modulo"
+        assert any('^' in i.to_string() for i in line_6), "Line 6 should have exponentiation"
 
-        # Line 7: (2 3 ^) → exponentiation
+        # Line 7: (5.5 3.2 >) → comparison (boolean)
         line_7 = [i for i in instructions if i.line == 7]
-        assert any('^' in i.to_string() for i in line_7), "Line 7 should have exponentiation"
+        assert any('>' in i.to_string() for i in line_7), "Line 7 should have comparison"
 
     def test_variable_assignments(self, arithmetic_only_ast, tac_generator):
         """Test that variable assignments are handled correctly."""
@@ -330,12 +330,27 @@ class TestIssues1_3_and_1_4:
         """
         Verify Issue 1.4: Type information is handled correctly.
 
-        Type promotion: int + real → real
+        Tests:
+        - Line 1: (5 3 +) → int + int = int
+        - Line 2: (10.5 2.0 *) → real * real = real
+        - Line 6: (2.5 3 ^) → real ^ int = real (type promotion)
         """
         instructions = tac_generator.generate_tac(arithmetic_only_ast)
-        line_1 = [i for i in instructions if i.line == 1]
 
-        # Line 1: (5.0 3 +) should result in real type
-        result_instr = line_1[2]  # t2 = t0 + t1
-        assert result_instr.data_type == "real", \
-            "Type promotion: int + real should result in real"
+        # Line 1: (5 3 +) → int + int = int
+        line_1 = [i for i in instructions if i.line == 1]
+        result_instr_1 = line_1[2]  # t2 = t0 + t1
+        assert result_instr_1.data_type == "int", \
+            "int + int should result in int"
+
+        # Line 2: (10.5 2.0 *) → real * real = real
+        line_2 = [i for i in instructions if i.line == 2]
+        result_instr_2 = line_2[2]  # t5 = t3 * t4
+        assert result_instr_2.data_type == "real", \
+            "real * real should result in real"
+
+        # Line 6: (2.5 3 ^) → real ^ int = real (type promotion)
+        line_6 = [i for i in instructions if i.line == 6]
+        result_instr_6 = line_6[2]  # t17 = t15 ^ t16
+        assert result_instr_6.data_type == "real", \
+            "Type promotion: real ^ int should result in real"

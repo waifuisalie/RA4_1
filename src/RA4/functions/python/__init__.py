@@ -1,85 +1,106 @@
+#!/usr/bin/env python3
+
+# Integrantes do grupo (ordem alfabética):
+# Breno Rossi Duarte - breno-rossi
+# Francisco Bley Ruthes - fbleyruthes
+# Rafael Olivare Piveta - RafaPiveta
+# Stefan Benjamim Seixas Lourenco Rodrigues - waifuisalie
+#
+# Nome do grupo no Canvas: RA4_1
+
 """
-RA4 - Phase 4: Code Generation Module
+RA4 - Fase 4: Módulo de Geração de Código
 
-This package contains all functions for Phase 4 of the compiler:
-- TAC (Three Address Code) generation
-- TAC optimization
-- AVR Assembly code generation
-
-Author: Phase 4 - Code Generation Team
-Project: RA4_Compiladores
+Pacote responsável pela Fase 4 do compilador:
+- Geração de Código Intermediário (TAC)
+- Otimização de TAC
+- Geração de Código Assembly AVR
 """
 
 from .tac_instructions import (
-    # Base class
+    # Classe base
     TACInstruction,
 
-    # Assignment instructions
+    # Instruções de Atribuição
     TACAssignment,
     TACCopy,
 
-    # Operation instructions
+    # Instruções de Operação
     TACBinaryOp,
     TACUnaryOp,
 
-    # Control flow instructions
+    # Controle de Fluxo
     TACLabel,
     TACGoto,
     TACIfGoto,
     TACIfFalseGoto,
 
-    # Memory access instructions
+    # Acesso à Memória
     TACMemoryRead,
     TACMemoryWrite,
 
-    # Function/procedure instructions
+    # Funções
     TACCall,
     TACReturn,
 
-    # Utility functions
+    # Utilitários
     instruction_from_dict,
 )
 
 from .tac_manager import (
-    # TAC generation utilities
     TACManager,
 )
 
 from .ast_traverser import (
-    # AST traversal and TAC generation
     ASTTraverser,
 )
 
-__all__ = [
-    # Base class
-    "TACInstruction",
+from .tac_output import (
+    to_json,
+    to_markdown,
+    save_json,
+    save_markdown,
+    save_tac_output,
+)
 
-    # Assignment instructions
+from .gerador_tac import (
+    gerarTAC,
+    gerarTAC_from_dict,
+    get_tac_as_text,
+    get_tac_with_lines,
+)
+
+__all__ = [
+    # Classes base e instruções
+    "TACInstruction",
     "TACAssignment",
     "TACCopy",
-
-    # Operation instructions
     "TACBinaryOp",
     "TACUnaryOp",
-
-    # Control flow instructions
     "TACLabel",
     "TACGoto",
     "TACIfGoto",
     "TACIfFalseGoto",
-
-    # Memory access instructions
     "TACMemoryRead",
     "TACMemoryWrite",
-
-    # Function/procedure instructions
     "TACCall",
     "TACReturn",
-
-    # Utility functions
     "instruction_from_dict",
 
-    # TAC generation utilities
+    # Gerenciadores
     "TACManager",
     "ASTTraverser",
+
+    # Serialização
+    "to_json",
+    "to_markdown",
+    "save_json",
+    "save_markdown",
+    "save_tac_output",
+
+    # Funções principais
+    "gerarTAC",
+    "gerarTAC_from_dict",
+    "get_tac_as_text",
+    "get_tac_with_lines",
 ]

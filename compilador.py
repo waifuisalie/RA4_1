@@ -35,6 +35,8 @@ from src.RA2.functions.python.construirTabelaLL1 import construirTabelaLL1
 from src.RA2.functions.python.parsear import parsear_todas_linhas
 from src.RA3.functions.python.analisador_semantico import analisarSemanticaDaJsonRA2
 from src.RA3.functions.python.gerador_arvore_atribuida import executar_geracao_arvore_atribuida
+from src.RA4.functions.python.gerador_tac import gerarTAC
+from src.RA4.functions.python.otimizador_tac import TACOptimizer
 
 BASE_DIR    = Path(__file__).resolve().parent        # raiz do repo
 OUT_TOKENS  = BASE_DIR / "outputs" / "RA1" / "tokens" / "tokens_gerados.txt"
@@ -337,6 +339,106 @@ def executar_ra3_analise_semantica():
         # Continue execution even if semantic analysis fails
 
 
+def executar_ra4_geracao_tac():
+    """Executa a geração de TAC (RA4)
+
+    Carrega a árvore atribuída do RA3 e gera código TAC.
+
+    Output Files:
+        - outputs/RA4/tac_instructions.json
+        - outputs/RA4/tac_output.md
+    """
+    print("\n--- RA4: GERAÇÃO DE TAC ---")
+
+    try:
+        ast_path = BASE_DIR / "outputs" / "RA3" / "arvore_atribuida.json"
+        output_dir = BASE_DIR / "outputs" / "RA4"
+
+        result = gerarTAC(ast_path, output_dir, save_output=True, source_file=str(ast_path))
+
+        if result["success"]:
+            print(f"    [OK] {result['statistics']['total_instructions']} instruções TAC geradas")
+            print(f"    [OK] Arquivos salvos em: {output_dir.relative_to(BASE_DIR)}")
+            print("      - tac_instructions.json")
+            print("      - tac_output.md")
+        else:
+            print(f"    [ERROR] {result['error']}")
+
+    except FileNotFoundError:
+        print(f"  [ERROR] Arquivo de árvore atribuída não encontrado")
+        print("  Certifique-se de que a análise semântica (RA3) foi executada corretamente.")
+    except Exception as e:
+        print(f"  [ERROR] ERRO na geração de TAC: {e}")
+        traceback.print_exc()
+
+
+def executar_ra4_otimizacao_tac(arquivo_entrada):
+    """Executa a otimização de TAC (RA4)
+
+    Carrega as instruções TAC geradas e aplica otimizações.
+
+    Args:
+        arquivo_entrada: Nome do arquivo de entrada original
+
+    Output Files:
+        - outputs/RA4/tac_otimizado.json
+        - outputs/RA4/tac_otimizado.md
+        - outputs/RA4/relatorios/otimizacao_tac.md
+    """
+    print("\n--- RA4: OTIMIZAÇÃO DE TAC ---")
+
+    try:
+        tac_path = BASE_DIR / "outputs" / "RA4" / "tac_instructions.json"
+        output_dir = BASE_DIR / "outputs" / "RA4"
+
+        # Instancia o otimizador
+        optimizer = TACOptimizer()
+        
+        # Carrega as instruções TAC
+        optimizer.carregar_tac(str(tac_path))
+        
+        # Conta estatísticas antes da otimização
+        initial_instructions = len(optimizer.instructions)
+        initial_temporaries = optimizer._contar_temporarios()
+        
+        # Executa a otimização
+        stats = optimizer.otimizarTAC(str(tac_path))
+        
+        # Cria estatísticas compatíveis com o método de relatório
+        stats_compat = {
+            'initial_instructions': initial_instructions,
+            'final_instructions': len(optimizer.instructions),
+            'initial_temporaries': initial_temporaries,
+            'final_temporaries': optimizer._contar_temporarios(),
+            'foldings': stats.get('constant_folding', 0),
+            'propagations': stats.get('constant_propagation', 0),
+            'dead_code': stats.get('dead_code_elimination', 0),
+            'jump_elim': stats.get('jump_elimination', 0),
+            'iterations': stats.get('iterations', 0)
+        }
+        optimizer._gerar_relatorio_otimizacoes_md(arquivo_entrada, stats_compat)
+
+        print(f"    [OK] TAC otimizado com sucesso")
+        print(f"    [OK] Instruções originais: {stats_compat['initial_instructions']}")
+        print(f"    [OK] Instruções otimizadas: {stats_compat['final_instructions']}")
+        if stats_compat['initial_instructions'] > 0:
+            reducao = ((stats_compat['initial_instructions'] - stats_compat['final_instructions']) / stats_compat['initial_instructions'] * 100)
+            print(f"    [OK] Redução: {reducao:.1f}%")
+        else:
+            print(f"    [OK] Redução: N/A (nenhuma instrução para otimizar)")
+        print(f"    [OK] Arquivos salvos em: {output_dir.relative_to(BASE_DIR)}")
+        print("      - tac_otimizado.json")
+        print("      - tac_otimizado.md")
+        print("      - relatorios/otimizacao_tac.md")
+
+    except FileNotFoundError:
+        print(f"  [ERROR] Arquivo de instruções TAC não encontrado")
+        print("  Certifique-se de que a geração de TAC (RA4) foi executada corretamente.")
+    except Exception as e:
+        print(f"  [ERROR] ERRO na otimização de TAC: {e}")
+        traceback.print_exc()
+
+
 def main():
     """Função principal do compilador
 
@@ -348,6 +450,8 @@ def main():
     5. Executa parsing (RA2)
     6. Gera árvores sintáticas (RA2)
     7. Executa análise semântica (RA3)
+    8. Gera TAC (RA4)
+    9. Otimiza TAC (RA4)
 
     Raises:
         SystemExit: Se houver erro crítico em qualquer fase
@@ -396,6 +500,12 @@ def main():
 
     # Fase 6: Análise semântica (RA3)
     executar_ra3_analise_semantica()
+
+    # Fase 7: Geração de TAC (RA4)
+    executar_ra4_geracao_tac()
+
+    # Fase 8: Otimização de TAC (RA4)
+    executar_ra4_otimizacao_tac(arquivo_entrada)
 
 
 if __name__ == "__main__":

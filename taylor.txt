@@ -1,0 +1,65 @@
+# Definir valor de x = 1.0 (em radianos)# Definir valor de x = 1.0 (em radianos)
+
+(1.0 X_VAL)(1.0 X_VAL)
+
+
+
+# Definir termo1 = 1.0# Definir termo1 = 1.0
+
+(1.0 TERM1)(1.0 TERM1)
+
+
+
+# Calcular x^2# Calcular x^2
+
+((X_VAL X_VAL *) TEMP1)((X_VAL X_VAL *) TEMP1)
+
+# Calcular x^2 / 2# Calcular x^2 / 2
+
+((TEMP1 2.0 |) TEMP2)((TEMP1 2.0 |) TEMP2)
+
+# termo2 = - (x^2 / 2)# termo2 = - (x^2 / 2)
+
+((0 TEMP2 -) TERM2)((0 TEMP2 -) TERM2)
+
+
+
+# Calcular x^4# Calcular x^4
+
+((X_VAL X_VAL *) TEMP3)((X_VAL X_VAL *) TEMP3)
+
+(((TEMP3 X_VAL X_VAL *) *) TEMP4)(((TEMP3 X_VAL X_VAL *) *) TEMP4)
+
+# termo3 = x^4 / 24# termo3 = x^4 / 24
+
+((TEMP4 24.0 |) TERM3)((TEMP4 24.0 |) TERM3)
+
+
+
+# Calcular x^6# Calcular x^6
+
+((X_VAL X_VAL *) TEMP5)((X_VAL X_VAL *) TEMP5)
+
+(((TEMP5 X_VAL X_VAL *) *) TEMP6)(((TEMP5 X_VAL X_VAL *) *) TEMP6)
+
+(((TEMP6 X_VAL X_VAL *) *) TEMP7)(((TEMP6 X_VAL X_VAL *) *) TEMP7)
+
+# Calcular x^6 / 720# Calcular x^6 / 720
+
+((TEMP7 720.0 |) TEMP8)((TEMP7 720.0 |) TEMP8)
+
+# termo4 = - (x^6 / 720)# termo4 = - (x^6 / 720)
+
+((0 TEMP8 -) TERM4)((0 TEMP8 -) TERM4)
+
+
+
+# Calcular resultado final: termo1 + termo2 + termo3 + termo4# Calcular resultado final: termo1 + termo2 + termo3 + termo4
+
+((((TERM1 TERM2 +) TERM3 +) TERM4 +) RESULT_COS)((((TERM1 TERM2 +) TERM3 +) TERM4 +) RESULT_COS)
+
+
+
+# Armazenar resultado final# Armazenar resultado final
+
+(RESULT_COS FINAL_COS)(RESULT_COS FINAL_COS)

@@ -756,21 +756,50 @@ def test_logical_operation_stub():
 # ERROR HANDLING TESTS
 # ============================================================================
 
-def test_control_flow_not_implemented():
-    """Test that control flow operations raise NotImplementedError."""
+def test_control_flow_implemented():
+    """Test that control flow operations (WHILE) are implemented and work correctly."""
     manager = TACManager()
     traverser = ASTTraverser(manager)
 
-    control_node = {
-        "tipo_vertice": "CONTROL_OP",
-        "tipo_inferido": None,
+    # Create a simple WHILE node with condition and body
+    # WHILE structure: condition, body, "WHILE"
+    condition_node = {
+        "tipo_vertice": "COMP_OP",
+        "tipo_inferido": "boolean",
         "numero_linha": 17,
-        "operador": "WHILE",
-        "filhos": []
+        "operador": "<",
+        "filhos": [
+            {"tipo_vertice": "LINHA", "tipo_inferido": "int", "numero_linha": 17, "filhos": [], "valor": "X", "subtipo": "identificador"},
+            {"tipo_vertice": "LINHA", "tipo_inferido": "int", "numero_linha": 17, "filhos": [], "valor": "10", "subtipo": "numero_inteiro"}
+        ]
     }
 
-    with pytest.raises(NotImplementedError) as exc_info:
-        traverser._handle_control_flow(control_node)
+    body_node = {
+        "tipo_vertice": "ARITH_OP",
+        "tipo_inferido": "int",
+        "numero_linha": 17,
+        "operador": "+",
+        "filhos": [
+            {"tipo_vertice": "LINHA", "tipo_inferido": "int", "numero_linha": 17, "filhos": [], "valor": "X", "subtipo": "identificador"},
+            {"tipo_vertice": "LINHA", "tipo_inferido": "int", "numero_linha": 17, "filhos": [], "valor": "1", "subtipo": "numero_inteiro"}
+        ]
+    }
 
-    assert "WHILE" in str(exc_info.value)
-    assert "Issue 1.7" in str(exc_info.value)
+    control_node = {
+        "tipo_vertice": "CONTROL_OP",
+        "tipo_inferido": "int",
+        "numero_linha": 17,
+        "operador": "WHILE",
+        "filhos": [condition_node, body_node]
+    }
+
+    # Should not raise - WHILE is implemented
+    # Note: WHILE loops may return None (no return value from loop itself)
+    traverser._handle_control_flow(control_node)
+
+    # Should have generated labels and jumps
+    stats = traverser.get_statistics()
+    assert stats["label_count"] >= 2, "WHILE should generate at least 2 labels (start and end)"
+
+    # Should have generated instructions (condition check, body, jump back)
+    assert stats["total_instructions"] > 0, "WHILE should generate TAC instructions"

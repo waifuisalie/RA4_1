@@ -692,14 +692,13 @@ class TACOptimizer:
             json.dump({'instructions': instructions_json}, f, indent=2, ensure_ascii=False)
 
     def _gerar_relatorio_otimizacoes_md(self, file_name: str, stats: Dict[str, Any]) -> None:
-        """Gera relatorio_otimizacoes.md conforme especificação."""
-        base_name = os.path.splitext(os.path.basename(file_name))[0]
+        """Gera otimizacao_tac.md conforme especificação."""
         output_dir = os.path.join(os.path.dirname(__file__), '..', '..', '..', '..', 'relatorios', 'RA4')
         os.makedirs(output_dir, exist_ok=True)
-        output_file = os.path.join(output_dir, f'relatorio_otimizacoes_{base_name}.md')
+        output_file = os.path.join(output_dir, 'otimizacao_tac.md')
 
         with open(output_file, 'w', encoding='utf-8') as f:
-            f.write(f'# Relatório de Otimizações - {base_name}\n\n')
+            f.write('# Relatório de Otimizações TAC\n\n')
 
             # 1. Resumo Executivo
             f.write('## 1. Resumo Executivo\n')
@@ -707,7 +706,7 @@ class TACOptimizer:
             temporarios_eliminados = stats['initial_temporaries'] - stats['final_temporaries']
             f.write(f'- Instruções antes: {stats["initial_instructions"]}\n')
             f.write(f'- Instruções depois: {stats["final_instructions"]}\n')
-            f.write('.1f')
+            f.write(f'- Redução: {reducao:.1f}%\n')
             f.write(f'- Temporários eliminados: {temporarios_eliminados}\n\n')
 
             # 2. Técnicas Implementadas
@@ -785,7 +784,7 @@ class TACOptimizer:
             f.write(f'- Número de instruções TAC antes: {stats["initial_instructions"]}\n')
             f.write(f'- Número de instruções TAC depois: {stats["final_instructions"]}\n')
             f.write(f'- Número de temporários eliminados: {temporarios_eliminados}\n')
-            f.write('.1f')
+            f.write(f'- Redução percentual: {reducao:.1f}%\n')
             f.write(f'- Número de iterações até convergência: {stats["iterations"]}\n')
             f.write('\n')
 
