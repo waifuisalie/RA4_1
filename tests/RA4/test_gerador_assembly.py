@@ -482,6 +482,37 @@ def test_simple_while_loop():
     print("✓ Teste 17 passou: WHILE loop completo funciona!")
 
 
+def test_real_division_scaled():
+    """
+    Testa operador de divisão real escalada (|).
+    Exemplo: 1 | 2 = 500 (representa 0.500)
+    """
+    tac_real_div = {
+        "instructions": [
+            # t0 = 1 | 2  (deve resultar em 500)
+            {"type": "binary_op", "result": "t0", "operand1": "1",
+             "operator": "|", "operand2": "2", "line": 1}
+        ]
+    }
+
+    gerador = GeradorAssembly()
+    assembly = gerador.gerarAssembly(tac_real_div)
+
+    print(assembly)
+
+    # Verificar que rotina div_scaled foi chamada
+    assert "rcall div_scaled" in assembly
+    # Verificar que rotina foi incluída
+    assert "div_scaled:" in assembly
+    # Verificar que usa mul16 e div16
+    assert "rcall mul16" in assembly
+    assert "rcall div16" in assembly
+    # Verificar que mul16 e div16 foram incluídos
+    assert "mul16:" in assembly
+    assert "div16:" in assembly
+    print("✓ Teste 18 passou: Divisão real escalada (|) implementada!")
+
+
 if __name__ == "__main__":
     print("=" * 70)
     print("TESTES DO GERADOR DE ASSEMBLY - SUB-ISSUES 3.2, 3.3, 3.4")
@@ -505,9 +536,10 @@ if __name__ == "__main__":
         test_if_goto()
         test_if_false_goto()
         test_simple_while_loop()
+        test_real_division_scaled()
 
         print("\n" + "=" * 70)
-        print("✅ TODOS OS TESTES PASSARAM!")
+        print("✅ TODOS OS 18 TESTES PASSARAM!")
         print("=" * 70)
 
     except Exception as e:

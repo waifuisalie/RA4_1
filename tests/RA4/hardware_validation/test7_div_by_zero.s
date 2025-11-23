@@ -99,12 +99,12 @@ div16:
     clr     r22           ; Resto low = 0
     clr     r23           ; Resto high = 0
 
-    ; Inicializar contador de loop (17 iterações para quociente correto)
-    ldi     r16, 17
+    ; Inicializar contador de loop (16 iterações para divisão 16-bit)
+    ldi     r16, 16
 
 div16_loop:
     ; Deslocar dividendo/quociente para esquerda
-    rol     r18           ; Shift dividend/quotient low
+    lsl     r18           ; Logical shift left (LSB=0, no carry dependency)
     rol     r19           ; Shift dividend/quotient high
 
     ; Deslocar bit MSB do dividendo para o resto
@@ -119,18 +119,11 @@ div16_loop:
     ; Resto >= divisor: subtrair divisor do resto
     sub     r22, r20      ; Subtract divisor from remainder (low)
     sbc     r23, r21      ; Subtract divisor from remainder (high)
+    inc     r18           ; Set quotient LSB bit to 1
 
 div16_skip:
     dec     r16           ; Decrementar contador
     brne    div16_loop    ; Loop se não terminou
-
-    ; Corrigir resto (desfazer o 17º shift)
-    lsr     r23           ; Shift right high byte
-    ror     r22           ; Rotate right low byte (recebe carry de r23)
-
-    ; Complementar quociente (agora em R18:R19)
-    com     r18           ; Complement quotient low
-    com     r19           ; Complement quotient high
 
     ; Mover quociente para registradores de saída
     mov     r24, r18      ; Quotient to output (low)

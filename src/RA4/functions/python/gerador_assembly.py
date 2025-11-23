@@ -379,13 +379,7 @@ class GeradorAssembly:
         elif operator == "^":
             return self._processar_exponenciacao_16bit(instr)
         elif operator == "|":
-            # Divisão real - deferred para Sub-issue 3.5 (fixed-point)
-            line = instr.get("line", "?")
-            return [
-                f"    ; TAC linha {line}: {instr['result']} = {instr['operand1']} | {instr['operand2']}",
-                f"    ; TODO: Divisão real (|) - Implementar em Sub-issue 3.5 (fixed-point)",
-                ""
-            ]
+            return self._processar_divisao_real(instr)
         # Operadores de comparação
         elif operator == "==":
             return self._processar_comparacao_eq(instr)
@@ -627,6 +621,52 @@ class GeradorAssembly:
         return [
             f"    ; TAC linha {line}: {result} = {op1} ^ {op2}",
             f"    ; TODO: Implementar exponenciação 16-bit (Fase 4)",
+            ""
+        ]
+
+    def _processar_divisao_real(self, instr: Dict[str, Any]) -> List[str]:
+        """
+        Processa divisão real com escala: result = (op1 * 1000) / op2
+
+        Implementa divisão real usando inteiros escalados por 1000.
+        Exemplo: 1 | 2 = 500 (representa 0.500)
+
+        Algoritmo:
+        1. Multiplica op1 por 1000 (usando mul16)
+        2. Divide resultado por op2 (usando div16)
+        3. Resultado é valor escalado (dividir por 1000 para obter real)
+
+        Args:
+            instr: {"type": "binary_op", "result": "t2", "operand1": "t0",
+                    "operator": "|", "operand2": "t1", "line": 5}
+
+        Returns:
+            Linhas Assembly geradas
+        """
+        result = instr["result"]
+        op1 = instr["operand1"]
+        op2 = instr["operand2"]
+        line = instr.get("line", "?")
+
+        # Obter registradores dos operandos
+        op1_low, op1_high = self._get_reg_pair(op1)
+        op2_low, op2_high = self._get_reg_pair(op2)
+        res_low, res_high = self._get_reg_pair(result)
+
+        # Registrar uso da rotina div_scaled
+        self._routines_needed.add("div_scaled")
+
+        return [
+            f"    ; TAC linha {line}: {result} = {op1} | {op2}",
+            f"    ; Divisão real escalada: ({op1} * 1000) / {op2}",
+            f"    ; Preparar parâmetros para div_scaled",
+            f"    mov r18, r{op1_low}      ; Dividendo (low)",
+            f"    mov r19, r{op1_high}     ; Dividendo (high)",
+            f"    mov r20, r{op2_low}      ; Divisor (low)",
+            f"    mov r21, r{op2_high}     ; Divisor (high)",
+            f"    rcall div_scaled         ; Chamar rotina (resultado escalado em R24:R25)",
+            f"    mov r{res_low}, r24      ; Copiar resultado escalado",
+            f"    mov r{res_high}, r25",
             ""
         ]
 
@@ -1011,6 +1051,9 @@ class GeradorAssembly:
         if "div16" in self._routines_needed:
             epilogo.extend(self._gerar_rotina_divisao_16bit())
 
+        if "div_scaled" in self._routines_needed:
+            epilogo.extend(self._gerar_rotina_divisao_escalada())
+
         if "exp16" in self._routines_needed:
             epilogo.extend(self._gerar_rotina_exponenciacao())
 
@@ -1134,12 +1177,12 @@ class GeradorAssembly:
             "    clr     r22           ; Resto low = 0",
             "    clr     r23           ; Resto high = 0",
             "",
-            "    ; Inicializar contador de loop (17 iterações para quociente correto)",
-            "    ldi     r16, 17",
+            "    ; Inicializar contador de loop (16 iterações para divisão 16-bit)",
+            "    ldi     r16, 16",
             "",
             "div16_loop:",
             "    ; Deslocar dividendo/quociente para esquerda",
-            "    rol     r18           ; Shift dividend/quotient low",
+            "    lsl     r18           ; Logical shift left (LSB=0, no carry dependency)",
             "    rol     r19           ; Shift dividend/quotient high",
             "",
             "    ; Deslocar bit MSB do dividendo para o resto",
@@ -1154,18 +1197,11 @@ class GeradorAssembly:
             "    ; Resto >= divisor: subtrair divisor do resto",
             "    sub     r22, r20      ; Subtract divisor from remainder (low)",
             "    sbc     r23, r21      ; Subtract divisor from remainder (high)",
+            "    inc     r18           ; Set quotient LSB bit to 1",
             "",
             "div16_skip:",
             "    dec     r16           ; Decrementar contador",
             "    brne    div16_loop    ; Loop se não terminou",
-            "",
-            "    ; Corrigir resto (desfazer o 17º shift)",
-            "    lsr     r23           ; Shift right high byte",
-            "    ror     r22           ; Rotate right low byte (recebe carry de r23)",
-            "",
-            "    ; Complementar quociente (agora em R18:R19)",
-            "    com     r18           ; Complement quotient low",
-            "    com     r19           ; Complement quotient high",
             "",
             "    ; Mover quociente para registradores de saída",
             "    mov     r24, r18      ; Quotient to output (low)",
@@ -1183,6 +1219,60 @@ class GeradorAssembly:
             "    mov     r22, r18      ; Resto = dividendo original (low)",
             "    mov     r23, r19      ; Resto = dividendo original (high)",
             "    pop r16",
+            "    ret",
+            ""
+        ]
+
+    def _gerar_rotina_divisao_escalada(self) -> List[str]:
+        """
+        Gera rotina auxiliar para divisão real escalada por 1000.
+
+        Calcula: (dividendo * 1000) / divisor
+        Usado para operador | (divisão real).
+
+        Convenção de chamada:
+        - Entrada: R18:R19 (dividendo), R20:R21 (divisor)
+        - Saída: R24:R25 (resultado escalado)
+        - Usa: mul16 e div16 internamente
+
+        Exemplo: 1 | 2 = 500 (representa 0.500)
+
+        Returns:
+            Linhas Assembly da rotina
+        """
+        return [
+            "; ====================================================================",
+            "; div_scaled: Divisão real escalada por 1000",
+            "; Calcula: (dividendo * 1000) / divisor",
+            "; Entrada: R18:R19 (dividendo), R20:R21 (divisor)",
+            "; Saída: R24:R25 (resultado escalado)",
+            "; Usa: mul16, div16",
+            "; ====================================================================",
+            "div_scaled:",
+            "    ; Salvar registradores que serão modificados",
+            "    push r20",
+            "    push r21",
+            "",
+            "    ; Etapa 1: Multiplicar dividendo por 1000",
+            "    ; R18:R19 já contém dividendo",
+            "    ldi r20, lo8(1000)     ; Carregar 1000 (low byte)",
+            "    ldi r21, hi8(1000)     ; Carregar 1000 (high byte)",
+            "    rcall mul16            ; Chama mul16: R24:R25 = dividendo * 1000",
+            "",
+            "    ; Etapa 2: Preparar para divisão",
+            "    ; Resultado da multiplicação está em R24:R25",
+            "    ; Mover para R18:R19 (entrada de div16)",
+            "    mov r18, r24           ; Dividendo escalado (low)",
+            "    mov r19, r25           ; Dividendo escalado (high)",
+            "",
+            "    ; Restaurar divisor original (estava salvo na pilha)",
+            "    pop r21                ; Divisor (high)",
+            "    pop r20                ; Divisor (low)",
+            "",
+            "    ; Etapa 3: Dividir (dividendo * 1000) / divisor",
+            "    rcall div16            ; Chama div16: R24:R25 = quociente",
+            "    ; Resultado escalado já está em R24:R25",
+            "",
             "    ret",
             ""
         ]
