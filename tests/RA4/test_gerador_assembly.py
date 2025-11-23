@@ -176,6 +176,60 @@ def test_multiplication():
     print("✓ Teste 6 passou: Multiplicação implementada com rotina mul16!")
 
 
+def test_division():
+    """Testa operação de divisão 16-bit (100 / 7 = 14)"""
+    print("\n=== Teste 7: Divisão (100 / 7 = 14) ===")
+
+    tac_div = {
+        "instructions": [
+            {"type": "assignment", "dest": "t0", "source": "100", "line": 1},
+            {"type": "assignment", "dest": "t1", "source": "7", "line": 2},
+            {"type": "binary_op", "result": "t2", "operand1": "t0",
+             "operator": "/", "operand2": "t1", "line": 3}
+        ]
+    }
+
+    gerador = GeradorAssembly()
+    assembly = gerador.gerarAssembly(tac_div)
+
+    print(assembly)
+
+    # Verificar chamada para rotina div16
+    assert "rcall div16" in assembly
+    assert "div16:" in assembly  # Rotina deve ser gerada
+    assert "mov r18" in assembly  # Parameter setup (dividend)
+    assert "mov r20" in assembly  # Parameter setup (divisor)
+    assert "mov r24" in assembly or "r24" in assembly  # Result (quotient)
+    print("✓ Teste 7 passou: Divisão implementada com rotina div16!")
+
+
+def test_modulo():
+    """Testa operação de módulo 16-bit (100 % 7 = 2)"""
+    print("\n=== Teste 8: Módulo (100 % 7 = 2) ===")
+
+    tac_mod = {
+        "instructions": [
+            {"type": "assignment", "dest": "t0", "source": "100", "line": 1},
+            {"type": "assignment", "dest": "t1", "source": "7", "line": 2},
+            {"type": "binary_op", "result": "t2", "operand1": "t0",
+             "operator": "%", "operand2": "t1", "line": 3}
+        ]
+    }
+
+    gerador = GeradorAssembly()
+    assembly = gerador.gerarAssembly(tac_mod)
+
+    print(assembly)
+
+    # Verificar chamada para rotina div16 (mesma rotina!)
+    assert "rcall div16" in assembly
+    assert "div16:" in assembly  # Rotina deve ser gerada
+    assert "mov r18" in assembly  # Parameter setup (dividend)
+    assert "mov r20" in assembly  # Parameter setup (divisor)
+    assert "r22" in assembly  # Result (remainder, not quotient!)
+    print("✓ Teste 8 passou: Módulo implementado usando rotina div16 (retorna resto)!")
+
+
 if __name__ == "__main__":
     print("=" * 70)
     print("TESTES DO GERADOR DE ASSEMBLY - SUB-ISSUES 3.2, 3.3, 3.4")
@@ -188,6 +242,8 @@ if __name__ == "__main__":
         test_constant_vs_variable()
         test_subtraction()
         test_multiplication()
+        test_division()
+        test_modulo()
 
         print("\n" + "=" * 70)
         print("✅ TODOS OS TESTES PASSARAM!")

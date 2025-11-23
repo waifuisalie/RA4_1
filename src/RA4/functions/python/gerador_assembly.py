@@ -509,6 +509,9 @@ class GeradorAssembly:
         """
         Processa divisão inteira 16-bit: result = op1 / op2
 
+        Usa rotina auxiliar div16 que retorna quociente em R24:R25 e resto em R22:R23.
+        Convenção: op1 em R18:R19 (dividendo), op2 em R20:R21 (divisor), quociente em R24:R25
+
         Args:
             instr: Instrução TAC de divisão
 
@@ -520,16 +523,37 @@ class GeradorAssembly:
         op2 = instr["operand2"]
         line = instr.get("line", "?")
 
-        # TODO: Implementar na Fase 3
-        return [
-            f"    ; TAC linha {line}: {result} = {op1} / {op2}",
-            f"    ; TODO: Implementar divisão 16-bit (Fase 3)",
+        # Registrar que precisamos da rotina div16
+        self._routines_needed.add("div16")
+
+        asm = [f"    ; TAC linha {line}: {result} = {op1} / {op2}"]
+
+        # Obter registradores dos operandos
+        op1_low, op1_high = self._get_reg_pair(op1)
+        op2_low, op2_high = self._get_reg_pair(op2)
+        res_low, res_high = self._get_reg_pair(result)
+
+        asm.extend([
+            f"    ; Divisão 16-bit: {result} = {op1} / {op2}",
+            f"    ; Preparar parâmetros para div16",
+            f"    mov r18, r{op1_low}   ; Dividendo (low)",
+            f"    mov r19, r{op1_high}  ; Dividendo (high)",
+            f"    mov r20, r{op2_low}   ; Divisor (low)",
+            f"    mov r21, r{op2_high}  ; Divisor (high)",
+            f"    rcall div16           ; Chamar rotina (quociente em R24:R25, resto em R22:R23)",
+            f"    mov r{res_low}, r24   ; Copiar quociente",
+            f"    mov r{res_high}, r25",
             ""
-        ]
+        ])
+
+        return asm
 
     def _processar_modulo_16bit(self, instr: Dict[str, Any]) -> List[str]:
         """
         Processa módulo 16-bit: result = op1 % op2
+
+        Usa mesma rotina div16, mas retorna o RESTO (R22:R23) ao invés do quociente.
+        Convenção: op1 em R18:R19 (dividendo), op2 em R20:R21 (divisor), resto em R22:R23
 
         Args:
             instr: Instrução TAC de módulo
@@ -542,12 +566,30 @@ class GeradorAssembly:
         op2 = instr["operand2"]
         line = instr.get("line", "?")
 
-        # TODO: Implementar na Fase 3
-        return [
-            f"    ; TAC linha {line}: {result} = {op1} % {op2}",
-            f"    ; TODO: Implementar módulo 16-bit (Fase 3)",
+        # Registrar que precisamos da rotina div16 (mesma rotina!)
+        self._routines_needed.add("div16")
+
+        asm = [f"    ; TAC linha {line}: {result} = {op1} % {op2}"]
+
+        # Obter registradores dos operandos
+        op1_low, op1_high = self._get_reg_pair(op1)
+        op2_low, op2_high = self._get_reg_pair(op2)
+        res_low, res_high = self._get_reg_pair(result)
+
+        asm.extend([
+            f"    ; Módulo 16-bit: {result} = {op1} % {op2}",
+            f"    ; Preparar parâmetros para div16",
+            f"    mov r18, r{op1_low}   ; Dividendo (low)",
+            f"    mov r19, r{op1_high}  ; Dividendo (high)",
+            f"    mov r20, r{op2_low}   ; Divisor (low)",
+            f"    mov r21, r{op2_high}  ; Divisor (high)",
+            f"    rcall div16           ; Chamar rotina (quociente em R24:R25, resto em R22:R23)",
+            f"    mov r{res_low}, r22   ; Copiar RESTO (não quociente!)",
+            f"    mov r{res_high}, r23",
             ""
-        ]
+        ])
+
+        return asm
 
     def _processar_exponenciacao_16bit(self, instr: Dict[str, Any]) -> List[str]:
         """
@@ -749,20 +791,90 @@ class GeradorAssembly:
 
     def _gerar_rotina_divisao_16bit(self) -> List[str]:
         """
-        Gera rotina auxiliar para divisão 16-bit ÷ 16-bit = quociente e resto.
+        Gera rotina auxiliar para divisão 16-bit ÷ 16-bit = quociente e resto (unsigned).
 
-        TODO: Implementar na Fase 3
+        Algoritmo: Restoring shift-subtract division (17 iterações)
+        Baseado em: AVR200 Application Note e GCC libgcc
+
+        Convenção de chamada:
+        - Entrada: R18:R19 (dividendo), R20:R21 (divisor)
+        - Saída: R24:R25 (quociente), R22:R23 (resto)
+        - Usa: R16 (contador de loop)
+        - Ciclos: ~245 (com verificação de divisão por zero)
+
+        Tratamento de divisão por zero:
+        - Quociente = 0xFFFF (indicador de erro)
+        - Resto = dividendo original (sem modificação)
 
         Returns:
             Linhas Assembly da rotina
         """
         return [
             "; ====================================================================",
-            "; div16: Divisão 16-bit ÷ 16-bit (unsigned)",
-            "; TODO: Implementar na Fase 3",
+            "; div16: Divisão 16-bit ÷ 16-bit = quociente e resto (unsigned)",
+            "; Algoritmo: Restoring shift-subtract (17 iterações)",
+            "; Entrada: R18:R19 (dividendo), R20:R21 (divisor)",
+            "; Saída: R24:R25 (quociente), R22:R23 (resto)",
+            "; Usa: R16 (contador de loop)",
+            "; Ciclos: ~245",
             "; ====================================================================",
             "div16:",
-            "    ; TODO: Implementar algoritmo de divisão (shift-subtract)",
+            "    push r16              ; Salvar registrador usado",
+            "",
+            "    ; Verificar divisão por zero",
+            "    cp      r20, r1       ; Comparar divisor low com 0",
+            "    cpc     r21, r1       ; Comparar divisor high com 0",
+            "    breq    div16_by_zero ; Se zero, pular para tratamento de erro",
+            "",
+            "    ; Inicializar resto = 0",
+            "    clr     r22           ; Resto low = 0",
+            "    clr     r23           ; Resto high = 0",
+            "",
+            "    ; Inicializar contador de loop (16 bits + 1)",
+            "    ldi     r16, 17",
+            "",
+            "div16_loop:",
+            "    ; Deslocar dividendo/quociente para esquerda",
+            "    rol     r18           ; Shift dividend/quotient low",
+            "    rol     r19           ; Shift dividend/quotient high",
+            "",
+            "    ; Deslocar bit MSB do dividendo para o resto",
+            "    rol     r22           ; Shift into remainder low",
+            "    rol     r23           ; Shift into remainder high",
+            "",
+            "    ; Comparar resto com divisor",
+            "    cp      r22, r20      ; Compare remainder with divisor (low)",
+            "    cpc     r23, r21      ; Compare remainder with divisor (high)",
+            "    brcs    div16_skip    ; If remainder < divisor, skip subtraction",
+            "",
+            "    ; Resto >= divisor: subtrair divisor do resto",
+            "    sub     r22, r20      ; Subtract divisor from remainder (low)",
+            "    sbc     r23, r21      ; Subtract divisor from remainder (high)",
+            "",
+            "div16_skip:",
+            "    dec     r16           ; Decrementar contador",
+            "    brne    div16_loop    ; Loop se não terminou",
+            "",
+            "    ; Complementar quociente (agora em R18:R19)",
+            "    com     r18           ; Complement quotient low",
+            "    com     r19           ; Complement quotient high",
+            "",
+            "    ; Mover quociente para registradores de saída",
+            "    mov     r24, r18      ; Quotient to output (low)",
+            "    mov     r25, r19      ; Quotient to output (high)",
+            "",
+            "    ; Resto já está em R22:R23 (correto)",
+            "",
+            "    pop r16",
+            "    ret",
+            "",
+            "div16_by_zero:",
+            "    ; Retornar valores de erro",
+            "    ldi     r24, 0xFF     ; Quociente = 0xFFFF (indicador de erro)",
+            "    ldi     r25, 0xFF",
+            "    mov     r22, r18      ; Resto = dividendo original (low)",
+            "    mov     r23, r19      ; Resto = dividendo original (high)",
+            "    pop r16",
             "    ret",
             ""
         ]
