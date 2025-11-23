@@ -386,6 +386,102 @@ def test_comparison_le():
     print("✓ Teste 14 passou: Comparação <= implementada (com swap de operandos)!")
 
 
+def test_if_goto():
+    """Testa salto condicional if_goto (jump if TRUE)"""
+    print("\n=== Teste 15: Salto Condicional if_goto ===")
+
+    tac_if_goto = {
+        "instructions": [
+            {"type": "assignment", "dest": "t0", "source": "1", "line": 1},
+            {"type": "if_goto", "condition": "t0", "target": "L2", "line": 2},
+            {"type": "assignment", "dest": "t1", "source": "100", "line": 3},
+            {"type": "label", "name": "L2", "line": 4}
+        ]
+    }
+
+    gerador = GeradorAssembly()
+    assembly = gerador.gerarAssembly(tac_if_goto)
+
+    print(assembly)
+
+    # Verificar instruções de salto condicional
+    assert "cp r" in assembly       # Compare instruction
+    assert "cpc r" in assembly      # Compare with carry
+    assert "brne L2" in assembly    # Branch if not equal (true)
+    assert "L2:" in assembly        # Target label
+    print("✓ Teste 15 passou: if_goto implementado (brne)!")
+
+
+def test_if_false_goto():
+    """Testa salto condicional if_false_goto (jump if FALSE)"""
+    print("\n=== Teste 16: Salto Condicional if_false_goto ===")
+
+    tac_if_false_goto = {
+        "instructions": [
+            {"type": "assignment", "dest": "t0", "source": "0", "line": 1},
+            {"type": "if_false_goto", "condition": "t0", "target": "L1", "line": 2},
+            {"type": "assignment", "dest": "t1", "source": "100", "line": 3},
+            {"type": "label", "name": "L1", "line": 4}
+        ]
+    }
+
+    gerador = GeradorAssembly()
+    assembly = gerador.gerarAssembly(tac_if_false_goto)
+
+    print(assembly)
+
+    # Verificar instruções de salto condicional
+    assert "cp r" in assembly       # Compare instruction
+    assert "cpc r" in assembly      # Compare with carry
+    assert "breq L1" in assembly    # Branch if equal (false)
+    assert "L1:" in assembly        # Target label
+    print("✓ Teste 16 passou: if_false_goto implementado (breq)!")
+
+
+def test_simple_while_loop():
+    """Testa estrutura completa de WHILE loop"""
+    print("\n=== Teste 17: WHILE Loop Completo ===")
+
+    # Simple WHILE loop structure without actual loop (just structure test)
+    tac_while = {
+        "instructions": [
+            # Initialize value
+            {"type": "assignment", "dest": "t0", "source": "5", "line": 1},
+
+            # Loop start
+            {"type": "label", "name": "L0", "line": 2},
+
+            # Condition check (t0 < 10)
+            {"type": "binary_op", "result": "t1", "operand1": "t0",
+             "operator": "<", "operand2": "10", "line": 2},
+            {"type": "if_false_goto", "condition": "t1", "target": "L1", "line": 2},
+
+            # Loop body - just increment
+            {"type": "binary_op", "result": "t2", "operand1": "t0",
+             "operator": "+", "operand2": "1", "line": 2},
+
+            # Loop back
+            {"type": "goto", "target": "L0", "line": 2},
+
+            # Loop exit
+            {"type": "label", "name": "L1", "line": 2}
+        ]
+    }
+
+    gerador = GeradorAssembly()
+    assembly = gerador.gerarAssembly(tac_while)
+
+    print(assembly)
+
+    # Verify loop structure
+    assert "L0:" in assembly         # Loop start label
+    assert "L1:" in assembly         # Loop exit label
+    assert "breq L1" in assembly     # ifFalse exit
+    assert "rjmp L0" in assembly     # goto loop start
+    assert "brsh skip_lt_2" in assembly  # Comparison branch
+    print("✓ Teste 17 passou: WHILE loop completo funciona!")
+
+
 if __name__ == "__main__":
     print("=" * 70)
     print("TESTES DO GERADOR DE ASSEMBLY - SUB-ISSUES 3.2, 3.3, 3.4")
@@ -406,6 +502,9 @@ if __name__ == "__main__":
         test_comparison_ge()
         test_comparison_gt()
         test_comparison_le()
+        test_if_goto()
+        test_if_false_goto()
+        test_simple_while_loop()
 
         print("\n" + "=" * 70)
         print("✅ TODOS OS TESTES PASSARAM!")

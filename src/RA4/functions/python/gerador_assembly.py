@@ -304,6 +304,10 @@ class GeradorAssembly:
             return pending + self._processar_label(instr)
         elif instr_type == "goto":
             return pending + self._processar_goto(instr)
+        elif instr_type == "if_goto":
+            return pending + self._processar_if_goto(instr)
+        elif instr_type == "if_false_goto":
+            return pending + self._processar_if_false_goto(instr)
         else:
             # TODO: Implementar outros tipos de instrução nos próximos sub-issues
             return pending + [f"    ; TODO: Implementar tipo '{instr_type}'", ""]
@@ -884,6 +888,66 @@ class GeradorAssembly:
         return [
             f"    ; TAC linha {line}: goto {target}",
             f"    rjmp {target}   ; Salto relativo para {target}",
+            ""
+        ]
+
+    def _processar_if_goto(self, instr: Dict[str, Any]) -> List[str]:
+        """
+        Processa salto condicional (jump if TRUE): if condition goto target
+
+        Jumps to target if condition is non-zero (true).
+
+        Args:
+            instr: {"type": "if_goto", "condition": "t5", "target": "L1", "line": 10}
+
+        Returns:
+            Linhas Assembly geradas
+        """
+        condition = instr["condition"]
+        target = instr["target"]
+        line = instr.get("line", "?")
+
+        # Get register pair for condition variable
+        cond_low, cond_high = self._get_reg_pair(condition)
+
+        return [
+            f"    ; TAC linha {line}: if {condition} goto {target}",
+            f"    ; Check if {condition} != 0 (true)",
+            f"    ldi r24, 0                  ; Zero constant for comparison",
+            f"    ldi r25, 0",
+            f"    cp r{cond_low}, r24         ; Compare low byte with 0",
+            f"    cpc r{cond_high}, r25       ; Compare high byte with carry",
+            f"    brne {target}               ; Branch if NOT equal (condition is true)",
+            ""
+        ]
+
+    def _processar_if_false_goto(self, instr: Dict[str, Any]) -> List[str]:
+        """
+        Processa salto condicional (jump if FALSE): ifFalse condition goto target
+
+        Jumps to target if condition is zero (false).
+
+        Args:
+            instr: {"type": "if_false_goto", "condition": "t5", "target": "L2", "line": 12}
+
+        Returns:
+            Linhas Assembly geradas
+        """
+        condition = instr["condition"]
+        target = instr["target"]
+        line = instr.get("line", "?")
+
+        # Get register pair for condition variable
+        cond_low, cond_high = self._get_reg_pair(condition)
+
+        return [
+            f"    ; TAC linha {line}: ifFalse {condition} goto {target}",
+            f"    ; Check if {condition} == 0 (false)",
+            f"    ldi r24, 0                  ; Zero constant for comparison",
+            f"    ldi r25, 0",
+            f"    cp r{cond_low}, r24         ; Compare low byte with 0",
+            f"    cpc r{cond_high}, r25       ; Compare high byte with carry",
+            f"    breq {target}               ; Branch if equal (condition is false)",
             ""
         ]
 
