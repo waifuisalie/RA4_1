@@ -382,6 +382,19 @@ class GeradorAssembly:
                 f"    ; TODO: Divisão real (|) - Implementar em Sub-issue 3.5 (fixed-point)",
                 ""
             ]
+        # Operadores de comparação
+        elif operator == "==":
+            return self._processar_comparacao_eq(instr)
+        elif operator == "!=":
+            return self._processar_comparacao_ne(instr)
+        elif operator == "<":
+            return self._processar_comparacao_lt(instr)
+        elif operator == "<=":
+            return self._processar_comparacao_le(instr)
+        elif operator == ">":
+            return self._processar_comparacao_gt(instr)
+        elif operator == ">=":
+            return self._processar_comparacao_ge(instr)
         else:
             line = instr.get("line", "?")
             return [
@@ -610,6 +623,233 @@ class GeradorAssembly:
         return [
             f"    ; TAC linha {line}: {result} = {op1} ^ {op2}",
             f"    ; TODO: Implementar exponenciação 16-bit (Fase 4)",
+            ""
+        ]
+
+    # ====================================================================
+    # Operadores de Comparação (16-bit unsigned)
+    # ====================================================================
+
+    def _processar_comparacao_eq(self, instr: Dict[str, Any]) -> List[str]:
+        """
+        Processa comparação de igualdade: result = op1 == op2
+        Retorna 1 (0x0001) se op1 == op2, 0 (0x0000) caso contrário
+
+        Usa instruções CP (compare low) e CPC (compare high with carry).
+        Verifica flag Z (zero) - se ambos bytes forem iguais, Z=1.
+
+        Args:
+            instr: Instrução TAC de comparação
+
+        Returns:
+            Linhas Assembly geradas
+        """
+        result = instr["result"]
+        op1 = instr["operand1"]
+        op2 = instr["operand2"]
+        line = instr.get("line", "?")
+
+        skip_label = f"skip_eq_{line}"
+
+        # Obter registradores dos operandos
+        op1_low, op1_high = self._get_reg_pair(op1)
+        op2_low, op2_high = self._get_reg_pair(op2)
+        res_low, res_high = self._get_reg_pair(result)
+
+        return [
+            f"    ; TAC linha {line}: {result} = {op1} == {op2}",
+            f"    ; Comparação 16-bit de igualdade (unsigned)",
+            f"    cp r{op1_low}, r{op2_low}      ; Compare low bytes",
+            f"    cpc r{op1_high}, r{op2_high}   ; Compare high bytes with carry",
+            f"    ldi r{res_low}, 0               ; Assume false",
+            f"    ldi r{res_high}, 0",
+            f"    brne {skip_label}               ; If not equal, skip",
+            f"    ldi r{res_low}, 1               ; Set true",
+            f"{skip_label}:",
+            ""
+        ]
+
+    def _processar_comparacao_ne(self, instr: Dict[str, Any]) -> List[str]:
+        """
+        Processa comparação de desigualdade: result = op1 != op2
+        Retorna 1 (0x0001) se op1 != op2, 0 (0x0000) caso contrário
+
+        Args:
+            instr: Instrução TAC de comparação
+
+        Returns:
+            Linhas Assembly geradas
+        """
+        result = instr["result"]
+        op1 = instr["operand1"]
+        op2 = instr["operand2"]
+        line = instr.get("line", "?")
+
+        skip_label = f"skip_ne_{line}"
+
+        op1_low, op1_high = self._get_reg_pair(op1)
+        op2_low, op2_high = self._get_reg_pair(op2)
+        res_low, res_high = self._get_reg_pair(result)
+
+        return [
+            f"    ; TAC linha {line}: {result} = {op1} != {op2}",
+            f"    ; Comparação 16-bit de desigualdade (unsigned)",
+            f"    cp r{op1_low}, r{op2_low}      ; Compare low bytes",
+            f"    cpc r{op1_high}, r{op2_high}   ; Compare high bytes with carry",
+            f"    ldi r{res_low}, 0               ; Assume false",
+            f"    ldi r{res_high}, 0",
+            f"    breq {skip_label}               ; If equal, skip",
+            f"    ldi r{res_low}, 1               ; Set true",
+            f"{skip_label}:",
+            ""
+        ]
+
+    def _processar_comparacao_lt(self, instr: Dict[str, Any]) -> List[str]:
+        """
+        Processa comparação menor que: result = op1 < op2
+        Retorna 1 (0x0001) se op1 < op2, 0 (0x0000) caso contrário
+
+        Usa BRSH (branch if same or higher) para inverter lógica.
+        Flag C (carry) é setado se op1 < op2 (unsigned).
+
+        Args:
+            instr: Instrução TAC de comparação
+
+        Returns:
+            Linhas Assembly geradas
+        """
+        result = instr["result"]
+        op1 = instr["operand1"]
+        op2 = instr["operand2"]
+        line = instr.get("line", "?")
+
+        skip_label = f"skip_lt_{line}"
+
+        op1_low, op1_high = self._get_reg_pair(op1)
+        op2_low, op2_high = self._get_reg_pair(op2)
+        res_low, res_high = self._get_reg_pair(result)
+
+        return [
+            f"    ; TAC linha {line}: {result} = {op1} < {op2}",
+            f"    ; Comparação 16-bit menor que (unsigned)",
+            f"    cp r{op1_low}, r{op2_low}      ; Compare low bytes",
+            f"    cpc r{op1_high}, r{op2_high}   ; Compare high bytes with carry",
+            f"    ldi r{res_low}, 0               ; Assume false",
+            f"    ldi r{res_high}, 0",
+            f"    brsh {skip_label}               ; If A >= B, skip",
+            f"    ldi r{res_low}, 1               ; Set true (A < B)",
+            f"{skip_label}:",
+            ""
+        ]
+
+    def _processar_comparacao_ge(self, instr: Dict[str, Any]) -> List[str]:
+        """
+        Processa comparação maior ou igual: result = op1 >= op2
+        Retorna 1 (0x0001) se op1 >= op2, 0 (0x0000) caso contrário
+
+        Args:
+            instr: Instrução TAC de comparação
+
+        Returns:
+            Linhas Assembly geradas
+        """
+        result = instr["result"]
+        op1 = instr["operand1"]
+        op2 = instr["operand2"]
+        line = instr.get("line", "?")
+
+        skip_label = f"skip_ge_{line}"
+
+        op1_low, op1_high = self._get_reg_pair(op1)
+        op2_low, op2_high = self._get_reg_pair(op2)
+        res_low, res_high = self._get_reg_pair(result)
+
+        return [
+            f"    ; TAC linha {line}: {result} = {op1} >= {op2}",
+            f"    ; Comparação 16-bit maior ou igual (unsigned)",
+            f"    cp r{op1_low}, r{op2_low}      ; Compare low bytes",
+            f"    cpc r{op1_high}, r{op2_high}   ; Compare high bytes with carry",
+            f"    ldi r{res_low}, 0               ; Assume false",
+            f"    ldi r{res_high}, 0",
+            f"    brlo {skip_label}               ; If A < B, skip",
+            f"    ldi r{res_low}, 1               ; Set true (A >= B)",
+            f"{skip_label}:",
+            ""
+        ]
+
+    def _processar_comparacao_gt(self, instr: Dict[str, Any]) -> List[str]:
+        """
+        Processa comparação maior que: result = op1 > op2
+        Retorna 1 (0x0001) se op1 > op2, 0 (0x0000) caso contrário
+
+        Implementação: A > B é equivalente a B < A (troca operandos)
+
+        Args:
+            instr: Instrução TAC de comparação
+
+        Returns:
+            Linhas Assembly geradas
+        """
+        result = instr["result"]
+        op1 = instr["operand1"]
+        op2 = instr["operand2"]
+        line = instr.get("line", "?")
+
+        skip_label = f"skip_gt_{line}"
+
+        op1_low, op1_high = self._get_reg_pair(op1)
+        op2_low, op2_high = self._get_reg_pair(op2)
+        res_low, res_high = self._get_reg_pair(result)
+
+        return [
+            f"    ; TAC linha {line}: {result} = {op1} > {op2}",
+            f"    ; Comparação 16-bit maior que (unsigned)",
+            f"    ; Implementado como: B < A (operandos trocados)",
+            f"    cp r{op2_low}, r{op1_low}      ; Compare B with A (reversed)",
+            f"    cpc r{op2_high}, r{op1_high}",
+            f"    ldi r{res_low}, 0               ; Assume false",
+            f"    ldi r{res_high}, 0",
+            f"    brsh {skip_label}               ; If B >= A, skip",
+            f"    ldi r{res_low}, 1               ; Set true (B < A, i.e., A > B)",
+            f"{skip_label}:",
+            ""
+        ]
+
+    def _processar_comparacao_le(self, instr: Dict[str, Any]) -> List[str]:
+        """
+        Processa comparação menor ou igual: result = op1 <= op2
+        Retorna 1 (0x0001) se op1 <= op2, 0 (0x0000) caso contrário
+
+        Implementação: A <= B é equivalente a B >= A (troca operandos)
+
+        Args:
+            instr: Instrução TAC de comparação
+
+        Returns:
+            Linhas Assembly geradas
+        """
+        result = instr["result"]
+        op1 = instr["operand1"]
+        op2 = instr["operand2"]
+        line = instr.get("line", "?")
+
+        skip_label = f"skip_le_{line}"
+
+        op1_low, op1_high = self._get_reg_pair(op1)
+        op2_low, op2_high = self._get_reg_pair(op2)
+        res_low, res_high = self._get_reg_pair(result)
+
+        return [
+            f"    ; TAC linha {line}: {result} = {op1} <= {op2}",
+            f"    ; Comparação 16-bit menor ou igual (unsigned)",
+            f"    ; Implementado como: B >= A (operandos trocados)",
+            f"    cp r{op2_low}, r{op1_low}      ; Compare B with A (reversed)",
+            f"    cpc r{op2_high}, r{op1_high}",
+            f"    ldi r{res_low}, 0               ; Assume false",
+            f"    ldi r{res_high}, 0",
+            f"    brlo {skip_label}               ; If B < A, skip",
+            f"    ldi r{res_low}, 1               ; Set true (B >= A, i.e., A <= B)",
+            f"{skip_label}:",
             ""
         ]
 

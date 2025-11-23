@@ -230,6 +230,162 @@ def test_modulo():
     print("✓ Teste 8 passou: Módulo implementado usando rotina div16 (retorna resto)!")
 
 
+def test_comparison_eq():
+    """Testa comparação de igualdade (100 == 100 = 1, 100 == 99 = 0)"""
+    print("\n=== Teste 9: Comparação == (Equal) ===")
+
+    tac_eq = {
+        "instructions": [
+            {"type": "assignment", "dest": "t0", "source": "100", "line": 1},
+            {"type": "assignment", "dest": "t1", "source": "100", "line": 2},
+            {"type": "binary_op", "result": "t2", "operand1": "t0",
+             "operator": "==", "operand2": "t1", "line": 3}
+        ]
+    }
+
+    gerador = GeradorAssembly()
+    assembly = gerador.gerarAssembly(tac_eq)
+
+    print(assembly)
+
+    # Verificar instruções de comparação
+    assert "cp r" in assembly      # Compare instruction
+    assert "cpc r" in assembly     # Compare with carry
+    assert "brne skip_eq_3" in assembly  # Branch if not equal
+    assert "skip_eq_3:" in assembly
+    print("✓ Teste 9 passou: Comparação == implementada!")
+
+
+def test_comparison_ne():
+    """Testa comparação de desigualdade (100 != 99 = 1, 100 != 100 = 0)"""
+    print("\n=== Teste 10: Comparação != (Not Equal) ===")
+
+    tac_ne = {
+        "instructions": [
+            {"type": "assignment", "dest": "t0", "source": "100", "line": 1},
+            {"type": "assignment", "dest": "t1", "source": "99", "line": 2},
+            {"type": "binary_op", "result": "t2", "operand1": "t0",
+             "operator": "!=", "operand2": "t1", "line": 3}
+        ]
+    }
+
+    gerador = GeradorAssembly()
+    assembly = gerador.gerarAssembly(tac_ne)
+
+    print(assembly)
+
+    # Verificar instruções de comparação
+    assert "cp r" in assembly
+    assert "cpc r" in assembly
+    assert "breq skip_ne_3" in assembly  # Branch if equal (inverted logic)
+    assert "skip_ne_3:" in assembly
+    print("✓ Teste 10 passou: Comparação != implementada!")
+
+
+def test_comparison_lt():
+    """Testa comparação menor que (50 < 100 = 1, 100 < 50 = 0)"""
+    print("\n=== Teste 11: Comparação < (Less Than) ===")
+
+    tac_lt = {
+        "instructions": [
+            {"type": "assignment", "dest": "t0", "source": "50", "line": 1},
+            {"type": "assignment", "dest": "t1", "source": "100", "line": 2},
+            {"type": "binary_op", "result": "t2", "operand1": "t0",
+             "operator": "<", "operand2": "t1", "line": 3}
+        ]
+    }
+
+    gerador = GeradorAssembly()
+    assembly = gerador.gerarAssembly(tac_lt)
+
+    print(assembly)
+
+    # Verificar instruções de comparação
+    assert "cp r" in assembly
+    assert "cpc r" in assembly
+    assert "brsh skip_lt_3" in assembly  # Branch if same or higher (A >= B)
+    assert "skip_lt_3:" in assembly
+    print("✓ Teste 11 passou: Comparação < implementada!")
+
+
+def test_comparison_ge():
+    """Testa comparação maior ou igual (100 >= 50 = 1, 50 >= 100 = 0)"""
+    print("\n=== Teste 12: Comparação >= (Greater or Equal) ===")
+
+    tac_ge = {
+        "instructions": [
+            {"type": "assignment", "dest": "t0", "source": "100", "line": 1},
+            {"type": "assignment", "dest": "t1", "source": "50", "line": 2},
+            {"type": "binary_op", "result": "t2", "operand1": "t0",
+             "operator": ">=", "operand2": "t1", "line": 3}
+        ]
+    }
+
+    gerador = GeradorAssembly()
+    assembly = gerador.gerarAssembly(tac_ge)
+
+    print(assembly)
+
+    # Verificar instruções de comparação
+    assert "cp r" in assembly
+    assert "cpc r" in assembly
+    assert "brlo skip_ge_3" in assembly  # Branch if lower (A < B)
+    assert "skip_ge_3:" in assembly
+    print("✓ Teste 12 passou: Comparação >= implementada!")
+
+
+def test_comparison_gt():
+    """Testa comparação maior que (100 > 50 = 1, 50 > 100 = 0)"""
+    print("\n=== Teste 13: Comparação > (Greater Than) ===")
+
+    tac_gt = {
+        "instructions": [
+            {"type": "assignment", "dest": "t0", "source": "100", "line": 1},
+            {"type": "assignment", "dest": "t1", "source": "50", "line": 2},
+            {"type": "binary_op", "result": "t2", "operand1": "t0",
+             "operator": ">", "operand2": "t1", "line": 3}
+        ]
+    }
+
+    gerador = GeradorAssembly()
+    assembly = gerador.gerarAssembly(tac_gt)
+
+    print(assembly)
+
+    # Verificar instruções de comparação (operandos trocados!)
+    assert "cp r" in assembly
+    assert "cpc r" in assembly
+    assert "brsh skip_gt_3" in assembly  # B >= A (swapped)
+    assert "skip_gt_3:" in assembly
+    print("✓ Teste 13 passou: Comparação > implementada (com swap de operandos)!")
+
+
+def test_comparison_le():
+    """Testa comparação menor ou igual (50 <= 100 = 1, 100 <= 50 = 0)"""
+    print("\n=== Teste 14: Comparação <= (Less or Equal) ===")
+
+    tac_le = {
+        "instructions": [
+            {"type": "assignment", "dest": "t0", "source": "50", "line": 1},
+            {"type": "assignment", "dest": "t1", "source": "100", "line": 2},
+            {"type": "binary_op", "result": "t2", "operand1": "t0",
+             "operator": "<=", "operand2": "t1", "line": 3}
+        ]
+    }
+
+    gerador = GeradorAssembly()
+    assembly = gerador.gerarAssembly(tac_le)
+
+    print(assembly)
+
+    # Verificar instruções de comparação (operandos trocados!)
+    assert "cp r" in assembly
+    assert "cpc r" in assembly
+    assert "brlo skip_le_3" in assembly  # B < A (swapped)
+    assert "skip_le_3:" in assembly
+    print("✓ Teste 14 passou: Comparação <= implementada (com swap de operandos)!")
+
+
 if __name__ == "__main__":
     print("=" * 70)
     print("TESTES DO GERADOR DE ASSEMBLY - SUB-ISSUES 3.2, 3.3, 3.4")
@@ -244,6 +400,12 @@ if __name__ == "__main__":
         test_multiplication()
         test_division()
         test_modulo()
+        test_comparison_eq()
+        test_comparison_ne()
+        test_comparison_lt()
+        test_comparison_ge()
+        test_comparison_gt()
+        test_comparison_le()
 
         print("\n" + "=" * 70)
         print("✅ TODOS OS TESTES PASSARAM!")
