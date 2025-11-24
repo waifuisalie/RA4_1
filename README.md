@@ -1,4 +1,4 @@
-# Compilador RA4 - Geração e Otimização de TAC
+# Compilador RA4 - Geração e Otimização de TAC EM DESENVOLVIMENTO
 
 ## Informações Institucionais
 
