@@ -1,0 +1,123 @@
+# Fibonacci desenrolado - Calcula F(24)
+# Inicialização: F(0) = 0, F(1) = 1
+
+(0 FIB_0)
+(1 FIB_1)
+
+# Iteração 1: F(2) = F(0) + F(1) = 0 + 1 = 1
+(((FIB_0 FIB_1 +) FIB_NEXT))
+(FIB_1 FIB_0)
+(FIB_NEXT FIB_1)
+
+# Iteração 2: F(3) = F(1) + F(2) = 1 + 1 = 2
+(((FIB_0 FIB_1 +) FIB_NEXT))
+(FIB_1 FIB_0)
+(FIB_NEXT FIB_1)
+
+# Iteração 3: F(4) = F(2) + F(3) = 1 + 2 = 3
+(((FIB_0 FIB_1 +) FIB_NEXT))
+(FIB_1 FIB_0)
+(FIB_NEXT FIB_1)
+
+# Iteração 4: F(5) = F(3) + F(4) = 2 + 3 = 5
+(((FIB_0 FIB_1 +) FIB_NEXT))
+(FIB_1 FIB_0)
+(FIB_NEXT FIB_1)
+
+# Iteração 5: F(6) = F(4) + F(5) = 3 + 5 = 8
+(((FIB_0 FIB_1 +) FIB_NEXT))
+(FIB_1 FIB_0)
+(FIB_NEXT FIB_1)
+
+# Iteração 6: F(7) = F(5) + F(6) = 5 + 8 = 13
+(((FIB_0 FIB_1 +) FIB_NEXT))
+(FIB_1 FIB_0)
+(FIB_NEXT FIB_1)
+
+# Iteração 7: F(8) = F(6) + F(7) = 8 + 13 = 21
+(((FIB_0 FIB_1 +) FIB_NEXT))
+(FIB_1 FIB_0)
+(FIB_NEXT FIB_1)
+
+# Iteração 8: F(9) = F(7) + F(8) = 13 + 21 = 34
+(((FIB_0 FIB_1 +) FIB_NEXT))
+(FIB_1 FIB_0)
+(FIB_NEXT FIB_1)
+
+# Iteração 9: F(10) = F(8) + F(9) = 21 + 34 = 55
+(((FIB_0 FIB_1 +) FIB_NEXT))
+(FIB_1 FIB_0)
+(FIB_NEXT FIB_1)
+
+# Iteração 10: F(11) = F(9) + F(10) = 34 + 55 = 89
+(((FIB_0 FIB_1 +) FIB_NEXT))
+(FIB_1 FIB_0)
+(FIB_NEXT FIB_1)
+
+# Iteração 11: F(12) = F(10) + F(11) = 55 + 89 = 144
+(((FIB_0 FIB_1 +) FIB_NEXT))
+(FIB_1 FIB_0)
+(FIB_NEXT FIB_1)
+
+# Iteração 12: F(13) = F(11) + F(12) = 89 + 144 = 233
+(((FIB_0 FIB_1 +) FIB_NEXT))
+(FIB_1 FIB_0)
+(FIB_NEXT FIB_1)
+
+# Iteração 13: F(14) = F(12) + F(13) = 144 + 233 = 377
+(((FIB_0 FIB_1 +) FIB_NEXT))
+(FIB_1 FIB_0)
+(FIB_NEXT FIB_1)
+
+# Iteração 14: F(15) = F(13) + F(14) = 233 + 377 = 610
+(((FIB_0 FIB_1 +) FIB_NEXT))
+(FIB_1 FIB_0)
+(FIB_NEXT FIB_1)
+
+# Iteração 15: F(16) = F(14) + F(15) = 377 + 610 = 987
+(((FIB_0 FIB_1 +) FIB_NEXT))
+(FIB_1 FIB_0)
+(FIB_NEXT FIB_1)
+
+# Iteração 16: F(17) = F(15) + F(16) = 610 + 987 = 1597
+(((FIB_0 FIB_1 +) FIB_NEXT))
+(FIB_1 FIB_0)
+(FIB_NEXT FIB_1)
+
+# Iteração 17: F(18) = F(16) + F(17) = 987 + 1597 = 2584
+(((FIB_0 FIB_1 +) FIB_NEXT))
+(FIB_1 FIB_0)
+(FIB_NEXT FIB_1)
+
+# Iteração 18: F(19) = F(17) + F(18) = 1597 + 2584 = 4181
+(((FIB_0 FIB_1 +) FIB_NEXT))
+(FIB_1 FIB_0)
+(FIB_NEXT FIB_1)
+
+# Iteração 19: F(20) = F(18) + F(19) = 2584 + 4181 = 6765
+(((FIB_0 FIB_1 +) FIB_NEXT))
+(FIB_1 FIB_0)
+(FIB_NEXT FIB_1)
+
+# Iteração 20: F(21) = F(19) + F(20) = 4181 + 6765 = 10946
+(((FIB_0 FIB_1 +) FIB_NEXT))
+(FIB_1 FIB_0)
+(FIB_NEXT FIB_1)
+
+# Iteração 21: F(22) = F(20) + F(21) = 6765 + 10946 = 17711
+(((FIB_0 FIB_1 +) FIB_NEXT))
+(FIB_1 FIB_0)
+(FIB_NEXT FIB_1)
+
+# Iteração 22: F(23) = F(21) + F(22) = 10946 + 17711 = 28657
+(((FIB_0 FIB_1 +) FIB_NEXT))
+(FIB_1 FIB_0)
+(FIB_NEXT FIB_1)
+
+# Iteração 23: F(24) = F(22) + F(23) = 17711 + 28657 = 46368
+(((FIB_0 FIB_1 +) FIB_NEXT))
+(FIB_1 FIB_0)
+(FIB_NEXT FIB_1)
+
+# Resultado final
+(FIB_NEXT RESULT)

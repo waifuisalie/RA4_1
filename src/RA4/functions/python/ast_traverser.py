@@ -321,9 +321,9 @@ class ASTTraverser:
         end_temp = self._process_node(end_node)
         step_temp = self._process_node(step_node)
 
-        # Cria temp para contador do loop
-        loop_counter = self.manager.new_temp()
-        self.instructions.append(TACCopy(loop_counter, current_temp, numero_linha, "int"))
+        # CORREÇÃO: Usar a variável original como contador ao invés de criar novo temp
+        # Isso permite que o corpo do loop acesse o valor atualizado
+        loop_counter = current_temp  # Usar INICIO diretamente ao invés de criar t4
 
         # L_start:
         self.instructions.append(TACLabel(label_start, numero_linha))
@@ -336,7 +336,7 @@ class ASTTraverser:
         # Processa corpo
         self._process_node(body_node)
 
-        # Incrementa contador
+        # Incrementa contador (atualiza a variável original INICIO)
         new_counter = self.manager.new_temp()
         self.instructions.append(TACBinaryOp(new_counter, loop_counter, "+", step_temp, numero_linha, "int"))
         self.instructions.append(TACCopy(loop_counter, new_counter, numero_linha, "int"))
