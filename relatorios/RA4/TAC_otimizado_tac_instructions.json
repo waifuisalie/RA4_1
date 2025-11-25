@@ -16,58 +16,109 @@
     },
     {
       "type": "copy",
-      "dest": "COUNTER",
+      "dest": "INICIO",
       "source": "t2",
       "line": 3,
       "data_type": "int"
     },
     {
       "type": "copy",
-      "dest": "LIMIT",
+      "dest": "FIM",
       "source": "t3",
       "line": 4,
       "data_type": "int"
     },
     {
-      "type": "label",
-      "name": "L0",
-      "line": 5
-    },
-    {
-      "type": "binary_op",
-      "result": "t4",
-      "operand1": "COUNTER",
-      "operator": "<=",
-      "operand2": "LIMIT",
-      "line": 5,
-      "data_type": "boolean"
-    },
-    {
-      "type": "if_false_goto",
-      "condition": "t4",
-      "target": "L1",
-      "line": 5
-    },
-    {
-      "type": "binary_op",
-      "result": "t5",
-      "operand1": "FIB_0",
-      "operator": "+",
-      "operand2": "FIB_1",
+      "type": "copy",
+      "dest": "PASSO",
+      "source": "t4",
       "line": 5,
       "data_type": "int"
     },
     {
       "type": "copy",
+      "dest": "t5",
+      "source": "INICIO",
+      "line": 6,
+      "data_type": "int"
+    },
+    {
+      "type": "label",
+      "name": "L0",
+      "line": 6
+    },
+    {
+      "type": "binary_op",
+      "result": "t6",
+      "operand1": "t5",
+      "operator": "<=",
+      "operand2": "FIM",
+      "line": 6,
+      "data_type": "boolean"
+    },
+    {
+      "type": "if_false_goto",
+      "condition": "t6",
+      "target": "L1",
+      "line": 6
+    },
+    {
+      "type": "binary_op",
+      "result": "t7",
+      "operand1": "FIB_0",
+      "operator": "+",
+      "operand2": "FIB_1",
+      "line": 6,
+      "data_type": "int"
+    },
+    {
+      "type": "copy",
       "dest": "FIB_NEXT",
-      "source": "t5",
-      "line": 5,
+      "source": "t7",
+      "line": 6,
+      "data_type": "int"
+    },
+    {
+      "type": "copy",
+      "dest": "FIB_1",
+      "source": "FIB_NEXT",
+      "line": 6,
+      "data_type": null
+    },
+    {
+      "type": "copy",
+      "dest": "FIB_0",
+      "source": "FIB_1",
+      "line": 6,
+      "data_type": "int"
+    },
+    {
+      "type": "binary_op",
+      "result": "t8",
+      "operand1": "t5",
+      "operator": "+",
+      "operand2": "PASSO",
+      "line": 6,
+      "data_type": "int"
+    },
+    {
+      "type": "copy",
+      "dest": "t5",
+      "source": "t8",
+      "line": 6,
       "data_type": "int"
     },
     {
       "type": "label",
       "name": "L1",
-      "line": 5
+      "line": 6
+    },
+    {
+      "type": "copy",
+      "dest": "RESULT",
+      "source": "FIB_NEXT",
+      "line": 7,
+      "data_type": null
     }
   ]
 }

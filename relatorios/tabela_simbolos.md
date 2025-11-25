@@ -1,17 +1,16 @@
 # Tabela de Símbolos
 
-**Gerado em:** 2025-11-22 16:41:26
+**Gerado em:** 2025-11-24 23:26:07
 
-## Símbolos Registrados (6)
+## Símbolos Registrados (5)
 
 | Nome | Tipo | Inicializado | Linha | Usos |
 |------|------|--------------|-------|------|
-| `A` | `int` |   Sim | 11 | 0 |
-| `B` | `int` |   Sim | 15 | 0 |
-| `COUNTER` | `int` |   Sim | 13 | 0 |
-| `I` | `int` |   Sim | 12 | 0 |
-| `X` | `int` |   Sim | 10 | 0 |
-| `Y` | `int` |   Sim | 14 | 0 |
+| `FIB_0` | `int` |   Sim | 1 | 0 |
+| `FIB_1` | `int` |   Sim | 2 | 0 |
+| `FIM` | `int` |   Sim | 4 | 0 |
+| `INICIO` | `int` |   Sim | 3 | 0 |
+| `PASSO` | `int` |   Sim | 5 | 0 |
 
 ---
 *Relatório gerado automaticamente pelo Compilador RA3_1*

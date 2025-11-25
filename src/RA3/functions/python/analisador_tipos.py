@@ -104,6 +104,76 @@ def _parse_valor_literal(token: Dict[str, Any]) -> Any:
             return None
 
 
+def _avaliar_linha_recursiva(elementos: List[Dict[str, Any]], operador: str, tabela: TabelaSimbolos, historico_tipos: Dict[int, str], linha_num: int) -> Optional[str]:
+    """Avalia uma sub-linha recursivamente para inferir tipo.
+
+    Esta função é usada para processar sequências de expressões,
+    avaliando cada sub-linha individualmente.
+
+    Args:
+        elementos: Lista de elementos (operandos) da sub-linha
+        operador: Operador da sub-linha (pode ser vazio para atribuições)
+        tabela: Tabela de símbolos
+        historico_tipos: Dicionário de tipos inferidos por linha
+        linha_num: Número da linha atual (para mensagens de erro)
+
+    Returns:
+        Tipo inferido da sub-linha ou None se não puder inferir
+    """
+    # Se tem operador, processar como operação normal
+    if operador and operador != "":
+        # Avaliar operandos
+        operandos_av = []
+        for elem in elementos:
+            try:
+                op_av = _avaliar_operando(elem, tabela, historico_tipos, linha_num)
+                operandos_av.append(op_av)
+            except:
+                return None
+
+        # Inferir tipo baseado no operador
+        if operador in ['+', '-', '*', '/', '|', '%', '^']:
+            if len(operandos_av) >= 2:
+                tipo1 = operandos_av[0].get('tipo')
+                tipo2 = operandos_av[1].get('tipo')
+                if tipo1 and tipo2:
+                    try:
+                        return tipos.tipo_resultado_aritmetico(tipo1, tipo2, operador)
+                    except:
+                        return None
+        elif operador in ['>', '<', '>=', '<=', '==', '!=']:
+            # Operadores de comparação retornam boolean
+            return tipos.TYPE_BOOLEAN
+        elif operador in ['&&', '||']:
+            # Operadores lógicos retornam boolean
+            return tipos.TYPE_BOOLEAN
+        elif operador == '!':
+            # NOT unário retorna boolean
+            return tipos.TYPE_BOOLEAN
+
+        return None
+
+    # Se não tem operador e tem 2 elementos = atribuição (valor variavel)
+    elif len(elementos) == 2:
+        # (valor variavel) = atribuição
+        try:
+            valor = _avaliar_operando(elementos[0], tabela, historico_tipos, linha_num)
+            # Atribuição retorna o tipo do valor
+            return valor.get('tipo')
+        except:
+            return None
+
+    # Se tem apenas 1 elemento = acesso a variável
+    elif len(elementos) == 1:
+        try:
+            valor = _avaliar_operando(elementos[0], tabela, historico_tipos, linha_num)
+            return valor.get('tipo')
+        except:
+            return None
+
+    return None
+
+
 def _avaliar_operando(operando: Dict[str, Any], tabela: TabelaSimbolos, historico_tipos: Dict[int, str], linha_atual: int) -> Dict[str, Any]:
     if operando.get('subtipo') in ['numero_real', 'numero_inteiro', 'numero_real_res', 'numero_inteiro_res']:
         valor = _parse_valor_literal(operando)
@@ -298,6 +368,34 @@ def avaliar_seq_tipo(seq: Dict[str, Any], linha_atual: int, tabela: TabelaSimbol
     if operador is None and len(tipos_ops) == 1:
         return (tipos_ops[0], tipos_ops, vals)
 
+    # NOVO: Suporte a SEQUÊNCIAS de expressões (múltiplas LINHAS sem operador)
+    if (operador is None or operador == "") and len(elementos) > 1:
+        # Verificar se todas são sub-linhas (expressões aninhadas)
+        todas_sao_linhas = all(
+            elem.get('subtipo') == 'LINHA' or
+            (isinstance(elem.get('elementos'), list) and len(elem.get('elementos', [])) > 0)
+            for elem in elementos
+            if not (isinstance(elem, dict) and elem.get('subtipo') == 'operador_token')
+        )
+
+        if todas_sao_linhas:
+            # SEQUÊNCIA DE COMANDOS: processar cada um e retornar tipo da última
+            tipo_sequencia = None
+            for elem in elementos:
+                if isinstance(elem, dict) and elem.get('subtipo') == 'operador_token':
+                    continue
+                if elem.get('subtipo') == 'LINHA':
+                    # Avaliar subexpressão recursivamente
+                    ast_sub = elem.get('ast')
+                    if ast_sub:
+                        tipo_sub, _, _ = avaliar_seq_tipo(ast_sub, linha_atual, tabela)
+                        tipo_sequencia = tipo_sub  # Tipo da sequência = tipo da última expressão
+
+            # Marcar como sequência
+            seq['_is_sequence'] = True
+            seq['tipo'] = tipo_sequencia
+            return (tipo_sequencia, tipos_ops, vals)
+
     raise ErroSemantico(linha_atual, 'Estrutura da linha não reconhecida ou suporte incompleto', str(seq))
 
 
@@ -476,6 +574,50 @@ def analisarSemantica(arvoreSintatica: Dict[str, Any], gramatica: Optional[Dict]
                 nova_linha['tipo'] = tipo_v
                 arvore_anotada['linhas'].append(nova_linha)
                 continue
+
+            # NOVO: Suporte a SEQUÊNCIAS de expressões (múltiplas LINHAS sem operador)
+            if (operador is None or operador == "") and len(elementos) > 1:
+                # Verificar se todas são sub-linhas (expressões aninhadas)
+                todas_sao_linhas = all(
+                    elem.get('subtipo') == 'LINHA' or
+                    (isinstance(elem.get('elementos'), list) and len(elem.get('elementos', [])) > 0)
+                    for elem in elementos
+                )
+
+                if todas_sao_linhas:
+                    # SEQUÊNCIA DE COMANDOS: processar cada um e retornar tipo da última
+                    tipos_avaliacoes = []
+
+                    for elem in elementos:
+                        try:
+                            # Avaliar recursivamente cada sub-linha
+                            if elem.get('subtipo') == 'LINHA':
+                                # Processar como linha aninhada
+                                sub_elementos = elem.get('elementos', [])
+                                sub_operador = elem.get('operador', '')
+
+                                # Avaliar tipo da sub-linha
+                                tipo_sub = _avaliar_linha_recursiva(
+                                    sub_elementos, sub_operador, tabela,
+                                    historico_tipos, num
+                                )
+                                tipos_avaliacoes.append(tipo_sub)
+                        except ErroSemantico:
+                            tipos_avaliacoes.append(None)
+
+                    # Tipo da sequência = tipo da ÚLTIMA expressão
+                    tipo_sequencia = tipos_avaliacoes[-1] if tipos_avaliacoes else None
+
+                    # Marcar como sequência de comandos
+                    seq['tipo'] = tipo_sequencia
+                    seq['_is_sequence'] = True  # Flag especial
+
+                    historico_tipos[num] = tipo_sequencia
+                    nova_linha = dict(linha_ast)
+                    nova_linha['tipo'] = tipo_sequencia
+                    nova_linha['_is_sequence'] = True
+                    arvore_anotada['linhas'].append(nova_linha)
+                    continue
 
             raise ErroSemantico(num, 'Estrutura da linha não reconhecida ou suporte incompleto', _construir_contexto_expressao(linha_ast))
 

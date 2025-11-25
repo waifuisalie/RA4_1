@@ -1,9 +1,9 @@
 # Relatório de Otimizações TAC
 
 ## 1. Resumo Executivo
-- Instruções antes: 15
-- Instruções depois: 10
-- Redução: 33.3%
+- Instruções antes: 23
+- Instruções depois: 17
+- Redução: 26.1%
 - Temporários eliminados: 0
 
 ## 2. Técnicas Implementadas
@@ -60,7 +60,7 @@ t0 = x + y
 result = t0 + 1
 ```
 
-**Impacto:** 4 instruções removidas
+**Impacto:** 5 instruções removidas
 
 ### 2.4 Eliminação de Saltos Redundantes
 **Descrição:** Remove saltos desnecessários e rótulos não utilizados.
@@ -80,10 +80,10 @@ t0 = 5
 **Impacto:** 1 saltos eliminados
 
 ## 3. Estatísticas Detalhadas
-- Número de instruções TAC antes: 15
-- Número de instruções TAC depois: 10
+- Número de instruções TAC antes: 23
+- Número de instruções TAC depois: 17
 - Número de temporários eliminados: 0
-- Redução percentual: 33.3%
+- Redução percentual: 26.1%
 - Número de iterações até convergência: 2
 
 ## 4. Análise do Impacto no Código Assembly Gerado

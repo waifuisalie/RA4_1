@@ -3,12 +3,11 @@
   "linhas": [
     {
       "numero_linha": 1,
-      "expressao_original": "( 5 3 + )",
+      "expressao_original": "( 0 FIB_0 )",
       "tokens": [
         "(",
-        "5",
-        "3",
-        "+",
+        "0",
+        "FIB_0",
         ")"
       ],
       "arvore": {
@@ -49,7 +48,7 @@
                         "label": "OPERANDO",
                         "filhos": [
                           {
-                            "label": "numero_inteiro",
+                            "label": "identifier",
                             "filhos": []
                           },
                           {
@@ -67,18 +66,8 @@
                         "label": "SEQUENCIA_PRIME",
                         "filhos": [
                           {
-                            "label": "OPERADOR_FINAL",
-                            "filhos": [
-                              {
-                                "label": "ARITH_OP",
-                                "filhos": [
-                                  {
-                                    "label": "+",
-                                    "filhos": []
-                                  }
-                                ]
-                              }
-                            ]
+                            "label": "epsilon",
+                            "filhos": []
                           }
                         ]
                       }
@@ -103,17 +92,16 @@
           }
         ]
       },
-      "derivacao_passos": 12,
+      "derivacao_passos": 10,
       "sucesso": true
     },
     {
       "numero_linha": 2,
-      "expressao_original": "( 10.5 2.0 * )",
+      "expressao_original": "( 1 FIB_1 )",
       "tokens": [
         "(",
-        "10.5",
-        "2.0",
-        "*",
+        "1",
+        "FIB_1",
         ")"
       ],
       "arvore": {
@@ -133,7 +121,7 @@
                     "label": "OPERANDO",
                     "filhos": [
                       {
-                        "label": "numero_real",
+                        "label": "numero_inteiro",
                         "filhos": []
                       },
                       {
@@ -154,7 +142,7 @@
                         "label": "OPERANDO",
                         "filhos": [
                           {
-                            "label": "numero_real",
+                            "label": "identifier",
                             "filhos": []
                           },
                           {
@@ -172,18 +160,8 @@
                         "label": "SEQUENCIA_PRIME",
                         "filhos": [
                           {
-                            "label": "OPERADOR_FINAL",
-                            "filhos": [
-                              {
-                                "label": "ARITH_OP",
-                                "filhos": [
-                                  {
-                                    "label": "*",
-                                    "filhos": []
-                                  }
-                                ]
-                              }
-                            ]
+                            "label": "epsilon",
+                            "filhos": []
                           }
                         ]
                       }
@@ -208,17 +186,16 @@
           }
         ]
       },
-      "derivacao_passos": 12,
+      "derivacao_passos": 10,
       "sucesso": true
     },
     {
       "numero_linha": 3,
-      "expressao_original": "( 100 50 + )",
+      "expressao_original": "( 2 INICIO )",
       "tokens": [
         "(",
-        "100",
-        "50",
-        "+",
+        "2",
+        "INICIO",
         ")"
       ],
       "arvore": {
@@ -259,7 +236,7 @@
                         "label": "OPERANDO",
                         "filhos": [
                           {
-                            "label": "numero_inteiro",
+                            "label": "identifier",
                             "filhos": []
                           },
                           {
@@ -277,18 +254,8 @@
                         "label": "SEQUENCIA_PRIME",
                         "filhos": [
                           {
-                            "label": "OPERADOR_FINAL",
-                            "filhos": [
-                              {
-                                "label": "ARITH_OP",
-                                "filhos": [
-                                  {
-                                    "label": "+",
-                                    "filhos": []
-                                  }
-                                ]
-                              }
-                            ]
+                            "label": "epsilon",
+                            "filhos": []
                           }
                         ]
                       }
@@ -313,17 +280,16 @@
           }
         ]
       },
-      "derivacao_passos": 12,
+      "derivacao_passos": 10,
       "sucesso": true
     },
     {
       "numero_linha": 4,
-      "expressao_original": "( 15 7 / )",
+      "expressao_original": "( 24 FIM )",
       "tokens": [
         "(",
-        "15",
-        "7",
-        "/",
+        "24",
+        "FIM",
         ")"
       ],
       "arvore": {
@@ -364,7 +330,7 @@
                         "label": "OPERANDO",
                         "filhos": [
                           {
-                            "label": "numero_inteiro",
+                            "label": "identifier",
                             "filhos": []
                           },
                           {
@@ -382,18 +348,8 @@
                         "label": "SEQUENCIA_PRIME",
                         "filhos": [
                           {
-                            "label": "OPERADOR_FINAL",
-                            "filhos": [
-                              {
-                                "label": "ARITH_OP",
-                                "filhos": [
-                                  {
-                                    "label": "/",
-                                    "filhos": []
-                                  }
-                                ]
-                              }
-                            ]
+                            "label": "epsilon",
+                            "filhos": []
                           }
                         ]
                       }
@@ -418,17 +374,16 @@
           }
         ]
       },
-      "derivacao_passos": 12,
+      "derivacao_passos": 10,
       "sucesso": true
     },
     {
       "numero_linha": 5,
-      "expressao_original": "( 23 6 % )",
+      "expressao_original": "( 1 PASSO )",
       "tokens": [
         "(",
-        "23",
-        "6",
-        "%",
+        "1",
+        "PASSO",
         ")"
       ],
       "arvore": {
@@ -469,7 +424,7 @@
                         "label": "OPERANDO",
                         "filhos": [
                           {
-                            "label": "numero_inteiro",
+                            "label": "identifier",
                             "filhos": []
                           },
                           {
@@ -487,18 +442,8 @@
                         "label": "SEQUENCIA_PRIME",
                         "filhos": [
                           {
-                            "label": "OPERADOR_FINAL",
-                            "filhos": [
-                              {
-                                "label": "ARITH_OP",
-                                "filhos": [
-                                  {
-                                    "label": "%",
-                                    "filhos": []
-                                  }
-                                ]
-                              }
-                            ]
+                            "label": "epsilon",
+                            "filhos": []
                           }
                         ]
                       }
@@ -523,2075 +468,34 @@
           }
         ]
       },
-      "derivacao_passos": 12,
+      "derivacao_passos": 10,
       "sucesso": true
     },
     {
       "numero_linha": 6,
-      "expressao_original": "( 2.5 3 ^ )",
+      "expressao_original": "( INICIO FIM PASSO ( ( ( FIB_0 FIB_1 + ) FIB_NEXT ) ( FIB_1 FIB_0 ) ( FIB_NEXT FIB_1 ) ) FOR )",
       "tokens": [
         "(",
-        "2.5",
-        "3",
-        "^",
-        ")"
-      ],
-      "arvore": {
-        "label": "PROGRAM",
-        "filhos": [
-          {
-            "label": "LINHA",
-            "filhos": [
-              {
-                "label": "(",
-                "filhos": []
-              },
-              {
-                "label": "SEQUENCIA",
-                "filhos": [
-                  {
-                    "label": "OPERANDO",
-                    "filhos": [
-                      {
-                        "label": "numero_real",
-                        "filhos": []
-                      },
-                      {
-                        "label": "OPERANDO_OPCIONAL",
-                        "filhos": [
-                          {
-                            "label": "epsilon",
-                            "filhos": []
-                          }
-                        ]
-                      }
-                    ]
-                  },
-                  {
-                    "label": "SEQUENCIA_PRIME",
-                    "filhos": [
-                      {
-                        "label": "OPERANDO",
-                        "filhos": [
-                          {
-                            "label": "numero_inteiro",
-                            "filhos": []
-                          },
-                          {
-                            "label": "OPERANDO_OPCIONAL",
-                            "filhos": [
-                              {
-                                "label": "epsilon",
-                                "filhos": []
-                              }
-                            ]
-                          }
-                        ]
-                      },
-                      {
-                        "label": "SEQUENCIA_PRIME",
-                        "filhos": [
-                          {
-                            "label": "OPERADOR_FINAL",
-                            "filhos": [
-                              {
-                                "label": "ARITH_OP",
-                                "filhos": [
-                                  {
-                                    "label": "^",
-                                    "filhos": []
-                                  }
-                                ]
-                              }
-                            ]
-                          }
-                        ]
-                      }
-                    ]
-                  }
-                ]
-              },
-              {
-                "label": ")",
-                "filhos": []
-              }
-            ]
-          },
-          {
-            "label": "PROGRAM_PRIME",
-            "filhos": [
-              {
-                "label": "epsilon",
-                "filhos": []
-              }
-            ]
-          }
-        ]
-      },
-      "derivacao_passos": 12,
-      "sucesso": true
-    },
-    {
-      "numero_linha": 7,
-      "expressao_original": "( 5.5 3.2 > )",
-      "tokens": [
-        "(",
-        "5.5",
-        "3.2",
-        ">",
-        ")"
-      ],
-      "arvore": {
-        "label": "PROGRAM",
-        "filhos": [
-          {
-            "label": "LINHA",
-            "filhos": [
-              {
-                "label": "(",
-                "filhos": []
-              },
-              {
-                "label": "SEQUENCIA",
-                "filhos": [
-                  {
-                    "label": "OPERANDO",
-                    "filhos": [
-                      {
-                        "label": "numero_real",
-                        "filhos": []
-                      },
-                      {
-                        "label": "OPERANDO_OPCIONAL",
-                        "filhos": [
-                          {
-                            "label": "epsilon",
-                            "filhos": []
-                          }
-                        ]
-                      }
-                    ]
-                  },
-                  {
-                    "label": "SEQUENCIA_PRIME",
-                    "filhos": [
-                      {
-                        "label": "OPERANDO",
-                        "filhos": [
-                          {
-                            "label": "numero_real",
-                            "filhos": []
-                          },
-                          {
-                            "label": "OPERANDO_OPCIONAL",
-                            "filhos": [
-                              {
-                                "label": "epsilon",
-                                "filhos": []
-                              }
-                            ]
-                          }
-                        ]
-                      },
-                      {
-                        "label": "SEQUENCIA_PRIME",
-                        "filhos": [
-                          {
-                            "label": "OPERADOR_FINAL",
-                            "filhos": [
-                              {
-                                "label": "COMP_OP",
-                                "filhos": [
-                                  {
-                                    "label": ">",
-                                    "filhos": []
-                                  }
-                                ]
-                              }
-                            ]
-                          }
-                        ]
-                      }
-                    ]
-                  }
-                ]
-              },
-              {
-                "label": ")",
-                "filhos": []
-              }
-            ]
-          },
-          {
-            "label": "PROGRAM_PRIME",
-            "filhos": [
-              {
-                "label": "epsilon",
-                "filhos": []
-              }
-            ]
-          }
-        ]
-      },
-      "derivacao_passos": 12,
-      "sucesso": true
-    },
-    {
-      "numero_linha": 8,
-      "expressao_original": "( 3 ! )",
-      "tokens": [
-        "(",
-        "3",
-        "!",
-        ")"
-      ],
-      "arvore": {
-        "label": "PROGRAM",
-        "filhos": [
-          {
-            "label": "LINHA",
-            "filhos": [
-              {
-                "label": "(",
-                "filhos": []
-              },
-              {
-                "label": "SEQUENCIA",
-                "filhos": [
-                  {
-                    "label": "OPERANDO",
-                    "filhos": [
-                      {
-                        "label": "numero_inteiro",
-                        "filhos": []
-                      },
-                      {
-                        "label": "OPERANDO_OPCIONAL",
-                        "filhos": [
-                          {
-                            "label": "epsilon",
-                            "filhos": []
-                          }
-                        ]
-                      }
-                    ]
-                  },
-                  {
-                    "label": "SEQUENCIA_PRIME",
-                    "filhos": [
-                      {
-                        "label": "OPERADOR_FINAL",
-                        "filhos": [
-                          {
-                            "label": "LOGIC_OP",
-                            "filhos": [
-                              {
-                                "label": "!",
-                                "filhos": []
-                              }
-                            ]
-                          }
-                        ]
-                      }
-                    ]
-                  }
-                ]
-              },
-              {
-                "label": ")",
-                "filhos": []
-              }
-            ]
-          },
-          {
-            "label": "PROGRAM_PRIME",
-            "filhos": [
-              {
-                "label": "epsilon",
-                "filhos": []
-              }
-            ]
-          }
-        ]
-      },
-      "derivacao_passos": 9,
-      "sucesso": true
-    },
-    {
-      "numero_linha": 9,
-      "expressao_original": "( ( 5 3 > ) ( 2 1 < ) && )",
-      "tokens": [
+        "INICIO",
+        "FIM",
+        "PASSO",
         "(",
         "(",
-        "5",
-        "3",
-        ">",
-        ")",
         "(",
-        "2",
-        "1",
-        "<",
-        ")",
-        "&&",
-        ")"
-      ],
-      "arvore": {
-        "label": "PROGRAM",
-        "filhos": [
-          {
-            "label": "LINHA",
-            "filhos": [
-              {
-                "label": "(",
-                "filhos": []
-              },
-              {
-                "label": "SEQUENCIA",
-                "filhos": [
-                  {
-                    "label": "OPERANDO",
-                    "filhos": [
-                      {
-                        "label": "LINHA",
-                        "filhos": [
-                          {
-                            "label": "(",
-                            "filhos": []
-                          },
-                          {
-                            "label": "SEQUENCIA",
-                            "filhos": [
-                              {
-                                "label": "OPERANDO",
-                                "filhos": [
-                                  {
-                                    "label": "numero_inteiro",
-                                    "filhos": []
-                                  },
-                                  {
-                                    "label": "OPERANDO_OPCIONAL",
-                                    "filhos": [
-                                      {
-                                        "label": "epsilon",
-                                        "filhos": []
-                                      }
-                                    ]
-                                  }
-                                ]
-                              },
-                              {
-                                "label": "SEQUENCIA_PRIME",
-                                "filhos": [
-                                  {
-                                    "label": "OPERANDO",
-                                    "filhos": [
-                                      {
-                                        "label": "numero_inteiro",
-                                        "filhos": []
-                                      },
-                                      {
-                                        "label": "OPERANDO_OPCIONAL",
-                                        "filhos": [
-                                          {
-                                            "label": "epsilon",
-                                            "filhos": []
-                                          }
-                                        ]
-                                      }
-                                    ]
-                                  },
-                                  {
-                                    "label": "SEQUENCIA_PRIME",
-                                    "filhos": [
-                                      {
-                                        "label": "OPERADOR_FINAL",
-                                        "filhos": [
-                                          {
-                                            "label": "COMP_OP",
-                                            "filhos": [
-                                              {
-                                                "label": ">",
-                                                "filhos": []
-                                              }
-                                            ]
-                                          }
-                                        ]
-                                      }
-                                    ]
-                                  }
-                                ]
-                              }
-                            ]
-                          },
-                          {
-                            "label": ")",
-                            "filhos": []
-                          }
-                        ]
-                      }
-                    ]
-                  },
-                  {
-                    "label": "SEQUENCIA_PRIME",
-                    "filhos": [
-                      {
-                        "label": "OPERANDO",
-                        "filhos": [
-                          {
-                            "label": "LINHA",
-                            "filhos": [
-                              {
-                                "label": "(",
-                                "filhos": []
-                              },
-                              {
-                                "label": "SEQUENCIA",
-                                "filhos": [
-                                  {
-                                    "label": "OPERANDO",
-                                    "filhos": [
-                                      {
-                                        "label": "numero_inteiro",
-                                        "filhos": []
-                                      },
-                                      {
-                                        "label": "OPERANDO_OPCIONAL",
-                                        "filhos": [
-                                          {
-                                            "label": "epsilon",
-                                            "filhos": []
-                                          }
-                                        ]
-                                      }
-                                    ]
-                                  },
-                                  {
-                                    "label": "SEQUENCIA_PRIME",
-                                    "filhos": [
-                                      {
-                                        "label": "OPERANDO",
-                                        "filhos": [
-                                          {
-                                            "label": "numero_inteiro",
-                                            "filhos": []
-                                          },
-                                          {
-                                            "label": "OPERANDO_OPCIONAL",
-                                            "filhos": [
-                                              {
-                                                "label": "epsilon",
-                                                "filhos": []
-                                              }
-                                            ]
-                                          }
-                                        ]
-                                      },
-                                      {
-                                        "label": "SEQUENCIA_PRIME",
-                                        "filhos": [
-                                          {
-                                            "label": "OPERADOR_FINAL",
-                                            "filhos": [
-                                              {
-                                                "label": "COMP_OP",
-                                                "filhos": [
-                                                  {
-                                                    "label": "<",
-                                                    "filhos": []
-                                                  }
-                                                ]
-                                              }
-                                            ]
-                                          }
-                                        ]
-                                      }
-                                    ]
-                                  }
-                                ]
-                              },
-                              {
-                                "label": ")",
-                                "filhos": []
-                              }
-                            ]
-                          }
-                        ]
-                      },
-                      {
-                        "label": "SEQUENCIA_PRIME",
-                        "filhos": [
-                          {
-                            "label": "OPERADOR_FINAL",
-                            "filhos": [
-                              {
-                                "label": "LOGIC_OP",
-                                "filhos": [
-                                  {
-                                    "label": "&&",
-                                    "filhos": []
-                                  }
-                                ]
-                              }
-                            ]
-                          }
-                        ]
-                      }
-                    ]
-                  }
-                ]
-              },
-              {
-                "label": ")",
-                "filhos": []
-              }
-            ]
-          },
-          {
-            "label": "PROGRAM_PRIME",
-            "filhos": [
-              {
-                "label": "epsilon",
-                "filhos": []
-              }
-            ]
-          }
-        ]
-      },
-      "derivacao_passos": 30,
-      "sucesso": true
-    },
-    {
-      "numero_linha": 10,
-      "expressao_original": "( 10 X )",
-      "tokens": [
-        "(",
-        "10",
-        "X",
-        ")"
-      ],
-      "arvore": {
-        "label": "PROGRAM",
-        "filhos": [
-          {
-            "label": "LINHA",
-            "filhos": [
-              {
-                "label": "(",
-                "filhos": []
-              },
-              {
-                "label": "SEQUENCIA",
-                "filhos": [
-                  {
-                    "label": "OPERANDO",
-                    "filhos": [
-                      {
-                        "label": "numero_inteiro",
-                        "filhos": []
-                      },
-                      {
-                        "label": "OPERANDO_OPCIONAL",
-                        "filhos": [
-                          {
-                            "label": "epsilon",
-                            "filhos": []
-                          }
-                        ]
-                      }
-                    ]
-                  },
-                  {
-                    "label": "SEQUENCIA_PRIME",
-                    "filhos": [
-                      {
-                        "label": "OPERANDO",
-                        "filhos": [
-                          {
-                            "label": "identifier",
-                            "filhos": []
-                          },
-                          {
-                            "label": "OPERANDO_OPCIONAL",
-                            "filhos": [
-                              {
-                                "label": "epsilon",
-                                "filhos": []
-                              }
-                            ]
-                          }
-                        ]
-                      },
-                      {
-                        "label": "SEQUENCIA_PRIME",
-                        "filhos": [
-                          {
-                            "label": "epsilon",
-                            "filhos": []
-                          }
-                        ]
-                      }
-                    ]
-                  }
-                ]
-              },
-              {
-                "label": ")",
-                "filhos": []
-              }
-            ]
-          },
-          {
-            "label": "PROGRAM_PRIME",
-            "filhos": [
-              {
-                "label": "epsilon",
-                "filhos": []
-              }
-            ]
-          }
-        ]
-      },
-      "derivacao_passos": 10,
-      "sucesso": true
-    },
-    {
-      "numero_linha": 11,
-      "expressao_original": "( 20 A )",
-      "tokens": [
-        "(",
-        "20",
-        "A",
-        ")"
-      ],
-      "arvore": {
-        "label": "PROGRAM",
-        "filhos": [
-          {
-            "label": "LINHA",
-            "filhos": [
-              {
-                "label": "(",
-                "filhos": []
-              },
-              {
-                "label": "SEQUENCIA",
-                "filhos": [
-                  {
-                    "label": "OPERANDO",
-                    "filhos": [
-                      {
-                        "label": "numero_inteiro",
-                        "filhos": []
-                      },
-                      {
-                        "label": "OPERANDO_OPCIONAL",
-                        "filhos": [
-                          {
-                            "label": "epsilon",
-                            "filhos": []
-                          }
-                        ]
-                      }
-                    ]
-                  },
-                  {
-                    "label": "SEQUENCIA_PRIME",
-                    "filhos": [
-                      {
-                        "label": "OPERANDO",
-                        "filhos": [
-                          {
-                            "label": "identifier",
-                            "filhos": []
-                          },
-                          {
-                            "label": "OPERANDO_OPCIONAL",
-                            "filhos": [
-                              {
-                                "label": "epsilon",
-                                "filhos": []
-                              }
-                            ]
-                          }
-                        ]
-                      },
-                      {
-                        "label": "SEQUENCIA_PRIME",
-                        "filhos": [
-                          {
-                            "label": "epsilon",
-                            "filhos": []
-                          }
-                        ]
-                      }
-                    ]
-                  }
-                ]
-              },
-              {
-                "label": ")",
-                "filhos": []
-              }
-            ]
-          },
-          {
-            "label": "PROGRAM_PRIME",
-            "filhos": [
-              {
-                "label": "epsilon",
-                "filhos": []
-              }
-            ]
-          }
-        ]
-      },
-      "derivacao_passos": 10,
-      "sucesso": true
-    },
-    {
-      "numero_linha": 12,
-      "expressao_original": "( 10 I )",
-      "tokens": [
-        "(",
-        "10",
-        "I",
-        ")"
-      ],
-      "arvore": {
-        "label": "PROGRAM",
-        "filhos": [
-          {
-            "label": "LINHA",
-            "filhos": [
-              {
-                "label": "(",
-                "filhos": []
-              },
-              {
-                "label": "SEQUENCIA",
-                "filhos": [
-                  {
-                    "label": "OPERANDO",
-                    "filhos": [
-                      {
-                        "label": "numero_inteiro",
-                        "filhos": []
-                      },
-                      {
-                        "label": "OPERANDO_OPCIONAL",
-                        "filhos": [
-                          {
-                            "label": "epsilon",
-                            "filhos": []
-                          }
-                        ]
-                      }
-                    ]
-                  },
-                  {
-                    "label": "SEQUENCIA_PRIME",
-                    "filhos": [
-                      {
-                        "label": "OPERANDO",
-                        "filhos": [
-                          {
-                            "label": "identifier",
-                            "filhos": []
-                          },
-                          {
-                            "label": "OPERANDO_OPCIONAL",
-                            "filhos": [
-                              {
-                                "label": "epsilon",
-                                "filhos": []
-                              }
-                            ]
-                          }
-                        ]
-                      },
-                      {
-                        "label": "SEQUENCIA_PRIME",
-                        "filhos": [
-                          {
-                            "label": "epsilon",
-                            "filhos": []
-                          }
-                        ]
-                      }
-                    ]
-                  }
-                ]
-              },
-              {
-                "label": ")",
-                "filhos": []
-              }
-            ]
-          },
-          {
-            "label": "PROGRAM_PRIME",
-            "filhos": [
-              {
-                "label": "epsilon",
-                "filhos": []
-              }
-            ]
-          }
-        ]
-      },
-      "derivacao_passos": 10,
-      "sucesso": true
-    },
-    {
-      "numero_linha": 13,
-      "expressao_original": "( 0 COUNTER )",
-      "tokens": [
-        "(",
-        "0",
-        "COUNTER",
-        ")"
-      ],
-      "arvore": {
-        "label": "PROGRAM",
-        "filhos": [
-          {
-            "label": "LINHA",
-            "filhos": [
-              {
-                "label": "(",
-                "filhos": []
-              },
-              {
-                "label": "SEQUENCIA",
-                "filhos": [
-                  {
-                    "label": "OPERANDO",
-                    "filhos": [
-                      {
-                        "label": "numero_inteiro",
-                        "filhos": []
-                      },
-                      {
-                        "label": "OPERANDO_OPCIONAL",
-                        "filhos": [
-                          {
-                            "label": "epsilon",
-                            "filhos": []
-                          }
-                        ]
-                      }
-                    ]
-                  },
-                  {
-                    "label": "SEQUENCIA_PRIME",
-                    "filhos": [
-                      {
-                        "label": "OPERANDO",
-                        "filhos": [
-                          {
-                            "label": "identifier",
-                            "filhos": []
-                          },
-                          {
-                            "label": "OPERANDO_OPCIONAL",
-                            "filhos": [
-                              {
-                                "label": "epsilon",
-                                "filhos": []
-                              }
-                            ]
-                          }
-                        ]
-                      },
-                      {
-                        "label": "SEQUENCIA_PRIME",
-                        "filhos": [
-                          {
-                            "label": "epsilon",
-                            "filhos": []
-                          }
-                        ]
-                      }
-                    ]
-                  }
-                ]
-              },
-              {
-                "label": ")",
-                "filhos": []
-              }
-            ]
-          },
-          {
-            "label": "PROGRAM_PRIME",
-            "filhos": [
-              {
-                "label": "epsilon",
-                "filhos": []
-              }
-            ]
-          }
-        ]
-      },
-      "derivacao_passos": 10,
-      "sucesso": true
-    },
-    {
-      "numero_linha": 14,
-      "expressao_original": "( ( X 5 + ) Y )",
-      "tokens": [
-        "(",
-        "(",
-        "X",
-        "5",
+        "FIB_0",
+        "FIB_1",
         "+",
         ")",
-        "Y",
-        ")"
-      ],
-      "arvore": {
-        "label": "PROGRAM",
-        "filhos": [
-          {
-            "label": "LINHA",
-            "filhos": [
-              {
-                "label": "(",
-                "filhos": []
-              },
-              {
-                "label": "SEQUENCIA",
-                "filhos": [
-                  {
-                    "label": "OPERANDO",
-                    "filhos": [
-                      {
-                        "label": "LINHA",
-                        "filhos": [
-                          {
-                            "label": "(",
-                            "filhos": []
-                          },
-                          {
-                            "label": "SEQUENCIA",
-                            "filhos": [
-                              {
-                                "label": "OPERANDO",
-                                "filhos": [
-                                  {
-                                    "label": "identifier",
-                                    "filhos": []
-                                  },
-                                  {
-                                    "label": "OPERANDO_OPCIONAL",
-                                    "filhos": [
-                                      {
-                                        "label": "epsilon",
-                                        "filhos": []
-                                      }
-                                    ]
-                                  }
-                                ]
-                              },
-                              {
-                                "label": "SEQUENCIA_PRIME",
-                                "filhos": [
-                                  {
-                                    "label": "OPERANDO",
-                                    "filhos": [
-                                      {
-                                        "label": "numero_inteiro",
-                                        "filhos": []
-                                      },
-                                      {
-                                        "label": "OPERANDO_OPCIONAL",
-                                        "filhos": [
-                                          {
-                                            "label": "epsilon",
-                                            "filhos": []
-                                          }
-                                        ]
-                                      }
-                                    ]
-                                  },
-                                  {
-                                    "label": "SEQUENCIA_PRIME",
-                                    "filhos": [
-                                      {
-                                        "label": "OPERADOR_FINAL",
-                                        "filhos": [
-                                          {
-                                            "label": "ARITH_OP",
-                                            "filhos": [
-                                              {
-                                                "label": "+",
-                                                "filhos": []
-                                              }
-                                            ]
-                                          }
-                                        ]
-                                      }
-                                    ]
-                                  }
-                                ]
-                              }
-                            ]
-                          },
-                          {
-                            "label": ")",
-                            "filhos": []
-                          }
-                        ]
-                      }
-                    ]
-                  },
-                  {
-                    "label": "SEQUENCIA_PRIME",
-                    "filhos": [
-                      {
-                        "label": "OPERANDO",
-                        "filhos": [
-                          {
-                            "label": "identifier",
-                            "filhos": []
-                          },
-                          {
-                            "label": "OPERANDO_OPCIONAL",
-                            "filhos": [
-                              {
-                                "label": "epsilon",
-                                "filhos": []
-                              }
-                            ]
-                          }
-                        ]
-                      },
-                      {
-                        "label": "SEQUENCIA_PRIME",
-                        "filhos": [
-                          {
-                            "label": "epsilon",
-                            "filhos": []
-                          }
-                        ]
-                      }
-                    ]
-                  }
-                ]
-              },
-              {
-                "label": ")",
-                "filhos": []
-              }
-            ]
-          },
-          {
-            "label": "PROGRAM_PRIME",
-            "filhos": [
-              {
-                "label": "epsilon",
-                "filhos": []
-              }
-            ]
-          }
-        ]
-      },
-      "derivacao_passos": 19,
-      "sucesso": true
-    },
-    {
-      "numero_linha": 15,
-      "expressao_original": "( ( A X - ) B )",
-      "tokens": [
-        "(",
-        "(",
-        "A",
-        "X",
-        "-",
-        ")",
-        "B",
-        ")"
-      ],
-      "arvore": {
-        "label": "PROGRAM",
-        "filhos": [
-          {
-            "label": "LINHA",
-            "filhos": [
-              {
-                "label": "(",
-                "filhos": []
-              },
-              {
-                "label": "SEQUENCIA",
-                "filhos": [
-                  {
-                    "label": "OPERANDO",
-                    "filhos": [
-                      {
-                        "label": "LINHA",
-                        "filhos": [
-                          {
-                            "label": "(",
-                            "filhos": []
-                          },
-                          {
-                            "label": "SEQUENCIA",
-                            "filhos": [
-                              {
-                                "label": "OPERANDO",
-                                "filhos": [
-                                  {
-                                    "label": "identifier",
-                                    "filhos": []
-                                  },
-                                  {
-                                    "label": "OPERANDO_OPCIONAL",
-                                    "filhos": [
-                                      {
-                                        "label": "epsilon",
-                                        "filhos": []
-                                      }
-                                    ]
-                                  }
-                                ]
-                              },
-                              {
-                                "label": "SEQUENCIA_PRIME",
-                                "filhos": [
-                                  {
-                                    "label": "OPERANDO",
-                                    "filhos": [
-                                      {
-                                        "label": "identifier",
-                                        "filhos": []
-                                      },
-                                      {
-                                        "label": "OPERANDO_OPCIONAL",
-                                        "filhos": [
-                                          {
-                                            "label": "epsilon",
-                                            "filhos": []
-                                          }
-                                        ]
-                                      }
-                                    ]
-                                  },
-                                  {
-                                    "label": "SEQUENCIA_PRIME",
-                                    "filhos": [
-                                      {
-                                        "label": "OPERADOR_FINAL",
-                                        "filhos": [
-                                          {
-                                            "label": "ARITH_OP",
-                                            "filhos": [
-                                              {
-                                                "label": "-",
-                                                "filhos": []
-                                              }
-                                            ]
-                                          }
-                                        ]
-                                      }
-                                    ]
-                                  }
-                                ]
-                              }
-                            ]
-                          },
-                          {
-                            "label": ")",
-                            "filhos": []
-                          }
-                        ]
-                      }
-                    ]
-                  },
-                  {
-                    "label": "SEQUENCIA_PRIME",
-                    "filhos": [
-                      {
-                        "label": "OPERANDO",
-                        "filhos": [
-                          {
-                            "label": "identifier",
-                            "filhos": []
-                          },
-                          {
-                            "label": "OPERANDO_OPCIONAL",
-                            "filhos": [
-                              {
-                                "label": "epsilon",
-                                "filhos": []
-                              }
-                            ]
-                          }
-                        ]
-                      },
-                      {
-                        "label": "SEQUENCIA_PRIME",
-                        "filhos": [
-                          {
-                            "label": "epsilon",
-                            "filhos": []
-                          }
-                        ]
-                      }
-                    ]
-                  }
-                ]
-              },
-              {
-                "label": ")",
-                "filhos": []
-              }
-            ]
-          },
-          {
-            "label": "PROGRAM_PRIME",
-            "filhos": [
-              {
-                "label": "epsilon",
-                "filhos": []
-              }
-            ]
-          }
-        ]
-      },
-      "derivacao_passos": 19,
-      "sucesso": true
-    },
-    {
-      "numero_linha": 16,
-      "expressao_original": "( 1 RES )",
-      "tokens": [
-        "(",
-        "1",
-        "RES",
-        ")"
-      ],
-      "arvore": {
-        "label": "PROGRAM",
-        "filhos": [
-          {
-            "label": "LINHA",
-            "filhos": [
-              {
-                "label": "(",
-                "filhos": []
-              },
-              {
-                "label": "SEQUENCIA",
-                "filhos": [
-                  {
-                    "label": "OPERANDO",
-                    "filhos": [
-                      {
-                        "label": "numero_inteiro",
-                        "filhos": []
-                      },
-                      {
-                        "label": "OPERANDO_OPCIONAL",
-                        "filhos": [
-                          {
-                            "label": "res",
-                            "filhos": []
-                          }
-                        ]
-                      }
-                    ]
-                  },
-                  {
-                    "label": "SEQUENCIA_PRIME",
-                    "filhos": [
-                      {
-                        "label": "epsilon",
-                        "filhos": []
-                      }
-                    ]
-                  }
-                ]
-              },
-              {
-                "label": ")",
-                "filhos": []
-              }
-            ]
-          },
-          {
-            "label": "PROGRAM_PRIME",
-            "filhos": [
-              {
-                "label": "epsilon",
-                "filhos": []
-              }
-            ]
-          }
-        ]
-      },
-      "derivacao_passos": 7,
-      "sucesso": true
-    },
-    {
-      "numero_linha": 17,
-      "expressao_original": "( 2 RES )",
-      "tokens": [
-        "(",
-        "2",
-        "RES",
-        ")"
-      ],
-      "arvore": {
-        "label": "PROGRAM",
-        "filhos": [
-          {
-            "label": "LINHA",
-            "filhos": [
-              {
-                "label": "(",
-                "filhos": []
-              },
-              {
-                "label": "SEQUENCIA",
-                "filhos": [
-                  {
-                    "label": "OPERANDO",
-                    "filhos": [
-                      {
-                        "label": "numero_inteiro",
-                        "filhos": []
-                      },
-                      {
-                        "label": "OPERANDO_OPCIONAL",
-                        "filhos": [
-                          {
-                            "label": "res",
-                            "filhos": []
-                          }
-                        ]
-                      }
-                    ]
-                  },
-                  {
-                    "label": "SEQUENCIA_PRIME",
-                    "filhos": [
-                      {
-                        "label": "epsilon",
-                        "filhos": []
-                      }
-                    ]
-                  }
-                ]
-              },
-              {
-                "label": ")",
-                "filhos": []
-              }
-            ]
-          },
-          {
-            "label": "PROGRAM_PRIME",
-            "filhos": [
-              {
-                "label": "epsilon",
-                "filhos": []
-              }
-            ]
-          }
-        ]
-      },
-      "derivacao_passos": 7,
-      "sucesso": true
-    },
-    {
-      "numero_linha": 18,
-      "expressao_original": "( ( COUNTER 5 < ) ( ( ( COUNTER 1 + ) COUNTER ) ) WHILE )",
-      "tokens": [
-        "(",
-        "(",
-        "COUNTER",
-        "5",
-        "<",
+        "FIB_NEXT",
         ")",
         "(",
-        "(",
-        "(",
-        "COUNTER",
-        "1",
-        "+",
-        ")",
-        "COUNTER",
-        ")",
-        ")",
-        "WHILE",
-        ")"
-      ],
-      "arvore": {
-        "label": "PROGRAM",
-        "filhos": [
-          {
-            "label": "LINHA",
-            "filhos": [
-              {
-                "label": "(",
-                "filhos": []
-              },
-              {
-                "label": "SEQUENCIA",
-                "filhos": [
-                  {
-                    "label": "OPERANDO",
-                    "filhos": [
-                      {
-                        "label": "LINHA",
-                        "filhos": [
-                          {
-                            "label": "(",
-                            "filhos": []
-                          },
-                          {
-                            "label": "SEQUENCIA",
-                            "filhos": [
-                              {
-                                "label": "OPERANDO",
-                                "filhos": [
-                                  {
-                                    "label": "identifier",
-                                    "filhos": []
-                                  },
-                                  {
-                                    "label": "OPERANDO_OPCIONAL",
-                                    "filhos": [
-                                      {
-                                        "label": "epsilon",
-                                        "filhos": []
-                                      }
-                                    ]
-                                  }
-                                ]
-                              },
-                              {
-                                "label": "SEQUENCIA_PRIME",
-                                "filhos": [
-                                  {
-                                    "label": "OPERANDO",
-                                    "filhos": [
-                                      {
-                                        "label": "numero_inteiro",
-                                        "filhos": []
-                                      },
-                                      {
-                                        "label": "OPERANDO_OPCIONAL",
-                                        "filhos": [
-                                          {
-                                            "label": "epsilon",
-                                            "filhos": []
-                                          }
-                                        ]
-                                      }
-                                    ]
-                                  },
-                                  {
-                                    "label": "SEQUENCIA_PRIME",
-                                    "filhos": [
-                                      {
-                                        "label": "OPERADOR_FINAL",
-                                        "filhos": [
-                                          {
-                                            "label": "COMP_OP",
-                                            "filhos": [
-                                              {
-                                                "label": "<",
-                                                "filhos": []
-                                              }
-                                            ]
-                                          }
-                                        ]
-                                      }
-                                    ]
-                                  }
-                                ]
-                              }
-                            ]
-                          },
-                          {
-                            "label": ")",
-                            "filhos": []
-                          }
-                        ]
-                      }
-                    ]
-                  },
-                  {
-                    "label": "SEQUENCIA_PRIME",
-                    "filhos": [
-                      {
-                        "label": "OPERANDO",
-                        "filhos": [
-                          {
-                            "label": "LINHA",
-                            "filhos": [
-                              {
-                                "label": "(",
-                                "filhos": []
-                              },
-                              {
-                                "label": "SEQUENCIA",
-                                "filhos": [
-                                  {
-                                    "label": "OPERANDO",
-                                    "filhos": [
-                                      {
-                                        "label": "LINHA",
-                                        "filhos": [
-                                          {
-                                            "label": "(",
-                                            "filhos": []
-                                          },
-                                          {
-                                            "label": "SEQUENCIA",
-                                            "filhos": [
-                                              {
-                                                "label": "OPERANDO",
-                                                "filhos": [
-                                                  {
-                                                    "label": "LINHA",
-                                                    "filhos": [
-                                                      {
-                                                        "label": "(",
-                                                        "filhos": []
-                                                      },
-                                                      {
-                                                        "label": "SEQUENCIA",
-                                                        "filhos": [
-                                                          {
-                                                            "label": "OPERANDO",
-                                                            "filhos": [
-                                                              {
-                                                                "label": "identifier",
-                                                                "filhos": []
-                                                              },
-                                                              {
-                                                                "label": "OPERANDO_OPCIONAL",
-                                                                "filhos": [
-                                                                  {
-                                                                    "label": "epsilon",
-                                                                    "filhos": []
-                                                                  }
-                                                                ]
-                                                              }
-                                                            ]
-                                                          },
-                                                          {
-                                                            "label": "SEQUENCIA_PRIME",
-                                                            "filhos": [
-                                                              {
-                                                                "label": "OPERANDO",
-                                                                "filhos": [
-                                                                  {
-                                                                    "label": "numero_inteiro",
-                                                                    "filhos": []
-                                                                  },
-                                                                  {
-                                                                    "label": "OPERANDO_OPCIONAL",
-                                                                    "filhos": [
-                                                                      {
-                                                                        "label": "epsilon",
-                                                                        "filhos": []
-                                                                      }
-                                                                    ]
-                                                                  }
-                                                                ]
-                                                              },
-                                                              {
-                                                                "label": "SEQUENCIA_PRIME",
-                                                                "filhos": [
-                                                                  {
-                                                                    "label": "OPERADOR_FINAL",
-                                                                    "filhos": [
-                                                                      {
-                                                                        "label": "ARITH_OP",
-                                                                        "filhos": [
-                                                                          {
-                                                                            "label": "+",
-                                                                            "filhos": []
-                                                                          }
-                                                                        ]
-                                                                      }
-                                                                    ]
-                                                                  }
-                                                                ]
-                                                              }
-                                                            ]
-                                                          }
-                                                        ]
-                                                      },
-                                                      {
-                                                        "label": ")",
-                                                        "filhos": []
-                                                      }
-                                                    ]
-                                                  }
-                                                ]
-                                              },
-                                              {
-                                                "label": "SEQUENCIA_PRIME",
-                                                "filhos": [
-                                                  {
-                                                    "label": "OPERANDO",
-                                                    "filhos": [
-                                                      {
-                                                        "label": "identifier",
-                                                        "filhos": []
-                                                      },
-                                                      {
-                                                        "label": "OPERANDO_OPCIONAL",
-                                                        "filhos": [
-                                                          {
-                                                            "label": "epsilon",
-                                                            "filhos": []
-                                                          }
-                                                        ]
-                                                      }
-                                                    ]
-                                                  },
-                                                  {
-                                                    "label": "SEQUENCIA_PRIME",
-                                                    "filhos": [
-                                                      {
-                                                        "label": "epsilon",
-                                                        "filhos": []
-                                                      }
-                                                    ]
-                                                  }
-                                                ]
-                                              }
-                                            ]
-                                          },
-                                          {
-                                            "label": ")",
-                                            "filhos": []
-                                          }
-                                        ]
-                                      }
-                                    ]
-                                  },
-                                  {
-                                    "label": "SEQUENCIA_PRIME",
-                                    "filhos": [
-                                      {
-                                        "label": "epsilon",
-                                        "filhos": []
-                                      }
-                                    ]
-                                  }
-                                ]
-                              },
-                              {
-                                "label": ")",
-                                "filhos": []
-                              }
-                            ]
-                          }
-                        ]
-                      },
-                      {
-                        "label": "SEQUENCIA_PRIME",
-                        "filhos": [
-                          {
-                            "label": "OPERADOR_FINAL",
-                            "filhos": [
-                              {
-                                "label": "CONTROL_OP",
-                                "filhos": [
-                                  {
-                                    "label": "while",
-                                    "filhos": []
-                                  }
-                                ]
-                              }
-                            ]
-                          }
-                        ]
-                      }
-                    ]
-                  }
-                ]
-              },
-              {
-                "label": ")",
-                "filhos": []
-              }
-            ]
-          },
-          {
-            "label": "PROGRAM_PRIME",
-            "filhos": [
-              {
-                "label": "epsilon",
-                "filhos": []
-              }
-            ]
-          }
-        ]
-      },
-      "derivacao_passos": 41,
-      "sucesso": true
-    },
-    {
-      "numero_linha": 19,
-      "expressao_original": "( ( B 0 > ) ( ( ( B 1 - ) B ) ) WHILE )",
-      "tokens": [
-        "(",
-        "(",
-        "B",
-        "0",
-        ">",
+        "FIB_1",
+        "FIB_0",
         ")",
         "(",
-        "(",
-        "(",
-        "B",
-        "1",
-        "-",
+        "FIB_NEXT",
+        "FIB_1",
         ")",
-        "B",
-        ")",
-        ")",
-        "WHILE",
-        ")"
-      ],
-      "arvore": {
-        "label": "PROGRAM",
-        "filhos": [
-          {
-            "label": "LINHA",
-            "filhos": [
-              {
-                "label": "(",
-                "filhos": []
-              },
-              {
-                "label": "SEQUENCIA",
-                "filhos": [
-                  {
-                    "label": "OPERANDO",
-                    "filhos": [
-                      {
-                        "label": "LINHA",
-                        "filhos": [
-                          {
-                            "label": "(",
-                            "filhos": []
-                          },
-                          {
-                            "label": "SEQUENCIA",
-                            "filhos": [
-                              {
-                                "label": "OPERANDO",
-                                "filhos": [
-                                  {
-                                    "label": "identifier",
-                                    "filhos": []
-                                  },
-                                  {
-                                    "label": "OPERANDO_OPCIONAL",
-                                    "filhos": [
-                                      {
-                                        "label": "epsilon",
-                                        "filhos": []
-                                      }
-                                    ]
-                                  }
-                                ]
-                              },
-                              {
-                                "label": "SEQUENCIA_PRIME",
-                                "filhos": [
-                                  {
-                                    "label": "OPERANDO",
-                                    "filhos": [
-                                      {
-                                        "label": "numero_inteiro",
-                                        "filhos": []
-                                      },
-                                      {
-                                        "label": "OPERANDO_OPCIONAL",
-                                        "filhos": [
-                                          {
-                                            "label": "epsilon",
-                                            "filhos": []
-                                          }
-                                        ]
-                                      }
-                                    ]
-                                  },
-                                  {
-                                    "label": "SEQUENCIA_PRIME",
-                                    "filhos": [
-                                      {
-                                        "label": "OPERADOR_FINAL",
-                                        "filhos": [
-                                          {
-                                            "label": "COMP_OP",
-                                            "filhos": [
-                                              {
-                                                "label": ">",
-                                                "filhos": []
-                                              }
-                                            ]
-                                          }
-                                        ]
-                                      }
-                                    ]
-                                  }
-                                ]
-                              }
-                            ]
-                          },
-                          {
-                            "label": ")",
-                            "filhos": []
-                          }
-                        ]
-                      }
-                    ]
-                  },
-                  {
-                    "label": "SEQUENCIA_PRIME",
-                    "filhos": [
-                      {
-                        "label": "OPERANDO",
-                        "filhos": [
-                          {
-                            "label": "LINHA",
-                            "filhos": [
-                              {
-                                "label": "(",
-                                "filhos": []
-                              },
-                              {
-                                "label": "SEQUENCIA",
-                                "filhos": [
-                                  {
-                                    "label": "OPERANDO",
-                                    "filhos": [
-                                      {
-                                        "label": "LINHA",
-                                        "filhos": [
-                                          {
-                                            "label": "(",
-                                            "filhos": []
-                                          },
-                                          {
-                                            "label": "SEQUENCIA",
-                                            "filhos": [
-                                              {
-                                                "label": "OPERANDO",
-                                                "filhos": [
-                                                  {
-                                                    "label": "LINHA",
-                                                    "filhos": [
-                                                      {
-                                                        "label": "(",
-                                                        "filhos": []
-                                                      },
-                                                      {
-                                                        "label": "SEQUENCIA",
-                                                        "filhos": [
-                                                          {
-                                                            "label": "OPERANDO",
-                                                            "filhos": [
-                                                              {
-                                                                "label": "identifier",
-                                                                "filhos": []
-                                                              },
-                                                              {
-                                                                "label": "OPERANDO_OPCIONAL",
-                                                                "filhos": [
-                                                                  {
-                                                                    "label": "epsilon",
-                                                                    "filhos": []
-                                                                  }
-                                                                ]
-                                                              }
-                                                            ]
-                                                          },
-                                                          {
-                                                            "label": "SEQUENCIA_PRIME",
-                                                            "filhos": [
-                                                              {
-                                                                "label": "OPERANDO",
-                                                                "filhos": [
-                                                                  {
-                                                                    "label": "numero_inteiro",
-                                                                    "filhos": []
-                                                                  },
-                                                                  {
-                                                                    "label": "OPERANDO_OPCIONAL",
-                                                                    "filhos": [
-                                                                      {
-                                                                        "label": "epsilon",
-                                                                        "filhos": []
-                                                                      }
-                                                                    ]
-                                                                  }
-                                                                ]
-                                                              },
-                                                              {
-                                                                "label": "SEQUENCIA_PRIME",
-                                                                "filhos": [
-                                                                  {
-                                                                    "label": "OPERADOR_FINAL",
-                                                                    "filhos": [
-                                                                      {
-                                                                        "label": "ARITH_OP",
-                                                                        "filhos": [
-                                                                          {
-                                                                            "label": "-",
-                                                                            "filhos": []
-                                                                          }
-                                                                        ]
-                                                                      }
-                                                                    ]
-                                                                  }
-                                                                ]
-                                                              }
-                                                            ]
-                                                          }
-                                                        ]
-                                                      },
-                                                      {
-                                                        "label": ")",
-                                                        "filhos": []
-                                                      }
-                                                    ]
-                                                  }
-                                                ]
-                                              },
-                                              {
-                                                "label": "SEQUENCIA_PRIME",
-                                                "filhos": [
-                                                  {
-                                                    "label": "OPERANDO",
-                                                    "filhos": [
-                                                      {
-                                                        "label": "identifier",
-                                                        "filhos": []
-                                                      },
-                                                      {
-                                                        "label": "OPERANDO_OPCIONAL",
-                                                        "filhos": [
-                                                          {
-                                                            "label": "epsilon",
-                                                            "filhos": []
-                                                          }
-                                                        ]
-                                                      }
-                                                    ]
-                                                  },
-                                                  {
-                                                    "label": "SEQUENCIA_PRIME",
-                                                    "filhos": [
-                                                      {
-                                                        "label": "epsilon",
-                                                        "filhos": []
-                                                      }
-                                                    ]
-                                                  }
-                                                ]
-                                              }
-                                            ]
-                                          },
-                                          {
-                                            "label": ")",
-                                            "filhos": []
-                                          }
-                                        ]
-                                      }
-                                    ]
-                                  },
-                                  {
-                                    "label": "SEQUENCIA_PRIME",
-                                    "filhos": [
-                                      {
-                                        "label": "epsilon",
-                                        "filhos": []
-                                      }
-                                    ]
-                                  }
-                                ]
-                              },
-                              {
-                                "label": ")",
-                                "filhos": []
-                              }
-                            ]
-                          }
-                        ]
-                      },
-                      {
-                        "label": "SEQUENCIA_PRIME",
-                        "filhos": [
-                          {
-                            "label": "OPERADOR_FINAL",
-                            "filhos": [
-                              {
-                                "label": "CONTROL_OP",
-                                "filhos": [
-                                  {
-                                    "label": "while",
-                                    "filhos": []
-                                  }
-                                ]
-                              }
-                            ]
-                          }
-                        ]
-                      }
-                    ]
-                  }
-                ]
-              },
-              {
-                "label": ")",
-                "filhos": []
-              }
-            ]
-          },
-          {
-            "label": "PROGRAM_PRIME",
-            "filhos": [
-              {
-                "label": "epsilon",
-                "filhos": []
-              }
-            ]
-          }
-        ]
-      },
-      "derivacao_passos": 41,
-      "sucesso": true
-    },
-    {
-      "numero_linha": 20,
-      "expressao_original": "( ( 1 ) ( 10 ) ( 1 ) ( I 2 * ) FOR )",
-      "tokens": [
-        "(",
-        "(",
-        "1",
-        ")",
-        "(",
-        "10",
-        ")",
-        "(",
-        "1",
-        ")",
-        "(",
-        "I",
-        "2",
-        "*",
         ")",
         "FOR",
         ")"
@@ -2613,46 +517,14 @@
                     "label": "OPERANDO",
                     "filhos": [
                       {
-                        "label": "LINHA",
+                        "label": "identifier",
+                        "filhos": []
+                      },
+                      {
+                        "label": "OPERANDO_OPCIONAL",
                         "filhos": [
                           {
-                            "label": "(",
-                            "filhos": []
-                          },
-                          {
-                            "label": "SEQUENCIA",
-                            "filhos": [
-                              {
-                                "label": "OPERANDO",
-                                "filhos": [
-                                  {
-                                    "label": "numero_inteiro",
-                                    "filhos": []
-                                  },
-                                  {
-                                    "label": "OPERANDO_OPCIONAL",
-                                    "filhos": [
-                                      {
-                                        "label": "epsilon",
-                                        "filhos": []
-                                      }
-                                    ]
-                                  }
-                                ]
-                              },
-                              {
-                                "label": "SEQUENCIA_PRIME",
-                                "filhos": [
-                                  {
-                                    "label": "epsilon",
-                                    "filhos": []
-                                  }
-                                ]
-                              }
-                            ]
-                          },
-                          {
-                            "label": ")",
+                            "label": "epsilon",
                             "filhos": []
                           }
                         ]
@@ -2666,46 +538,14 @@
                         "label": "OPERANDO",
                         "filhos": [
                           {
-                            "label": "LINHA",
+                            "label": "identifier",
+                            "filhos": []
+                          },
+                          {
+                            "label": "OPERANDO_OPCIONAL",
                             "filhos": [
                               {
-                                "label": "(",
-                                "filhos": []
-                              },
-                              {
-                                "label": "SEQUENCIA",
-                                "filhos": [
-                                  {
-                                    "label": "OPERANDO",
-                                    "filhos": [
-                                      {
-                                        "label": "numero_inteiro",
-                                        "filhos": []
-                                      },
-                                      {
-                                        "label": "OPERANDO_OPCIONAL",
-                                        "filhos": [
-                                          {
-                                            "label": "epsilon",
-                                            "filhos": []
-                                          }
-                                        ]
-                                      }
-                                    ]
-                                  },
-                                  {
-                                    "label": "SEQUENCIA_PRIME",
-                                    "filhos": [
-                                      {
-                                        "label": "epsilon",
-                                        "filhos": []
-                                      }
-                                    ]
-                                  }
-                                ]
-                              },
-                              {
-                                "label": ")",
+                                "label": "epsilon",
                                 "filhos": []
                               }
                             ]
@@ -2719,46 +559,14 @@
                             "label": "OPERANDO",
                             "filhos": [
                               {
-                                "label": "LINHA",
+                                "label": "identifier",
+                                "filhos": []
+                              },
+                              {
+                                "label": "OPERANDO_OPCIONAL",
                                 "filhos": [
                                   {
-                                    "label": "(",
-                                    "filhos": []
-                                  },
-                                  {
-                                    "label": "SEQUENCIA",
-                                    "filhos": [
-                                      {
-                                        "label": "OPERANDO",
-                                        "filhos": [
-                                          {
-                                            "label": "numero_inteiro",
-                                            "filhos": []
-                                          },
-                                          {
-                                            "label": "OPERANDO_OPCIONAL",
-                                            "filhos": [
-                                              {
-                                                "label": "epsilon",
-                                                "filhos": []
-                                              }
-                                            ]
-                                          }
-                                        ]
-                                      },
-                                      {
-                                        "label": "SEQUENCIA_PRIME",
-                                        "filhos": [
-                                          {
-                                            "label": "epsilon",
-                                            "filhos": []
-                                          }
-                                        ]
-                                      }
-                                    ]
-                                  },
-                                  {
-                                    "label": ")",
+                                    "label": "epsilon",
                                     "filhos": []
                                   }
                                 ]
@@ -2785,14 +593,134 @@
                                             "label": "OPERANDO",
                                             "filhos": [
                                               {
-                                                "label": "identifier",
-                                                "filhos": []
-                                              },
-                                              {
-                                                "label": "OPERANDO_OPCIONAL",
+                                                "label": "LINHA",
                                                 "filhos": [
                                                   {
-                                                    "label": "epsilon",
+                                                    "label": "(",
+                                                    "filhos": []
+                                                  },
+                                                  {
+                                                    "label": "SEQUENCIA",
+                                                    "filhos": [
+                                                      {
+                                                        "label": "OPERANDO",
+                                                        "filhos": [
+                                                          {
+                                                            "label": "LINHA",
+                                                            "filhos": [
+                                                              {
+                                                                "label": "(",
+                                                                "filhos": []
+                                                              },
+                                                              {
+                                                                "label": "SEQUENCIA",
+                                                                "filhos": [
+                                                                  {
+                                                                    "label": "OPERANDO",
+                                                                    "filhos": [
+                                                                      {
+                                                                        "label": "identifier",
+                                                                        "filhos": []
+                                                                      },
+                                                                      {
+                                                                        "label": "OPERANDO_OPCIONAL",
+                                                                        "filhos": [
+                                                                          {
+                                                                            "label": "epsilon",
+                                                                            "filhos": []
+                                                                          }
+                                                                        ]
+                                                                      }
+                                                                    ]
+                                                                  },
+                                                                  {
+                                                                    "label": "SEQUENCIA_PRIME",
+                                                                    "filhos": [
+                                                                      {
+                                                                        "label": "OPERANDO",
+                                                                        "filhos": [
+                                                                          {
+                                                                            "label": "identifier",
+                                                                            "filhos": []
+                                                                          },
+                                                                          {
+                                                                            "label": "OPERANDO_OPCIONAL",
+                                                                            "filhos": [
+                                                                              {
+                                                                                "label": "epsilon",
+                                                                                "filhos": []
+                                                                              }
+                                                                            ]
+                                                                          }
+                                                                        ]
+                                                                      },
+                                                                      {
+                                                                        "label": "SEQUENCIA_PRIME",
+                                                                        "filhos": [
+                                                                          {
+                                                                            "label": "OPERADOR_FINAL",
+                                                                            "filhos": [
+                                                                              {
+                                                                                "label": "ARITH_OP",
+                                                                                "filhos": [
+                                                                                  {
+                                                                                    "label": "+",
+                                                                                    "filhos": []
+                                                                                  }
+                                                                                ]
+                                                                              }
+                                                                            ]
+                                                                          }
+                                                                        ]
+                                                                      }
+                                                                    ]
+                                                                  }
+                                                                ]
+                                                              },
+                                                              {
+                                                                "label": ")",
+                                                                "filhos": []
+                                                              }
+                                                            ]
+                                                          }
+                                                        ]
+                                                      },
+                                                      {
+                                                        "label": "SEQUENCIA_PRIME",
+                                                        "filhos": [
+                                                          {
+                                                            "label": "OPERANDO",
+                                                            "filhos": [
+                                                              {
+                                                                "label": "identifier",
+                                                                "filhos": []
+                                                              },
+                                                              {
+                                                                "label": "OPERANDO_OPCIONAL",
+                                                                "filhos": [
+                                                                  {
+                                                                    "label": "epsilon",
+                                                                    "filhos": []
+                                                                  }
+                                                                ]
+                                                              }
+                                                            ]
+                                                          },
+                                                          {
+                                                            "label": "SEQUENCIA_PRIME",
+                                                            "filhos": [
+                                                              {
+                                                                "label": "epsilon",
+                                                                "filhos": []
+                                                              }
+                                                            ]
+                                                          }
+                                                        ]
+                                                      }
+                                                    ]
+                                                  },
+                                                  {
+                                                    "label": ")",
                                                     "filhos": []
                                                   }
                                                 ]
@@ -2806,14 +734,69 @@
                                                 "label": "OPERANDO",
                                                 "filhos": [
                                                   {
-                                                    "label": "numero_inteiro",
-                                                    "filhos": []
-                                                  },
-                                                  {
-                                                    "label": "OPERANDO_OPCIONAL",
+                                                    "label": "LINHA",
                                                     "filhos": [
                                                       {
-                                                        "label": "epsilon",
+                                                        "label": "(",
+                                                        "filhos": []
+                                                      },
+                                                      {
+                                                        "label": "SEQUENCIA",
+                                                        "filhos": [
+                                                          {
+                                                            "label": "OPERANDO",
+                                                            "filhos": [
+                                                              {
+                                                                "label": "identifier",
+                                                                "filhos": []
+                                                              },
+                                                              {
+                                                                "label": "OPERANDO_OPCIONAL",
+                                                                "filhos": [
+                                                                  {
+                                                                    "label": "epsilon",
+                                                                    "filhos": []
+                                                                  }
+                                                                ]
+                                                              }
+                                                            ]
+                                                          },
+                                                          {
+                                                            "label": "SEQUENCIA_PRIME",
+                                                            "filhos": [
+                                                              {
+                                                                "label": "OPERANDO",
+                                                                "filhos": [
+                                                                  {
+                                                                    "label": "identifier",
+                                                                    "filhos": []
+                                                                  },
+                                                                  {
+                                                                    "label": "OPERANDO_OPCIONAL",
+                                                                    "filhos": [
+                                                                      {
+                                                                        "label": "epsilon",
+                                                                        "filhos": []
+                                                                      }
+                                                                    ]
+                                                                  }
+                                                                ]
+                                                              },
+                                                              {
+                                                                "label": "SEQUENCIA_PRIME",
+                                                                "filhos": [
+                                                                  {
+                                                                    "label": "epsilon",
+                                                                    "filhos": []
+                                                                  }
+                                                                ]
+                                                              }
+                                                            ]
+                                                          }
+                                                        ]
+                                                      },
+                                                      {
+                                                        "label": ")",
                                                         "filhos": []
                                                       }
                                                     ]
@@ -2824,16 +807,84 @@
                                                 "label": "SEQUENCIA_PRIME",
                                                 "filhos": [
                                                   {
-                                                    "label": "OPERADOR_FINAL",
+                                                    "label": "OPERANDO",
                                                     "filhos": [
                                                       {
-                                                        "label": "ARITH_OP",
+                                                        "label": "LINHA",
                                                         "filhos": [
                                                           {
-                                                            "label": "*",
+                                                            "label": "(",
+                                                            "filhos": []
+                                                          },
+                                                          {
+                                                            "label": "SEQUENCIA",
+                                                            "filhos": [
+                                                              {
+                                                                "label": "OPERANDO",
+                                                                "filhos": [
+                                                                  {
+                                                                    "label": "identifier",
+                                                                    "filhos": []
+                                                                  },
+                                                                  {
+                                                                    "label": "OPERANDO_OPCIONAL",
+                                                                    "filhos": [
+                                                                      {
+                                                                        "label": "epsilon",
+                                                                        "filhos": []
+                                                                      }
+                                                                    ]
+                                                                  }
+                                                                ]
+                                                              },
+                                                              {
+                                                                "label": "SEQUENCIA_PRIME",
+                                                                "filhos": [
+                                                                  {
+                                                                    "label": "OPERANDO",
+                                                                    "filhos": [
+                                                                      {
+                                                                        "label": "identifier",
+                                                                        "filhos": []
+                                                                      },
+                                                                      {
+                                                                        "label": "OPERANDO_OPCIONAL",
+                                                                        "filhos": [
+                                                                          {
+                                                                            "label": "epsilon",
+                                                                            "filhos": []
+                                                                          }
+                                                                        ]
+                                                                      }
+                                                                    ]
+                                                                  },
+                                                                  {
+                                                                    "label": "SEQUENCIA_PRIME",
+                                                                    "filhos": [
+                                                                      {
+                                                                        "label": "epsilon",
+                                                                        "filhos": []
+                                                                      }
+                                                                    ]
+                                                                  }
+                                                                ]
+                                                              }
+                                                            ]
+                                                          },
+                                                          {
+                                                            "label": ")",
                                                             "filhos": []
                                                           }
                                                         ]
+                                                      }
+                                                    ]
+                                                  },
+                                                  {
+                                                    "label": "SEQUENCIA_PRIME",
+                                                    "filhos": [
+                                                      {
+                                                        "label": "epsilon",
+                                                        "filhos": []
                                                       }
                                                     ]
                                                   }
@@ -2895,26 +946,16 @@
           }
         ]
       },
-      "derivacao_passos": 39,
+      "derivacao_passos": 58,
       "sucesso": true
     },
     {
-      "numero_linha": 21,
-      "expressao_original": "( ( X 15 > ) ( 100 ) ( 200 ) IFELSE )",
+      "numero_linha": 7,
+      "expressao_original": "( FIB_NEXT RESULT )",
       "tokens": [
         "(",
-        "(",
-        "X",
-        "15",
-        ">",
-        ")",
-        "(",
-        "100",
-        ")",
-        "(",
-        "200",
-        ")",
-        "IFELSE",
+        "FIB_NEXT",
+        "RESULT",
         ")"
       ],
       "arvore": {
@@ -2934,79 +975,14 @@
                     "label": "OPERANDO",
                     "filhos": [
                       {
-                        "label": "LINHA",
+                        "label": "identifier",
+                        "filhos": []
+                      },
+                      {
+                        "label": "OPERANDO_OPCIONAL",
                         "filhos": [
                           {
-                            "label": "(",
-                            "filhos": []
-                          },
-                          {
-                            "label": "SEQUENCIA",
-                            "filhos": [
-                              {
-                                "label": "OPERANDO",
-                                "filhos": [
-                                  {
-                                    "label": "identifier",
-                                    "filhos": []
-                                  },
-                                  {
-                                    "label": "OPERANDO_OPCIONAL",
-                                    "filhos": [
-                                      {
-                                        "label": "epsilon",
-                                        "filhos": []
-                                      }
-                                    ]
-                                  }
-                                ]
-                              },
-                              {
-                                "label": "SEQUENCIA_PRIME",
-                                "filhos": [
-                                  {
-                                    "label": "OPERANDO",
-                                    "filhos": [
-                                      {
-                                        "label": "numero_inteiro",
-                                        "filhos": []
-                                      },
-                                      {
-                                        "label": "OPERANDO_OPCIONAL",
-                                        "filhos": [
-                                          {
-                                            "label": "epsilon",
-                                            "filhos": []
-                                          }
-                                        ]
-                                      }
-                                    ]
-                                  },
-                                  {
-                                    "label": "SEQUENCIA_PRIME",
-                                    "filhos": [
-                                      {
-                                        "label": "OPERADOR_FINAL",
-                                        "filhos": [
-                                          {
-                                            "label": "COMP_OP",
-                                            "filhos": [
-                                              {
-                                                "label": ">",
-                                                "filhos": []
-                                              }
-                                            ]
-                                          }
-                                        ]
-                                      }
-                                    ]
-                                  }
-                                ]
-                              }
-                            ]
-                          },
-                          {
-                            "label": ")",
+                            "label": "epsilon",
                             "filhos": []
                           }
                         ]
@@ -3020,46 +996,14 @@
                         "label": "OPERANDO",
                         "filhos": [
                           {
-                            "label": "LINHA",
+                            "label": "identifier",
+                            "filhos": []
+                          },
+                          {
+                            "label": "OPERANDO_OPCIONAL",
                             "filhos": [
                               {
-                                "label": "(",
-                                "filhos": []
-                              },
-                              {
-                                "label": "SEQUENCIA",
-                                "filhos": [
-                                  {
-                                    "label": "OPERANDO",
-                                    "filhos": [
-                                      {
-                                        "label": "numero_inteiro",
-                                        "filhos": []
-                                      },
-                                      {
-                                        "label": "OPERANDO_OPCIONAL",
-                                        "filhos": [
-                                          {
-                                            "label": "epsilon",
-                                            "filhos": []
-                                          }
-                                        ]
-                                      }
-                                    ]
-                                  },
-                                  {
-                                    "label": "SEQUENCIA_PRIME",
-                                    "filhos": [
-                                      {
-                                        "label": "epsilon",
-                                        "filhos": []
-                                      }
-                                    ]
-                                  }
-                                ]
-                              },
-                              {
-                                "label": ")",
+                                "label": "epsilon",
                                 "filhos": []
                               }
                             ]
@@ -3070,73 +1014,8 @@
                         "label": "SEQUENCIA_PRIME",
                         "filhos": [
                           {
-                            "label": "OPERANDO",
-                            "filhos": [
-                              {
-                                "label": "LINHA",
-                                "filhos": [
-                                  {
-                                    "label": "(",
-                                    "filhos": []
-                                  },
-                                  {
-                                    "label": "SEQUENCIA",
-                                    "filhos": [
-                                      {
-                                        "label": "OPERANDO",
-                                        "filhos": [
-                                          {
-                                            "label": "numero_inteiro",
-                                            "filhos": []
-                                          },
-                                          {
-                                            "label": "OPERANDO_OPCIONAL",
-                                            "filhos": [
-                                              {
-                                                "label": "epsilon",
-                                                "filhos": []
-                                              }
-                                            ]
-                                          }
-                                        ]
-                                      },
-                                      {
-                                        "label": "SEQUENCIA_PRIME",
-                                        "filhos": [
-                                          {
-                                            "label": "epsilon",
-                                            "filhos": []
-                                          }
-                                        ]
-                                      }
-                                    ]
-                                  },
-                                  {
-                                    "label": ")",
-                                    "filhos": []
-                                  }
-                                ]
-                              }
-                            ]
-                          },
-                          {
-                            "label": "SEQUENCIA_PRIME",
-                            "filhos": [
-                              {
-                                "label": "OPERADOR_FINAL",
-                                "filhos": [
-                                  {
-                                    "label": "CONTROL_OP",
-                                    "filhos": [
-                                      {
-                                        "label": "ifelse",
-                                        "filhos": []
-                                      }
-                                    ]
-                                  }
-                                ]
-                              }
-                            ]
+                            "label": "epsilon",
+                            "filhos": []
                           }
                         ]
                       }
@@ -3161,867 +1040,13 @@
           }
         ]
       },
-      "derivacao_passos": 32,
-      "sucesso": true
-    },
-    {
-      "numero_linha": 22,
-      "expressao_original": "( ( ( A 10 > ) ( Y 5 > ) && ) ( ( ( A Y + ) 2.0 | ) ) ( ( A Y * ) ) IFELSE )",
-      "tokens": [
-        "(",
-        "(",
-        "(",
-        "A",
-        "10",
-        ">",
-        ")",
-        "(",
-        "Y",
-        "5",
-        ">",
-        ")",
-        "&&",
-        ")",
-        "(",
-        "(",
-        "(",
-        "A",
-        "Y",
-        "+",
-        ")",
-        "2.0",
-        "|",
-        ")",
-        ")",
-        "(",
-        "(",
-        "A",
-        "Y",
-        "*",
-        ")",
-        ")",
-        "IFELSE",
-        ")"
-      ],
-      "arvore": {
-        "label": "PROGRAM",
-        "filhos": [
-          {
-            "label": "LINHA",
-            "filhos": [
-              {
-                "label": "(",
-                "filhos": []
-              },
-              {
-                "label": "SEQUENCIA",
-                "filhos": [
-                  {
-                    "label": "OPERANDO",
-                    "filhos": [
-                      {
-                        "label": "LINHA",
-                        "filhos": [
-                          {
-                            "label": "(",
-                            "filhos": []
-                          },
-                          {
-                            "label": "SEQUENCIA",
-                            "filhos": [
-                              {
-                                "label": "OPERANDO",
-                                "filhos": [
-                                  {
-                                    "label": "LINHA",
-                                    "filhos": [
-                                      {
-                                        "label": "(",
-                                        "filhos": []
-                                      },
-                                      {
-                                        "label": "SEQUENCIA",
-                                        "filhos": [
-                                          {
-                                            "label": "OPERANDO",
-                                            "filhos": [
-                                              {
-                                                "label": "identifier",
-                                                "filhos": []
-                                              },
-                                              {
-                                                "label": "OPERANDO_OPCIONAL",
-                                                "filhos": [
-                                                  {
-                                                    "label": "epsilon",
-                                                    "filhos": []
-                                                  }
-                                                ]
-                                              }
-                                            ]
-                                          },
-                                          {
-                                            "label": "SEQUENCIA_PRIME",
-                                            "filhos": [
-                                              {
-                                                "label": "OPERANDO",
-                                                "filhos": [
-                                                  {
-                                                    "label": "numero_inteiro",
-                                                    "filhos": []
-                                                  },
-                                                  {
-                                                    "label": "OPERANDO_OPCIONAL",
-                                                    "filhos": [
-                                                      {
-                                                        "label": "epsilon",
-                                                        "filhos": []
-                                                      }
-                                                    ]
-                                                  }
-                                                ]
-                                              },
-                                              {
-                                                "label": "SEQUENCIA_PRIME",
-                                                "filhos": [
-                                                  {
-                                                    "label": "OPERADOR_FINAL",
-                                                    "filhos": [
-                                                      {
-                                                        "label": "COMP_OP",
-                                                        "filhos": [
-                                                          {
-                                                            "label": ">",
-                                                            "filhos": []
-                                                          }
-                                                        ]
-                                                      }
-                                                    ]
-                                                  }
-                                                ]
-                                              }
-                                            ]
-                                          }
-                                        ]
-                                      },
-                                      {
-                                        "label": ")",
-                                        "filhos": []
-                                      }
-                                    ]
-                                  }
-                                ]
-                              },
-                              {
-                                "label": "SEQUENCIA_PRIME",
-                                "filhos": [
-                                  {
-                                    "label": "OPERANDO",
-                                    "filhos": [
-                                      {
-                                        "label": "LINHA",
-                                        "filhos": [
-                                          {
-                                            "label": "(",
-                                            "filhos": []
-                                          },
-                                          {
-                                            "label": "SEQUENCIA",
-                                            "filhos": [
-                                              {
-                                                "label": "OPERANDO",
-                                                "filhos": [
-                                                  {
-                                                    "label": "identifier",
-                                                    "filhos": []
-                                                  },
-                                                  {
-                                                    "label": "OPERANDO_OPCIONAL",
-                                                    "filhos": [
-                                                      {
-                                                        "label": "epsilon",
-                                                        "filhos": []
-                                                      }
-                                                    ]
-                                                  }
-                                                ]
-                                              },
-                                              {
-                                                "label": "SEQUENCIA_PRIME",
-                                                "filhos": [
-                                                  {
-                                                    "label": "OPERANDO",
-                                                    "filhos": [
-                                                      {
-                                                        "label": "numero_inteiro",
-                                                        "filhos": []
-                                                      },
-                                                      {
-                                                        "label": "OPERANDO_OPCIONAL",
-                                                        "filhos": [
-                                                          {
-                                                            "label": "epsilon",
-                                                            "filhos": []
-                                                          }
-                                                        ]
-                                                      }
-                                                    ]
-                                                  },
-                                                  {
-                                                    "label": "SEQUENCIA_PRIME",
-                                                    "filhos": [
-                                                      {
-                                                        "label": "OPERADOR_FINAL",
-                                                        "filhos": [
-                                                          {
-                                                            "label": "COMP_OP",
-                                                            "filhos": [
-                                                              {
-                                                                "label": ">",
-                                                                "filhos": []
-                                                              }
-                                                            ]
-                                                          }
-                                                        ]
-                                                      }
-                                                    ]
-                                                  }
-                                                ]
-                                              }
-                                            ]
-                                          },
-                                          {
-                                            "label": ")",
-                                            "filhos": []
-                                          }
-                                        ]
-                                      }
-                                    ]
-                                  },
-                                  {
-                                    "label": "SEQUENCIA_PRIME",
-                                    "filhos": [
-                                      {
-                                        "label": "OPERADOR_FINAL",
-                                        "filhos": [
-                                          {
-                                            "label": "LOGIC_OP",
-                                            "filhos": [
-                                              {
-                                                "label": "&&",
-                                                "filhos": []
-                                              }
-                                            ]
-                                          }
-                                        ]
-                                      }
-                                    ]
-                                  }
-                                ]
-                              }
-                            ]
-                          },
-                          {
-                            "label": ")",
-                            "filhos": []
-                          }
-                        ]
-                      }
-                    ]
-                  },
-                  {
-                    "label": "SEQUENCIA_PRIME",
-                    "filhos": [
-                      {
-                        "label": "OPERANDO",
-                        "filhos": [
-                          {
-                            "label": "LINHA",
-                            "filhos": [
-                              {
-                                "label": "(",
-                                "filhos": []
-                              },
-                              {
-                                "label": "SEQUENCIA",
-                                "filhos": [
-                                  {
-                                    "label": "OPERANDO",
-                                    "filhos": [
-                                      {
-                                        "label": "LINHA",
-                                        "filhos": [
-                                          {
-                                            "label": "(",
-                                            "filhos": []
-                                          },
-                                          {
-                                            "label": "SEQUENCIA",
-                                            "filhos": [
-                                              {
-                                                "label": "OPERANDO",
-                                                "filhos": [
-                                                  {
-                                                    "label": "LINHA",
-                                                    "filhos": [
-                                                      {
-                                                        "label": "(",
-                                                        "filhos": []
-                                                      },
-                                                      {
-                                                        "label": "SEQUENCIA",
-                                                        "filhos": [
-                                                          {
-                                                            "label": "OPERANDO",
-                                                            "filhos": [
-                                                              {
-                                                                "label": "identifier",
-                                                                "filhos": []
-                                                              },
-                                                              {
-                                                                "label": "OPERANDO_OPCIONAL",
-                                                                "filhos": [
-                                                                  {
-                                                                    "label": "epsilon",
-                                                                    "filhos": []
-                                                                  }
-                                                                ]
-                                                              }
-                                                            ]
-                                                          },
-                                                          {
-                                                            "label": "SEQUENCIA_PRIME",
-                                                            "filhos": [
-                                                              {
-                                                                "label": "OPERANDO",
-                                                                "filhos": [
-                                                                  {
-                                                                    "label": "identifier",
-                                                                    "filhos": []
-                                                                  },
-                                                                  {
-                                                                    "label": "OPERANDO_OPCIONAL",
-                                                                    "filhos": [
-                                                                      {
-                                                                        "label": "epsilon",
-                                                                        "filhos": []
-                                                                      }
-                                                                    ]
-                                                                  }
-                                                                ]
-                                                              },
-                                                              {
-                                                                "label": "SEQUENCIA_PRIME",
-                                                                "filhos": [
-                                                                  {
-                                                                    "label": "OPERADOR_FINAL",
-                                                                    "filhos": [
-                                                                      {
-                                                                        "label": "ARITH_OP",
-                                                                        "filhos": [
-                                                                          {
-                                                                            "label": "+",
-                                                                            "filhos": []
-                                                                          }
-                                                                        ]
-                                                                      }
-                                                                    ]
-                                                                  }
-                                                                ]
-                                                              }
-                                                            ]
-                                                          }
-                                                        ]
-                                                      },
-                                                      {
-                                                        "label": ")",
-                                                        "filhos": []
-                                                      }
-                                                    ]
-                                                  }
-                                                ]
-                                              },
-                                              {
-                                                "label": "SEQUENCIA_PRIME",
-                                                "filhos": [
-                                                  {
-                                                    "label": "OPERANDO",
-                                                    "filhos": [
-                                                      {
-                                                        "label": "numero_real",
-                                                        "filhos": []
-                                                      },
-                                                      {
-                                                        "label": "OPERANDO_OPCIONAL",
-                                                        "filhos": [
-                                                          {
-                                                            "label": "epsilon",
-                                                            "filhos": []
-                                                          }
-                                                        ]
-                                                      }
-                                                    ]
-                                                  },
-                                                  {
-                                                    "label": "SEQUENCIA_PRIME",
-                                                    "filhos": [
-                                                      {
-                                                        "label": "OPERADOR_FINAL",
-                                                        "filhos": [
-                                                          {
-                                                            "label": "ARITH_OP",
-                                                            "filhos": [
-                                                              {
-                                                                "label": "|",
-                                                                "filhos": []
-                                                              }
-                                                            ]
-                                                          }
-                                                        ]
-                                                      }
-                                                    ]
-                                                  }
-                                                ]
-                                              }
-                                            ]
-                                          },
-                                          {
-                                            "label": ")",
-                                            "filhos": []
-                                          }
-                                        ]
-                                      }
-                                    ]
-                                  },
-                                  {
-                                    "label": "SEQUENCIA_PRIME",
-                                    "filhos": [
-                                      {
-                                        "label": "epsilon",
-                                        "filhos": []
-                                      }
-                                    ]
-                                  }
-                                ]
-                              },
-                              {
-                                "label": ")",
-                                "filhos": []
-                              }
-                            ]
-                          }
-                        ]
-                      },
-                      {
-                        "label": "SEQUENCIA_PRIME",
-                        "filhos": [
-                          {
-                            "label": "OPERANDO",
-                            "filhos": [
-                              {
-                                "label": "LINHA",
-                                "filhos": [
-                                  {
-                                    "label": "(",
-                                    "filhos": []
-                                  },
-                                  {
-                                    "label": "SEQUENCIA",
-                                    "filhos": [
-                                      {
-                                        "label": "OPERANDO",
-                                        "filhos": [
-                                          {
-                                            "label": "LINHA",
-                                            "filhos": [
-                                              {
-                                                "label": "(",
-                                                "filhos": []
-                                              },
-                                              {
-                                                "label": "SEQUENCIA",
-                                                "filhos": [
-                                                  {
-                                                    "label": "OPERANDO",
-                                                    "filhos": [
-                                                      {
-                                                        "label": "identifier",
-                                                        "filhos": []
-                                                      },
-                                                      {
-                                                        "label": "OPERANDO_OPCIONAL",
-                                                        "filhos": [
-                                                          {
-                                                            "label": "epsilon",
-                                                            "filhos": []
-                                                          }
-                                                        ]
-                                                      }
-                                                    ]
-                                                  },
-                                                  {
-                                                    "label": "SEQUENCIA_PRIME",
-                                                    "filhos": [
-                                                      {
-                                                        "label": "OPERANDO",
-                                                        "filhos": [
-                                                          {
-                                                            "label": "identifier",
-                                                            "filhos": []
-                                                          },
-                                                          {
-                                                            "label": "OPERANDO_OPCIONAL",
-                                                            "filhos": [
-                                                              {
-                                                                "label": "epsilon",
-                                                                "filhos": []
-                                                              }
-                                                            ]
-                                                          }
-                                                        ]
-                                                      },
-                                                      {
-                                                        "label": "SEQUENCIA_PRIME",
-                                                        "filhos": [
-                                                          {
-                                                            "label": "OPERADOR_FINAL",
-                                                            "filhos": [
-                                                              {
-                                                                "label": "ARITH_OP",
-                                                                "filhos": [
-                                                                  {
-                                                                    "label": "*",
-                                                                    "filhos": []
-                                                                  }
-                                                                ]
-                                                              }
-                                                            ]
-                                                          }
-                                                        ]
-                                                      }
-                                                    ]
-                                                  }
-                                                ]
-                                              },
-                                              {
-                                                "label": ")",
-                                                "filhos": []
-                                              }
-                                            ]
-                                          }
-                                        ]
-                                      },
-                                      {
-                                        "label": "SEQUENCIA_PRIME",
-                                        "filhos": [
-                                          {
-                                            "label": "epsilon",
-                                            "filhos": []
-                                          }
-                                        ]
-                                      }
-                                    ]
-                                  },
-                                  {
-                                    "label": ")",
-                                    "filhos": []
-                                  }
-                                ]
-                              }
-                            ]
-                          },
-                          {
-                            "label": "SEQUENCIA_PRIME",
-                            "filhos": [
-                              {
-                                "label": "OPERADOR_FINAL",
-                                "filhos": [
-                                  {
-                                    "label": "CONTROL_OP",
-                                    "filhos": [
-                                      {
-                                        "label": "ifelse",
-                                        "filhos": []
-                                      }
-                                    ]
-                                  }
-                                ]
-                              }
-                            ]
-                          }
-                        ]
-                      }
-                    ]
-                  }
-                ]
-              },
-              {
-                "label": ")",
-                "filhos": []
-              }
-            ]
-          },
-          {
-            "label": "PROGRAM_PRIME",
-            "filhos": [
-              {
-                "label": "epsilon",
-                "filhos": []
-              }
-            ]
-          }
-        ]
-      },
-      "derivacao_passos": 77,
-      "sucesso": true
-    },
-    {
-      "numero_linha": 23,
-      "expressao_original": "( ( 5 3 + ) ( 2 4 * ) * )",
-      "tokens": [
-        "(",
-        "(",
-        "5",
-        "3",
-        "+",
-        ")",
-        "(",
-        "2",
-        "4",
-        "*",
-        ")",
-        "*",
-        ")"
-      ],
-      "arvore": {
-        "label": "PROGRAM",
-        "filhos": [
-          {
-            "label": "LINHA",
-            "filhos": [
-              {
-                "label": "(",
-                "filhos": []
-              },
-              {
-                "label": "SEQUENCIA",
-                "filhos": [
-                  {
-                    "label": "OPERANDO",
-                    "filhos": [
-                      {
-                        "label": "LINHA",
-                        "filhos": [
-                          {
-                            "label": "(",
-                            "filhos": []
-                          },
-                          {
-                            "label": "SEQUENCIA",
-                            "filhos": [
-                              {
-                                "label": "OPERANDO",
-                                "filhos": [
-                                  {
-                                    "label": "numero_inteiro",
-                                    "filhos": []
-                                  },
-                                  {
-                                    "label": "OPERANDO_OPCIONAL",
-                                    "filhos": [
-                                      {
-                                        "label": "epsilon",
-                                        "filhos": []
-                                      }
-                                    ]
-                                  }
-                                ]
-                              },
-                              {
-                                "label": "SEQUENCIA_PRIME",
-                                "filhos": [
-                                  {
-                                    "label": "OPERANDO",
-                                    "filhos": [
-                                      {
-                                        "label": "numero_inteiro",
-                                        "filhos": []
-                                      },
-                                      {
-                                        "label": "OPERANDO_OPCIONAL",
-                                        "filhos": [
-                                          {
-                                            "label": "epsilon",
-                                            "filhos": []
-                                          }
-                                        ]
-                                      }
-                                    ]
-                                  },
-                                  {
-                                    "label": "SEQUENCIA_PRIME",
-                                    "filhos": [
-                                      {
-                                        "label": "OPERADOR_FINAL",
-                                        "filhos": [
-                                          {
-                                            "label": "ARITH_OP",
-                                            "filhos": [
-                                              {
-                                                "label": "+",
-                                                "filhos": []
-                                              }
-                                            ]
-                                          }
-                                        ]
-                                      }
-                                    ]
-                                  }
-                                ]
-                              }
-                            ]
-                          },
-                          {
-                            "label": ")",
-                            "filhos": []
-                          }
-                        ]
-                      }
-                    ]
-                  },
-                  {
-                    "label": "SEQUENCIA_PRIME",
-                    "filhos": [
-                      {
-                        "label": "OPERANDO",
-                        "filhos": [
-                          {
-                            "label": "LINHA",
-                            "filhos": [
-                              {
-                                "label": "(",
-                                "filhos": []
-                              },
-                              {
-                                "label": "SEQUENCIA",
-                                "filhos": [
-                                  {
-                                    "label": "OPERANDO",
-                                    "filhos": [
-                                      {
-                                        "label": "numero_inteiro",
-                                        "filhos": []
-                                      },
-                                      {
-                                        "label": "OPERANDO_OPCIONAL",
-                                        "filhos": [
-                                          {
-                                            "label": "epsilon",
-                                            "filhos": []
-                                          }
-                                        ]
-                                      }
-                                    ]
-                                  },
-                                  {
-                                    "label": "SEQUENCIA_PRIME",
-                                    "filhos": [
-                                      {
-                                        "label": "OPERANDO",
-                                        "filhos": [
-                                          {
-                                            "label": "numero_inteiro",
-                                            "filhos": []
-                                          },
-                                          {
-                                            "label": "OPERANDO_OPCIONAL",
-                                            "filhos": [
-                                              {
-                                                "label": "epsilon",
-                                                "filhos": []
-                                              }
-                                            ]
-                                          }
-                                        ]
-                                      },
-                                      {
-                                        "label": "SEQUENCIA_PRIME",
-                                        "filhos": [
-                                          {
-                                            "label": "OPERADOR_FINAL",
-                                            "filhos": [
-                                              {
-                                                "label": "ARITH_OP",
-                                                "filhos": [
-                                                  {
-                                                    "label": "*",
-                                                    "filhos": []
-                                                  }
-                                                ]
-                                              }
-                                            ]
-                                          }
-                                        ]
-                                      }
-                                    ]
-                                  }
-                                ]
-                              },
-                              {
-                                "label": ")",
-                                "filhos": []
-                              }
-                            ]
-                          }
-                        ]
-                      },
-                      {
-                        "label": "SEQUENCIA_PRIME",
-                        "filhos": [
-                          {
-                            "label": "OPERADOR_FINAL",
-                            "filhos": [
-                              {
-                                "label": "ARITH_OP",
-                                "filhos": [
-                                  {
-                                    "label": "*",
-                                    "filhos": []
-                                  }
-                                ]
-                              }
-                            ]
-                          }
-                        ]
-                      }
-                    ]
-                  }
-                ]
-              },
-              {
-                "label": ")",
-                "filhos": []
-              }
-            ]
-          },
-          {
-            "label": "PROGRAM_PRIME",
-            "filhos": [
-              {
-                "label": "epsilon",
-                "filhos": []
-              }
-            ]
-          }
-        ]
-      },
-      "derivacao_passos": 30,
+      "derivacao_passos": 10,
       "sucesso": true
     }
   ],
   "estatisticas": {
-    "total_linhas": 23,
-    "linhas_validas": 23,
+    "total_linhas": 7,
+    "linhas_validas": 7,
     "linhas_com_erro": 0
   }
 }

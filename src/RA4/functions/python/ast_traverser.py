@@ -91,6 +91,10 @@ class ASTTraverser:
         elif tipo_vertice == "LINHA":
             filhos = node.get("filhos", [])
 
+            # NOVO: Detectar sequências de expressões
+            if node.get("_is_sequence", False):
+                return self._handle_sequence(node)
+
             if not filhos:
                 return None
             if len(filhos) == 1:
@@ -346,6 +350,50 @@ class ASTTraverser:
         self.instructions.append(TACLabel(label_end, numero_linha))
 
         return None
+
+    #########################
+    # HANDLER DE SEQUÊNCIAS (NOVO)
+    #########################
+
+    def _handle_sequence(self, node: Dict[str, Any]) -> Optional[str]:
+        """Processa sequências de expressões (múltiplas sub-linhas sem operador).
+
+        Uma sequência é uma lista de expressões executadas sequencialmente,
+        onde o tipo retornado é o tipo da última expressão.
+
+        Exemplo:
+            (((FIB_0 FIB_1 +) FIB_NEXT) (FIB_1 FIB_0) (FIB_NEXT FIB_1))
+
+        Gera TAC:
+            t0 = FIB_0 + FIB_1
+            FIB_NEXT = t0
+            FIB_0 = FIB_1
+            FIB_1 = FIB_NEXT
+        """
+        filhos = node.get("filhos", [])
+        resultado_final = None
+
+        # Processar cada filho (sub-expressão) em ordem
+        for filho in filhos:
+            elementos = filho.get("elementos", [])
+
+            # Cada elemento da sequência é uma LINHA aninhada
+            for elem in elementos:
+                if isinstance(elem, dict):
+                    subtipo = elem.get("subtipo")
+
+                    if subtipo == "LINHA":
+                        # Processar sub-linha recursivamente
+                        # Criar um nó temporário para processar a sub-expressão
+                        sub_node = {
+                            "tipo_vertice": "LINHA",
+                            "numero_linha": node.get("numero_linha", 0),
+                            "filhos": [elem],
+                            "tipo_inferido": elem.get("ast", {}).get("tipo")
+                        }
+                        resultado_final = self._process_node(sub_node)
+
+        return resultado_final
 
     #########################
     # HANDLERS DE VARIÁVEIS
