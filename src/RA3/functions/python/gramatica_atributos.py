@@ -331,7 +331,7 @@ def definir_regras_controle() -> Dict[str, RegraSemantica]:
                        '           Γ ⊢ (cond true false IFELSE) : T'
     }
 
-    # WHILE: (condição corpo WHILE)
+    # WHILE: (condição bloco WHILE) - bloco pode ter múltiplas expressões
     regras['WHILE'] = {
         'categoria': 'controle',
         'operador': 'WHILE',
@@ -339,26 +339,26 @@ def definir_regras_controle() -> Dict[str, RegraSemantica]:
         'aridade': 2,
         'tipos_operandos': [
             tipos.TIPOS_TRUTHY,  # Condição
-            None                 # Corpo (qualquer tipo T)
+            None                 # Bloco (sequência de expressões)
         ],
-        'tipo_resultado': lambda cond, corpo: corpo['tipo'],
+        'tipo_resultado': lambda cond, bloco: bloco['tipo'] if bloco and 'tipo' in bloco else None,
         'restricoes': [
             'Condição deve ser convertível para boolean',
-            'Corpo pode ter qualquer tipo',
-            'Resultado tem tipo da última expressão do corpo'
+            'Bloco pode conter múltiplas expressões',
+            'Resultado tem tipo da última expressão do bloco'
         ],
-        'acao_semantica': lambda cond, corpo, tabela: {
-            'tipo': corpo['tipo'],
+        'acao_semantica': lambda cond, bloco, tabela: {
+            'tipo': bloco['tipo'] if bloco and 'tipo' in bloco else None,
             'valor': None,
-            'operandos': [cond, corpo]
+            'operandos': [cond, bloco]
         },
-        'descricao': 'Laço WHILE - retorna tipo do corpo',
-        'regra_formal': 'Γ ⊢ cond : Tcond    truthy(Tcond)    Γ ⊢ corpo : T\n'
+        'descricao': 'Laço WHILE - aceita bloco com múltiplas expressões',
+        'regra_formal': 'Γ ⊢ cond : Tcond    truthy(Tcond)    Γ ⊢ bloco : T\n'
                        '──────────────────────────────────────────────────\n'
-                       '         Γ ⊢ (cond corpo WHILE) : T'
+                       '         Γ ⊢ (cond bloco WHILE) : T'
     }
 
-    # FOR: (inicio fim passo corpo FOR)
+    # FOR: (inicio fim passo bloco FOR) - bloco pode ter múltiplas expressões
     regras['FOR'] = {
         'categoria': 'controle',
         'operador': 'FOR',
@@ -368,26 +368,26 @@ def definir_regras_controle() -> Dict[str, RegraSemantica]:
             {tipos.TYPE_INT},  # Inicio
             {tipos.TYPE_INT},  # Fim
             {tipos.TYPE_INT},  # Passo
-            None               # Corpo
+            None               # Bloco (sequência de expressões)
         ],
-        'tipo_resultado': lambda init, end, step, corpo: corpo['tipo'],
+        'tipo_resultado': lambda init, end, step, bloco: bloco['tipo'] if bloco and 'tipo' in bloco else None,
         'restricoes': [
             'Inicio, fim e passo DEVEM ser inteiros',
-            'Corpo pode ter qualquer tipo',
-            'Resultado tem tipo da última expressão do corpo'
+            'Bloco pode conter múltiplas expressões',
+            'Resultado tem tipo da última expressão do bloco'
         ],
-        'acao_semantica': lambda init, end, step, corpo, tabela: {
-            'tipo': corpo['tipo'],
+        'acao_semantica': lambda init, end, step, bloco, tabela: {
+            'tipo': bloco['tipo'] if bloco and 'tipo' in bloco else None,
             'valor': None,
-            'operandos': [init, end, step, corpo],
+            'operandos': [init, end, step, bloco],
             'validacao': init['tipo'] == tipos.TYPE_INT and
                         end['tipo'] == tipos.TYPE_INT and
                         step['tipo'] == tipos.TYPE_INT
         },
-        'descricao': 'Laço FOR - contador inteiro, retorna tipo do corpo',
-        'regra_formal': 'Γ ⊢ init : int    Γ ⊢ end : int    Γ ⊢ step : int    Γ ⊢ corpo : T\n'
+        'descricao': 'Laço FOR - contador inteiro, aceita bloco com múltiplas expressões',
+        'regra_formal': 'Γ ⊢ init : int    Γ ⊢ end : int    Γ ⊢ step : int    Γ ⊢ bloco : T\n'
                        '────────────────────────────────────────────────────────────────\n'
-                       '              Γ ⊢ (init end step corpo FOR) : T'
+                       '              Γ ⊢ (init end step bloco FOR) : T'
     }
 
     return regras

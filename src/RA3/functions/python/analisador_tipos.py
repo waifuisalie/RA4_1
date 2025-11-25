@@ -301,6 +301,37 @@ def avaliar_seq_tipo(seq: Dict[str, Any], linha_atual: int, tabela: TabelaSimbol
     raise ErroSemantico(linha_atual, 'Estrutura da linha não reconhecida ou suporte incompleto', str(seq))
 
 
+def _is_implicit_block(seq: Dict[str, Any]) -> bool:
+    """Verifica se uma sequência representa um bloco implícito (múltiplas expressões sem operador)."""
+    elementos = seq.get('elementos', [])
+    operador = seq.get('operador')
+
+    # Um bloco implícito é uma sequência sem operador que contém múltiplas linhas/expressões
+    if operador is None or operador == "":
+        return len([e for e in elementos if e.get('subtipo') == 'LINHA']) > 1
+    return False
+
+
+def _process_implicit_block(seq: Dict[str, Any], linha_atual: int, tabela: TabelaSimbolos, historico_tipos: Dict[int, str]) -> Optional[str]:
+    """Processa um bloco implícito (sequência de expressões)."""
+    elementos = seq.get('elementos', [])
+    tipo_final = None
+
+    for elemento in elementos:
+        if elemento.get('subtipo') == 'LINHA':
+            # Processar cada subexpressão como uma linha independente
+            sub_seq = elemento.get('ast', {})
+            if sub_seq:
+                try:
+                    tipo_sub, _, _ = avaliar_seq_tipo(sub_seq, linha_atual, tabela)
+                    tipo_final = tipo_sub  # O tipo do bloco é o da última expressão
+                except ErroSemantico:
+                    # Se uma subexpressão falhar, continuar processando
+                    pass
+
+    return tipo_final
+
+
 def analisarSemantica(arvoreSintatica: Dict[str, Any], gramatica: Optional[Dict] = None, tabela: Optional[TabelaSimbolos] = None) -> Dict[str, Any]:
     if gramatica is None:
         gramatica = definirGramaticaAtributos()
@@ -323,6 +354,23 @@ def analisarSemantica(arvoreSintatica: Dict[str, Any], gramatica: Optional[Dict]
             seq = filhos[0]  # Primeiro filho contém elementos e operador
             elementos = seq.get('elementos', [])
             operador = seq.get('operador', None)
+
+            # Verificar se é um bloco implícito (múltiplas expressões no corpo de controle)
+            if _is_implicit_block(seq):
+                tipo_res = _process_implicit_block(seq, num, tabela, historico_tipos)
+                historico_tipos[num] = tipo_res
+                nova_linha = dict(linha_ast)
+                nova_linha['tipo'] = tipo_res
+                arvore_anotada['linhas'].append(nova_linha)
+                continue
+
+            # Verificar operações de controle ANTES de avaliar operandos
+            if operador in ['RES', 'IFELSE', 'WHILE', 'FOR']:
+                historico_tipos[num] = None  # Tipo será determinado pelo analisador_memoria_controle
+                nova_linha = dict(linha_ast)
+                nova_linha['tipo'] = None
+                arvore_anotada['linhas'].append(nova_linha)
+                continue
 
             # Verificar se é armazenamento (valor variável) ANTES de avaliar operandos
             if (operador is None or operador == "") and len(elementos) == 2:
@@ -442,14 +490,7 @@ def analisarSemantica(arvoreSintatica: Dict[str, Any], gramatica: Optional[Dict]
                         arvore_anotada['linhas'].append(nova_linha)
                         continue
 
-                # Não rejeitar - deixar para o analisador de memória/controle
-                if operador in ['RES', 'IFELSE', 'WHILE', 'FOR']:
-                    historico_tipos[num] = None  # Tipo será determinado pelo analisador_memoria_controle
-                    nova_linha = dict(linha_ast)
-                    nova_linha['tipo'] = None
-                    arvore_anotada['linhas'].append(nova_linha)
-                    continue
-
+                # Operações não reconhecidas pelo analisador de tipos
                 historico_tipos[num] = None
                 nova_linha = dict(linha_ast)
                 nova_linha['tipo'] = None

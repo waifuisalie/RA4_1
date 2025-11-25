@@ -149,10 +149,10 @@ class Analisador_Lexico:
             
         # Lista de palavras-chave
         palavras_chave = {
-            "RES": Tipo_de_Token.RES,
-            "WHILE": Tipo_de_Token.WHILE,
-            "FOR": Tipo_de_Token.FOR,
-            "IFELSE": Tipo_de_Token.IFELSE
+            "res": Tipo_de_Token.RES,
+            "while": Tipo_de_Token.WHILE,
+            "for": Tipo_de_Token.FOR,
+            "ifelse": Tipo_de_Token.IFELSE
         }
         
         # Verifica se é uma palavra-chave
