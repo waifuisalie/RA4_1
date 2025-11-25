@@ -19,14 +19,17 @@
 
 ## Visão Geral do Projeto
 
-Este projeto implementa um compilador completo com 4 fases principais:
+Este projeto implementa um compilador completo com **9 fases** integradas:
 
 1. **RA1 - Análise Léxica:** Tokenização de expressões
 2. **RA2 - Análise Sintática:** Parser LL(1) com geração de AST
 3. **RA3 - Análise Semântica:** Verificação de tipos, memória e controle de fluxo
-4. **RA4 - Geração e Otimização de TAC:** Código intermediário otimizado (Three Address Code)
+4. **RA4 - Geração de TAC:** Código intermediário (Three Address Code)
+5. **RA4 - Otimização de TAC:** 4 técnicas de otimização (folding, propagation, dead code, jumps)
+6. **RA4 - Compilação Assembly:** Conversão de Assembly AVR (.s) para firmware (.hex)
+7. **RA4 - Upload para Arduino:** Upload automático do firmware para Arduino Uno via AVRDUDE
 
-O compilador processa uma linguagem baseada em notação prefixada com parênteses e gera código TAC otimizado, preparando-se para futura geração de código Assembly AVR para Arduino Uno.
+O compilador processa uma linguagem baseada em **notação prefixada com parênteses** (estilo LISP) e gera código executável otimizado para **Arduino Uno (ATmega328P)**
 
 ---
 
@@ -53,13 +56,15 @@ RA4_1/
 │   │       ├── analisador_semantico.py
 │   │       ├── analisador_tipos.py
 │   │       └── gerador_arvore_atribuida.py
-│   └── RA4/                   # Geração e Otimização de TAC
+│   └── RA4/                   # Geração e Otimização de TAC + Upload Arduino
+│       ├── upload_arduino.py           # Script standalone de upload
 │       └── functions/python/
 │           ├── gerador_tac.py          # Geração de TAC
 │           ├── otimizador_tac.py       # Otimizações
 │           ├── ast_traverser.py        # Travessia pós-ordem da AST
 │           ├── tac_manager.py          # Gerenciamento de temps e labels
-│           └── tac_instructions.py     # Definição de instruções TAC
+│           ├── tac_instructions.py     # Definição de instruções TAC
+│           └── arduino_tools.py        # Ferramentas AVR (compilação/upload)
 ├── inputs/RA4/                # Arquivos de teste
 │   ├── fatorial.txt
 │   ├── fibonacci.txt
@@ -70,12 +75,15 @@ RA4_1/
 │   ├── RA2/
 │   ├── RA3/relatorios/
 │   └── RA4/
-│       ├── tac_instructions.json
-│       ├── tac_output.md
-│       ├── tac_otimizado.json
-│       ├── tac_otimizado.md
+│       ├── tac_instructions.json       # TAC original (JSON)
+│       ├── tac_output.md               # TAC original (markdown)
+│       ├── tac_otimizado.json          # TAC otimizado (JSON)
+│       ├── tac_otimizado.md            # TAC otimizado (markdown)
+│       ├── *.s                         # Arquivos Assembly AVR (gerados manualmente)
+│       ├── *.elf                       # Executáveis linkados
+│       ├── *.hex                       # Firmware para Arduino
 │       └── relatorios/
-│           └── otimizacao_tac.md
+│           └── otimizacao_tac.md       # Relatório de otimizações
 └── docs/                      # Documentação técnica
 ```
 
@@ -83,13 +91,62 @@ RA4_1/
 
 ## Requisitos do Sistema
 
-### Dependências
+### Dependências Obrigatórias
 
 - **Python 3.8+**
 - **Bibliotecas Python:**
   - `json` (built-in)
   - `pathlib` (built-in)
   - `typing` (built-in)
+  - `pytest>=9.0.0` (testes)
+  - `pytest-cov>=4.0.0` (cobertura de testes)
+  - `pyserial>=3.5` (comunicação serial com Arduino)
+
+**Instalação das dependências:**
+```bash
+pip install -r requirements.txt
+```
+
+### Dependências Opcionais (Upload para Arduino)
+
+Para compilar e fazer upload de código Assembly para Arduino Uno, você precisa do **AVR Toolchain**:
+
+#### Windows (MSYS2 - Recomendado)
+
+1. **Instalar MSYS2:** https://www.msys2.org/
+2. **Instalar ferramentas AVR:**
+   ```bash
+   pacman -S mingw-w64-x86_64-avr-gcc
+   pacman -S mingw-w64-x86_64-avr-binutils
+   pacman -S mingw-w64-x86_64-avr-libc
+   pacman -S mingw-w64-x86_64-avrdude
+   ```
+
+**Alternativas para Windows:**
+- Arduino IDE (inclui AVR tools em `C:\Program Files (x86)\Arduino\hardware\tools\avr\bin`)
+- WinAVR (instalação standalone)
+- AVR Toolchain oficial
+
+#### Linux
+
+```bash
+# Ubuntu/Debian
+sudo apt-get install gcc-avr binutils-avr avr-libc avrdude
+
+# Fedora
+sudo dnf install avr-gcc avr-binutils avr-libc avrdude
+
+# Arch Linux
+sudo pacman -S avr-gcc avr-binutils avr-libc avrdude
+```
+
+**Verificação da instalação:**
+```bash
+avr-gcc --version
+avrdude -v
+```
+
+**Nota:** O compilador detecta automaticamente as ferramentas AVR instaladas no sistema (MSYS2, Arduino IDE, WinAVR) e adiciona os caminhos ao PATH temporariamente durante a execução
 
 
 ---
@@ -111,46 +168,72 @@ python compilador.py inputs/RA4/fatorial.txt
 
 ### 2. Fluxo de Execução
 
-Quando você executa o comando acima, o compilador realiza:
+Quando você executa o comando acima, o compilador realiza **9 fases sequenciais**:
 
 #### **Fase 1: Tokenização (RA1)**
-- Entrada: Arquivo `.txt` com expressões
-- Saída: `outputs/RA1/tokens/tokens_gerados.txt`
-- Ação: Converte código fonte em tokens
+- **Entrada:** Arquivo `.txt` com expressões em notação prefixada
+- **Saída:** `outputs/RA1/tokens/tokens_gerados.txt`
+- **Ação:** Converte código fonte em tokens (números, operadores, parênteses, comandos especiais)
 
-#### **Fase 2: Análise Sintática (RA2)**
-- Entrada: Tokens do RA1
-- Saída: `outputs/RA2/arvore_sintatica.json`
-- Ações:
-  - Valida tokens
-  - Constrói gramática LL(1)
-  - Gera tabela de parsing
-  - Cria AST (Árvore Sintática Abstrata)
+#### **Fases 2-5: Análise Sintática (RA2)**
 
-#### **Fase 3: Análise Semântica (RA3)**
-- Entrada: AST do RA2
-- Saída: `outputs/RA3/arvore_atribuida.json` + Relatórios
-- Ações:
-  - Verifica tipos (type checking)
-  - Valida acesso à memória
-  - Verifica estruturas de controle
+**Fase 2: Validação de Tokens**
+- Verifica se tokens são válidos para a gramática
+
+**Fase 3: Construção da Gramática LL(1)**
+- Constrói gramática formal
+- Calcula conjuntos FIRST e FOLLOW
+- Gera tabela de parsing LL(1)
+
+**Fase 4: Parsing**
+- Parser descendente preditivo
+- Gera derivações sintáticas
+
+**Fase 5: Geração de AST**
+- **Saída:** `outputs/RA2/arvore_sintatica.json`
+- Cria Árvore Sintática Abstrata (AST)
+
+#### **Fase 6: Análise Semântica (RA3)**
+- **Entrada:** AST do RA2
+- **Saída:** `outputs/RA3/arvore_atribuida.json` + Relatórios
+- **Ações:**
+  - Verifica tipos (type checking): `int`, `real`, `bool`
+  - Valida acesso à memória (comando `MEM`)
+  - Verifica estruturas de controle (`WHILE`, `IF`)
   - Gera árvore atribuída com anotações de tipo
 
-Relatórios gerados:
+**Relatórios gerados:**
 - `arvore_atribuida.md` - Árvore com tipos inferidos
 - `julgamento_tipos.md` - Decisões de tipagem
-- `erros_sematicos.md` - Erros encontrados
+- `erros_sematicos.md` - Erros encontrados (se houver)
 - `tabela_simbolos.md` - Variáveis e tipos
 
-#### **Fase 4: Geração de TAC (RA4)**
-- Entrada: Árvore atribuída do RA3
-- Saída: `outputs/RA4/tac_instructions.json` e `tac_output.md`
-- Ação: Gera código TAC (Three Address Code)
+#### **Fase 7: Geração de TAC (RA4)**
+- **Entrada:** Árvore atribuída do RA3
+- **Saída:** `outputs/RA4/tac_instructions.json`, `tac_output.md`
+- **Ação:** Gera código TAC (Three Address Code)
+  - Instruções de 3 endereços
+  - Variáveis temporárias (t0, t1, t2, ...)
+  - Labels para controle de fluxo (L0, L1, L2, ...)
 
-#### **Fase 5: Otimização de TAC (RA4)**
-- Entrada: TAC gerado
-- Saída: `outputs/RA4/tac_otimizado.json`, `tac_otimizado.md` e relatórios
-- Ação: Aplica 4 técnicas de otimização
+#### **Fase 8: Otimização de TAC (RA4)**
+- **Entrada:** TAC gerado (Fase 7)
+- **Saída:** `outputs/RA4/tac_otimizado.json`, `tac_otimizado.md`, `relatorios/otimizacao_tac.md`
+- **Ações:** Aplica 4 técnicas de otimização em múltiplas passadas:
+  1. Constant Folding (avaliação de constantes)
+  2. Constant Propagation (substituição de constantes)
+  3. Dead Code Elimination (remoção de código morto)
+  4. Jump Elimination (eliminação de saltos redundantes)
+
+#### **Fase 9: Compilação e Upload para Arduino (RA4)**
+- **Entrada:** Arquivo Assembly AVR (`.s`) - **deve existir em `outputs/RA4/`**
+- **Saída:** `outputs/RA4/*.hex` (firmware compilado)
+- **Ações:**
+  1. Verifica disponibilidade do AVR Toolchain (avr-gcc, avrdude)
+  2. Compila `.s` → `.elf` → `.hex` usando `avr-gcc` e `avr-objcopy`
+  3. Detecta porta serial do Arduino automaticamente
+  4. Faz upload do firmware usando `avrdude`
+
 
 ### 3. Saída do Compilador
 
@@ -174,23 +257,49 @@ Validação dos tokens: SUCESSO
     [OK] Análise semântica concluída com sucesso sem nenhum erro
 
 --- RA4: GERAÇÃO DE TAC ---
-    [OK] 17 instruções TAC geradas
+    [OK] 16 instruções TAC geradas
     [OK] Arquivos salvos em: outputs\RA4
 
 --- RA4: OTIMIZAÇÃO DE TAC ---
     [OK] TAC otimizado com sucesso
-    [OK] Instruções originais: 17
+    [OK] Instruções originais: 16
     [OK] Instruções otimizadas: 12
-    [OK] Redução: 29.4%
+    [OK] Redução: 25.0%
+    [OK] Arquivos salvos em: outputs\RA4
+      - tac_otimizado.json
+      - tac_otimizado.md
+      - relatorios/otimizacao_tac.md
+
+--- RA4: COMPILAÇÃO E UPLOAD PARA ARDUINO ---
+  [OK] Assembly compilado: fatorial.hex
+  [OK] Upload concluido: COM3
+  [OK] Programa carregado no Arduino
 ```
 
 ### 4. Arquivos de Saída Importantes
 
+**Tokens e AST:**
+1. **Tokens:** `outputs/RA1/tokens/tokens_gerados.txt`
+2. **AST Sintática:** `outputs/RA2/arvore_sintatica.json`
+3. **Árvore Atribuída:** `outputs/RA3/arvore_atribuida.json`
 
-1. **TAC Original:** `outputs/RA4/tac_output.md`
-2. **TAC Otimizado:** `outputs/RA4/tac_otimizado.md`
-3. **Relatório de Otimização:** `outputs/RA4/relatorios/otimizacao_tac.md`
-4. **Árvore Atribuída:** `outputs/RA3/relatorios/arvore_atribuida.md`
+**TAC (Código Intermediário):**
+4. **TAC Original (JSON):** `outputs/RA4/tac_instructions.json`
+5. **TAC Original (Markdown):** `outputs/RA4/tac_output.md`
+6. **TAC Otimizado (JSON):** `outputs/RA4/tac_otimizado.json`
+7. **TAC Otimizado (Markdown):** `outputs/RA4/tac_otimizado.md`
+8. **Relatório de Otimização:** `outputs/RA4/relatorios/otimizacao_tac.md`
+
+**Relatórios Semânticos:**
+9. **Árvore Atribuída (Markdown):** `outputs/RA3/relatorios/arvore_atribuida.md`
+10. **Julgamento de Tipos:** `outputs/RA3/relatorios/julgamento_tipos.md`
+11. **Tabela de Símbolos:** `outputs/RA3/relatorios/tabela_simbolos.md`
+12. **Erros Semânticos:** `outputs/RA3/relatorios/erros_sematicos.md` (se houver)
+
+**Assembly e Firmware (se AVR Toolchain instalado):**
+13. **Assembly AVR:** `outputs/RA4/<nome>.s` (criado manualmente)
+14. **Executável Linkado:** `outputs/RA4/<nome>.elf`
+15. **Firmware Arduino:** `outputs/RA4/<nome>.hex`
 
 ---
 

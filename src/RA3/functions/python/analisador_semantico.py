@@ -9,7 +9,7 @@
 # Nome do grupo no Canvas: RA3_1
 
 from typing import Dict, Any, Optional, List, Tuple
-from src.RA3.functions.python.analisador_tipos import analisarSemantica as analisarSemanticaTipos, ErroSemantico
+from src.RA3.functions.python.analisador_tipos import analisarSemantica, ErroSemantico
 from src.RA3.functions.python.analisador_memoria_controle import analisarSemanticaMemoria, analisarSemanticaControle
 from src.RA3.functions.python.tabela_simbolos import TabelaSimbolos
 
@@ -467,7 +467,7 @@ def analisarSemanticaDaJsonRA2(json_data: Dict[str, Any]) -> Optional[List[str]]
         arvore_convertida = _converter_arvore_json_para_analisador(json_data)
         
         # Executar análise de tipos
-        resultado_tipos = analisarSemanticaTipos(arvore_convertida)
+        resultado_tipos = analisarSemantica(arvore_convertida)
         erros_formatados = []
         
         if isinstance(resultado_tipos, dict):

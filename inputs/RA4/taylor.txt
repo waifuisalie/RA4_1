@@ -1,35 +1,5 @@
-# Definir valor de x = 1.0 (em radianos)
 (1.0 X_VAL)
-
-# Definir termo1 = 1.0
 (1.0 TERM1)
+(1 COUNTER)
 
-# Calcular x^2
-((X_VAL X_VAL *) TEMP1)
-
-# Calcular x^2 / 2
-((TEMP1 2.0 |) TEMP2)
-
-# termo2 = - (x^2 / 2)
-((0 TEMP2 -) TERM2)
-
-# Calcular x^4
-((TEMP1 TEMP1 *) TEMP4)
-
-# termo3 = x^4 / 24
-((TEMP4 24.0 |) TERM3)
-
-# Calcular x^6
-((TEMP4 TEMP1 *) TEMP7)
-
-# Calcular x^6 / 720
-((TEMP7 720.0 |) TEMP8)
-
-# termo4 = - (x^6 / 720)
-((0 TEMP8 -) TERM4)
-
-# Calcular resultado final: termo1 + termo2 + termo3 + termo4
-((((TERM1 TERM2 +) TERM3 +) TERM4 +) RESULT_COS)
-
-# Armazenar resultado final
-(RESULT_COS FINAL_COS)
+((COUNTER 1 <=) ((X_VAL X_VAL *) X_SQUARE) (2.0 FACT_2) ((X_SQUARE FACT_2 |) TEMP2) ((0.0 TEMP2 -) TERM2) ((X_SQUARE X_SQUARE *) X_FOURTH) ((4.0 3.0 *) TEMP4A) ((TEMP4A 2.0 *) TEMP4B) ((TEMP4B 1.0 *) FACT_4) ((X_FOURTH FACT_4 |) TERM3) ((X_FOURTH X_SQUARE *) X_SIXTH) ((6.0 5.0 *) TEMP6A) ((TEMP6A 4.0 *) TEMP6B) ((TEMP6B 3.0 *) TEMP6C) ((TEMP6C 2.0 *) TEMP6D) ((TEMP6D 1.0 *) FACT_6) ((X_SIXTH FACT_6 |) TEMP8) ((0.0 TEMP8 -) TERM4) ((TERM1 TERM2 +) SUM12) ((SUM12 TERM3 +) SUM123) ((SUM123 TERM4 +) RESULT_COS) (RESULT_COS FINAL_COS) ((COUNTER 1 +) COUNTER) WHILE)

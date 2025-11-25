@@ -6,7 +6,7 @@
 # Nome Completo 3 - Rafael Olivare Piveta
 # Nome Completo 4 - Stefan Benjamim Seixas Lourenço Rodrigues
 #
-# Nome do grupo no Canvas: RA3_1
+# Nome do grupo no Canvas: RA4_1
 
 import sys
 import os
@@ -37,6 +37,12 @@ from src.RA3.functions.python.analisador_semantico import analisarSemanticaDaJso
 from src.RA3.functions.python.gerador_arvore_atribuida import executar_geracao_arvore_atribuida
 from src.RA4.functions.python.gerador_tac import gerarTAC
 from src.RA4.functions.python.otimizador_tac import TACOptimizer
+from src.RA4.functions.python.arduino_tools import (
+    check_avr_toolchain,
+    detect_arduino_port,
+    compile_assembly,
+    upload_hex
+)
 
 BASE_DIR    = Path(__file__).resolve().parent        # raiz do repo
 OUT_TOKENS  = BASE_DIR / "outputs" / "RA1" / "tokens" / "tokens_gerados.txt"
@@ -439,6 +445,80 @@ def executar_ra4_otimizacao_tac(arquivo_entrada):
         traceback.print_exc()
 
 
+def executar_ra4_compilacao_upload(arquivo_entrada):
+    """Fase 9: Compilação de Assembly e Upload para Arduino (RA4)
+
+    Compila arquivo Assembly (.s) para HEX e faz upload para Arduino Uno.
+    O arquivo Assembly deve ter o mesmo nome base do arquivo de entrada.
+
+    Args:
+        arquivo_entrada: Caminho do arquivo de entrada original
+    """
+    print("\n--- RA4: COMPILAÇÃO E UPLOAD PARA ARDUINO ---")
+
+    try:
+        # Extrai nome base do arquivo (ex: "fatorial.txt" → "fatorial")
+        base_name = Path(arquivo_entrada).stem
+        output_dir = BASE_DIR / "outputs" / "RA4"
+        asm_path = output_dir / f"{base_name}.s"
+
+        # Verifica se arquivo Assembly existe
+        if not asm_path.exists():
+            print(f"  [AVISO] Arquivo Assembly não encontrado: {asm_path.name}")
+            print("  A geração de Assembly (Student 3) ainda não foi implementada.")
+            print("  Pulando fase de compilação e upload.")
+            return
+
+        print(f"  [OK] Arquivo Assembly encontrado: {asm_path.name}")
+
+        # Verifica ferramentas AVR
+        print("  Verificando ferramentas AVR...")
+        success, missing = check_avr_toolchain()
+        if not success:
+            print(f"  [AVISO] Ferramentas AVR não encontradas: {', '.join(missing)}")
+            print("  Instale MSYS2 e execute: pacman -S mingw-w64-x86_64-avr-gcc mingw-w64-x86_64-avr-binutils mingw-w64-x86_64-avrdude")
+            print("  Pulando fase de compilação e upload.")
+            return
+
+        print("  [OK] Ferramentas AVR disponíveis")
+
+        # Compila Assembly para HEX
+        print(f"  Compilando {asm_path.name}...")
+        success, elf_path, hex_path = compile_assembly(str(asm_path))
+        if not success:
+            print("  [ERRO] Falha na compilação")
+            return
+
+        print(f"  [OK] Compilação concluída")
+        print(f"      - ELF: {Path(elf_path).name}")
+        print(f"      - HEX: {Path(hex_path).name}")
+
+        # Detecta porta do Arduino
+        print("  Detectando porta do Arduino...")
+        port = detect_arduino_port()
+        if port is None:
+            print("  [AVISO] Arduino não detectado")
+            print("  Conecte o Arduino Uno via USB e tente novamente.")
+            print("  Arquivos HEX gerados podem ser carregados manualmente.")
+            return
+
+        print(f"  [OK] Arduino detectado na porta: {port}")
+
+        # Faz upload
+        print(f"  Fazendo upload para {port}...")
+        success = upload_hex(hex_path, port)
+        if not success:
+            print("  [ERRO] Falha no upload")
+            return
+
+        print("  [OK] Upload concluído com sucesso!")
+        print(f"  [OK] Programa {base_name} carregado no Arduino")
+
+    except Exception as e:
+        print(f"  [ERRO] Erro na compilação/upload: {e}")
+        traceback.print_exc()
+
+
 def main():
     """Função principal do compilador
 
@@ -452,6 +532,7 @@ def main():
     7. Executa análise semântica (RA3)
     8. Gera TAC (RA4)
     9. Otimiza TAC (RA4)
+    10. Compila Assembly e faz upload (RA4)
 
     Raises:
         SystemExit: Se houver erro crítico em qualquer fase
@@ -506,6 +587,9 @@ def main():
 
     # Fase 8: Otimização de TAC (RA4)
     executar_ra4_otimizacao_tac(arquivo_entrada)
+
+    # Fase 9: Compilação de Assembly e Upload para Arduino (RA4)
+    executar_ra4_compilacao_upload(arquivo_entrada)
 
 
 if __name__ == "__main__":
