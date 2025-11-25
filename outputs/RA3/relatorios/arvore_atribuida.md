@@ -1,11 +1,11 @@
 # Árvore Sintática Abstrata Atribuída
 
-**Gerado em:** 2025-11-25 14:16:58
+**Gerado em:** 2025-11-25 01:39:53
 
 ## Resumo
 
-- **Total de linhas:** 4
-- **Linhas com tipo definido:** 4
+- **Total de linhas:** 15
+- **Linhas com tipo definido:** 15
 - **Linhas sem tipo definido:** 0
 
 ## Detalhes da Árvore Atribuída por Linha
@@ -19,7 +19,7 @@
 ```
 LINHA : real
   LINHA
-    LINHA : real [1.0] {numero_real}
+    LINHA : real [0.5] {numero_real}
     LINHA : real [X_VAL] {variavel}
 ```
 
@@ -38,15 +38,17 @@ LINHA : real
 
 ### Linha 3
 
-**Tipo Resultado:** `int`
+**Tipo Resultado:** `real`
 
 **Estrutura da Árvore:**
 
 ```
-LINHA : int
+LINHA : real
   LINHA
-    LINHA : int [1] {numero_inteiro}
-    LINHA : int [COUNTER] {variavel}
+    ARITH_OP (*) : real
+      LINHA : real [X_VAL] {variavel}
+      LINHA : real [X_VAL] {variavel}
+    LINHA : real [TEMP1] {variavel}
 ```
 
 ### Linha 4
@@ -57,116 +59,184 @@ LINHA : int
 
 ```
 LINHA : real
-  CONTROL_OP (WHILE)
-    COMP_OP (<=) : boolean
-      LINHA : int [COUNTER] {variavel}
-      LINHA : int [1] {numero_inteiro}
-    LINHA
-      ARITH_OP (*) : real
-        LINHA : real [X_VAL] {variavel}
-        LINHA : real [X_VAL] {variavel}
-      LINHA [X_SQUARE] {variavel}
-    LINHA
+  LINHA
+    ARITH_OP (|) : real
+      LINHA : real [TEMP1] {variavel}
       LINHA : real [2.0] {numero_real}
-      LINHA [FACT_2] {variavel}
-    LINHA
-      ARITH_OP (|)
-        LINHA [X_SQUARE] {variavel}
-        LINHA [FACT_2] {variavel}
-      LINHA [TEMP2] {variavel}
-    LINHA
-      ARITH_OP (-) : real
-        LINHA : real [0.0] {numero_real}
-        LINHA [TEMP2] {variavel}
-      LINHA [TERM2] {variavel}
-    LINHA
-      ARITH_OP (*)
-        LINHA [X_SQUARE] {variavel}
-        LINHA [X_SQUARE] {variavel}
-      LINHA [X_FOURTH] {variavel}
-    LINHA
+    LINHA : real [TEMP2] {variavel}
+```
+
+### Linha 5
+
+**Tipo Resultado:** `real`
+
+**Estrutura da Árvore:**
+
+```
+LINHA : real
+  LINHA
+    ARITH_OP (-) : real
+      LINHA : int [0] {numero_inteiro}
+      LINHA : real [TEMP2] {variavel}
+    LINHA : real [TERM2] {variavel}
+```
+
+### Linha 6
+
+**Tipo Resultado:** `real`
+
+**Estrutura da Árvore:**
+
+```
+LINHA : real
+  LINHA
+    ARITH_OP (*) : real
+      LINHA : real [X_VAL] {variavel}
+      LINHA : real [X_VAL] {variavel}
+    LINHA : real [TEMP3] {variavel}
+```
+
+### Linha 7
+
+**Tipo Resultado:** `real`
+
+**Estrutura da Árvore:**
+
+```
+LINHA : real
+  LINHA
+    ARITH_OP (*) : real
       ARITH_OP (*) : real
-        LINHA : real [4.0] {numero_real}
-        LINHA : real [3.0] {numero_real}
-      LINHA [TEMP4A] {variavel}
-    LINHA
+        LINHA : real [TEMP3] {variavel}
+        LINHA : real [X_VAL] {variavel}
+        LINHA : real [X_VAL] {variavel}
+    LINHA : real [TEMP4] {variavel}
+```
+
+### Linha 8
+
+**Tipo Resultado:** `real`
+
+**Estrutura da Árvore:**
+
+```
+LINHA : real
+  LINHA
+    ARITH_OP (|) : real
+      LINHA : real [TEMP4] {variavel}
+      LINHA : real [24.0] {numero_real}
+    LINHA : real [TERM3] {variavel}
+```
+
+### Linha 9
+
+**Tipo Resultado:** `real`
+
+**Estrutura da Árvore:**
+
+```
+LINHA : real
+  LINHA
+    ARITH_OP (*) : real
+      LINHA : real [X_VAL] {variavel}
+      LINHA : real [X_VAL] {variavel}
+    LINHA : real [TEMP5] {variavel}
+```
+
+### Linha 10
+
+**Tipo Resultado:** `real`
+
+**Estrutura da Árvore:**
+
+```
+LINHA : real
+  LINHA
+    ARITH_OP (*) : real
       ARITH_OP (*) : real
-        LINHA [TEMP4A] {variavel}
-        LINHA : real [2.0] {numero_real}
-      LINHA [TEMP4B] {variavel}
-    LINHA
+        LINHA : real [TEMP5] {variavel}
+        LINHA : real [X_VAL] {variavel}
+        LINHA : real [X_VAL] {variavel}
+    LINHA : real [TEMP6] {variavel}
+```
+
+### Linha 11
+
+**Tipo Resultado:** `real`
+
+**Estrutura da Árvore:**
+
+```
+LINHA : real
+  LINHA
+    ARITH_OP (*) : real
       ARITH_OP (*) : real
-        LINHA [TEMP4B] {variavel}
-        LINHA : real [1.0] {numero_real}
-      LINHA [FACT_4] {variavel}
-    LINHA
-      ARITH_OP (|)
-        LINHA [X_FOURTH] {variavel}
-        LINHA [FACT_4] {variavel}
-      LINHA [TERM3] {variavel}
-    LINHA
-      ARITH_OP (*)
-        LINHA [X_FOURTH] {variavel}
-        LINHA [X_SQUARE] {variavel}
-      LINHA [X_SIXTH] {variavel}
-    LINHA
-      ARITH_OP (*) : real
-        LINHA : real [6.0] {numero_real}
-        LINHA : real [5.0] {numero_real}
-      LINHA [TEMP6A] {variavel}
-    LINHA
-      ARITH_OP (*) : real
-        LINHA [TEMP6A] {variavel}
-        LINHA : real [4.0] {numero_real}
-      LINHA [TEMP6B] {variavel}
-    LINHA
-      ARITH_OP (*) : real
-        LINHA [TEMP6B] {variavel}
-        LINHA : real [3.0] {numero_real}
-      LINHA [TEMP6C] {variavel}
-    LINHA
-      ARITH_OP (*) : real
-        LINHA [TEMP6C] {variavel}
-        LINHA : real [2.0] {numero_real}
-      LINHA [TEMP6D] {variavel}
-    LINHA
-      ARITH_OP (*) : real
-        LINHA [TEMP6D] {variavel}
-        LINHA : real [1.0] {numero_real}
-      LINHA [FACT_6] {variavel}
-    LINHA
-      ARITH_OP (|)
-        LINHA [X_SIXTH] {variavel}
-        LINHA [FACT_6] {variavel}
-      LINHA [TEMP8] {variavel}
-    LINHA
-      ARITH_OP (-) : real
-        LINHA : real [0.0] {numero_real}
-        LINHA [TEMP8] {variavel}
-      LINHA [TERM4] {variavel}
-    LINHA
+        LINHA : real [TEMP6] {variavel}
+        LINHA : real [X_VAL] {variavel}
+        LINHA : real [X_VAL] {variavel}
+    LINHA : real [TEMP7] {variavel}
+```
+
+### Linha 12
+
+**Tipo Resultado:** `real`
+
+**Estrutura da Árvore:**
+
+```
+LINHA : real
+  LINHA
+    ARITH_OP (|) : real
+      LINHA : real [TEMP7] {variavel}
+      LINHA : real [720.0] {numero_real}
+    LINHA : real [TEMP8] {variavel}
+```
+
+### Linha 13
+
+**Tipo Resultado:** `real`
+
+**Estrutura da Árvore:**
+
+```
+LINHA : real
+  LINHA
+    ARITH_OP (-) : real
+      LINHA : int [0] {numero_inteiro}
+      LINHA : real [TEMP8] {variavel}
+    LINHA : real [TERM4] {variavel}
+```
+
+### Linha 14
+
+**Tipo Resultado:** `real`
+
+**Estrutura da Árvore:**
+
+```
+LINHA : real
+  LINHA
+    ARITH_OP (+) : real
       ARITH_OP (+) : real
-        LINHA : real [TERM1] {variavel}
-        LINHA [TERM2] {variavel}
-      LINHA [SUM12] {variavel}
-    LINHA
-      ARITH_OP (+)
-        LINHA [SUM12] {variavel}
-        LINHA [TERM3] {variavel}
-      LINHA [SUM123] {variavel}
-    LINHA
-      ARITH_OP (+)
-        LINHA [SUM123] {variavel}
-        LINHA [TERM4] {variavel}
-      LINHA [RESULT_COS] {variavel}
-    LINHA
-      LINHA [RESULT_COS] {variavel}
-      LINHA [FINAL_COS] {variavel}
-    LINHA
-      ARITH_OP (+) : int
-        LINHA : int [COUNTER] {variavel}
-        LINHA : int [1] {numero_inteiro}
-      LINHA : int [COUNTER] {variavel}
+        ARITH_OP (+) : real
+          LINHA : real [TERM1] {variavel}
+          LINHA : real [TERM2] {variavel}
+        LINHA : real [TERM3] {variavel}
+      LINHA : real [TERM3] {variavel}
+    LINHA : real [RESULT_COS] {variavel}
+```
+
+### Linha 15
+
+**Tipo Resultado:** `real`
+
+**Estrutura da Árvore:**
+
+```
+LINHA : real
+  LINHA
+    LINHA : real [RESULT_COS] {variavel}
+    LINHA : real [FINAL_COS] {variavel}
 ```
 
 

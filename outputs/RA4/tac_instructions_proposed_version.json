@@ -1,0 +1,327 @@
+{
+    "metadata": {
+      "generated_at": "2025-11-25T01:23:34.284706",
+      "generator": "RA4 TAC Generator (Manually Corrected)",
+      "version": "1.0-corrected",
+      "source_file": "/home/waifuisalie/Documents/RA4_Compiladores/RA4_1/outputs/RA3/arvore_atribuida.json"
+    },
+    "statistics": {
+      "total_instructions": 40,
+      "temp_count": 26,
+      "label_count": 0,
+      "result_history_size": 15
+    },
+    "instructions": [
+      {
+        "type": "assignment",
+        "dest": "t0",
+        "source": 50,
+        "line": 1,
+        "data_type": "real"
+      },
+      {
+        "type": "copy",
+        "dest": "X_VAL",
+        "source": "t0",
+        "line": 1,
+        "data_type": "real"
+      },
+      {
+        "type": "assignment",
+        "dest": "t1",
+        "source": 100,
+        "line": 2,
+        "data_type": "real"
+      },
+      {
+        "type": "copy",
+        "dest": "TERM1",
+        "source": "t1",
+        "line": 2,
+        "data_type": "real"
+      },
+      {
+        "type": "binary_op",
+        "result": "t2",
+        "operand1": "X_VAL",
+        "operator": "*",
+        "operand2": "X_VAL",
+        "line": 3,
+        "data_type": "real"
+      },
+      {
+        "type": "copy",
+        "dest": "TEMP1",
+        "source": "t2",
+        "line": 3,
+        "data_type": "real"
+      },
+      {
+        "type": "assignment",
+        "dest": "t3",
+        "source": 200,
+        "line": 4,
+        "data_type": "real"
+      },
+      {
+        "type": "binary_op",
+        "result": "t4",
+        "operand1": "TEMP1",
+        "operator": "|",
+        "operand2": "t3",
+        "line": 4,
+        "data_type": "real"
+      },
+      {
+        "type": "copy",
+        "dest": "TEMP2",
+        "source": "t4",
+        "line": 4,
+        "data_type": "real"
+      },
+      {
+        "type": "assignment",
+        "dest": "t5",
+        "source": 0,
+        "line": 5,
+        "data_type": "int"
+      },
+      {
+        "type": "binary_op",
+        "result": "t6",
+        "operand1": "t5",
+        "operator": "-",
+        "operand2": "TEMP2",
+        "line": 5,
+        "data_type": "real"
+      },
+      {
+        "type": "copy",
+        "dest": "TERM2",
+        "source": "t6",
+        "line": 5,
+        "data_type": "real"
+      },
+      {
+        "type": "binary_op",
+        "result": "t7",
+        "operand1": "X_VAL",
+        "operator": "*",
+        "operand2": "X_VAL",
+        "line": 6,
+        "data_type": "real"
+      },
+      {
+        "type": "copy",
+        "dest": "TEMP3",
+        "source": "t7",
+        "line": 6,
+        "data_type": "real"
+      },
+      {
+        "type": "binary_op",
+        "result": "t8",
+        "operand1": "TEMP3",
+        "operator": "*",
+        "operand2": "X_VAL",
+        "line": 7,
+        "data_type": "real"
+      },
+      {
+        "type": "binary_op",
+        "result": "t9",
+        "operand1": "t8",
+        "operator": "*",
+        "operand2": "X_VAL",
+        "line": 7,
+        "data_type": "real"
+      },
+      {
+        "type": "copy",
+        "dest": "TEMP4",
+        "source": "t9",
+        "line": 7,
+        "data_type": "real",
+        "comment": "FIXED: Was 't10 = t9 * TEMP4' (use-before-def bug)"
+      },
+      {
+        "type": "assignment",
+        "dest": "t10",
+        "source": 2400,
+        "line": 8,
+        "data_type": "real"
+      },
+      {
+        "type": "binary_op",
+        "result": "t11",
+        "operand1": "TEMP4",
+        "operator": "|",
+        "operand2": "t10",
+        "line": 8,
+        "data_type": "real"
+      },
+      {
+        "type": "copy",
+        "dest": "TERM3",
+        "source": "t11",
+        "line": 8,
+        "data_type": "real"
+      },
+      {
+        "type": "binary_op",
+        "result": "t12",
+        "operand1": "X_VAL",
+        "operator": "*",
+        "operand2": "X_VAL",
+        "line": 9,
+        "data_type": "real"
+      },
+      {
+        "type": "copy",
+        "dest": "TEMP5",
+        "source": "t12",
+        "line": 9,
+        "data_type": "real"
+      },
+      {
+        "type": "binary_op",
+        "result": "t13",
+        "operand1": "TEMP5",
+        "operator": "*",
+        "operand2": "X_VAL",
+        "line": 10,
+        "data_type": "real"
+      },
+      {
+        "type": "binary_op",
+        "result": "t14",
+        "operand1": "t13",
+        "operator": "*",
+        "operand2": "X_VAL",
+        "line": 10,
+        "data_type": "real"
+      },
+      {
+        "type": "copy",
+        "dest": "TEMP6",
+        "source": "t14",
+        "line": 10,
+        "data_type": "real",
+        "comment": "FIXED: Was 't16 = t15 * TEMP4', now just copy"
+      },
+      {
+        "type": "binary_op",
+        "result": "t15",
+        "operand1": "TEMP6",
+        "operator": "*",
+        "operand2": "X_VAL",
+        "line": 11,
+        "data_type": "real"
+      },
+      {
+        "type": "binary_op",
+        "result": "t16",
+        "operand1": "t15",
+        "operator": "*",
+        "operand2": "X_VAL",
+        "line": 11,
+        "data_type": "real"
+      },
+      {
+        "type": "copy",
+        "dest": "TEMP7",
+        "source": "t16",
+        "line": 11,
+        "data_type": "real",
+        "comment": "FIXED: Was 't19 = t18 * TEMP4', now just copy"
+      },
+      {
+        "type": "assignment",
+        "dest": "t17",
+        "source": 72000,
+        "line": 12,
+        "data_type": "real"
+      },
+      {
+        "type": "binary_op",
+        "result": "t18",
+        "operand1": "TEMP7",
+        "operator": "|",
+        "operand2": "t17",
+        "line": 12,
+        "data_type": "real"
+      },
+      {
+        "type": "copy",
+        "dest": "TEMP8",
+        "source": "t18",
+        "line": 12,
+        "data_type": "real"
+      },
+      {
+        "type": "assignment",
+        "dest": "t19",
+        "source": 0,
+        "line": 13,
+        "data_type": "int"
+      },
+      {
+        "type": "binary_op",
+        "result": "t20",
+        "operand1": "t19",
+        "operator": "-",
+        "operand2": "TEMP8",
+        "line": 13,
+        "data_type": "real"
+      },
+      {
+        "type": "copy",
+        "dest": "TERM4",
+        "source": "t20",
+        "line": 13,
+        "data_type": "real"
+      },
+      {
+        "type": "binary_op",
+        "result": "t21",
+        "operand1": "TERM1",
+        "operator": "+",
+        "operand2": "TERM2",
+        "line": 14,
+        "data_type": "real"
+      },
+      {
+        "type": "binary_op",
+        "result": "t22",
+        "operand1": "t21",
+        "operator": "+",
+        "operand2": "TERM3",
+        "line": 14,
+        "data_type": "real"
+      },
+      {
+        "type": "binary_op",
+        "result": "t23",
+        "operand1": "t22",
+        "operator": "+",
+        "operand2": "TERM4",
+        "line": 14,
+        "data_type": "real",
+        "comment": "FIXED: Was 't26 = t25 + TERM3' (adding TERM3 twice)"
+      },
+      {
+        "type": "copy",
+        "dest": "RESULT_COS",
+        "source": "t23",
+        "line": 14,
+        "data_type": "real"
+      },
+      {
+        "type": "copy",
+        "dest": "FINAL_COS",
+        "source": "RESULT_COS",
+        "line": 15,
+        "data_type": "real"
+      }
+    ]
+  }
