@@ -4,8 +4,7 @@
 
 **Disciplina:** Compiladores
 **Fase:** RA4 - Geração de Código Intermediário e Otimização
-**Instituição:** [Nome da Instituição]
-**Semestre:** [Semestre/Ano]
+**Instituição:** PUCPR
 
 ### Integrantes do Grupo (Ordem Alfabética)
 
@@ -92,12 +91,6 @@ RA4_1/
   - `pathlib` (built-in)
   - `typing` (built-in)
 
-### Ferramentas Opcionais (Fase 5 - Futuro)
-
-Para geração de código Assembly AVR (planejado para próximas iterações):
-- `avr-gcc` - Compilador AVR
-- `avrdude` - Ferramenta de upload para Arduino
-- `Arduino IDE` ou `PlatformIO`
 
 ---
 
@@ -193,7 +186,6 @@ Validação dos tokens: SUCESSO
 
 ### 4. Arquivos de Saída Importantes
 
-Após a execução, consulte:
 
 1. **TAC Original:** `outputs/RA4/tac_output.md`
 2. **TAC Otimizado:** `outputs/RA4/tac_otimizado.md`
@@ -381,12 +373,6 @@ Para cada arquivo de teste, o otimizador gera relatório detalhado:
 - **Redução:** 29.4%
 - **Iterações:** 2
 
-## Aplicações por Técnica
-
-- Constant Folding: 5 aplicações
-- Constant Propagation: 3 aplicações
-- Dead Code Elimination: 2 aplicações
-- Jump Elimination: 0 aplicações
 ```
 
 ### Convergência Multi-Pass
@@ -419,34 +405,6 @@ O compilador segue convenções padrão AVR para ATmega328P (Arduino Uno), prepa
 | **R26-R27 (X)** | Ponteiro | Acesso à memória (load/store) |
 | **R28-R29 (Y)** | Frame Pointer | Acesso a variáveis locais no stack frame |
 | **R30-R31 (Z)** | Stack Pointer | Ponteiro de pilha (gerenciado pelo sistema) |
-
-### Justificativa das Escolhas
-
-1. **R16-R23 (Temporários):**
-   - AVR permite operações imediatas (`ldi`, `cpi`) apenas em R16-R31
-   - Permite alocação de até 8 temporários simultaneamente
-   - Ideal para variáveis TAC temporárias (`t0`, `t1`, `t2`, ...)
-
-2. **R24-R25 (Parâmetros):**
-   - Convenção padrão AVR-GCC
-   - Suporta valores de 16-bit (inteiros grandes)
-   - Compatível com funções de biblioteca
-
-3. **R26-R27 (X), R28-R29 (Y):**
-   - Registradores de ponteiro permitem endereçamento indireto
-   - Necessários para acesso a arrays e variáveis em memória
-   - X usado para acesso geral, Y para stack frame
-
-4. **R30-R31 (Z):**
-   - Ponteiro de pilha gerenciado automaticamente
-   - Usado por `call`, `ret`, `push`, `pop`
-
-### Estratégia de Alocação
-
-1. **Fase 1:** Alocar variáveis frequentes em R16-R23
-2. **Fase 2:** Usar R24-R25 para cálculos intermediários
-3. **Fase 3:** Spill para memória quando registradores esgotarem
-4. **Fase 4:** Liberar registradores após último uso
 
 ### Exemplo de Uso
 
@@ -500,197 +458,170 @@ Quando os 8 registradores temporários (R16-R23) são insuficientes:
 
 ---
 
-## Instruções para Compilar e Carregar Código no Arduino
-
-### Compilação de Assembly para Arduino
-
-**Nota:** A geração de código Assembly AVR está planejada para uma fase futura. As instruções abaixo são um guia para quando essa funcionalidade for implementada.
-
-### 1. Compilar Assembly para Binário
-
-```bash
-# Compilar .s para .elf
-avr-gcc -mmcu=atmega328p -o program.elf program.s
-
-# Gerar arquivo .hex para upload
-avr-objcopy -O ihex -R .eeprom program.elf program.hex
-```
-
-### 2. Verificar Tamanho do Programa
-
-```bash
-avr-size --format=avr --mcu=atmega328p program.elf
-```
-
-**Exemplo de saída:**
-```
-Program:    1024 bytes (3.1% Full)
-Data:        128 bytes (6.3% Full)
-```
-
-### 3. Upload para Arduino Uno
-
-**Usando avrdude (Linux/Mac):**
-```bash
-avrdude -c arduino -p atmega328p -P /dev/ttyACM0 -b 115200 -U flash:w:program.hex:i
-```
-
-**No Windows:**
-```bash
-avrdude -c arduino -p atmega328p -P COM3 -b 115200 -U flash:w:program.hex:i
-```
-
-**Identificar porta COM:**
-- Windows: Device Manager → Ports (COM & LPT)
-- Linux: `ls /dev/ttyACM*` ou `ls /dev/ttyUSB*`
-- Mac: `ls /dev/tty.usbmodem*`
-
-### 4. Upload via Arduino IDE
-
-1. Salvar `program.hex` em pasta do projeto
-2. Arduino IDE → Ferramentas → Programador → "AVR ISP"
-3. Sketch → Upload Using Programmer
-4. Ou usar ferramenta externa: Ferramentas → Queimar Bootloader
-
-### 5. Depuração
-
-**Serial Monitor (se programa usar UART):**
-```cpp
-// Adicionar no Assembly:
-.section .text
-call uart_init
-call print_result
-```
-
-**LED de Debug (pino 13):**
-```asm
-; Configurar LED como saída
-sbi DDRB, 5      ; Bit 5 do PORTB = pino 13
-
-; Ligar LED
-sbi PORTB, 5
-
-; Desligar LED
-cbi PORTB, 5
-```
-
-### 6. Simulação (Alternativa)
-
-Antes de carregar no Arduino real, simule com:
-
-- **SimulIDE:** Simulador gráfico de Arduino
-- **Wokwi:** Simulador online (https://wokwi.com)
-- **Proteus:** Simulação profissional
-
----
-
 ## Exemplos de Uso e Resultados Esperados
 
 ### Exemplo 1: Fatorial (fatorial.txt)
 
 **Entrada:**
 ```
+# Inicializar contador = 1
+(1 COUNTER)
+# Inicializar resultado = 1
 (1 RESULT)
-(1 INICIO)
-(8 FIM)
-(1 PASSO)
-(INICIO FIM PASSO (((RESULT INICIO *) RESULT)) FOR)
+# Inicializar limite = 12
+(12 LIMIT)
+
+# Laço WHILE: enquanto COUNTER <= LIMIT
+# Corpo: RESULT = RESULT * COUNTER, COUNTER = COUNTER + 1
+((COUNTER LIMIT <=) (((RESULT COUNTER *) RESULT)) ((COUNTER 1 +) COUNTER) WHILE)
 ```
 
-**Descrição:** Calcula 8! (fatorial de 8) usando loop FOR.
+**Descrição:** Calcula 12! (fatorial de 12) usando loop WHILE com múltiplas instruções no corpo.
 
 **Algoritmo:**
-- RESULT = 1 (inicial)
-- Loop de INICIO=1 até FIM=8, incrementando PASSO=1
-- Cada iteração: RESULT = RESULT * INICIO
-- Resultado final: 8! = 40320
+- COUNTER = 1, RESULT = 1, LIMIT = 12 (inicialização)
+- Loop WHILE enquanto COUNTER ≤ LIMIT:
+  1. RESULT = RESULT * COUNTER (multiplicação acumulada)
+  2. COUNTER = COUNTER + 1 (incremento)
+- Resultado final: 12! = 479,001,600
 
 **Execução:**
 ```bash
 python compilador.py inputs/RA4/fatorial.txt
 ```
 
-**Estatísticas:**
-- Instruções TAC originais: **17**
-- Instruções TAC otimizadas: **12**
-- Redução: **29.4%**
-- Técnicas aplicadas:
-  - Constant Folding: 5 aplicações
-  - Dead Code Elimination: 0 aplicações
-  - Constant Propagation: 0 aplicações
-  - Jump Elimination: 0 aplicações
+**Estrutura do TAC Gerado:**
+```
+Line 1: COUNTER = 1
+Line 2: RESULT = 1
+Line 3: LIMIT = 12
+Line 4: L0:                        # Início do loop
+Line 4: t3 = COUNTER <= LIMIT      # Testa condição
+Line 4: ifFalse t3 goto L1         # Sai se falso
+Line 4: t4 = RESULT * COUNTER      # Multiplicação
+Line 4: RESULT = t4
+Line 4: t6 = COUNTER + 1           # Incremento
+Line 4: COUNTER = t6
+Line 4: goto L0                    # Volta ao início
+Line 4: L1:                        # Fim do loop
+```
 
-**Valor Final:** `RESULT = 40320` (8! correto)
+**Estatísticas:**
+- Instruções TAC: **16**
+- Temporários gerados: **7** (t0-t6)
+- Labels gerados: **2** (L0, L1)
+- Iterações executadas: **12**
+
+**Valor Final:** `RESULT = 479,001,600` (12! correto) 
 
 ---
 
-### Exemplo 2: Fibonacci (fibonacci_desenrolado.txt)
+### Exemplo 2: Fibonacci (fibonacci.txt)
 
-**Descrição:** Sequência de Fibonacci até F(24), com loop manualmente desenrolado.
-
-**Estrutura (trecho):**
+**Entrada:**
 ```
 (0 FIB_0)
 (1 FIB_1)
-
-# Iteração 1: F(2) = F(0) + F(1) = 0 + 1 = 1
-(((FIB_0 FIB_1 +) FIB_NEXT))
-(FIB_1 FIB_0)
-(FIB_NEXT FIB_1)
-
-# ... repetir 23 vezes ...
-
+(2 COUNTER)
+(24 LIMIT)
+((COUNTER LIMIT <=) ((FIB_0 FIB_1 +) FIB_NEXT) (FIB_1 FIB_0) (FIB_NEXT FIB_1) ((COUNTER 1 +) COUNTER) WHILE)
 (FIB_NEXT RESULT)
 ```
 
+**Descrição:** Sequência de Fibonacci até F(24) usando loop WHILE com janela deslizante.
+
 **Algoritmo:**
-- FIB_0 = 0, FIB_1 = 1 (casos base)
-- 23 iterações:
-  1. FIB_NEXT = FIB_0 + FIB_1
-  2. FIB_0 = FIB_1
-  3. FIB_1 = FIB_NEXT
-- Resultado final: F(24) = 46368
+- FIB_0 = 0, FIB_1 = 1, COUNTER = 2, LIMIT = 24 (inicialização)
+- Loop WHILE enquanto COUNTER ≤ LIMIT (23 iterações):
+  1. FIB_NEXT = FIB_0 + FIB_1 (calcula próximo termo)
+  2. FIB_0 = FIB_1 (desloca janela)
+  3. FIB_1 = FIB_NEXT (desloca janela)
+  4. COUNTER = COUNTER + 1 (incremento)
+- RESULT = FIB_NEXT (armazena resultado final)
 
 **Execução:**
 ```bash
-python compilador.py fibonacci_desenrolado.txt
+python compilador.py inputs/RA4/fibonacci.txt
+```
+
+**Estrutura do TAC Gerado:**
+```
+Line 1: FIB_0 = 0
+Line 2: FIB_1 = 1
+Line 3: COUNTER = 2
+Line 4: LIMIT = 24
+Line 5: L0:                           # Início do loop
+Line 5: t4 = COUNTER <= LIMIT         # Testa condição
+Line 5: ifFalse t4 goto L1            # Sai se falso
+Line 5: t5 = FIB_0 + FIB_1            # Soma
+Line 5: FIB_NEXT = t5
+Line 5: FIB_0 = FIB_1                 # Desloca janela
+Line 5: FIB_1 = FIB_NEXT              # Desloca janela
+Line 5: t7 = COUNTER + 1              # Incremento
+Line 5: COUNTER = t7
+Line 5: goto L0                       # Volta ao início
+Line 5: L1:                           # Fim do loop
+Line 6: RESULT = FIB_NEXT             # Resultado final
 ```
 
 **Estatísticas:**
-- Linhas de código: 72
-- Instruções TAC originais: **97**
-- Instruções TAC otimizadas: **95**
-- Redução: **2.1%** (pequena, pois código já é simples)
+- Instruções TAC: **21**
+- Temporários gerados: **8** (t0-t7)
+- Labels gerados: **2** (L0, L1)
+- Iterações executadas: **23** (de F(2) até F(24))
 
-**Valor Final:** `RESULT = 46368` (F(24) correto)
+**Sequência gerada:** F(0)=0, F(1)=1, F(2)=1, F(3)=2, ..., F(24)=75,025
 
-**Observação:** A baixa taxa de otimização ocorre porque:
-- Código não contém constantes para dobrar
-- Cada variável é usada, não há código morto
-- Fluxo linear (sem saltos redundantes)
+**Valor Final:** `RESULT = 75,025` (F(24) correto) 
 
 ---
 
 ### Exemplo 3: Taylor (taylor.txt)
 
-**Descrição:** Cálculo da série de Taylor para cos(x) com x=1.0.
+**Descrição:** Cálculo da série de Taylor para **cos(x)** com x=1.0 radiano usando loop WHILE.
 
 **Fórmula:** cos(x) ≈ 1 - x²/2! + x⁴/4! - x⁶/6!
 
-**Código (simplificado):**
+**Entrada (estrutura do WHILE):**
 ```
 (1.0 X_VAL)
-(1.0 TERM1)                      # termo1 = 1.0
-((X_VAL X_VAL *) TEMP1)          # x^2
-((TEMP1 2.0 |) TEMP2)            # x^2 / 2
-((0 TEMP2 -) TERM2)              # - (x^2 / 2)
-((TEMP1 TEMP1 *) TEMP4)          # x^4
-((TEMP4 24.0 |) TERM3)           # x^4 / 24
-((TEMP4 TEMP1 *) TEMP7)          # x^6
-((TEMP7 720.0 |) TEMP8)          # x^6 / 720
-((0 TEMP8 -) TERM4)              # - (x^6 / 720)
-((((TERM1 TERM2 +) TERM3 +) TERM4 +) RESULT_COS)
+(1.0 TERM1)
+(1 COUNTER)
+((COUNTER 1 <=)
+  ((X_VAL X_VAL *) X_SQUARE)
+  (2.0 FACT_2)
+  ((X_SQUARE FACT_2 |) TEMP2)
+  ((0.0 TEMP2 -) TERM2)
+  ((X_SQUARE X_SQUARE *) X_FOURTH)
+  ((4.0 3.0 *) TEMP4A)
+  ((TEMP4A 2.0 *) TEMP4B)
+  ((TEMP4B 1.0 *) FACT_4)
+  ((X_FOURTH FACT_4 |) TERM3)
+  ((X_FOURTH X_SQUARE *) X_SIXTH)
+  ((6.0 5.0 *) TEMP6A)
+  ((TEMP6A 4.0 *) TEMP6B)
+  ((TEMP6B 3.0 *) TEMP6C)
+  ((TEMP6C 2.0 *) TEMP6D)
+  ((TEMP6D 1.0 *) FACT_6)
+  ((X_SIXTH FACT_6 |) TEMP8)
+  ((0.0 TEMP8 -) TERM4)
+  ((TERM1 TERM2 +) SUM12)
+  ((SUM12 TERM3 +) SUM123)
+  ((SUM123 TERM4 +) RESULT_COS)
+  (RESULT_COS FINAL_COS)
+  ((COUNTER 1 +) COUNTER)
+WHILE)
 ```
+
+**Algoritmo:**
+- X_VAL = 1.0, TERM1 = 1.0, COUNTER = 1
+- Loop WHILE (executa 1 vez, COUNTER ≤ 1):
+  - **TERMO 2:** TERM2 = -(X_VAL²) / 2! = -0.5
+  - **TERMO 3:** TERM3 = (X_VAL⁴) / 4! ≈ 0.041667
+  - **TERMO 4:** TERM4 = -(X_VAL⁶) / 6! ≈ -0.001389
+  - **SOMA:** RESULT_COS = TERM1 + TERM2 + TERM3 + TERM4 ≈ 0.540278
+  - FINAL_COS = RESULT_COS
+  - COUNTER = COUNTER + 1 (= 2, sai do loop)
 
 **Execução:**
 ```bash
@@ -698,152 +629,29 @@ python compilador.py inputs/RA4/taylor.txt
 ```
 
 **Estatísticas:**
-- Instruções TAC originais: **30**
-- Instruções TAC otimizadas: **23**
-- Redução: **23.3%**
-- Técnicas aplicadas:
-  - Constant Folding: 7 aplicações (ex: 1.0 * 1.0 → 1.0)
-  - Constant Propagation: 3 aplicações
-  - Dead Code Elimination: 0 aplicações
-  - Jump Elimination: 0 aplicações
+- Instruções TAC: **68**
+- Temporários gerados: **39** (t0-t38)
+- Labels gerados: **2** (L0, L1)
+- Tipos: Todas operações aritméticas são `[type: real]`
 
-**Resultado esperado:** `RESULT_COS ≈ 0.5403` (cos(1.0) em radianos)
-
-**Valor matemático exato:** cos(1.0) = 0.5403023...
-
----
-
-### Exemplo 4: Fibonacci com FOR (fibonacci.txt)
-
-**Entrada:**
+**Cálculos intermediários:**
 ```
-(0 FIB_0)
-(1 FIB_1)
-(2 INICIO)
-(24 FIM)
-(1 PASSO)
-(INICIO FIM PASSO (((FIB_0 FIB_1 +) FIB_NEXT)) FOR)
-(FIB_NEXT RESULT)
+X_SQUARE = 1.0² = 1.0
+X_FOURTH = 1.0⁴ = 1.0
+X_SIXTH = 1.0⁶ = 1.0
+
+FACT_2 = 2.0
+FACT_4 = 4×3×2×1 = 24.0
+FACT_6 = 6×5×4×3×2×1 = 720.0
+
+TERM1 = 1.0
+TERM2 = -1.0/2.0 = -0.5
+TERM3 = 1.0/24.0 ≈ 0.041667
+TERM4 = -1.0/720.0 ≈ -0.001389
 ```
 
-**Descrição:** Tentativa de calcular Fibonacci com loop FOR.
+**Valor Final:** `FINAL_COS ≈ 0.540278`
 
-**Execução:**
-```bash
-python compilador.py inputs/RA4/fibonacci.txt
-```
-
-**Estatísticas:**
-- Instruções TAC originais: **20**
-- Instruções TAC otimizadas: **14**
-- Redução: **30.0%**
-
-**⚠️ PROBLEMA CONHECIDO:**
-
-O código **compila sem erros**, mas a **lógica está incompleta**:
-
-**Por que não funciona:**
-- Cada iteração calcula `FIB_NEXT = FIB_0 + FIB_1` (sempre 0 + 1 = 1)
-- **FIB_0 e FIB_1 nunca são atualizados!**
-- Para Fibonacci funcionar, precisaria de 3 instruções no loop:
-  1. `FIB_NEXT = FIB_0 + FIB_1`
-  2. `FIB_0 = FIB_1`
-  3. `FIB_1 = FIB_NEXT`
-
-**Limitação do Parser:**
-- A gramática atual aceita apenas **1 instrução** no corpo do FOR
-- Sintaxe: `(init fim passo (single_instruction) FOR)`
-
-**Solução:** Usar `fibonacci_desenrolado.txt` (loop manual com 23 iterações explícitas)
-
-**Resultado final:** `FIB_NEXT = 1` ❌ (incorreto, deveria ser 46368)
+**Valor matemático exato:** cos(1.0) = 0.540302... (erro < 0.003%) 
 
 ---
-
-### Comparação de Resultados
-
-| Arquivo | Instruções (Antes) | Instruções (Depois) | Redução | Status |
-|---------|-------------------|---------------------|---------|--------|
-| `fatorial.txt` | 17 | 12 | **29.4%** | ✅ Correto (8! = 40320) |
-| `fibonacci_desenrolado.txt` | 97 | 95 | **2.1%** | ✅ Correto (F(24) = 46368) |
-| `taylor.txt` | 30 | 23 | **23.3%** | ✅ Correto (cos(1.0) ≈ 0.5403) |
-| `fibonacci.txt` | 20 | 14 | **30.0%** | ⚠️ Compila, mas lógica incompleta |
-
----
-
-## Limitações Conhecidas
-
-### 1. Loop FOR com Múltiplas Instruções
-
-**Problema:** O parser aceita apenas 1 instrução no corpo do loop FOR.
-
-**Exemplo que NÃO funciona:**
-```
-(init fim passo ((inst1) (inst2) (inst3)) FOR)  # ❌ Erro de sintaxe
-```
-
-**Workaround:** Desenrolar o loop manualmente ou usar variáveis auxiliares.
-
-### 2. Loop WHILE com Múltiplas Instruções
-
-**Problema:** Similar ao FOR, WHILE também aceita apenas 1 instrução.
-
-**Mensagem de erro:** "Estrutura da linha não reconhecida" (RA3)
-
-### 3. Operações de Ponto Flutuante
-
-**Status:** Suportado no TAC, mas precisão limitada.
-
-**Observação:** Quando implementada geração de Assembly AVR:
-- AVR não possui FPU (Floating Point Unit) nativo
-- Operações float requerem biblioteca software (AVR-libc)
-- Alternativa: Aritmética de ponto fixo (inteiros escalados)
-
-### 4. Geração de Assembly AVR
-
-**Status:** **NÃO IMPLEMENTADO** (planejado para fase futura)
-
-**Atualmente disponível:**
-- ✅ Tokenização (RA1)
-- ✅ Parsing (RA2)
-- ✅ Análise semântica (RA3)
-- ✅ Geração de TAC (RA4)
-- ✅ Otimização de TAC (RA4)
-- ❌ Geração de Assembly AVR (Fase 5 - futuro)
-
----
-
-## Referências
-
-### Documentação Técnica
-
-- **AVR Instruction Set Manual:** [Microchip Official](https://ww1.microchip.com/downloads/en/devicedoc/atmel-0856-avr-instruction-set-manual.pdf)
-- **Arduino Uno Datasheet:** [Arduino.cc](https://docs.arduino.cc/hardware/uno-rev3/)
-- **AVR-libc Documentation:** [nongnu.org](https://www.nongnu.org/avr-libc/)
-
-### Livros de Compiladores
-
-- **"Compilers: Principles, Techniques, and Tools"** (Dragon Book) - Aho, Sethi, Ullman
-- **"Engineering a Compiler"** - Cooper, Torczon
-- **"Modern Compiler Implementation in C"** - Appel
-
-### Otimização de Código
-
-- **"Advanced Compiler Design and Implementation"** - Muchnick
-- **"Optimizing Compilers for Modern Architectures"** - Allen, Kennedy
-
----
-
-## Contato
-
-Para dúvidas ou sugestões:
-
-- **Breno Rossi Duarte:** [@breno-rossi](https://github.com/breno-rossi)
-- **Francisco Bley Ruthes:** [@fbleyruthes](https://github.com/fbleyruthes)
-- **Rafael Olivare Piveta:** [@RafaPiveta](https://github.com/RafaPiveta)
-- **Stefan Benjamim Seixas Lourenço Rodrigues:** [@waifuisalie](https://github.com/waifuisalie)
-
----
-
-**Última atualização:** 24/11/2025
-**Versão:** RA4 - Geração e Otimização de TAC
