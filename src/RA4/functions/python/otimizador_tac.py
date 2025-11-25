@@ -22,7 +22,7 @@ from .erros_compilador import TACError, FileError, JSONError, ValidationError
 
 MAX_ITERATIONS = 100
 OUTPUT_DIR_RA4 = 'outputs/RA4'
-REPORTS_DIR_RA4 = 'relatorios/RA4'
+REPORTS_DIR_RA4 = 'outputs/RA4/relatorios'
 MD_EXT = '.md'
 JSON_EXT = '.json'
 
@@ -493,6 +493,7 @@ class TACOptimizer:
         # Identificar labels para análise
         referenced_labels = self._identificar_labels_referenciados()
         existing_labels = self._identificar_labels_existentes()
+        label_to_index = self._mapear_labels_para_indices()
 
         # Filtrar instruções, removendo saltos redundantes e labels não utilizados
         novas_instrucoes = []
@@ -503,16 +504,10 @@ class TACOptimizer:
             instr = self.instructions[i]
 
             if isinstance(instr, TACGoto):
-                # Salto para próxima instrução (remover goto + label)
-                if self._eh_salto_para_proxima_instrucao(i, instr.target):
-                    removidas += 2
-                    i += 2  # Pular goto e label
-                    continue
-                # Salto para label inexistente
-                elif instr.target not in existing_labels:
-                    removidas += 1
-                    i += 1
-                    continue
+                # Não remover gotos para preservar controle de fluxo
+                novas_instrucoes.append(instr)
+                i += 1
+                continue
 
             elif isinstance(instr, TACAssignment) and instr.source == '' and instr.dest not in referenced_labels:
                 # Label não utilizado
@@ -547,6 +542,14 @@ class TACOptimizer:
             if isinstance(instr, TACAssignment) and instr.source == '':
                 existentes.add(instr.dest)
         return existentes
+
+    def _mapear_labels_para_indices(self) -> Dict[str, int]:
+        """Mapeia labels para seus índices na lista de instruções."""
+        mapping = {}
+        for i, instr in enumerate(self.instructions):
+            if isinstance(instr, TACAssignment) and instr.source == '':
+                mapping[instr.dest] = i
+        return mapping
 
     def _eh_salto_para_proxima_instrucao(self, current_index: int, target_label: str) -> bool:
         """Verifica se um goto salta para a próxima instrução (label)."""

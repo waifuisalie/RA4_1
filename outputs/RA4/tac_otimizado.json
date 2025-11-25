@@ -1,16 +1,4 @@
 {
-  "metadata": {
-    "generated_at": "2025-11-25T14:16:58.556200",
-    "generator": "RA4 TAC Generator",
-    "version": "1.0",
-    "source_file": "/Users/thaismonteiro/Documents/RA4_1/outputs/RA3/arvore_atribuida.json"
-  },
-  "statistics": {
-    "total_instructions": 68,
-    "temp_count": 39,
-    "label_count": 2,
-    "result_history_size": 3
-  },
   "instructions": [
     {
       "type": "assignment",
@@ -60,18 +48,11 @@
       "line": 4
     },
     {
-      "type": "assignment",
-      "dest": "t3",
-      "source": "1",
-      "line": 4,
-      "data_type": "int"
-    },
-    {
       "type": "binary_op",
       "result": "t4",
       "operand1": "COUNTER",
       "operator": "<=",
-      "operand2": "t3",
+      "operand2": "1",
       "line": 4,
       "data_type": "boolean"
     },
@@ -128,16 +109,9 @@
       "data_type": "real"
     },
     {
-      "type": "assignment",
-      "dest": "t8",
-      "source": "0.0",
-      "line": 4,
-      "data_type": "real"
-    },
-    {
       "type": "binary_op",
       "result": "t9",
-      "operand1": "t8",
+      "operand1": "0.0",
       "operator": "-",
       "operand2": "TEMP2",
       "line": 4,
@@ -168,24 +142,8 @@
     },
     {
       "type": "assignment",
-      "dest": "t11",
-      "source": "4.0",
-      "line": 4,
-      "data_type": "real"
-    },
-    {
-      "type": "assignment",
-      "dest": "t12",
-      "source": "3.0",
-      "line": 4,
-      "data_type": "real"
-    },
-    {
-      "type": "binary_op",
-      "result": "t13",
-      "operand1": "t11",
-      "operator": "*",
-      "operand2": "t12",
+      "dest": "t13",
+      "source": "12.0",
       "line": 4,
       "data_type": "real"
     },
@@ -197,18 +155,11 @@
       "data_type": "real"
     },
     {
-      "type": "assignment",
-      "dest": "t14",
-      "source": "2.0",
-      "line": 4,
-      "data_type": "real"
-    },
-    {
       "type": "binary_op",
       "result": "t15",
       "operand1": "TEMP4A",
       "operator": "*",
-      "operand2": "t14",
+      "operand2": "2.0",
       "line": 4,
       "data_type": "real"
     },
@@ -220,18 +171,11 @@
       "data_type": "real"
     },
     {
-      "type": "assignment",
-      "dest": "t16",
-      "source": "1.0",
-      "line": 4,
-      "data_type": "real"
-    },
-    {
       "type": "binary_op",
       "result": "t17",
       "operand1": "TEMP4B",
       "operator": "*",
-      "operand2": "t16",
+      "operand2": "1.0",
       "line": 4,
       "data_type": "real"
     },
@@ -276,24 +220,8 @@
     },
     {
       "type": "assignment",
-      "dest": "t20",
-      "source": "6.0",
-      "line": 4,
-      "data_type": "real"
-    },
-    {
-      "type": "assignment",
-      "dest": "t21",
-      "source": "5.0",
-      "line": 4,
-      "data_type": "real"
-    },
-    {
-      "type": "binary_op",
-      "result": "t22",
-      "operand1": "t20",
-      "operator": "*",
-      "operand2": "t21",
+      "dest": "t22",
+      "source": "30.0",
       "line": 4,
       "data_type": "real"
     },
@@ -305,18 +233,11 @@
       "data_type": "real"
     },
     {
-      "type": "assignment",
-      "dest": "t23",
-      "source": "4.0",
-      "line": 4,
-      "data_type": "real"
-    },
-    {
       "type": "binary_op",
       "result": "t24",
       "operand1": "TEMP6A",
       "operator": "*",
-      "operand2": "t23",
+      "operand2": "4.0",
       "line": 4,
       "data_type": "real"
     },
@@ -328,18 +249,11 @@
       "data_type": "real"
     },
     {
-      "type": "assignment",
-      "dest": "t25",
-      "source": "3.0",
-      "line": 4,
-      "data_type": "real"
-    },
-    {
       "type": "binary_op",
       "result": "t26",
       "operand1": "TEMP6B",
       "operator": "*",
-      "operand2": "t25",
+      "operand2": "3.0",
       "line": 4,
       "data_type": "real"
     },
@@ -351,18 +265,11 @@
       "data_type": "real"
     },
     {
-      "type": "assignment",
-      "dest": "t27",
-      "source": "2.0",
-      "line": 4,
-      "data_type": "real"
-    },
-    {
       "type": "binary_op",
       "result": "t28",
       "operand1": "TEMP6C",
       "operator": "*",
-      "operand2": "t27",
+      "operand2": "2.0",
       "line": 4,
       "data_type": "real"
     },
@@ -374,18 +281,11 @@
       "data_type": "real"
     },
     {
-      "type": "assignment",
-      "dest": "t29",
-      "source": "1.0",
-      "line": 4,
-      "data_type": "real"
-    },
-    {
       "type": "binary_op",
       "result": "t30",
       "operand1": "TEMP6D",
       "operator": "*",
-      "operand2": "t29",
+      "operand2": "1.0",
       "line": 4,
       "data_type": "real"
     },
@@ -413,16 +313,9 @@
       "data_type": "real"
     },
     {
-      "type": "assignment",
-      "dest": "t32",
-      "source": "0.0",
-      "line": 4,
-      "data_type": "real"
-    },
-    {
       "type": "binary_op",
       "result": "t33",
-      "operand1": "t32",
+      "operand1": "0.0",
       "operator": "-",
       "operand2": "TEMP8",
       "line": 4,
@@ -491,18 +384,11 @@
       "data_type": "real"
     },
     {
-      "type": "assignment",
-      "dest": "t37",
-      "source": "1",
-      "line": 4,
-      "data_type": "int"
-    },
-    {
       "type": "binary_op",
       "result": "t38",
       "operand1": "COUNTER",
       "operator": "+",
-      "operand2": "t37",
+      "operand2": "1",
       "line": 4,
       "data_type": "int"
     },

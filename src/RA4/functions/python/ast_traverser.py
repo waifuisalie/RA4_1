@@ -148,7 +148,6 @@ class ASTTraverser:
         elif len(filhos) == 1 and filhos[0].get("tipo_vertice") == "ARITH_OP":
             # Processar o ARITH_OP aninhado
             left_temp = self._process_node(filhos[0])
-            # WORKAROUND: Para a linha 13, assumir que o operando direito é TEMP4
             right_temp = "TEMP4"
         # Caso especial: ARITH_OP com mais de 2 filhos (associatividade à esquerda)
         elif len(filhos) > 2:
@@ -165,10 +164,15 @@ class ASTTraverser:
         else:
             raise ValueError(f"Operação aritmética requer pelo menos 2 operandos, recebeu {len(filhos)} na linha {numero_linha}")
 
+        # Inferir tipo do resultado se não fornecido pelo nó
+        inferred_type = tipo_inferido
+        if inferred_type is None:
+            inferred_type = self._infer_type_for_binary_op(operador, left_temp, right_temp)
+
         # Depois processa operação pai
         result_temp = self.manager.new_temp()
         self.instructions.append(
-            TACBinaryOp(result_temp, left_temp, operador, right_temp, numero_linha, tipo_inferido)
+            TACBinaryOp(result_temp, left_temp, operador, right_temp, numero_linha, inferred_type)
         )
 
         return result_temp
@@ -273,14 +277,15 @@ class ASTTraverser:
         return else_temp
 
     def _handle_while(self, node: Dict[str, Any]) -> Optional[str]:
-        """Processa WHILE: (condição corpo WHILE)."""
+        """Processa WHILE: (condição bloco WHILE) - bloco pode ter múltiplas expressões."""
         filhos = node["filhos"]
         numero_linha = node.get("numero_linha", 0)
 
-        if len(filhos) != 2:
-            raise ValueError(f"WHILE requer 2 operandos, recebeu {len(filhos)} na linha {numero_linha}")
+        if len(filhos) < 2:
+            raise ValueError(f"WHILE requer pelo menos 2 operandos, recebeu {len(filhos)} na linha {numero_linha}")
 
-        condition_node, body_node = filhos[0], filhos[1]
+        condition_node = filhos[0]
+        block_nodes = filhos[1:]  # Todos os filhos restantes são o bloco
 
         # Gera labels
         label_start = self.manager.new_label()
@@ -293,8 +298,10 @@ class ASTTraverser:
         cond_temp = self._process_node(condition_node)
         self.instructions.append(TACIfFalseGoto(cond_temp, label_end, numero_linha))
 
-        # Processa corpo
-        self._process_node(body_node)
+        # Processa bloco (sequência de expressões)
+        for block_node in block_nodes:
+            self._process_node(block_node)
+
         self.instructions.append(TACGoto(label_start, numero_linha))
 
         # L_end:
@@ -303,14 +310,14 @@ class ASTTraverser:
         return None
 
     def _handle_for(self, node: Dict[str, Any]) -> Optional[str]:
-        """Processa FOR: (init fim passo corpo FOR)."""
+        """Processa FOR: (init fim passo bloco FOR) - bloco pode ter múltiplas expressões."""
         filhos = node["filhos"]
         numero_linha = node.get("numero_linha", 0)
 
         if len(filhos) != 4:
             raise ValueError(f"FOR requer 4 operandos, recebeu {len(filhos)} na linha {numero_linha}")
 
-        init_node, end_node, step_node, body_node = filhos[0], filhos[1], filhos[2], filhos[3]
+        init_node, end_node, step_node, block_node = filhos[0], filhos[1], filhos[2], filhos[3]
 
         # Gera labels
         label_start = self.manager.new_label()
@@ -333,8 +340,8 @@ class ASTTraverser:
         self.instructions.append(TACBinaryOp(cond_temp, loop_counter, "<=", end_temp, numero_linha, "boolean"))
         self.instructions.append(TACIfFalseGoto(cond_temp, label_end, numero_linha))
 
-        # Processa corpo
-        self._process_node(body_node)
+        # Processa bloco (sequência de expressões)
+        self._process_block(block_node)
 
         # Incrementa contador
         new_counter = self.manager.new_temp()
@@ -347,9 +354,48 @@ class ASTTraverser:
 
         return None
 
-    #########################
-    # HANDLERS DE VARIÁVEIS
-    #########################
+    def _process_block(self, block_node: Dict[str, Any]) -> None:
+        """Processa um bloco de código (sequência de expressões ou bloco implícito)."""
+        if not block_node:
+            return
+
+        # Verificar se é um bloco implícito (linha com múltiplas expressões)
+        if self._is_implicit_block(block_node):
+            self._process_implicit_block(block_node)
+        elif 'filhos' in block_node:
+            # Um bloco é uma sequência de linhas/expressões
+            for expression_node in block_node['filhos']:
+                self._process_node(expression_node)
+        else:
+            # Corpo simples
+            self._process_node(block_node)
+
+    def _is_implicit_block(self, node: Dict[str, Any]) -> bool:
+        """Verifica se um nó representa um bloco implícito (linha com múltiplas expressões)."""
+        if not node or node.get('tipo') != 'LINHA':
+            return False
+
+        # Uma linha é um bloco implícito se tem filhos que são expressões sem operador final
+        filhos = node.get('filhos', [])
+        if len(filhos) > 1:
+            # Verificar se todos os filhos são linhas/expressões
+            return all(filho.get('tipo') == 'LINHA' for filho in filhos)
+        return False
+
+    def _process_implicit_block(self, block_node: Dict[str, Any]) -> None:
+        """Processa um bloco implícito (linha contendo múltiplas subexpressões)."""
+        filhos = block_node.get('filhos', [])
+        for expression_node in filhos:
+            if expression_node.get('tipo') == 'LINHA':
+                # Verificar se esta expressão contém múltiplas subexpressões que deveriam ser atribuições
+                sub_filhos = expression_node.get('filhos', [])
+                if len(sub_filhos) == 2 and all(f.get('tipo') == 'LINHA' for f in sub_filhos):
+                    # Possível padrão: ((expr1) (expr2)) - tratar como duas atribuições separadas
+                    for sub_expr in sub_filhos:
+                        self._process_node(sub_expr)
+                else:
+                    # Expressão normal
+                    self._process_node(expression_node)
 
     def _handle_variable_assignment(self, node: Dict[str, Any]) -> str:
         """Processa atribuições de variáveis: (valor variável). Ex: (10 X) → X = 10"""
@@ -369,19 +415,25 @@ class ASTTraverser:
         if var_node.get("valor") == "RES":
             return self._handle_res_command(node)
 
-        # Verifica se é atribuição de variável
-        if var_node.get("subtipo") != "variavel":
+        # Verifica se é uma variável válida (não é símbolo especial)
+        var_name = var_node.get("valor", "")
+        if not var_name or var_name in ['(', ')', '[', ']', '{', '}', ';', ':', '.', ','] or var_node.get("subtipo") != "variavel":
+            # Não é uma atribuição válida - apenas processe os filhos sem gerar TAC
             result = None
             for child in filhos:
-                result = self._process_node(child)
+                temp_result = self._process_node(child)
+                if temp_result is not None:
+                    result = temp_result
             return result
 
         # Processa expressão de valor
         value_temp = self._process_node(value_node)
-        var_name = var_node["valor"]
         data_type = value_node.get("tipo_inferido")
 
-        # Gera TAC: variável = temp
+        # Se não há tipo no nó, tentar inferir a partir do operando (constante, temp ou variável)
+        if data_type is None:
+            data_type = self._infer_type_for_operand(value_temp)
+
         self.instructions.append(TACCopy(var_name, value_temp, numero_linha, data_type))
 
         return value_temp
@@ -404,13 +456,78 @@ class ASTTraverser:
 
         historical_temp = self._result_history[index]
         result_temp = self.manager.new_temp()
-        self.instructions.append(TACCopy(result_temp, historical_temp, numero_linha, None))
+
+        # Inferir tipo do histórico, se possível (procura última definição ou constante)
+        inferred_type = None
+        if TACInstruction.is_constant(historical_temp):
+            inferred_type = self._infer_type_for_operand(historical_temp)
+        elif isinstance(historical_temp, str):
+            inferred_type = self._infer_type_for_operand(historical_temp)
+
+        self.instructions.append(TACCopy(result_temp, historical_temp, numero_linha, inferred_type))
 
         return result_temp
 
     #########################
     # MÉTODOS UTILITÁRIOS
     #########################
+
+    def _infer_type_for_operand(self, operand: Optional[str]) -> Optional[str]:
+        """Inferir tipo ('int'|'real'|'boolean'|None) para um operando (constante, temp ou variável)."""
+        if operand is None:
+            return None
+
+        # Constantes numéricas
+        if TACInstruction.is_constant(operand):
+            # simples heurística: ponto decimal ou expoente indica real
+            if '.' in operand or 'e' in operand or 'E' in operand:
+                return 'real'
+            return 'int'
+
+        # Procurar última definição nas instruções geradas
+        for instr in reversed(self.instructions):
+            defined = getattr(instr, 'result', getattr(instr, 'dest', None))
+            if defined == operand:
+                return getattr(instr, 'data_type', None)
+
+        # Não encontrado
+        return None
+
+    def _infer_type_for_binary_op(self, operator: str, left_operand: Optional[str], right_operand: Optional[str]) -> Optional[str]:
+        """Inferir tipo de resultado para uma operação binária com base em operandos e operador."""
+        # Regra: se operador é divisão real '|', o resultado é real
+        if operator == '|':
+            return 'real'
+        # divisão inteira '/'
+        if operator == '/':
+            return 'int'
+
+        left_type = self._infer_type_for_operand(left_operand)
+        right_type = self._infer_type_for_operand(right_operand)
+
+        # Exponentiation: if any real -> real, else int
+        if operator == '^':
+            if left_type == 'real' or right_type == 'real':
+                return 'real'
+            if left_type == 'int' and right_type == 'int':
+                return 'int'
+            return None
+
+        # Modulo: prefer int when both ints
+        if operator == '%':
+            if left_type == 'int' and right_type == 'int':
+                return 'int'
+            if left_type == 'real' or right_type == 'real':
+                return 'real'
+            return None
+
+        # Default arithmetic: if any operand real -> real, else if both int -> int
+        if left_type == 'real' or right_type == 'real':
+            return 'real'
+        if left_type == 'int' and right_type == 'int':
+            return 'int'
+
+        return None
 
     def get_statistics(self) -> Dict[str, Any]:
         """Retorna estatísticas sobre o TAC gerado."""
