@@ -1,39 +1,37 @@
 # TAC Otimizado - tac_instructions
 
-## Linha 1: FIB_0 = t0
+## Linha 1: CONTADOR = t0
 
-## Linha 2: FIB_1 = t1
+## Linha 2: LIMITE = t1
 
-## Linha 3: INICIO = t2
+## Linha 3: X = t2
 
-## Linha 4: FIM = t3
+## Linha 4: Y = t3
 
-## Linha 5: PASSO = t4
+## Linha 5: L0:
 
-## Linha 6: t5 = INICIO
+## Linha 6: t4 = CONTADOR < LIMITE
 
-## Linha 7: L0:
+## Linha 7: ifFalse t4 goto L1
 
-## Linha 8: t6 = t5 <= FIM
+## Linha 8: t6 = X + 1
 
-## Linha 9: ifFalse t6 goto L1
+## Linha 9: X = t6
 
-## Linha 10: t7 = FIB_0 + FIB_1
+## Linha 10: t8 = X + t7
 
-## Linha 11: FIB_NEXT = t7
+## Linha 11: ( = t8
 
-## Linha 12: FIB_1 = FIB_NEXT
+## Linha 12: t10 = Y + 2
 
-## Linha 13: FIB_0 = FIB_1
+## Linha 13: Y = t10
 
-## Linha 14: t8 = t5 + PASSO
+## Linha 14: L1:
 
-## Linha 15: t5 = t8
+## Linha 15: RESULT_X = X
 
-## Linha 16: L1:
-
-## Linha 17: RESULT = FIB_NEXT
+## Linha 16: RESULT_Y = Y
 
 ## Estatísticas
-- Total de instruções: 17
+- Total de instruções: 16
 - Temporários criados: 9

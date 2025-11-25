@@ -1,0 +1,5 @@
+(10 X)
+(5 Y)
+((X Y >) (((X 2 *) X) ((Y 3 +) Y)) (((X 1 +) X) ((Y 1 -) Y)) IFELSE)
+(X RESULT_X)
+(Y RESULT_Y)

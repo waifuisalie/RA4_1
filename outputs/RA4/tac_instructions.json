@@ -1,13 +1,13 @@
 {
   "metadata": {
-    "generated_at": "2025-11-24T23:26:07.248872",
+    "generated_at": "2025-11-24T23:40:48.205920",
     "generator": "RA4 TAC Generator",
     "version": "1.0",
     "source_file": "C:\\Users\\Francisco\\OneDrive - Grupo Marista\\Desktop\\2025-02\\Compiladores\\RA4\\RA4_1\\outputs\\RA3\\arvore_atribuida.json"
   },
   "statistics": {
-    "total_instructions": 23,
-    "temp_count": 9,
+    "total_instructions": 24,
+    "temp_count": 11,
     "label_count": 2,
     "result_history_size": 6
   },
@@ -21,7 +21,7 @@
     },
     {
       "type": "copy",
-      "dest": "FIB_0",
+      "dest": "CONTADOR",
       "source": "t0",
       "line": 1,
       "data_type": "int"
@@ -29,13 +29,13 @@
     {
       "type": "assignment",
       "dest": "t1",
-      "source": "1",
+      "source": "5",
       "line": 2,
       "data_type": "int"
     },
     {
       "type": "copy",
-      "dest": "FIB_1",
+      "dest": "LIMITE",
       "source": "t1",
       "line": 2,
       "data_type": "int"
@@ -43,13 +43,13 @@
     {
       "type": "assignment",
       "dest": "t2",
-      "source": "2",
+      "source": "10",
       "line": 3,
       "data_type": "int"
     },
     {
       "type": "copy",
-      "dest": "INICIO",
+      "dest": "X",
       "source": "t2",
       "line": 3,
       "data_type": "int"
@@ -57,120 +57,129 @@
     {
       "type": "assignment",
       "dest": "t3",
-      "source": "24",
+      "source": "20",
       "line": 4,
       "data_type": "int"
     },
     {
       "type": "copy",
-      "dest": "FIM",
+      "dest": "Y",
       "source": "t3",
       "line": 4,
       "data_type": "int"
     },
     {
+      "type": "label",
+      "name": "L0",
+      "line": 5
+    },
+    {
+      "type": "binary_op",
+      "result": "t4",
+      "operand1": "CONTADOR",
+      "operator": "<",
+      "operand2": "LIMITE",
+      "line": 5,
+      "data_type": "boolean"
+    },
+    {
+      "type": "if_false_goto",
+      "condition": "t4",
+      "target": "L1",
+      "line": 5
+    },
+    {
       "type": "assignment",
-      "dest": "t4",
+      "dest": "t5",
       "source": "1",
       "line": 5,
       "data_type": "int"
     },
     {
-      "type": "copy",
-      "dest": "PASSO",
-      "source": "t4",
+      "type": "binary_op",
+      "result": "t6",
+      "operand1": "X",
+      "operator": "+",
+      "operand2": "t5",
       "line": 5,
       "data_type": "int"
     },
     {
       "type": "copy",
-      "dest": "t5",
-      "source": "INICIO",
-      "line": 6,
+      "dest": "X",
+      "source": "t6",
+      "line": 5,
       "data_type": "int"
     },
     {
-      "type": "label",
-      "name": "L0",
-      "line": 6
-    },
-    {
-      "type": "binary_op",
-      "result": "t6",
-      "operand1": "t5",
-      "operator": "<=",
-      "operand2": "FIM",
-      "line": 6,
-      "data_type": "boolean"
-    },
-    {
-      "type": "if_false_goto",
-      "condition": "t6",
-      "target": "L1",
-      "line": 6
-    },
-    {
-      "type": "binary_op",
-      "result": "t7",
-      "operand1": "FIB_0",
-      "operator": "+",
-      "operand2": "FIB_1",
-      "line": 6,
-      "data_type": "int"
-    },
-    {
-      "type": "copy",
-      "dest": "FIB_NEXT",
-      "source": "t7",
-      "line": 6,
-      "data_type": "int"
-    },
-    {
-      "type": "copy",
-      "dest": "FIB_1",
-      "source": "FIB_NEXT",
-      "line": 6,
-      "data_type": null
-    },
-    {
-      "type": "copy",
-      "dest": "FIB_0",
-      "source": "FIB_1",
-      "line": 6,
+      "type": "assignment",
+      "dest": "t7",
+      "source": "(",
+      "line": 5,
       "data_type": "int"
     },
     {
       "type": "binary_op",
       "result": "t8",
-      "operand1": "t5",
+      "operand1": "X",
       "operator": "+",
-      "operand2": "PASSO",
-      "line": 6,
+      "operand2": "t7",
+      "line": 5,
       "data_type": "int"
     },
     {
       "type": "copy",
-      "dest": "t5",
+      "dest": "(",
       "source": "t8",
-      "line": 6,
+      "line": 5,
+      "data_type": "int"
+    },
+    {
+      "type": "assignment",
+      "dest": "t9",
+      "source": "2",
+      "line": 5,
+      "data_type": "int"
+    },
+    {
+      "type": "binary_op",
+      "result": "t10",
+      "operand1": "Y",
+      "operator": "+",
+      "operand2": "t9",
+      "line": 5,
+      "data_type": "int"
+    },
+    {
+      "type": "copy",
+      "dest": "Y",
+      "source": "t10",
+      "line": 5,
       "data_type": "int"
     },
     {
       "type": "goto",
       "target": "L0",
-      "line": 6
+      "line": 5
     },
     {
       "type": "label",
       "name": "L1",
-      "line": 6
+      "line": 5
     },
     {
       "type": "copy",
-      "dest": "RESULT",
-      "source": "FIB_NEXT",
+      "dest": "RESULT_X",
+      "source": "X",
+      "line": 6,
+      "data_type": "int"
+    },
+    {
+      "type": "copy",
+      "dest": "RESULT_Y",
+      "source": "Y",
       "line": 7,
-      "data_type": null
+      "data_type": "int"
     }
   ]
 }

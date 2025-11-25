@@ -1,6 +1,6 @@
 # Árvore Sintática Abstrata Atribuída
 
-**Gerado em:** 2025-11-24 23:26:07
+**Gerado em:** 2025-11-24 23:40:48
 
 ## Resumo
 
@@ -20,7 +20,7 @@
 LINHA : int
   LINHA
     LINHA : int [0] {numero_inteiro}
-    LINHA : int [FIB_0] {variavel}
+    LINHA : int [CONTADOR] {variavel}
 ```
 
 ### Linha 2
@@ -32,8 +32,8 @@ LINHA : int
 ```
 LINHA : int
   LINHA
-    LINHA : int [1] {numero_inteiro}
-    LINHA : int [FIB_1] {variavel}
+    LINHA : int [5] {numero_inteiro}
+    LINHA : int [LIMITE] {variavel}
 ```
 
 ### Linha 3
@@ -45,8 +45,8 @@ LINHA : int
 ```
 LINHA : int
   LINHA
-    LINHA : int [2] {numero_inteiro}
-    LINHA : int [INICIO] {variavel}
+    LINHA : int [10] {numero_inteiro}
+    LINHA : int [X] {variavel}
 ```
 
 ### Linha 4
@@ -58,8 +58,8 @@ LINHA : int
 ```
 LINHA : int
   LINHA
-    LINHA : int [24] {numero_inteiro}
-    LINHA : int [FIM] {variavel}
+    LINHA : int [20] {numero_inteiro}
+    LINHA : int [Y] {variavel}
 ```
 
 ### Linha 5
@@ -70,9 +70,26 @@ LINHA : int
 
 ```
 LINHA : int
-  LINHA
-    LINHA : int [1] {numero_inteiro}
-    LINHA : int [PASSO] {variavel}
+  CONTROL_OP (WHILE)
+    COMP_OP (<) : boolean
+      LINHA : int [CONTADOR] {variavel}
+      LINHA : int [LIMITE] {variavel}
+    LINHA
+      LINHA
+        ARITH_OP (+) : int
+          LINHA : int [X] {variavel}
+          LINHA : int [1] {numero_inteiro}
+        LINHA : int [X] {variavel}
+      LINHA
+        ARITH_OP (+) : int
+          LINHA : int [X] {variavel}
+          LINHA : int [(] {numero_inteiro}
+        LINHA [(] {variavel}
+      LINHA
+        ARITH_OP (+) : int
+          LINHA : int [Y] {variavel}
+          LINHA : int [2] {numero_inteiro}
+        LINHA : int [Y] {variavel}
 ```
 
 ### Linha 6
@@ -83,22 +100,9 @@ LINHA : int
 
 ```
 LINHA : int
-  CONTROL_OP (FOR)
-    LINHA : int [INICIO] {variavel}
-    LINHA : int [FIM] {variavel}
-    LINHA : int [PASSO] {variavel}
-    LINHA
-      LINHA
-        ARITH_OP (+) : int
-          LINHA : int [FIB_0] {variavel}
-          LINHA : int [FIB_1] {variavel}
-        LINHA [FIB_NEXT] {variavel}
-      LINHA
-        LINHA [FIB_NEXT] {variavel}
-        LINHA : int [FIB_1] {variavel}
-      LINHA
-        LINHA : int [FIB_1] {variavel}
-        LINHA : int [FIB_0] {variavel}
+  LINHA
+    LINHA : int [X] {variavel}
+    LINHA : int [RESULT_X] {variavel}
 ```
 
 ### Linha 7
@@ -110,8 +114,8 @@ LINHA : int
 ```
 LINHA : int
   LINHA
-    LINHA [FIB_NEXT] {variavel}
-    LINHA [RESULT] {variavel}
+    LINHA : int [Y] {variavel}
+    LINHA : int [RESULT_Y] {variavel}
 ```
 
 

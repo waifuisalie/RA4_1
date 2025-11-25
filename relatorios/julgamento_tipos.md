@@ -1,90 +1,89 @@
 # Julgamento de Tipos
 
-**Gerado em:** 2025-11-24 23:26:07
+**Gerado em:** 2025-11-24 23:40:48
 
 **Total de expressões analisadas:** 7
 
 ---
 
-## Linha 1: `(0 FIB_0)`
+## Linha 1: `(0 CONTADOR)`
 
 ### Análise de Tipos:
 - **Operando 1:** `0` → tipo: `int`
-- **Operando 2:** `FIB_0` → tipo: `int`
+- **Operando 2:** `CONTADOR` → tipo: `int`
 
 ### Tipo Resultante: `int`
 
 ---
 
-## Linha 2: `(1 FIB_1)`
+## Linha 2: `(5 LIMITE)`
 
 ### Análise de Tipos:
-- **Operando 1:** `1` → tipo: `int`
-- **Operando 2:** `FIB_1` → tipo: `int`
+- **Operando 1:** `5` → tipo: `int`
+- **Operando 2:** `LIMITE` → tipo: `int`
 
 ### Tipo Resultante: `int`
 
 ---
 
-## Linha 3: `(2 INICIO)`
+## Linha 3: `(10 X)`
 
 ### Análise de Tipos:
-- **Operando 1:** `2` → tipo: `int`
-- **Operando 2:** `INICIO` → tipo: `int`
+- **Operando 1:** `10` → tipo: `int`
+- **Operando 2:** `X` → tipo: `int`
 
 ### Tipo Resultante: `int`
 
 ---
 
-## Linha 4: `(24 FIM)`
+## Linha 4: `(20 Y)`
 
 ### Análise de Tipos:
-- **Operando 1:** `24` → tipo: `int`
-- **Operando 2:** `FIM` → tipo: `int`
+- **Operando 1:** `20` → tipo: `int`
+- **Operando 2:** `Y` → tipo: `int`
 
 ### Tipo Resultante: `int`
 
 ---
 
-## Linha 5: `(1 PASSO)`
+## Linha 5: `((CONTADOR LIMITE <) ((X 1 +) X) WHILE)`
 
 ### Análise de Tipos:
-- **Operando 1:** `1` → tipo: `int`
-- **Operando 2:** `PASSO` → tipo: `int`
-
-### Tipo Resultante: `int`
-
----
-
-## Linha 6: `(INICIO FIM PASSO ((FIB_0 FIB_1 +) FIB_NEXT) FOR)`
-
-### Análise de Tipos:
-- **Operando 1:** `INICIO` → tipo: `int`
-    - `INICIO` : `int`
-- **Operando 2:** `FIM` → tipo: `int`
-    - `FIM` : `int`
-- **Operando 3:** `PASSO` → tipo: `int`
-    - `PASSO` : `int`
-- **Operando 4:** `((FIB_0 FIB_1 +) FIB_NEXT)` → tipo: `int`
-- **Operador:** `FOR`
+- **Operando 1:** `(CONTADOR LIMITE <)` → tipo: `boolean`
+    - `CONTADOR` : `int`
+    - `LIMITE` : `int`
+    - Operador: `<`
+    - Resultado: `boolean`
+- **Operando 2:** `((X 1 +) X)` → tipo: `int`
+- **Operador:** `WHILE`
 
 ### Regra Aplicada:
 
 ```
-Γ ⊢ init : int    Γ ⊢ end : int    Γ ⊢ step : int    Γ ⊢ corpo : T
-────────────────────────────────────────────────────────────────
-              Γ ⊢ (init end step corpo FOR) : T
+Γ ⊢ cond : Tcond    truthy(Tcond)    Γ ⊢ corpo : T
+──────────────────────────────────────────────────
+         Γ ⊢ (cond corpo WHILE) : T
 ```
 
 ### Tipo Resultante: `int`
 
 ---
 
-## Linha 7: `(FIB_NEXT RESULT)`
+## Linha 6: `(X RESULT_X)`
 
 ### Análise de Tipos:
-- **Operando 1:** `FIB_NEXT` → tipo: `None`
-- **Operando 2:** `RESULT` → tipo: `None`
+- **Operando 1:** `X` → tipo: `int`
+- **Operando 2:** `RESULT_X` → tipo: `int`
+
+### Tipo Resultante: `int`
+
+---
+
+## Linha 7: `(Y RESULT_Y)`
+
+### Análise de Tipos:
+- **Operando 1:** `Y` → tipo: `int`
+- **Operando 2:** `RESULT_Y` → tipo: `int`
 
 ### Tipo Resultante: `int`
 
