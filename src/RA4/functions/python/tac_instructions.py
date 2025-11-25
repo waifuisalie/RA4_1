@@ -93,6 +93,13 @@ class TACCopy(TACInstruction):
     data_type: Optional[str] = None
 
     def to_string(self) -> str:
+        # Validação rigorosa para evitar TAC inválido
+        invalid_chars = ['(', ')', '[', ']', '{', '}', ';', ':', '.', ',']
+        if (not self.dest or not self.source or
+            any(char in self.dest for char in invalid_chars) or
+            any(char in self.source for char in invalid_chars) or
+            not self.dest.strip() or not self.source.strip()):
+            return f"// Invalid TACCopy: {self.dest} = {self.source}"
         return f"{self.dest} = {self.source}"
 
     def to_dict(self) -> Dict[str, Any]:

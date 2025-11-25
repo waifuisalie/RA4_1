@@ -1,10 +1,24 @@
 {
   "instructions": [
     {
+      "type": "assignment",
+      "dest": "t0",
+      "source": "0",
+      "line": 1,
+      "data_type": "int"
+    },
+    {
       "type": "copy",
       "dest": "FIB_0",
       "source": "t0",
       "line": 1,
+      "data_type": "int"
+    },
+    {
+      "type": "assignment",
+      "dest": "t1",
+      "source": "1",
+      "line": 2,
       "data_type": "int"
     },
     {
@@ -15,10 +29,24 @@
       "data_type": "int"
     },
     {
+      "type": "assignment",
+      "dest": "t2",
+      "source": "2",
+      "line": 3,
+      "data_type": "int"
+    },
+    {
       "type": "copy",
       "dest": "COUNTER",
       "source": "t2",
       "line": 3,
+      "data_type": "int"
+    },
+    {
+      "type": "assignment",
+      "dest": "t3",
+      "source": "24",
+      "line": 4,
       "data_type": "int"
     },
     {
@@ -65,9 +93,51 @@
       "data_type": "int"
     },
     {
+      "type": "copy",
+      "dest": "FIB_0",
+      "source": "FIB_1",
+      "line": 5,
+      "data_type": "int"
+    },
+    {
+      "type": "copy",
+      "dest": "FIB_1",
+      "source": "FIB_NEXT",
+      "line": 5,
+      "data_type": "int"
+    },
+    {
+      "type": "binary_op",
+      "result": "t7",
+      "operand1": "COUNTER",
+      "operator": "+",
+      "operand2": "1",
+      "line": 5,
+      "data_type": "int"
+    },
+    {
+      "type": "copy",
+      "dest": "COUNTER",
+      "source": "t7",
+      "line": 5,
+      "data_type": "int"
+    },
+    {
+      "type": "goto",
+      "target": "L0",
+      "line": 5
+    },
+    {
       "type": "label",
       "name": "L1",
       "line": 5
+    },
+    {
+      "type": "copy",
+      "dest": "RESULT",
+      "source": "FIB_NEXT",
+      "line": 6,
+      "data_type": "int"
     }
   ]
 }

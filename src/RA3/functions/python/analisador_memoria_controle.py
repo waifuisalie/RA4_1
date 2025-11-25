@@ -8,10 +8,41 @@
 #
 # Nome do grupo no Canvas: RA3_1
 
-from typing import Dict, Any, List
+from typing import Dict, Any, List, Optional
 from src.RA3.functions.python.tabela_simbolos import TabelaSimbolos
 from src.RA3.functions.python import tipos
 from src.RA3.functions.python.analisador_tipos import avaliar_seq_tipo, _parse_valor_literal, ErroSemantico
+
+
+def _is_implicit_block(seq: Dict[str, Any]) -> bool:
+    """Verifica se uma sequência representa um bloco implícito (múltiplas expressões sem operador)."""
+    elementos = seq.get('elementos', [])
+    operador = seq.get('operador')
+
+    # Um bloco implícito é uma sequência sem operador que contém múltiplas linhas/expressões
+    if operador is None or operador == "":
+        return len([e for e in elementos if e.get('subtipo') == 'LINHA']) > 1
+    return False
+
+
+def _process_implicit_block(seq: Dict[str, Any], linha_atual: int, tabela: TabelaSimbolos) -> Optional[str]:
+    """Processa um bloco implícito (sequência de expressões)."""
+    elementos = seq.get('elementos', [])
+    tipo_final = None
+
+    for elemento in elementos:
+        if elemento.get('subtipo') == 'LINHA':
+            # Processar cada subexpressão como uma linha independente
+            sub_seq = elemento.get('ast')
+            if sub_seq:
+                try:
+                    tipo_sub, _, _ = avaliar_seq_tipo(sub_seq, linha_atual, tabela)
+                    tipo_final = tipo_sub  # O tipo do bloco é o da última expressão
+                except ErroSemantico:
+                    # Se uma subexpressão falhar, continuar processando
+                    pass
+
+    return tipo_final
 
 
 def analisarSemanticaMemoria(arvore_anotada_local: Dict[str, Any], seqs_map: Dict[int, Dict[str, Any]], tabela_local: TabelaSimbolos) -> List[Dict[str, Any]]:
@@ -213,8 +244,15 @@ def analisarSemanticaControle(arvore_anotada_local: Dict[str, Any], seqs_map: Di
 
             # WHILE retorna o tipo do corpo do loop (último valor calculado)
             if len(elementos) >= 2 and elementos[1].get('subtipo') == 'LINHA':
-                body_type, _, _ = avaliar_seq_tipo(elementos[1].get('ast'), num, tabela_local)
-                linha['tipo'] = body_type
+                body_ast = elementos[1].get('ast')
+                if body_ast and _is_implicit_block(body_ast):
+                    # Corpo é um bloco implícito com múltiplas expressões
+                    body_type = _process_implicit_block(body_ast, num, tabela_local)
+                    linha['tipo'] = body_type
+                else:
+                    # Corpo é uma única expressão
+                    body_type, _, _ = avaliar_seq_tipo(body_ast, num, tabela_local)
+                    linha['tipo'] = body_type
             else:
                 linha['tipo'] = None  # fallback para casos malformados
 

@@ -11,8 +11,8 @@
 from .configuracaoGramatica import GRAMATICA_RPN, mapear_gramatica_para_tokens_reais
 
 def calcularFirst():
-    # Mapeia gramática teórica para tokens reais do projeto
-    gramatica = mapear_gramatica_para_tokens_reais(GRAMATICA_RPN)
+    # Usa gramática teórica diretamente
+    gramatica = GRAMATICA_RPN
     
     # Identifica não-terminais
     nao_terminais = set(gramatica.keys())

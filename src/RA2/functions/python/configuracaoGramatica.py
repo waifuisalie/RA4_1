@@ -29,8 +29,8 @@ GRAMATICA_RPN = {
     ],
     'OPERANDO_OPCIONAL': [['res'], ['epsilon']],
     'OPERADOR_FINAL': [
-        ['ARITH_OP'], 
-        ['COMP_OP'], 
+        ['ARITH_OP'],
+        ['COMP_OP'],
         ['LOGIC_OP'],
         ['CONTROL_OP']
     ],
