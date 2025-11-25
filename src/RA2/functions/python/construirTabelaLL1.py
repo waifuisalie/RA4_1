@@ -16,8 +16,8 @@ class ConflictError(Exception):
     pass
 
 def construirTabelaLL1():
-    # Mapeia gramática teórica para tokens reais do projeto
-    gramatica = mapear_gramatica_para_tokens_reais(GRAMATICA_RPN)
+    # Usa gramática teórica diretamente
+    gramatica = GRAMATICA_RPN
     nao_terminais = set(gramatica.keys())
     
     # Identifica todos os terminais

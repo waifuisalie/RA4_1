@@ -1,4 +1,10 @@
+# Inicializar contador = 1
 (1 COUNTER)
+# Inicializar resultado = 1
 (1 RESULT)
-(8 LIMIT)
-((COUNTER LIMIT <=) (((RESULT COUNTER *) RESULT)) WHILE)
+# Inicializar limite = 12
+(12 LIMIT)
+
+# Laço WHILE: enquanto COUNTER <= LIMIT
+# Corpo: RESULT = RESULT * COUNTER, COUNTER = COUNTER + 1
+((COUNTER LIMIT <=) (((RESULT COUNTER *) RESULT)) ((COUNTER 1 +) COUNTER) WHILE)
