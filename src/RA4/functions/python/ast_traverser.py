@@ -164,10 +164,15 @@ class ASTTraverser:
         else:
             raise ValueError(f"Operação aritmética requer pelo menos 2 operandos, recebeu {len(filhos)} na linha {numero_linha}")
 
+        # Inferir tipo do resultado se não fornecido pelo nó
+        inferred_type = tipo_inferido
+        if inferred_type is None:
+            inferred_type = self._infer_type_for_binary_op(operador, left_temp, right_temp)
+
         # Depois processa operação pai
         result_temp = self.manager.new_temp()
         self.instructions.append(
-            TACBinaryOp(result_temp, left_temp, operador, right_temp, numero_linha, tipo_inferido)
+            TACBinaryOp(result_temp, left_temp, operador, right_temp, numero_linha, inferred_type)
         )
 
         return result_temp
@@ -425,19 +430,9 @@ class ASTTraverser:
         value_temp = self._process_node(value_node)
         data_type = value_node.get("tipo_inferido")
 
-        # Gera TAC: variável = temp
-        # Se o tipo não foi inferido no nó, tentar recuperar o tipo a partir
-        # da última definição conhecida do operando (temp/variável) nas instruções
-        if data_type is None and isinstance(value_temp, str) and not TACInstruction.is_constant(value_temp):
-            inferred = None
-            for instr in reversed(self.instructions):
-                defined = getattr(instr, 'result', getattr(instr, 'dest', None))
-                if defined == value_temp:
-                    inferred = getattr(instr, 'data_type', None)
-                    if inferred:
-                        break
-            if inferred:
-                data_type = inferred
+        # Se não há tipo no nó, tentar inferir a partir do operando (constante, temp ou variável)
+        if data_type is None:
+            data_type = self._infer_type_for_operand(value_temp)
 
         self.instructions.append(TACCopy(var_name, value_temp, numero_linha, data_type))
 
@@ -462,15 +457,12 @@ class ASTTraverser:
         historical_temp = self._result_history[index]
         result_temp = self.manager.new_temp()
 
-        # Inferir tipo do histórico, se possível (procura última definição)
+        # Inferir tipo do histórico, se possível (procura última definição ou constante)
         inferred_type = None
-        if isinstance(historical_temp, str) and not TACInstruction.is_constant(historical_temp):
-            for instr in reversed(self.instructions):
-                defined = getattr(instr, 'result', getattr(instr, 'dest', None))
-                if defined == historical_temp:
-                    inferred_type = getattr(instr, 'data_type', None)
-                    if inferred_type:
-                        break
+        if TACInstruction.is_constant(historical_temp):
+            inferred_type = self._infer_type_for_operand(historical_temp)
+        elif isinstance(historical_temp, str):
+            inferred_type = self._infer_type_for_operand(historical_temp)
 
         self.instructions.append(TACCopy(result_temp, historical_temp, numero_linha, inferred_type))
 
@@ -479,6 +471,63 @@ class ASTTraverser:
     #########################
     # MÉTODOS UTILITÁRIOS
     #########################
+
+    def _infer_type_for_operand(self, operand: Optional[str]) -> Optional[str]:
+        """Inferir tipo ('int'|'real'|'boolean'|None) para um operando (constante, temp ou variável)."""
+        if operand is None:
+            return None
+
+        # Constantes numéricas
+        if TACInstruction.is_constant(operand):
+            # simples heurística: ponto decimal ou expoente indica real
+            if '.' in operand or 'e' in operand or 'E' in operand:
+                return 'real'
+            return 'int'
+
+        # Procurar última definição nas instruções geradas
+        for instr in reversed(self.instructions):
+            defined = getattr(instr, 'result', getattr(instr, 'dest', None))
+            if defined == operand:
+                return getattr(instr, 'data_type', None)
+
+        # Não encontrado
+        return None
+
+    def _infer_type_for_binary_op(self, operator: str, left_operand: Optional[str], right_operand: Optional[str]) -> Optional[str]:
+        """Inferir tipo de resultado para uma operação binária com base em operandos e operador."""
+        # Regra: se operador é divisão real '|', o resultado é real
+        if operator == '|':
+            return 'real'
+        # divisão inteira '/'
+        if operator == '/':
+            return 'int'
+
+        left_type = self._infer_type_for_operand(left_operand)
+        right_type = self._infer_type_for_operand(right_operand)
+
+        # Exponentiation: if any real -> real, else int
+        if operator == '^':
+            if left_type == 'real' or right_type == 'real':
+                return 'real'
+            if left_type == 'int' and right_type == 'int':
+                return 'int'
+            return None
+
+        # Modulo: prefer int when both ints
+        if operator == '%':
+            if left_type == 'int' and right_type == 'int':
+                return 'int'
+            if left_type == 'real' or right_type == 'real':
+                return 'real'
+            return None
+
+        # Default arithmetic: if any operand real -> real, else if both int -> int
+        if left_type == 'real' or right_type == 'real':
+            return 'real'
+        if left_type == 'int' and right_type == 'int':
+            return 'int'
+
+        return None
 
     def get_statistics(self) -> Dict[str, Any]:
         """Retorna estatísticas sobre o TAC gerado."""
