@@ -30,6 +30,11 @@ from .tac_instructions import (
     TACIfFalseGoto,
 )
 
+# Scaling factor for floating-point to fixed-point conversion
+# Floats are multiplied by this factor to convert to scaled integers
+# 100x provides 0.01 precision and prevents 16-bit overflow for Taylor series
+FLOAT_SCALE_FACTOR = 100
+
 
 #########################
 # CLASSE PRINCIPAL: ASTTraverser
@@ -118,14 +123,18 @@ class ASTTraverser:
         # Determina tipo de dado
         if "real" in subtipo:
             data_type = "real"
+            # Convert float literal to scaled integer (100x for 16-bit arithmetic)
+            # Example: 0.5 → 50, 1.0 → 100, 2.5 → 250
+            valor = int(float(valor) * FLOAT_SCALE_FACTOR)
         elif "inteiro" in subtipo:
             data_type = "int"
+            # Integers stay as-is (no scaling needed)
         elif subtipo == "variavel":
             return valor  # Referência a variável, retorna nome diretamente
         else:
             data_type = None
 
-        # Gera TAC: temp = valor
+        # Gera TAC: temp = valor (now scaled if real)
         temp = self.manager.new_temp()
         self.instructions.append(
             TACAssignment(temp, valor, numero_linha, data_type)
