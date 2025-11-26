@@ -1057,10 +1057,22 @@ class GeradorAssembly:
             Linhas Assembly geradas
         """
         label_name = instr["name"]
-        return [
-            f"{label_name}:",
-            ""
-        ]
+
+        lines = [f"{label_name}:"]
+
+        # Se for o label L1 (fim do programa), adicionar impressão do resultado
+        if label_name == "L1":
+            # Assumir que FINAL_COS está nos registradores r30:r31
+            lines.extend([
+                "    ; Imprimir resultado final via UART",
+                "    mov r4, r30    ; Copiar FINAL_COS para parâmetros da função",
+                "    mov r5, r31",
+                "    rcall send_number_16bit",
+                ""
+            ])
+
+        lines.append("")
+        return lines
 
     def _processar_goto(self, instr: Dict[str, Any]) -> List[str]:
         """
