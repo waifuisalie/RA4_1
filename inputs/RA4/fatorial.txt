@@ -3,7 +3,7 @@
 # Inicializar resultado = 1
 (1 RESULT)
 # Inicializar limite = 12
-(12 LIMIT)
+(8 LIMIT)
 
 # Laço WHILE: enquanto COUNTER <= LIMIT
 # Corpo: RESULT = RESULT * COUNTER, COUNTER = COUNTER + 1

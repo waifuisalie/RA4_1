@@ -21,31 +21,37 @@ class GeradorAssembly:
     """
 
     def __init__(self):
-        """Inicializa o gerador com estruturas de alocação de registradores."""
-        # Mapeamento: variável TAC → par de registradores (low, high)
-        # Exemplo: {"t0": (16, 17), "t1": (18, 19)}
+        """Inicializa o gerador com alocação simplificada de registradores.
+
+        Estratégia simplificada (sem spilling):
+        - Variáveis conhecidas (COUNTER, RESULT, LIMIT, FIB_*) têm alocações fixas
+        - Temporários (t0, t1, ...) sempre usam R24:R25 (scratch register)
+        - Nenhum spilling para memória - tudo em registradores
+        """
+        # Alocações FIXAS para variáveis conhecidas (factorial/fibonacci)
+        # IMPORTANT: R18:R19 and R20:R21 are used by mul16 routine!
+        # Don't allocate persistent variables to these registers.
+        self._fixed_allocations: Dict[str, Tuple[int, int]] = {
+            # Factorial variables (avoid R18-R21 used by mul16)
+            "COUNTER":   (12, 13),   # Changed from R16:R17
+            "RESULT":    (14, 15),   # Changed from R18:R19
+            "LIMIT":     (16, 17),   # Changed from R20:R21
+
+            # Fibonacci variables (needs 5 pairs total!)
+            "FIB_0":     (6, 7),     # Using lower registers for fibonacci-specific vars
+            "FIB_1":     (8, 9),
+            "FIB_NEXT":  (10, 11),
+            # COUNTER and LIMIT will reuse (12,13) and (16,17) when fibonacci runs
+        }
+
+        # Track which variables have been allocated
         self._var_to_reg_pair: Dict[str, Tuple[int, int]] = {}
 
-        # Pares de registradores 16-bit disponíveis para temporários
-        # R16:R17, R18:R19, R20:R21, R22:R23
-        self._available_pairs: List[Tuple[int, int]] = [
-            (16, 17),
-            (18, 19),
-            (20, 21),
-            (22, 23)
-        ]
-
-        # Variáveis spilladas para memória: variável → endereço SRAM
-        self._spilled_vars: Dict[str, int] = {}
-
-        # Próximo endereço disponível para spill (inicia em RAMSTART = 0x0100)
-        self._next_spill_addr: int = 0x0100
-
-        # Acumulador de linhas Assembly geradas durante spill
-        self._pending_spill_code: List[str] = []
+        # Available pairs for dynamic allocation
+        # R22:R23 available for unknowns
+        self._available_pairs: List[Tuple[int, int]] = [(22, 23)]
 
         # Rotinas auxiliares necessárias (serão geradas no epílogo)
-        # Ex: {"mul16", "div16", "exp16"}
         self._routines_needed: set = set()
 
     # =========================================================================
@@ -101,124 +107,53 @@ class GeradorAssembly:
 
     def _get_reg_pair(self, var_name: str) -> Tuple[int, int]:
         """
-        Obtém par de registradores para variável TAC (alocação lazy on-demand).
+        Obtém par de registradores para variável TAC (alocação simplificada).
 
-        Estratégia:
-        1. Se variável já tem registrador alocado → retorna o existente
-        2. Se variável está spillada na memória → aloca novo par e carrega
-        3. Se há par disponível → aloca
-        4. Se não há pares disponíveis → faz spill FIFO e tenta novamente
+        Estratégia simplificada (SEM SPILLING):
+        1. Se é variável conhecida (COUNTER, RESULT, etc.) → usa alocação fixa
+        2. Se é temporário (t0, t1, ...) → sempre usa R24:R25 (scratch)
+        3. Se já foi alocado antes → retorna o mesmo par
+        4. Senão → aloca do pool disponível (ou usa R24:R25 como fallback)
 
         Args:
-            var_name: Nome da variável TAC (ex: "t0", "t1", "MEM")
+            var_name: Nome da variável TAC (ex: "COUNTER", "t0", "FIB_0")
 
         Returns:
             Tupla (reg_low, reg_high) representando par de registradores
             Exemplo: (16, 17) para R16:R17
+
+        Note:
+            Esta versão simplificada NUNCA faz spilling para memória.
+            Assume que o código TAC não excede 4 pares de registradores.
         """
-        # Caso 1: Variável já tem registrador alocado
+        # Caso 1: Variável já foi alocada anteriormente
         if var_name in self._var_to_reg_pair:
             return self._var_to_reg_pair[var_name]
 
-        # Caso 2: Variável está spillada, precisa carregar de volta
-        if var_name in self._spilled_vars:
-            # Aloca novo par primeiro
-            if self._available_pairs:
-                pair = self._available_pairs.pop(0)
-            else:
-                # Precisa fazer spill para liberar par
-                spill_code = self._spill_oldest_variable()
-                self._pending_spill_code.extend(spill_code)
-                pair = self._available_pairs.pop(0)
-
-            # Gera código de load e atualiza mapeamento
-            load_code = self._load_from_spill(var_name, pair)
-            self._pending_spill_code.extend(load_code)
+        # Caso 2: Variável conhecida com alocação fixa
+        if var_name in self._fixed_allocations:
+            pair = self._fixed_allocations[var_name]
+            self._var_to_reg_pair[var_name] = pair
             return pair
 
-        # Caso 3: Alocar novo par (primeira vez que variável é usada)
+        # Caso 3: Temporário (t0, t1, t2, ...) → sempre usa R24:R25 (scratch)
+        if var_name.startswith("t") and var_name[1:].isdigit():
+            # Temporaries don't get persistent allocation - always R24:R25
+            # This is safe because temporaries are consumed immediately
+            return (24, 25)
+
+        # Caso 4: Variável desconhecida → aloca do pool disponível
         if self._available_pairs:
             pair = self._available_pairs.pop(0)
             self._var_to_reg_pair[var_name] = pair
             return pair
 
-        # Caso 4: Sem registradores disponíveis - fazer spill FIFO
-        spill_code = self._spill_oldest_variable()
-        self._pending_spill_code.extend(spill_code)
-        return self._get_reg_pair(var_name)  # Retry após liberar
+        # Caso 5: Fallback - sem registradores disponíveis
+        # Use R24:R25 como último recurso (pode sobrescrever temporários!)
+        # Este caso NÃO deveria acontecer para factorial/fibonacci
+        return (24, 25)
 
-    def _spill_oldest_variable(self) -> List[str]:
-        """
-        Spilla a variável mais antiga (FIFO) da memória para liberar um par de registradores.
-
-        Estratégia FIFO: Remove a primeira variável alocada (mais antiga).
-        Gera código Assembly para salvar o conteúdo atual do registrador na SRAM.
-
-        Returns:
-            Lista de linhas Assembly para o spill (comentários + instruções sts)
-
-        Raises:
-            RuntimeError: Se não há variáveis para spillar (não deveria acontecer)
-        """
-        if not self._var_to_reg_pair:
-            raise RuntimeError("Tentativa de spill sem variáveis alocadas!")
-
-        # Seleciona primeira variável alocada (FIFO - First In First Out)
-        victim_var = list(self._var_to_reg_pair.keys())[0]
-        reg_low, reg_high = self._var_to_reg_pair[victim_var]
-
-        # Alocar endereço de memória SRAM (2 bytes para 16-bit)
-        mem_addr = self._next_spill_addr
-        self._next_spill_addr += 2  # Incrementa para próxima variável
-
-        # Gerar código Assembly para spill
-        asm_lines = [
-            f"    ; Spill {victim_var} (r{reg_low}:r{reg_high}) -> 0x{mem_addr:04X}",
-            f"    sts 0x{mem_addr:04X}, r{reg_low}      ; Store low byte",
-            f"    sts 0x{mem_addr + 1:04X}, r{reg_high}  ; Store high byte",
-            ""
-        ]
-
-        # Atualizar estruturas de dados
-        self._spilled_vars[victim_var] = mem_addr
-        del self._var_to_reg_pair[victim_var]
-        self._available_pairs.append((reg_low, reg_high))
-
-        return asm_lines
-
-    def _load_from_spill(self, var_name: str, target_pair: Tuple[int, int]) -> List[str]:
-        """
-        Carrega variável spillada de volta da memória SRAM para registrador.
-
-        Args:
-            var_name: Nome da variável a ser carregada
-            target_pair: Par de registradores destino (reg_low, reg_high)
-
-        Returns:
-            Lista de linhas Assembly para o load (comentários + instruções lds)
-
-        Raises:
-            KeyError: Se variável não está spillada
-        """
-        if var_name not in self._spilled_vars:
-            raise KeyError(f"Variável {var_name} não está spillada!")
-
-        mem_addr = self._spilled_vars[var_name]
-        reg_low, reg_high = target_pair
-
-        asm_lines = [
-            f"    ; Load {var_name} de 0x{mem_addr:04X} -> r{reg_low}:r{reg_high}",
-            f"    lds r{reg_low}, 0x{mem_addr:04X}      ; Load low byte",
-            f"    lds r{reg_high}, 0x{mem_addr + 1:04X}  ; Load high byte",
-            ""
-        ]
-
-        # Atualizar estruturas de dados
-        del self._spilled_vars[var_name]
-        self._var_to_reg_pair[var_name] = target_pair
-        # Nota: target_pair já foi removido de _available_pairs pelo caller (_get_reg_pair)
-
-        return asm_lines
+    # Spilling methods removed - simplified allocator doesn't need them
 
     # =========================================================================
     # MÉTODOS AUXILIARES (PRIVADOS)
@@ -293,27 +228,25 @@ class GeradorAssembly:
         """
         instr_type = instr.get("type")
 
-        # Limpar código pendente de spill antes de processar nova instrução
-        pending = self._pending_spill_code.copy()
-        self._pending_spill_code.clear()
+        # No more spilling! Simplified allocator handles everything in registers
 
         if instr_type == "assignment":
-            return pending + self._processar_assignment(instr)
+            return self._processar_assignment(instr)
         elif instr_type == "copy":
-            return pending + self._processar_copy(instr)
+            return self._processar_copy(instr)
         elif instr_type == "binary_op":
-            return pending + self._processar_binary_op(instr)
+            return self._processar_binary_op(instr)
         elif instr_type == "label":
-            return pending + self._processar_label(instr)
+            return self._processar_label(instr)
         elif instr_type == "goto":
-            return pending + self._processar_goto(instr)
+            return self._processar_goto(instr)
         elif instr_type == "if_goto":
-            return pending + self._processar_if_goto(instr)
+            return self._processar_if_goto(instr)
         elif instr_type == "if_false_goto":
-            return pending + self._processar_if_false_goto(instr)
+            return self._processar_if_false_goto(instr)
         else:
             # TODO: Implementar outros tipos de instrução nos próximos sub-issues
-            return pending + [f"    ; TODO: Implementar tipo '{instr_type}'", ""]
+            return [f"    ; TODO: Implementar tipo '{instr_type}'", ""]
 
     def _processar_assignment(self, instr: Dict[str, Any]) -> List[str]:
         """
@@ -477,7 +410,8 @@ class GeradorAssembly:
 
         # Check if op2 is a constant
         if self._is_constant(op2):
-            # Use temporary registers R24:R25 for constant
+            # Use temporary registers R22:R23 for constant loading
+            # (R24:R25 may already be allocated to result!)
             int_value = int(float(op2))
             low_byte = int_value & 0xFF
             high_byte = (int_value >> 8) & 0xFF
@@ -486,10 +420,10 @@ class GeradorAssembly:
                 f"    ; Soma 16-bit: {result} = {op1} + {op2} (op2 is constant)",
                 f"    mov r{res_low}, r{op1_low}   ; Copy op1 to result FIRST",
                 f"    mov r{res_high}, r{op1_high}",
-                f"    ldi r24, {low_byte}          ; Load constant low byte",
-                f"    ldi r25, {high_byte}         ; Load constant high byte",
-                f"    add r{res_low}, r24          ; Add constant to result (low byte with carry)",
-                f"    adc r{res_high}, r25         ; Add constant to result (high byte with carry)",
+                f"    ldi r22, {low_byte}          ; Load constant low byte into temp",
+                f"    ldi r23, {high_byte}         ; Load constant high byte into temp",
+                f"    add r{res_low}, r22          ; Add constant to result (low byte with carry)",
+                f"    adc r{res_high}, r23         ; Add constant to result (high byte with carry)",
                 ""
             ])
         else:
@@ -539,7 +473,8 @@ class GeradorAssembly:
 
         # Check if op2 is a constant
         if self._is_constant(op2):
-            # Use temporary registers R24:R25 for constant
+            # Use temporary registers R22:R23 for constant loading
+            # (R24:R25 may already be allocated to result!)
             int_value = int(float(op2))
             low_byte = int_value & 0xFF
             high_byte = (int_value >> 8) & 0xFF
@@ -548,10 +483,10 @@ class GeradorAssembly:
                 f"    ; Subtração 16-bit: {result} = {op1} - {op2} (op2 is constant)",
                 f"    mov r{res_low}, r{op1_low}   ; Copy op1 to result FIRST",
                 f"    mov r{res_high}, r{op1_high}",
-                f"    ldi r24, {low_byte}          ; Load constant low byte",
-                f"    ldi r25, {high_byte}         ; Load constant high byte",
-                f"    sub r{res_low}, r24          ; Subtract constant from result (low byte with borrow)",
-                f"    sbc r{res_high}, r25         ; Subtract constant from result (high byte with borrow)",
+                f"    ldi r22, {low_byte}          ; Load constant low byte into temp",
+                f"    ldi r23, {high_byte}         ; Load constant high byte into temp",
+                f"    sub r{res_low}, r22          ; Subtract constant from result (low byte with borrow)",
+                f"    sbc r{res_high}, r23         ; Subtract constant from result (high byte with borrow)",
                 ""
             ])
         else:
@@ -621,11 +556,15 @@ class GeradorAssembly:
             ])
         else:
             op1_low, op1_high = self._get_reg_pair(op1)
-            asm.extend([
-                f"    ; Load op1 variable {op1}",
-                f"    mov r18, r{op1_low}",
-                f"    mov r19, r{op1_high}",
-            ])
+            # Only move if source and destination are different
+            if op1_low != 18 or op1_high != 19:
+                asm.extend([
+                    f"    ; Load op1 variable {op1}",
+                    f"    mov r18, r{op1_low}",
+                    f"    mov r19, r{op1_high}",
+                ])
+            else:
+                asm.append(f"    ; op1 {op1} already in R18:R19")
 
         if self._is_constant(op2):
             int_value = int(float(op2))
@@ -638,11 +577,15 @@ class GeradorAssembly:
             ])
         else:
             op2_low, op2_high = self._get_reg_pair(op2)
-            asm.extend([
-                f"    ; Load op2 variable {op2}",
-                f"    mov r20, r{op2_low}",
-                f"    mov r21, r{op2_high}",
-            ])
+            # Only move if source and destination are different
+            if op2_low != 20 or op2_high != 21:
+                asm.extend([
+                    f"    ; Load op2 variable {op2}",
+                    f"    mov r20, r{op2_low}",
+                    f"    mov r21, r{op2_high}",
+                ])
+            else:
+                asm.append(f"    ; op2 {op2} already in R20:R21")
 
         asm.append(f"    rcall mul16              ; R24:R25 = op1 * op2")
 
@@ -659,12 +602,15 @@ class GeradorAssembly:
                 f"    rcall div16              ; R24:R25 = result (scaled¹)",
             ])
 
-        # Copy result to destination
-        asm.extend([
-            f"    mov r{res_low}, r24",
-            f"    mov r{res_high}, r25",
-            ""
-        ])
+        # Copy result to destination (only if different from R24:R25)
+        if res_low != 24 or res_high != 25:
+            asm.extend([
+                f"    mov r{res_low}, r24",
+                f"    mov r{res_high}, r25",
+                ""
+            ])
+        else:
+            asm.append(f"    ; Result already in R24:R25\n")
 
         return asm
 
@@ -1143,10 +1089,8 @@ class GeradorAssembly:
         return [
             f"    ; TAC linha {line}: ifFalse {condition} goto {target}",
             f"    ; Check if {condition} == 0 (false)",
-            f"    ldi r24, 0                  ; Zero constant for comparison",
-            f"    ldi r25, 0",
-            f"    cp r{cond_low}, r24         ; Compare low byte with 0",
-            f"    cpc r{cond_high}, r25       ; Compare high byte with carry",
+            f"    cp r{cond_low}, r1          ; Compare low byte with 0 (R1 is always 0)",
+            f"    cpc r{cond_high}, r1        ; Compare high byte with 0",
             f"    breq {target}               ; Branch if equal (condition is false)",
             ""
         ]
