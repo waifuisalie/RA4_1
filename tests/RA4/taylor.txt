@@ -1,0 +1,42 @@
+# ====================================================================
+# Taylor Series: cos(x) ≈ 1 - x²/2! + x⁴/4! - x⁶/6!
+# ====================================================================
+# Uses integer scaling by 1000 (1.0 → 1000)
+# Input: x = 1.0 (scaled as 1000)
+# Expected output: ~540 (represents 0.540 for cos(1.0))
+# ====================================================================
+
+# x = 1.0 (scaled as 1000)
+(1000 X_VAL)
+
+# Calculate x² once (reuse for all terms)
+((X_VAL X_VAL *) X_SQUARED)
+
+# TERM 1: 1.0 (scaled as 1000)
+(1000 TERM1)
+
+# TERM 2: -x²/2!
+# x²/2! where 2! = 2, scaled: x²/2000
+((X_SQUARED 2000 |) TEMP1)
+((0 TEMP1 -) TERM2)
+
+# TERM 3: x⁴/4!
+# x⁴ = x² × x²
+((X_SQUARED X_SQUARED *) X_POW4)
+# x⁴/4! where 4! = 24, scaled: x⁴/24000
+((X_POW4 24000 |) TERM3)
+
+# TERM 4: -x⁶/6!
+# x⁶ = x⁴ × x²
+((X_POW4 X_SQUARED *) X_POW6)
+# x⁶/6! where 6! = 720, scaled: x⁶/720000
+((X_POW6 720000 |) TEMP2)
+((0 TEMP2 -) TERM4)
+
+# Sum all terms: TERM1 + TERM2 + TERM3 + TERM4
+((TERM1 TERM2 +) PARTIAL1)
+((PARTIAL1 TERM3 +) PARTIAL2)
+((PARTIAL2 TERM4 +) RESULT_COS)
+
+# Store final result
+(RESULT_COS FINAL_COS)

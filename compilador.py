@@ -43,6 +43,7 @@ from src.RA4.functions.python.arduino_tools import (
     compile_assembly,
     upload_hex
 )
+from src.RA4.functions.python.gerador_assembly import GeradorAssembly
 
 BASE_DIR    = Path(__file__).resolve().parent        # raiz do repo
 OUT_TOKENS  = BASE_DIR / "outputs" / "RA1" / "tokens" / "tokens_gerados.txt"
@@ -516,6 +517,63 @@ def executar_ra4_compilacao_upload(arquivo_entrada):
 
     except Exception as e:
         print(f"  [ERRO] Erro na compilação/upload: {e}")
+        
+def executar_ra4_geracao_assembly(arquivo_entrada):
+    """Executa a geração de Assembly (RA4)
+
+    Carrega TAC otimizado e gera código Assembly AVR.
+
+    Args:
+        arquivo_entrada: Nome do arquivo de entrada original
+
+    Output Files:
+        - outputs/RA4/<arquivo_base>.s
+    """
+    print("\n--- RA4: GERAÇÃO DE ASSEMBLY ---")
+
+    try:
+        # Determinar nome base do arquivo (sem extensão)
+        base_filename = Path(arquivo_entrada).stem
+
+        # TEMPORARY WORKAROUND: Use unoptimized TAC because optimizer removes constant assignments
+        # Load optimized TAC for assembly generation
+        tac_otimizado_path = BASE_DIR / "outputs" / "RA4" / "tac_otimizado.json"
+        output_dir = BASE_DIR / "outputs" / "RA4"
+
+        # Carregar TAC otimizado
+        with open(str(tac_otimizado_path), 'r', encoding='utf-8') as f:
+            tac_data = json.load(f)
+            # Extract just the instructions from the metadata wrapper
+            if "instructions" in tac_data:
+                tac_otimizado = tac_data
+            else:
+                # Wrap in expected format if needed
+                tac_otimizado = {"instructions": tac_data}
+
+        # Instanciar gerador de Assembly
+        gerador = GeradorAssembly()
+
+        # Gerar Assembly
+        assembly_code = gerador.gerarAssembly(tac_otimizado)
+
+        # Determinar arquivo de saída
+        output_file = output_dir / f"{base_filename}.s"
+
+        # Criar diretório se não existir
+        output_dir.mkdir(parents=True, exist_ok=True)
+
+        # Salvar Assembly
+        with open(str(output_file), 'w', encoding='utf-8') as f:
+            f.write(assembly_code)
+
+        print(f"    [OK] Assembly gerado com sucesso")
+        print(f"    [OK] Arquivo salvo em: {output_file.relative_to(BASE_DIR)}")
+
+    except FileNotFoundError:
+        print(f"  [ERROR] Arquivo de TAC otimizado não encontrado")
+        print("  Certifique-se de que a otimização de TAC (RA4) foi executada corretamente.")
+    except Exception as e:
+        print(f"  [ERROR] ERRO na geração de Assembly: {e}")
         traceback.print_exc()
 
 
@@ -532,7 +590,9 @@ def main():
     7. Executa análise semântica (RA3)
     8. Gera TAC (RA4)
     9. Otimiza TAC (RA4)
-    10. Compila Assembly e faz upload (RA4)
+    10. Gera Assembly AVR (RA4)
+    11. Compila Assembly e faz upload (RA4)
+    
 
     Levanta:
         SystemExit: Se houver erro crítico em qualquer fase
@@ -588,8 +648,12 @@ def main():
     # Fase 8: Otimização de TAC (RA4)
     executar_ra4_otimizacao_tac(arquivo_entrada)
 
-    # Fase 9: Compilação de Assembly e Upload para Arduino (RA4)
+    # Fase 9: Geração de Assembly (RA4)
+    executar_ra4_geracao_assembly(arquivo_entrada)
+    
+    # Fase 10: Compilação de Assembly e Upload para Arduino (RA4)
     executar_ra4_compilacao_upload(arquivo_entrada)
+
 
 
 if __name__ == "__main__":
