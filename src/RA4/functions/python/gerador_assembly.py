@@ -9,10 +9,8 @@
 # Nome do grupo no Canvas: RA4_1
 
 """
-Gerador de Código Assembly AVR para Arduino Uno (ATmega328P)
-
-Este módulo implementa a geração de código Assembly AVR a partir de TAC otimizado.
-Inclui alocação de registradores, spilling para memória e mapeamento TAC → Assembly.
+Gerador de código Assembly AVR pro Arduino Uno.
+Recebe o TAC otimizado e gera o código Assembly completo.
 """
 
 from typing import Dict, List, Tuple, Optional, Any
@@ -21,77 +19,39 @@ import json
 
 class GeradorAssembly:
     """
-    Gerador de Assembly AVR com alocação de registradores integrada.
-
-    Características:
-    - Suporte a 16-bit (4 pares de registradores: R16:R17, R18:R19, R20:R21, R22:R23)
-    - Spilling FIFO para SRAM quando registradores esgotam
-    - Constantes literais carregadas com LDI (sem alocar do pool)
-    - Mapeamento completo TAC → AVR Assembly
+    Gerador de Assembly AVR pra ATmega328P.
     """
 
     def __init__(self):
-        """Inicializa o gerador com alocação simplificada de registradores.
-
-        Estratégia simplificada (sem spilling):
-        - Variáveis conhecidas (COUNTER, RESULT, LIMIT, FIB_*) têm alocações fixas
-        - Temporários (t0, t1, ...) sempre usam R24:R25 (scratch register)
-        - Nenhum spilling para memória - tudo em registradores
         """
-        # Alocações FIXAS para variáveis conhecidas (factorial/fibonacci)
-        # IMPORTANT: R18:R19 and R20:R21 are used by mul16 routine!
-        # Don't allocate persistent variables to these registers.
+        Inicializa o gerador de assembly.
+        """
+        # Alocação fixa de registradores pras variáveis
+        # IMPORTANTE: R18-R21 são usados pela rotina de multiplicação
         self._fixed_allocations: Dict[str, Tuple[int, int]] = {
-            # Factorial variables (avoid R18-R21 used by mul16)
-            "COUNTER":   (12, 13),   # Changed from R16:R17
-            "RESULT":    (14, 15),   # Changed from R18:R19
-            "LIMIT":     (16, 17),   # Changed from R20:R21
+            # Variáveis do fatorial
+            "COUNTER":   (12, 13),
+            "RESULT":    (14, 15),
+            "LIMIT":     (16, 17),
 
-            # Fibonacci variables (needs 5 pairs total!)
-            "FIB_0":     (6, 7),     # Using lower registers for fibonacci-specific vars
+            # Variáveis do fibonacci
+            "FIB_0":     (6, 7),
             "FIB_1":     (8, 9),
             "FIB_NEXT":  (10, 11),
-            # COUNTER and LIMIT will reuse (12,13) and (16,17) when fibonacci runs
         }
 
-        # Track which variables have been allocated
+        # Guarda quais variáveis já foram alocadas
         self._var_to_reg_pair: Dict[str, Tuple[int, int]] = {}
 
-        # Available pairs for dynamic allocation
-        # R22:R23 available for unknowns
+        # Registradores disponíveis pra alocação dinâmica
         self._available_pairs: List[Tuple[int, int]] = [(22, 23)]
 
-        # Rotinas auxiliares necessárias (serão geradas no epílogo)
+        # Rotinas auxiliares que vão ser geradas no final
         self._routines_needed: set = set()
-
-    # =========================================================================
-    # FUNÇÃO PRINCIPAL - INTERFACE PÚBLICA
-    # =========================================================================
 
     def gerarAssembly(self, tac_otimizado: Dict[str, Any]) -> str:
         """
-        Gera código Assembly AVR a partir de TAC otimizado.
-
-        Esta é a ÚNICA função pública do gerador.
-
-        Args:
-            tac_otimizado: Dicionário com chave "instructions" contendo lista de instruções TAC
-                          Formato esperado:
-                          {
-                              "instructions": [
-                                  {"type": "assignment", "dest": "t0", "source": "1", "line": 1},
-                                  {"type": "binary_op", "result": "t2", "operand1": "t0",
-                                   "operator": "+", "operand2": "t1", "line": 2},
-                                  ...
-                              ]
-                          }
-
-        Returns:
-            String contendo o código Assembly AVR completo, pronto para ser salvo em .s
-
-        Raises:
-            KeyError: Se tac_otimizado não contém chave "instructions"
-            ValueError: Se alguma instrução TAC tiver formato inválido
+        Gera o código Assembly a partir do TAC.
         """
         if "instructions" not in tac_otimizado:
             raise KeyError("TAC otimizado deve conter chave 'instructions'")
@@ -117,24 +77,7 @@ class GeradorAssembly:
 
     def _get_reg_pair(self, var_name: str) -> Tuple[int, int]:
         """
-        Obtém par de registradores para variável TAC (alocação simplificada).
-
-        Estratégia simplificada (SEM SPILLING):
-        1. Se é variável conhecida (COUNTER, RESULT, etc.) → usa alocação fixa
-        2. Se é temporário (t0, t1, ...) → sempre usa R24:R25 (scratch)
-        3. Se já foi alocado antes → retorna o mesmo par
-        4. Senão → aloca do pool disponível (ou usa R24:R25 como fallback)
-
-        Args:
-            var_name: Nome da variável TAC (ex: "COUNTER", "t0", "FIB_0")
-
-        Returns:
-            Tupla (reg_low, reg_high) representando par de registradores
-            Exemplo: (16, 17) para R16:R17
-
-        Note:
-            Esta versão simplificada NUNCA faz spilling para memória.
-            Assume que o código TAC não excede 4 pares de registradores.
+        Retorna o par de registradores pra uma variável.
         """
         # Caso 1: Variável já foi alocada anteriormente
         if var_name in self._var_to_reg_pair:
@@ -146,10 +89,9 @@ class GeradorAssembly:
             self._var_to_reg_pair[var_name] = pair
             return pair
 
-        # Caso 3: Temporário (t0, t1, t2, ...) → sempre usa R24:R25 (scratch)
+        # Caso 3: Temporário (t0, t1, t2, ...) → sempre usa R24:R25
         if var_name.startswith("t") and var_name[1:].isdigit():
-            # Temporaries don't get persistent allocation - always R24:R25
-            # This is safe because temporaries are consumed immediately
+            # Temporários sempre usam R24:R25
             return (24, 25)
 
         # Caso 4: Variável desconhecida → aloca do pool disponível
@@ -159,11 +101,8 @@ class GeradorAssembly:
             return pair
 
         # Caso 5: Fallback - sem registradores disponíveis
-        # Use R24:R25 como último recurso (pode sobrescrever temporários!)
-        # Este caso NÃO deveria acontecer para factorial/fibonacci
+        # Usa R24:R25 como último recurso
         return (24, 25)
-
-    # Spilling methods removed - simplified allocator doesn't need them
 
     # =========================================================================
     # MÉTODOS AUXILIARES (PRIVADOS)
@@ -171,15 +110,7 @@ class GeradorAssembly:
 
     def _is_constant(self, operand: str) -> bool:
         """
-        Verifica se operando é uma constante literal numérica.
-
-        Constantes não alocam registradores do pool - são carregadas com LDI.
-
-        Args:
-            operand: String do operando (ex: "5", "3.14", "t0")
-
-        Returns:
-            True se é número (int ou float), False se é variável
+        Verifica se é uma constante numérica.
         """
         try:
             float(operand)
@@ -189,25 +120,9 @@ class GeradorAssembly:
 
     def _load_constant_16bit(self, value: float, reg_low: int, reg_high: int) -> List[str]:
         """
-        Gera código Assembly para carregar constante literal em par de registradores.
-
-        Usa instrução LDI (Load Immediate) - não consome do pool de registradores.
-        Para inteiros, armazena em formato 16-bit little-endian.
-
-        Args:
-            value: Valor da constante (int ou float)
-            reg_low: Registrador para byte baixo
-            reg_high: Registrador para byte alto
-
-        Returns:
-            Lista de linhas Assembly (comentário + 2x ldi)
-
-        Note:
-            Float de 16-bit (half-precision) será implementado em sub-issue 3.5
-            Por enquanto, trata apenas inteiros
+        Carrega uma constante em um par de registradores.
         """
-        # TODO: Implementar conversão para float16 (IEEE 754 half-precision) no sub-issue 3.5
-        # Por enquanto, assume inteiro
+        # Por enquanto só funciona com inteiros
         int_value = int(value)
 
         low_byte = int_value & 0xFF
@@ -225,20 +140,9 @@ class GeradorAssembly:
 
     def _processar_instrucao(self, instr: Dict[str, Any]) -> List[str]:
         """
-        Processa uma instrução TAC e gera código Assembly correspondente.
-
-        Args:
-            instr: Dicionário representando instrução TAC
-
-        Returns:
-            Lista de linhas Assembly geradas
-
-        Raises:
-            ValueError: Se tipo de instrução é inválido ou não implementado
+        Processa uma instrução TAC e gera Assembly.
         """
         instr_type = instr.get("type")
-
-        # No more spilling! Simplified allocator handles everything in registers
 
         if instr_type == "assignment":
             return self._processar_assignment(instr)
@@ -260,17 +164,7 @@ class GeradorAssembly:
 
     def _processar_assignment(self, instr: Dict[str, Any]) -> List[str]:
         """
-        Processa instrução de atribuição: dest = source
-
-        Exemplos TAC:
-        - t0 = 5     (constante)
-        - t1 = t0    (cópia entre variáveis)
-
-        Args:
-            instr: {"type": "assignment", "dest": "t0", "source": "5", "line": 1}
-
-        Returns:
-            Linhas Assembly geradas
+        Processa atribuição simples: dest = source
         """
         dest = instr["dest"]
         source = instr["source"]
@@ -297,21 +191,7 @@ class GeradorAssembly:
 
     def _processar_copy(self, instr: Dict[str, Any]) -> List[str]:
         """
-        Processa instrução de cópia: dest = source
-
-        Diferente de assignment, copy é usado para renomear variáveis
-        após otimizações (ex: X_VAL = t0, X_SQUARED = t1).
-
-        Exemplos TAC:
-        - X_VAL = t0         (renomear temporário)
-        - RESULT_COS = t17   (nomear resultado final)
-        - t0 = 1000          (constante)
-
-        Args:
-            instr: {"type": "copy", "dest": "X_VAL", "source": "t0", "line": 1}
-
-        Returns:
-            Linhas Assembly geradas
+        Processa cópia entre variáveis: dest = source
         """
         dest = instr["dest"]
         source = instr["source"]
@@ -339,16 +219,6 @@ class GeradorAssembly:
     def _processar_binary_op(self, instr: Dict[str, Any]) -> List[str]:
         """
         Processa operação binária: result = operand1 op operand2
-
-        Exemplo TAC:
-        - t2 = t0 + t1
-
-        Args:
-            instr: {"type": "binary_op", "result": "t2", "operand1": "t0",
-                    "operator": "+", "operand2": "t1", "line": 2}
-
-        Returns:
-            Linhas Assembly geradas
         """
         operator = instr["operator"]
 
@@ -391,21 +261,6 @@ class GeradorAssembly:
     def _processar_adicao_16bit(self, instr: Dict[str, Any]) -> List[str]:
         """
         Processa adição 16-bit: result = op1 + op2
-
-        Usa instruções ADD (low byte) e ADC (high byte com carry).
-
-        CRITICAL: Copy operands to result FIRST to avoid destroying source operands.
-        This is essential for loops where operands may be reused (e.g., COUNTER + 1).
-
-        Handles constants efficiently: if op2 is constant, uses temporary registers
-        instead of allocating from register pool.
-
-        Args:
-            instr: {"type": "binary_op", "result": "t2", "operand1": "t0",
-                    "operator": "+", "operand2": "t1", "line": 2}
-
-        Returns:
-            Linhas Assembly geradas
         """
         result = instr["result"]
         op1 = instr["operand1"]
@@ -414,38 +269,37 @@ class GeradorAssembly:
 
         asm = [f"    ; TAC linha {line}: {result} = {op1} + {op2}"]
 
-        # Get op1 and result register pairs
+        # Pega registradores de op1 e resultado
         op1_low, op1_high = self._get_reg_pair(op1)
         res_low, res_high = self._get_reg_pair(result)
 
-        # Check if op2 is a constant
+        # Verifica se op2 é constante
         if self._is_constant(op2):
-            # Use temporary registers R22:R23 for constant loading
-            # (R24:R25 may already be allocated to result!)
+            # Usa R22:R23 pra carregar a constante
             int_value = int(float(op2))
             low_byte = int_value & 0xFF
             high_byte = (int_value >> 8) & 0xFF
 
             asm.extend([
-                f"    ; Soma 16-bit: {result} = {op1} + {op2} (op2 is constant)",
-                f"    mov r{res_low}, r{op1_low}   ; Copy op1 to result FIRST",
+                f"    ; Soma 16-bit: {result} = {op1} + {op2} (constante)",
+                f"    mov r{res_low}, r{op1_low}   ; Copia op1 pro resultado",
                 f"    mov r{res_high}, r{op1_high}",
-                f"    ldi r22, {low_byte}          ; Load constant low byte into temp",
-                f"    ldi r23, {high_byte}         ; Load constant high byte into temp",
-                f"    add r{res_low}, r22          ; Add constant to result (low byte with carry)",
-                f"    adc r{res_high}, r23         ; Add constant to result (high byte with carry)",
+                f"    ldi r22, {low_byte}          ; Carrega constante (byte baixo)",
+                f"    ldi r23, {high_byte}         ; Carrega constante (byte alto)",
+                f"    add r{res_low}, r22          ; Soma constante (byte baixo)",
+                f"    adc r{res_high}, r23         ; Soma constante (byte alto com carry)",
                 ""
             ])
         else:
-            # op2 is a variable, get its register pair
+            # op2 é variável
             op2_low, op2_high = self._get_reg_pair(op2)
 
             asm.extend([
                 f"    ; Soma 16-bit: {result} = {op1} + {op2}",
-                f"    mov r{res_low}, r{op1_low}   ; Copy op1 to result FIRST",
+                f"    mov r{res_low}, r{op1_low}   ; Copia op1 pro resultado",
                 f"    mov r{res_high}, r{op1_high}",
-                f"    add r{res_low}, r{op2_low}   ; Add op2 to result (low byte with carry)",
-                f"    adc r{res_high}, r{op2_high} ; Add op2 to result (high byte with carry)",
+                f"    add r{res_low}, r{op2_low}   ; Soma op2 (byte baixo)",
+                f"    adc r{res_high}, r{op2_high} ; Soma op2 (byte alto com carry)",
                 ""
             ])
 
@@ -454,21 +308,6 @@ class GeradorAssembly:
     def _processar_subtracao_16bit(self, instr: Dict[str, Any]) -> List[str]:
         """
         Processa subtração 16-bit: result = op1 - op2
-
-        Usa instruções SUB (low byte) e SBC (high byte com carry/borrow).
-
-        CRITICAL: Copy operands to result FIRST to avoid destroying source operands.
-        This is essential for loops where operands may be reused.
-
-        Handles constants efficiently: if op2 is constant, uses temporary registers
-        instead of allocating from register pool.
-
-        Args:
-            instr: {"type": "binary_op", "result": "t2", "operand1": "t0",
-                    "operator": "-", "operand2": "t1", "line": 2}
-
-        Returns:
-            Linhas Assembly geradas
         """
         result = instr["result"]
         op1 = instr["operand1"]
@@ -477,38 +316,37 @@ class GeradorAssembly:
 
         asm = [f"    ; TAC linha {line}: {result} = {op1} - {op2}"]
 
-        # Get op1 and result register pairs
+        # Pega registradores de op1 e resultado
         op1_low, op1_high = self._get_reg_pair(op1)
         res_low, res_high = self._get_reg_pair(result)
 
-        # Check if op2 is a constant
+        # Verifica se op2 é constante
         if self._is_constant(op2):
-            # Use temporary registers R22:R23 for constant loading
-            # (R24:R25 may already be allocated to result!)
+            # Usa R22:R23 pra carregar a constante
             int_value = int(float(op2))
             low_byte = int_value & 0xFF
             high_byte = (int_value >> 8) & 0xFF
 
             asm.extend([
-                f"    ; Subtração 16-bit: {result} = {op1} - {op2} (op2 is constant)",
-                f"    mov r{res_low}, r{op1_low}   ; Copy op1 to result FIRST",
+                f"    ; Subtração 16-bit: {result} = {op1} - {op2} (constante)",
+                f"    mov r{res_low}, r{op1_low}   ; Copia op1 pro resultado",
                 f"    mov r{res_high}, r{op1_high}",
-                f"    ldi r22, {low_byte}          ; Load constant low byte into temp",
-                f"    ldi r23, {high_byte}         ; Load constant high byte into temp",
-                f"    sub r{res_low}, r22          ; Subtract constant from result (low byte with borrow)",
-                f"    sbc r{res_high}, r23         ; Subtract constant from result (high byte with borrow)",
+                f"    ldi r22, {low_byte}          ; Carrega constante (byte baixo)",
+                f"    ldi r23, {high_byte}         ; Carrega constante (byte alto)",
+                f"    sub r{res_low}, r22          ; Subtrai constante (byte baixo)",
+                f"    sbc r{res_high}, r23         ; Subtrai constante (byte alto com carry)",
                 ""
             ])
         else:
-            # op2 is a variable, get its register pair
+            # op2 é variável
             op2_low, op2_high = self._get_reg_pair(op2)
 
             asm.extend([
                 f"    ; Subtração 16-bit: {result} = {op1} - {op2}",
-                f"    mov r{res_low}, r{op1_low}   ; Copy op1 to result FIRST",
+                f"    mov r{res_low}, r{op1_low}   ; Copia op1 pro resultado",
                 f"    mov r{res_high}, r{op1_high}",
-                f"    sub r{res_low}, r{op2_low}   ; Subtract op2 from result (low byte with borrow)",
-                f"    sbc r{res_high}, r{op2_high} ; Subtract op2 from result (high byte with borrow)",
+                f"    sub r{res_low}, r{op2_low}   ; Subtrai op2 (byte baixo)",
+                f"    sbc r{res_high}, r{op2_high} ; Subtrai op2 (byte alto com carry)",
                 ""
             ])
 
@@ -516,28 +354,7 @@ class GeradorAssembly:
 
     def _processar_multiplicacao_16bit(self, instr: Dict[str, Any]) -> List[str]:
         """
-        Processa multiplicação 16-bit com re-normalização de escala SOMENTE para reais.
-
-        INTEGERS (data_type="int"):
-          result = op1 * op2  (direct multiplication)
-
-        REALS (data_type="real"):
-          Quando multiplicando dois valores escalados (ambos 100x):
-            (A * 100) * (B * 100) = (A * B) * 10,000
-          Para manter escala 100x, dividimos por 100:
-            result = (A * B * 10,000) / 100 = (A * B) * 100
-
-        Exemplo INTEGER: 5 * 6 = 30 (no scaling)
-        Exemplo REAL: 50 * 50 = 2500, então 2500 / 100 = 25 (representa 0.5 * 0.5 = 0.25)
-
-        Usa rotinas auxiliares mul16 e div16 que serão geradas no epílogo.
-        Convenção: op1 em R18:R19, op2 em R20:R21, resultado em R24:R25
-
-        Args:
-            instr: Instrução TAC de multiplicação
-
-        Returns:
-            Linhas Assembly geradas
+        Processa multiplicação 16-bit.
         """
         result = instr["result"]
         op1 = instr["operand1"]
@@ -550,56 +367,55 @@ class GeradorAssembly:
 
         asm = [f"    ; TAC linha {line}: {result} = {op1} * {op2} (type: {data_type})"]
 
-        # Get result register pair
+        # Pega registradores do resultado
         res_low, res_high = self._get_reg_pair(result)
 
-        # Prepare operands for mul16 (R18:R19 = op1, R20:R21 = op2)
-        # Handle constants efficiently
+        # Prepara operandos pra mul16 (R18:R19 = op1, R20:R21 = op2)
         if self._is_constant(op1):
             int_value = int(float(op1))
             low_byte = int_value & 0xFF
             high_byte = (int_value >> 8) & 0xFF
             asm.extend([
-                f"    ; Load op1 constant {op1}",
+                f"    ; Carrega constante op1={op1}",
                 f"    ldi r18, {low_byte}",
                 f"    ldi r19, {high_byte}",
             ])
         else:
             op1_low, op1_high = self._get_reg_pair(op1)
-            # Only move if source and destination are different
+            # Só move se origem e destino forem diferentes
             if op1_low != 18 or op1_high != 19:
                 asm.extend([
-                    f"    ; Load op1 variable {op1}",
+                    f"    ; Carrega variável op1={op1}",
                     f"    mov r18, r{op1_low}",
                     f"    mov r19, r{op1_high}",
                 ])
             else:
-                asm.append(f"    ; op1 {op1} already in R18:R19")
+                asm.append(f"    ; op1 {op1} já está em R18:R19")
 
         if self._is_constant(op2):
             int_value = int(float(op2))
             low_byte = int_value & 0xFF
             high_byte = (int_value >> 8) & 0xFF
             asm.extend([
-                f"    ; Load op2 constant {op2}",
+                f"    ; Carrega constante op2={op2}",
                 f"    ldi r20, {low_byte}",
                 f"    ldi r21, {high_byte}",
             ])
         else:
             op2_low, op2_high = self._get_reg_pair(op2)
-            # Only move if source and destination are different
+            # Só move se origem e destino forem diferentes
             if op2_low != 20 or op2_high != 21:
                 asm.extend([
-                    f"    ; Load op2 variable {op2}",
+                    f"    ; Carrega variável op2={op2}",
                     f"    mov r20, r{op2_low}",
                     f"    mov r21, r{op2_high}",
                 ])
             else:
-                asm.append(f"    ; op2 {op2} already in R20:R21")
+                asm.append(f"    ; op2 {op2} já está em R20:R21")
 
         asm.append(f"    rcall mul16              ; R24:R25 = op1 * op2")
 
-        # Only apply scale renormalization for REAL numbers
+        # Só aplica renormalização pra números reais
         if data_type == "real":
             # Need div16 for scale renormalization
             self._routines_needed.add("div16")
@@ -1232,9 +1048,6 @@ class GeradorAssembly:
         if "div16" in self._routines_needed:
             epilogo.extend(self._gerar_rotina_divisao_16bit())
 
-        # div_scaled routine removed - real division now uses direct div16
-        # (operands are pre-scaled by 100x in TAC generation)
-
         if "exp16" in self._routines_needed:
             epilogo.extend(self._gerar_rotina_exponenciacao())
 
@@ -1406,10 +1219,6 @@ class GeradorAssembly:
             "    ret",
             ""
         ]
-
-    # _gerar_rotina_divisao_escalada method removed
-    # Real division now uses direct div16 with pre-scaled operands (100x from TAC)
-    # No need for runtime scaling multiplication
 
     def _gerar_rotina_exponenciacao(self) -> List[str]:
         """

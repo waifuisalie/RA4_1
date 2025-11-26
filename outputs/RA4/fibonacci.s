@@ -72,10 +72,10 @@ skip_le_5:
 
     ; TAC linha 5: t5 = FIB_0 + FIB_1
     ; Soma 16-bit: t5 = FIB_0 + FIB_1
-    mov r24, r6   ; Copy op1 to result FIRST
+    mov r24, r6   ; Copia op1 pro resultado
     mov r25, r7
-    add r24, r8   ; Add op2 to result (low byte with carry)
-    adc r25, r9 ; Add op2 to result (high byte with carry)
+    add r24, r8   ; Soma op2 (byte baixo)
+    adc r25, r9 ; Soma op2 (byte alto com carry)
 
     ; TAC linha 5: FIB_NEXT = t5
     mov r10, r24   ; FIB_NEXT = t5
@@ -90,13 +90,13 @@ skip_le_5:
     mov r9, r11
 
     ; TAC linha 5: t7 = COUNTER + 1
-    ; Soma 16-bit: t7 = COUNTER + 1 (op2 is constant)
-    mov r24, r12   ; Copy op1 to result FIRST
+    ; Soma 16-bit: t7 = COUNTER + 1 (constante)
+    mov r24, r12   ; Copia op1 pro resultado
     mov r25, r13
-    ldi r22, 1          ; Load constant low byte into temp
-    ldi r23, 0         ; Load constant high byte into temp
-    add r24, r22          ; Add constant to result (low byte with carry)
-    adc r25, r23         ; Add constant to result (high byte with carry)
+    ldi r22, 1          ; Carrega constante (byte baixo)
+    ldi r23, 0         ; Carrega constante (byte alto)
+    add r24, r22          ; Soma constante (byte baixo)
+    adc r25, r23         ; Soma constante (byte alto com carry)
 
     ; TAC linha 5: COUNTER = t7
     mov r12, r24   ; COUNTER = t7
