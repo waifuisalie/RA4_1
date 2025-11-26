@@ -46,7 +46,7 @@ from src.RA4.functions.python.arduino_tools import (
 
 BASE_DIR    = Path(__file__).resolve().parent        # raiz do repo
 OUT_TOKENS  = BASE_DIR / "outputs" / "RA1" / "tokens" / "tokens_gerados.txt"
-# OUT_ASM_DIR = BASE_DIR / "outputs" / "RA1" / "assembly"        # Reserved for RA4 (future assembly generation phase)
+# OUT_ASM_DIR = BASE_DIR / "outputs" / "RA1" / "assembly"        # Reservado para RA4 (futura fase de geração de Assembly)
 OUT_ARVORE_JSON = BASE_DIR / "outputs" / "RA2" / "arvore_sintatica.json"
 
 OUT_TOKENS.parent.mkdir(parents=True, exist_ok=True)
@@ -55,10 +55,10 @@ OUT_TOKENS.parent.mkdir(parents=True, exist_ok=True)
 def segmentar_linha_em_instrucoes(linha_texto):
     """Segmenta uma linha em múltiplas instruções baseado em parênteses balanceados
 
-    Args:
+    Argumentos:
         linha_texto: Linha de texto contendo uma ou mais expressões entre parênteses
 
-    Returns:
+    Retorna:
         Lista de strings, onde cada string é uma instrução completa com parênteses balanceados
     """
     instrucoes = []
@@ -100,15 +100,15 @@ def executar_ra1_tokenizacao(operacoes_lidas):
     Tokeniza as expressões sem executá-las. Os tokens gerados são a entrada
     necessária para RA2 (Parser) e RA3 (Semântico).
 
-    Args:
+    Argumentos:
         operacoes_lidas: Lista de strings com as linhas do arquivo de entrada
 
-    Returns:
+    Retorna:
         tuple: (tokens_salvos_txt, linhas_processadas) onde:
             - tokens_salvos_txt: Lista de listas de strings (tokens por linha)
             - linhas_processadas: Número de linhas processadas (excluindo vazias e comentários)
 
-    Note:
+    Nota:
         - Execução de expressões e geração de Assembly foram removidos (legacy RA1)
         - Motivo: Especificação RA3 afirma "não será necessário gerar código Assembly"
     """
@@ -144,12 +144,12 @@ def executar_ra1_tokenizacao(operacoes_lidas):
 def executar_ra2_validacao_tokens():
     """Executa a leitura e validação de tokens para análise sintática (RA2)
 
-    Returns:
+    Retorna:
         tuple: (tokens_para_ra2, tokens_sao_validos) onde:
             - tokens_para_ra2: Lista de tokens lidos
             - tokens_sao_validos: Boolean indicando se validação passou
 
-    Raises:
+    Levanta:
         SystemExit: Se houver erro no processamento de tokens
     """
     try:
@@ -168,10 +168,10 @@ def executar_ra2_validacao_tokens():
 def executar_ra2_gramatica():
     """Exibe a gramática completa e constrói a tabela LL(1)
 
-    Returns:
+    Retorna:
         dict: Tabela LL(1) construída
 
-    Raises:
+    Levanta:
         SystemExit: Se houver erro ao exibir gramática ou construir tabela LL(1)
     """
     # Análise Sintática - Gramática
@@ -198,15 +198,15 @@ def executar_ra2_gramatica():
 def executar_ra2_parsing(tabela_ll1):
     """Executa o parsing das linhas de tokens usando a tabela LL(1)
 
-    Args:
+    Argumentos:
         tabela_ll1: Tabela LL(1) para parsing
 
-    Returns:
+    Retorna:
         tuple: (derivacoes, tokens_por_linha) onde:
             - derivacoes: Lista de derivações do parser
             - tokens_por_linha: Lista de listas de tokens por linha
 
-    Note:
+    Nota:
         Lê linha por linha do arquivo tokens_gerados.txt e segmenta em instruções
         usando parênteses balanceados
     """
@@ -247,11 +247,11 @@ def executar_ra2_parsing(tabela_ll1):
 def executar_ra2_geracao_arvores(derivacoes, tokens_por_linha):
     """Gera e exporta as árvores sintáticas em formato JSON
 
-    Args:
+    Argumentos:
         derivacoes: Lista de derivações do parser
         tokens_por_linha: Lista de listas de tokens por linha
 
-    Note:
+    Nota:
         Gera JSON das árvores sintáticas (entrada para RA3)
         Atualiza a documentação da gramática com a última árvore gerada
     """
@@ -274,27 +274,27 @@ def executar_ra3_analise_semantica():
     Carrega a AST do RA2, executa as 3 fases de análise semântica
     (tipos, memória, controle) e gera a árvore atribuída com relatórios.
 
-    Note:
-        - Fase 1: Type checking
-        - Fase 2: Memory validation
-        - Fase 3: Control structures validation
+    Nota:
+        - Fase 1: Verificação de tipos
+        - Fase 2: Validação de memória
+        - Fase 3: Validação de estruturas de controle
         - Gera 4 relatórios: arvore_atribuida.md, julgamento_tipos.md,
           erros_sematicos.md, tabela_simbolos.md
     """
     print("\n--- RA3: ANÁLISE SEMÂNTICA ---")
 
     try:
-        # Load AST from RA2
+        # Carregar AST de RA2
         with open(str(OUT_ARVORE_JSON), 'r', encoding='utf-8') as f:
             arvore_ra2 = json.load(f)
 
-        # Execute complete semantic analysis (3 phases: types, memory, control)
-        # This orchestrator function runs all validation phases sequentially
+        # Executar análise semântica completa (3 fases: tipos, memória, controle)
+        # Esta função orquestradora executa todas as fases de validação sequencialmente
         resultado_semantico = analisarSemanticaDaJsonRA2(arvore_ra2)
 
-        # Handle results based on return type
+        # Processa resultados baseado no tipo de retorno
         if isinstance(resultado_semantico, list):
-            # Analysis returned errors (list of error strings)
+            # Análise retornou erros (lista de strings de erro)
             print("    Erro(s) semântico(s) encontrado(s):")
             for erro in resultado_semantico:
                 print(f"    {erro}")
@@ -302,7 +302,7 @@ def executar_ra3_analise_semantica():
             print("\n--- GERAÇÃO DA ÁRVORE ATRIBUÍDA ---")
             print("  Falha na análise semântica - gerando árvore com dados parciais...")
 
-            # Create result structure for partial tree generation
+            # Cria estrutura de resultado para geração de árvore parcial
             resultado_semantico_dict = {
                 'arvore_anotada': arvore_ra2,
                 'tabela_simbolos': None,
@@ -317,7 +317,7 @@ def executar_ra3_analise_semantica():
                 print(f"  [ERROR] Falha na geração da árvore: {resultado_arvore.get('erro', 'Erro desconhecido')}")
 
         else:
-            # Analysis succeeded (returned dict with 'arvore_anotada' and 'tabela_simbolos')
+            # Análise bem-sucedida (retornou dict com 'arvore_anotada' e 'tabela_simbolos')
             print("    [OK] Análise semântica concluída com sucesso sem nenhum erro")
 
             print("\n--- GERAÇÃO DA ÁRVORE ATRIBUÍDA ---")
@@ -342,7 +342,7 @@ def executar_ra3_analise_semantica():
     except Exception as e:
         print(f"  [ERROR] ERRO na análise semântica: {e}")
         traceback.print_exc()
-        # Continue execution even if semantic analysis fails
+        # Continua execução mesmo se análise semântica falhar
 
 
 def executar_ra4_geracao_tac():
@@ -350,7 +350,7 @@ def executar_ra4_geracao_tac():
 
     Carrega a árvore atribuída do RA3 e gera código TAC.
 
-    Output Files:
+    Arquivos de Saída:
         - outputs/RA4/tac_instructions.json
         - outputs/RA4/tac_output.md
     """
@@ -383,10 +383,10 @@ def executar_ra4_otimizacao_tac(arquivo_entrada):
 
     Carrega as instruções TAC geradas e aplica otimizações.
 
-    Args:
+    Argumentos:
         arquivo_entrada: Nome do arquivo de entrada original
 
-    Output Files:
+    Arquivos de Saída:
         - outputs/RA4/tac_otimizado.json
         - outputs/RA4/tac_otimizado.md
         - outputs/RA4/relatorios/otimizacao_tac.md
@@ -451,7 +451,7 @@ def executar_ra4_compilacao_upload(arquivo_entrada):
     Compila arquivo Assembly (.s) para HEX e faz upload para Arduino Uno.
     O arquivo Assembly deve ter o mesmo nome base do arquivo de entrada.
 
-    Args:
+    Argumentos:
         arquivo_entrada: Caminho do arquivo de entrada original
     """
     print("\n--- RA4: COMPILAÇÃO E UPLOAD PARA ARDUINO ---")
@@ -534,7 +534,7 @@ def main():
     9. Otimiza TAC (RA4)
     10. Compila Assembly e faz upload (RA4)
 
-    Raises:
+    Levanta:
         SystemExit: Se houver erro crítico em qualquer fase
     """
     if len(sys.argv) < 2:

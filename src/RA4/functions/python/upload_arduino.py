@@ -1,8 +1,13 @@
 #!/usr/bin/env python3
-"""
-Upload Arduino - Compilacao e Upload de Assembly AVR para Arduino Uno
-Uso: python upload_arduino.py <arquivo.s>
-"""
+
+# Integrantes do grupo (ordem alfabética):
+# Breno Rossi Duarte - breno-rossi
+# Francisco Bley Ruthes - fbleyruthes
+# Rafael Olivare Piveta - RafaPiveta
+# Stefan Benjamim Seixas Lourenco Rodrigues - waifuisalie
+#
+# Nome do grupo no Canvas: RA4_1
+
 
 import sys
 from pathlib import Path
