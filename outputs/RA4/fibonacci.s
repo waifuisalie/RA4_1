@@ -76,9 +76,9 @@ skip_le_5:
 
     ; TAC linha 5: ifFalse t4 goto L1
     ; Check if t4 == 0 (false)
-    ldi r16, 0                  ; Zero constant for comparison
-    mov r2, r16
-    mov r3, r16
+    ldi r18, 0                  ; Zero constant for comparison
+    mov r2, r18
+    mov r3, r18
     cp r16, r2         ; Compare low byte with 0
     cpc r17, r3       ; Compare high byte with carry
     brne .+2              ; If not equal (true), skip jmp

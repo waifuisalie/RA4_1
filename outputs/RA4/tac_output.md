@@ -1,6 +1,6 @@
 # TAC Output - C:\Users\Rafa Piveta\Documents\GitHub\RA4_1\outputs\RA3\arvore_atribuida.json
 
-**Generated:** 2025-11-25 22:23:46
+**Generated:** 2025-11-25 22:30:26
 
 ---
 
