@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 # Integrantes do grupo (ordem alfabética):
 # Breno Rossi Duarte - breno-rossi
 # Francisco Bley Ruthes - fbleyruthes

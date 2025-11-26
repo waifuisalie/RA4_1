@@ -1,6 +1,6 @@
 # TAC Output - /home/waifuisalie/Documents/RA4_Compiladores/RA4_1/outputs/RA3/arvore_atribuida.json
 
-**Generated:** 2025-11-25 22:57:40
+**Generated:** 2025-11-25 23:25:08
 
 ---
 

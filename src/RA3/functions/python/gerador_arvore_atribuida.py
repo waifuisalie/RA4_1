@@ -20,7 +20,7 @@ from src.RA3.functions.python import tipos
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent.parent.parent
 OUTPUTS_DIR = PROJECT_ROOT / "outputs"
 OUT_ARVORE_ATRIBUIDA_JSON = OUTPUTS_DIR / "RA3" / "arvore_atribuida.json"
-ROOT_ARVORE_ATRIBUIDA_JSON = PROJECT_ROOT / "arvore_atribuida.json"
+ROOT_ARVORE_ATRIBUIDA_JSON = OUTPUTS_DIR /"RA3" / "arvore_atribuida.json"
 OUT_RELATORIOS_DIR = OUTPUTS_DIR / "RA3" / "relatorios"
 ROOT_RELATORIOS_DIR = PROJECT_ROOT / "relatorios"
 

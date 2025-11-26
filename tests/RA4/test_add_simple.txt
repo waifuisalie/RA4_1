@@ -1,5 +1,0 @@
-# Simple Addition Test: 1000 + 2000 = 3000
-(1000 A)
-(2000 B)
-((A B +) RESULT)
-(RESULT FINAL)
