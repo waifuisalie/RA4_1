@@ -1,4 +1,4 @@
-(1.0 X_VAL)
+(0.5 X_VAL)
 (1.0 TERM1)
 (1 COUNTER)
 

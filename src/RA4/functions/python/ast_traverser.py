@@ -514,7 +514,7 @@ class ASTTraverser:
         left_type = self._infer_type_for_operand(left_operand)
         right_type = self._infer_type_for_operand(right_operand)
 
-        # Exponentiation: if any real -> real, else int
+        # Exponencial: if any real -> real, else int
         if operator == '^':
             if left_type == 'real' or right_type == 'real':
                 return 'real'
@@ -522,7 +522,7 @@ class ASTTraverser:
                 return 'int'
             return None
 
-        # Modulo: prefer int when both ints
+        # Modulo: Prefira int quando ambos forem ints
         if operator == '%':
             if left_type == 'int' and right_type == 'int':
                 return 'int'
@@ -530,7 +530,7 @@ class ASTTraverser:
                 return 'real'
             return None
 
-        # Default arithmetic: if any operand real -> real, else if both int -> int
+        # Aritmética padrão: se algum operando for real -> real, senão se ambos int -> int
         if left_type == 'real' or right_type == 'real':
             return 'real'
         if left_type == 'int' and right_type == 'int':
