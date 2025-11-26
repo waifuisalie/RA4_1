@@ -14,7 +14,7 @@ class GeradorAssembly:
     Gerador de Assembly AVR com alocação de registradores integrada.
 
     Características:
-    - Suporte a 16-bit (4 pares de registradores: R16:R17, R18:R19, R20:R21, R22:R23)
+    - Suporte a 16-bit (11 pares de registradores: R2:R3 até R25:R26)
     - Spilling FIFO para SRAM quando registradores esgotam
     - Constantes literais carregadas com LDI (sem alocar do pool)
     - Mapeamento completo TAC → AVR Assembly
@@ -27,12 +27,15 @@ class GeradorAssembly:
         self._var_to_reg_pair: Dict[str, Tuple[int, int]] = {}
 
         # Pares de registradores 16-bit disponíveis para temporários
-        # R16:R17, R18:R19, R20:R21, R22:R23
+        # Expandido para reduzir spilling: R2:R3 até R14:R15 + R24:R25
+        # Prioridade: R16+ primeiro (mais eficientes), depois R2+ para casos extremos
         self._available_pairs: List[Tuple[int, int]] = [
-            (16, 17),
-            (18, 19),
-            (20, 21),
-            (22, 23)
+            # Pares principais (R16-R23) - primeira prioridade
+            (16, 17), (18, 19), (20, 21), (22, 23),
+            # Pares secundários (R2-R15) - segunda prioridade
+            (2, 3), (4, 5), (6, 7), (8, 9), (10, 11), (12, 13), (14, 15),
+            # Par especial (R24-R25) - última prioridade (usado para retorno)
+            (24, 25)
         ]
 
         # Variáveis spilladas para memória: variável → endereço SRAM
@@ -43,6 +46,9 @@ class GeradorAssembly:
 
         # Acumulador de linhas Assembly geradas durante spill
         self._pending_spill_code: List[str] = []
+
+        # Análise de vida útil das variáveis para melhor alocação
+        self._var_lifetime: Dict[str, Tuple[int, int]] = {}  # var -> (first_use, last_use)
 
         # Rotinas auxiliares necessárias (serão geradas no epílogo)
         # Ex: {"mul16", "div16", "exp16"}
@@ -80,20 +86,97 @@ class GeradorAssembly:
         if "instructions" not in tac_otimizado:
             raise KeyError("TAC otimizado deve conter chave 'instructions'")
 
+        instructions = tac_otimizado["instructions"]
+
+        # Análise de vida útil das variáveis para otimizar alocação
+        self._analisar_vida_util(instructions)
+
         asm_lines: List[str] = []
 
         # 1. Gerar prólogo (inicialização do programa)
         asm_lines.extend(self._gerar_prologo())
 
         # 2. Processar cada instrução TAC
-        instructions = tac_otimizado["instructions"]
-        for instr in instructions:
+        for i, instr in enumerate(instructions):
+            # Liberar registradores de variáveis mortas antes de processar nova instrução
+            dead_code = self._liberar_registradores_mortos(i)
+            asm_lines.extend(dead_code)
+
             asm_lines.extend(self._processar_instrucao(instr))
 
         # 3. Gerar epílogo (finalização do programa)
         asm_lines.extend(self._gerar_epilogo(instructions))
 
         return "\n".join(asm_lines)
+
+    # =========================================================================
+    # ANÁLISE DE VIDA ÚTIL DAS VARIÁVEIS
+    # =========================================================================
+
+    def _analisar_vida_util(self, instructions: List[Dict[str, Any]]) -> None:
+        """
+        Analisa a vida útil de cada variável TAC para otimizar alocação de registradores.
+
+        Args:
+            instructions: Lista de instruções TAC
+        """
+        self._var_lifetime.clear()
+
+        for i, instr in enumerate(instructions):
+            instr_type = instr.get("type")
+
+            # Coletar variáveis usadas nesta instrução
+            vars_used = set()
+
+            if instr_type in ["assignment", "copy"]:
+                vars_used.add(instr.get("dest", ""))
+                source = instr.get("source", "")
+                if not self._is_constant(source):
+                    vars_used.add(source)
+
+            elif instr_type == "binary_op":
+                vars_used.add(instr.get("result", ""))
+                vars_used.add(instr.get("operand1", ""))
+                vars_used.add(instr.get("operand2", ""))
+
+            elif instr_type in ["if_goto", "if_false_goto"]:
+                vars_used.add(instr.get("condition", ""))
+
+            # Atualizar vida útil para cada variável
+            for var in vars_used:
+                if var and not self._is_constant(var):
+                    if var not in self._var_lifetime:
+                        self._var_lifetime[var] = (i, i)
+                    else:
+                        first_use, _ = self._var_lifetime[var]
+                        self._var_lifetime[var] = (first_use, i)
+
+    def _liberar_registradores_mortos(self, current_instr_idx: int) -> List[str]:
+        """
+        Libera registradores de variáveis que não serão mais usadas.
+
+        Args:
+            current_instr_idx: Índice da instrução atual
+
+        Returns:
+            Lista de linhas Assembly para salvar variáveis que serão liberadas
+        """
+        asm_lines = []
+        vars_to_free = []
+
+        for var, (first_use, last_use) in self._var_lifetime.items():
+            if last_use < current_instr_idx and var in self._var_to_reg_pair:
+                # Variável morreu, podemos liberar o registrador
+                reg_pair = self._var_to_reg_pair[var]
+                self._available_pairs.append(reg_pair)
+                del self._var_to_reg_pair[var]
+                vars_to_free.append(var)
+
+        if vars_to_free:
+            asm_lines.append(f"    ; Liberando registradores de variáveis mortas: {', '.join(vars_to_free)}")
+            asm_lines.append("")
+
+        return asm_lines
 
     # =========================================================================
     # MÉTODOS DE ALOCAÇÃO DE REGISTRADORES (PRIVADOS)
