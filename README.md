@@ -1,4 +1,4 @@
-# Compilador RA4 - Geração e Otimização de TAC EM DESENVOLVIMENTO
+# Compilador RA4 - Geração e Otimização de TAC
 
 ## Informações Institucionais
 
@@ -61,6 +61,7 @@ RA4_1/
 │           ├── gerador_tac.py          # Geração de TAC
 │           ├── otimizador_tac.py       # Otimizações
 │           ├── ast_traverser.py        # Travessia pós-ordem da AST
+│           ├── gerar_assembly.py       # Gerador de código assembly
 │           ├── tac_manager.py          # Gerenciamento de temps e labels
 │           ├── tac_instructions.py     # Definição de instruções TAC
 │           ├── arduino_tools.py        # Ferramentas AVR (compilação/upload)
@@ -68,8 +69,8 @@ RA4_1/
 ├── inputs/RA4/                # Arquivos de teste
 │   ├── fatorial.txt
 │   ├── fibonacci.txt
-│   ├── fibonacci_desenrolado.txt
 │   └── taylor.txt
+│   
 ├── outputs/                   # Saídas de cada fase
 │   ├── RA1/tokens/
 │   ├── RA2/
