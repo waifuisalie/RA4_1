@@ -1,220 +1,100 @@
 # Julgamento de Tipos
 
-**Gerado em:** 2025-11-25 01:39:53
+**Gerado em:** 2025-11-25 22:33:28
 
-**Total de expressões analisadas:** 15
-
----
-
-## Linha 1: `(0.5 X_VAL)`
-
-### Análise de Tipos:
-- **Operando 1:** `0.5` → tipo: `real`
-- **Operando 2:** `X_VAL` → tipo: `real`
-
-### Tipo Resultante: `real`
+**Total de expressões analisadas:** 6
 
 ---
 
-## Linha 2: `(1.0 TERM1)`
+## Linha 1: `(0 FIB_0)`
 
 ### Análise de Tipos:
-- **Operando 1:** `1.0` → tipo: `real`
-- **Operando 2:** `TERM1` → tipo: `real`
+- **Operando 1:** `0` → tipo: `int`
+- **Operando 2:** `FIB_0` → tipo: `int`
 
-### Tipo Resultante: `real`
+### Tipo Resultante: `int`
 
 ---
 
-## Linha 3: `((X_VAL X_VAL *) TEMP1)`
+## Linha 2: `(1 FIB_1)`
 
 ### Análise de Tipos:
-- **Operando 1:** `(X_VAL X_VAL *)` → tipo: `real`
-    - `X_VAL` : `real`
-    - `X_VAL` : `real`
-    - Operador: `*`
-    - Resultado: `real`
-- **Operando 2:** `TEMP1` → tipo: `real`
+- **Operando 1:** `1` → tipo: `int`
+- **Operando 2:** `FIB_1` → tipo: `int`
 
-### Tipo Resultante: `real`
+### Tipo Resultante: `int`
 
 ---
 
-## Linha 4: `((TEMP1 2.0 |) TEMP2)`
+## Linha 3: `(2 COUNTER)`
 
 ### Análise de Tipos:
-- **Operando 1:** `(TEMP1 2.0 |)` → tipo: `real`
-    - `TEMP1` : `real`
-    - `2.0` : `real`
-    - Operador: `|`
-    - Resultado: `real`
-- **Operando 2:** `TEMP2` → tipo: `real`
+- **Operando 1:** `2` → tipo: `int`
+- **Operando 2:** `COUNTER` → tipo: `int`
 
-### Tipo Resultante: `real`
+### Tipo Resultante: `int`
 
 ---
 
-## Linha 5: `((0 TEMP2 -) TERM2)`
+## Linha 4: `(24 LIMIT)`
 
 ### Análise de Tipos:
-- **Operando 1:** `(0 TEMP2 -)` → tipo: `real`
-    - `0` : `int`
-    - `TEMP2` : `real`
-    - Operador: `-`
-    - Resultado: `real`
-- **Operando 2:** `TERM2` → tipo: `real`
+- **Operando 1:** `24` → tipo: `int`
+- **Operando 2:** `LIMIT` → tipo: `int`
 
-### Tipo Resultante: `real`
+### Tipo Resultante: `int`
 
 ---
 
-## Linha 6: `((X_VAL X_VAL *) TEMP3)`
+## Linha 5: `((COUNTER LIMIT <=) (FIB_0 FIB_1 +) (FIB_1) (FIB_NEXT) (COUNTER 1 +) WHILE)`
 
 ### Análise de Tipos:
-- **Operando 1:** `(X_VAL X_VAL *)` → tipo: `real`
-    - `X_VAL` : `real`
-    - `X_VAL` : `real`
-    - Operador: `*`
-    - Resultado: `real`
-- **Operando 2:** `TEMP3` → tipo: `real`
+- **Operando 1:** `(COUNTER LIMIT <=)` → tipo: `boolean`
+    - `COUNTER` : `int`
+    - `LIMIT` : `int`
+    - Operador: `<=`
+    - Resultado: `boolean`
+- **Operando 2:** `(FIB_0 FIB_1 +)` → tipo: `int`
+- **Operando 3:** `(FIB_1)` → tipo: `int`
+- **Operando 4:** `(FIB_NEXT)` → tipo: `int`
+- **Operando 5:** `(COUNTER 1 +)` → tipo: `int`
+- **Operador:** `WHILE`
 
-### Tipo Resultante: `real`
+### Regra Aplicada:
+
+```
+Γ ⊢ cond : Tcond    truthy(Tcond)    Γ ⊢ bloco : T
+──────────────────────────────────────────────────
+         Γ ⊢ (cond bloco WHILE) : T
+```
+
+### Tipo Resultante: `int`
 
 ---
 
-## Linha 7: `(((TEMP3 X_VAL X_VAL *) *) TEMP4)`
+## Linha 6: `(FIB_NEXT RESULT)`
 
 ### Análise de Tipos:
-- **Operando 1:** `((TEMP3 X_VAL X_VAL *) *)` → tipo: `real`
-    - Operador: `*`
-    - Resultado: `real`
-- **Operando 2:** `TEMP4` → tipo: `real`
+- **Operando 1:** `FIB_NEXT` → tipo: `None`
+- **Operando 2:** `RESULT` → tipo: `None`
 
-### Tipo Resultante: `real`
-
----
-
-## Linha 8: `((TEMP4 24.0 |) TERM3)`
-
-### Análise de Tipos:
-- **Operando 1:** `(TEMP4 24.0 |)` → tipo: `real`
-    - `TEMP4` : `real`
-    - `24.0` : `real`
-    - Operador: `|`
-    - Resultado: `real`
-- **Operando 2:** `TERM3` → tipo: `real`
-
-### Tipo Resultante: `real`
-
----
-
-## Linha 9: `((X_VAL X_VAL *) TEMP5)`
-
-### Análise de Tipos:
-- **Operando 1:** `(X_VAL X_VAL *)` → tipo: `real`
-    - `X_VAL` : `real`
-    - `X_VAL` : `real`
-    - Operador: `*`
-    - Resultado: `real`
-- **Operando 2:** `TEMP5` → tipo: `real`
-
-### Tipo Resultante: `real`
-
----
-
-## Linha 10: `(((TEMP5 X_VAL X_VAL *) *) TEMP6)`
-
-### Análise de Tipos:
-- **Operando 1:** `((TEMP5 X_VAL X_VAL *) *)` → tipo: `real`
-    - Operador: `*`
-    - Resultado: `real`
-- **Operando 2:** `TEMP6` → tipo: `real`
-
-### Tipo Resultante: `real`
-
----
-
-## Linha 11: `(((TEMP6 X_VAL X_VAL *) *) TEMP7)`
-
-### Análise de Tipos:
-- **Operando 1:** `((TEMP6 X_VAL X_VAL *) *)` → tipo: `real`
-    - Operador: `*`
-    - Resultado: `real`
-- **Operando 2:** `TEMP7` → tipo: `real`
-
-### Tipo Resultante: `real`
-
----
-
-## Linha 12: `((TEMP7 720.0 |) TEMP8)`
-
-### Análise de Tipos:
-- **Operando 1:** `(TEMP7 720.0 |)` → tipo: `real`
-    - `TEMP7` : `real`
-    - `720.0` : `real`
-    - Operador: `|`
-    - Resultado: `real`
-- **Operando 2:** `TEMP8` → tipo: `real`
-
-### Tipo Resultante: `real`
-
----
-
-## Linha 13: `((0 TEMP8 -) TERM4)`
-
-### Análise de Tipos:
-- **Operando 1:** `(0 TEMP8 -)` → tipo: `real`
-    - `0` : `int`
-    - `TEMP8` : `real`
-    - Operador: `-`
-    - Resultado: `real`
-- **Operando 2:** `TERM4` → tipo: `real`
-
-### Tipo Resultante: `real`
-
----
-
-## Linha 14: `((((TERM1 TERM2 +) TERM3 +) TERM3 +) RESULT_COS)`
-
-### Análise de Tipos:
-- **Operando 1:** `(((TERM1 TERM2 +) TERM3 +) TERM3 +)` → tipo: `real`
-    - `((TERM1 TERM2 +) TERM3 +)` : `real`
-      - `TERM1` : `real`
-      - `TERM2` : `real`
-      - Operador: `+`
-      - Resultado: `real`
-    - `TERM3` : `real`
-    - Operador: `+`
-    - Resultado: `real`
-- **Operando 2:** `RESULT_COS` → tipo: `real`
-
-### Tipo Resultante: `real`
-
----
-
-## Linha 15: `(RESULT_COS FINAL_COS)`
-
-### Análise de Tipos:
-- **Operando 1:** `RESULT_COS` → tipo: `real`
-- **Operando 2:** `FINAL_COS` → tipo: `real`
-
-### Tipo Resultante: `real`
+### Tipo Resultante: `int`
 
 ---
 
 ## Resumo de Tipos
 
 ### Estatísticas
-- **Total de expressões:** 15
-- **Com tipo definido:** 15
+- **Total de expressões:** 6
+- **Com tipo definido:** 6
 - **Sem tipo definido:** 0
 - **Promoções de tipo:** 0
 
 ### Distribuição de Tipos
-- `real`: 15 expressões (100.0%)
+- `int`: 6 expressões (100.0%)
 
 ### Tipos Utilizados
-- `real`
+- `int`
 
 ---
 *Relatório gerado automaticamente pelo Compilador RA3_1*

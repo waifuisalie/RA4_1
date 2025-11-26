@@ -472,10 +472,17 @@ class GeradorAssembly:
 
         asm.extend([
             f"    ; Soma 16-bit: {result} = {op1} + {op2}",
-            f"    add r{op1_low}, r{op2_low}   ; Low byte com carry",
-            f"    adc r{op1_high}, r{op2_high} ; High byte com carry",
-            f"    mov r{res_low}, r{op1_low}   ; Resultado em {result}",
-            f"    mov r{res_high}, r{op1_high}",
+            f"    ; Usar R24:R25 como temporário para não destruir op1",
+            f"    push r24",
+            f"    push r25",
+            f"    mov r24, r{op1_low}          ; Copiar op1 para temporário",
+            f"    mov r25, r{op1_high}",
+            f"    add r24, r{op2_low}          ; Low byte com carry",
+            f"    adc r25, r{op2_high}         ; High byte com carry",
+            f"    mov r{res_low}, r24          ; Resultado em {result}",
+            f"    mov r{res_high}, r25",
+            f"    pop r25",
+            f"    pop r24",
             ""
         ])
 
@@ -508,10 +515,17 @@ class GeradorAssembly:
 
         asm.extend([
             f"    ; Subtração 16-bit: {result} = {op1} - {op2}",
-            f"    sub r{op1_low}, r{op2_low}   ; Low byte com borrow",
-            f"    sbc r{op1_high}, r{op2_high} ; High byte com borrow",
-            f"    mov r{res_low}, r{op1_low}   ; Resultado em {result}",
-            f"    mov r{res_high}, r{op1_high}",
+            f"    ; Usar R24:R25 como temporário para não destruir op1",
+            f"    push r24",
+            f"    push r25",
+            f"    mov r24, r{op1_low}          ; Copiar op1 para temporário",
+            f"    mov r25, r{op1_high}",
+            f"    sub r24, r{op2_low}          ; Low byte com borrow",
+            f"    sbc r25, r{op2_high}         ; High byte com borrow",
+            f"    mov r{res_low}, r24          ; Resultado em {result}",
+            f"    mov r{res_high}, r25",
+            f"    pop r25",
+            f"    pop r24",
             ""
         ])
 
@@ -519,17 +533,14 @@ class GeradorAssembly:
 
     def _processar_multiplicacao_16bit(self, instr: Dict[str, Any]) -> List[str]:
         """
-        Processa multiplicação 16-bit com re-normalização de escala.
+        Processa multiplicação 16-bit (sem escala).
 
-        Quando multiplicando dois valores escalados (ambos 100x):
-          (A * 100) * (B * 100) = (A * B) * 10,000
+        Multiplica dois valores inteiros normais:
+          result = op1 * op2
 
-        Para manter escala 100x, dividimos por 100:
-          result = (A * B * 10,000) / 100 = (A * B) * 100
+        Exemplo: 5 * 6 = 30
 
-        Exemplo: 50 * 50 = 2500, então 2500 / 100 = 25 (representa 0.5 * 0.5 = 0.25)
-
-        Usa rotinas auxiliares mul16 e div16 que serão geradas no epílogo.
+        Usa rotina auxiliar mul16 que será gerada no epílogo.
         Convenção: op1 em R18:R19, op2 em R20:R21, resultado em R24:R25
 
         Args:
@@ -543,9 +554,8 @@ class GeradorAssembly:
         op2 = instr["operand2"]
         line = instr.get("line", "?")
 
-        # Registrar que precisamos das rotinas mul16 e div16
+        # Registrar que precisamos da rotina mul16
         self._routines_needed.add("mul16")
-        self._routines_needed.add("div16")
 
         asm = [f"    ; TAC linha {line}: {result} = {op1} * {op2}"]
 
@@ -555,21 +565,38 @@ class GeradorAssembly:
         res_low, res_high = self._get_reg_pair(result)
 
         asm.extend([
-            f"    ; Multiplicação 16-bit com re-normalização de escala",
+            f"    ; Multiplicação 16-bit (inteiros normais)",
+            f"    ; Salvar contexto de registradores R18-R25",
+            f"    push r18",
+            f"    push r19",
+            f"    push r20",
+            f"    push r21",
+            f"    push r22",
+            f"    push r23",
+            f"    push r24",
+            f"    push r25",
             f"    ; Preparar parâmetros para mul16",
             f"    mov r18, r{op1_low}",
             f"    mov r19, r{op1_high}",
             f"    mov r20, r{op2_low}",
             f"    mov r21, r{op2_high}",
-            f"    rcall mul16              ; R24:R25 = op1 * op2 (scaled²)",
-            f"    ; Re-normalize: divide by 100 to restore 100x scaling",
-            f"    mov r18, r24",
-            f"    mov r19, r25",
-            f"    ldi r20, 100             ; Divide by scale factor",
-            f"    ldi r21, 0",
-            f"    rcall div16              ; R24:R25 = result (scaled¹)",
-            f"    mov r{res_low}, r24",
-            f"    mov r{res_high}, r25",
+            f"    rcall mul16              ; R24:R25 = op1 * op2",
+            f"    ; Salvar resultado antes de restaurar contexto",
+            f"    mov r0, r24",
+            f"    mov r1, r25",
+            f"    ; Restaurar contexto (ordem inversa)",
+            f"    pop r25",
+            f"    pop r24",
+            f"    pop r23",
+            f"    pop r22",
+            f"    pop r21",
+            f"    pop r20",
+            f"    pop r19",
+            f"    pop r18",
+            f"    ; Mover resultado para destino",
+            f"    mov r{res_low}, r0",
+            f"    mov r{res_high}, r1",
+            f"    clr r1",
             ""
         ])
 
@@ -605,14 +632,37 @@ class GeradorAssembly:
 
         asm.extend([
             f"    ; Divisão 16-bit: {result} = {op1} / {op2}",
+            f"    ; Salvar contexto de registradores R18-R25",
+            f"    push r18",
+            f"    push r19",
+            f"    push r20",
+            f"    push r21",
+            f"    push r22",
+            f"    push r23",
+            f"    push r24",
+            f"    push r25",
             f"    ; Preparar parâmetros para div16",
             f"    mov r18, r{op1_low}   ; Dividendo (low)",
             f"    mov r19, r{op1_high}  ; Dividendo (high)",
             f"    mov r20, r{op2_low}   ; Divisor (low)",
             f"    mov r21, r{op2_high}  ; Divisor (high)",
             f"    rcall div16           ; Chamar rotina (quociente em R24:R25, resto em R22:R23)",
-            f"    mov r{res_low}, r24   ; Copiar quociente",
-            f"    mov r{res_high}, r25",
+            f"    ; Salvar resultado antes de restaurar contexto",
+            f"    mov r0, r24           ; Usar R0:R1 como temporário",
+            f"    mov r1, r25",
+            f"    ; Restaurar contexto (ordem inversa)",
+            f"    pop r25",
+            f"    pop r24",
+            f"    pop r23",
+            f"    pop r22",
+            f"    pop r21",
+            f"    pop r20",
+            f"    pop r19",
+            f"    pop r18",
+            f"    ; Mover resultado para destino",
+            f"    mov r{res_low}, r0    ; Copiar quociente",
+            f"    mov r{res_high}, r1",
+            f"    clr r1                ; Limpar R1 (boa prática)",
             ""
         ])
 
@@ -648,14 +698,37 @@ class GeradorAssembly:
 
         asm.extend([
             f"    ; Módulo 16-bit: {result} = {op1} % {op2}",
+            f"    ; Salvar contexto de registradores R18-R25",
+            f"    push r18",
+            f"    push r19",
+            f"    push r20",
+            f"    push r21",
+            f"    push r22",
+            f"    push r23",
+            f"    push r24",
+            f"    push r25",
             f"    ; Preparar parâmetros para div16",
             f"    mov r18, r{op1_low}   ; Dividendo (low)",
             f"    mov r19, r{op1_high}  ; Dividendo (high)",
             f"    mov r20, r{op2_low}   ; Divisor (low)",
             f"    mov r21, r{op2_high}  ; Divisor (high)",
             f"    rcall div16           ; Chamar rotina (quociente em R24:R25, resto em R22:R23)",
-            f"    mov r{res_low}, r22   ; Copiar RESTO (não quociente!)",
-            f"    mov r{res_high}, r23",
+            f"    ; Salvar RESTO antes de restaurar contexto",
+            f"    mov r0, r22           ; Usar R0:R1 como temporário (RESTO!)",
+            f"    mov r1, r23",
+            f"    ; Restaurar contexto (ordem inversa)",
+            f"    pop r25",
+            f"    pop r24",
+            f"    pop r23",
+            f"    pop r22",
+            f"    pop r21",
+            f"    pop r20",
+            f"    pop r19",
+            f"    pop r18",
+            f"    ; Mover resultado para destino",
+            f"    mov r{res_low}, r0    ; Copiar RESTO (não quociente!)",
+            f"    mov r{res_high}, r1",
+            f"    clr r1                ; Limpar R1 (boa prática)",
             ""
         ])
 
@@ -685,16 +758,12 @@ class GeradorAssembly:
 
     def _processar_divisao_real(self, instr: Dict[str, Any]) -> List[str]:
         """
-        Processa divisão real: result = op1 | op2
+        Processa divisão inteira (operador | é tratado como divisão normal).
 
-        Operands are already scaled by 100x from TAC generation.
-        To maintain precision, we multiply dividend by 100 before dividing:
-        result = (op1 * 100) / op2
+        Divide dois valores inteiros normais:
+          result = op1 / op2
 
-        Example: 100 | 200 (represents 1.0 / 2.0)
-                 = (100 * 100) / 200
-                 = 10000 / 200
-                 = 50 (represents 0.5) ✓
+        Example: 10 | 2 = 5
 
         Args:
             instr: {"type": "binary_op", "result": "t2", "operand1": "t0",
@@ -713,27 +782,43 @@ class GeradorAssembly:
         op2_low, op2_high = self._get_reg_pair(op2)
         res_low, res_high = self._get_reg_pair(result)
 
-        # Need mul16 and div16 for scaled division
-        self._routines_needed.add("mul16")
+        # Need div16 for division
         self._routines_needed.add("div16")
 
         return [
             f"    ; TAC linha {line}: {result} = {op1} | {op2}",
-            f"    ; Real division: (op1 * 100) / op2 for precision",
-            f"    ; Step 1: Multiply dividend by scale factor (100)",
+            f"    ; Divisão inteira (sem escala)",
+            f"    ; Salvar contexto de registradores R18-R25",
+            f"    push r18",
+            f"    push r19",
+            f"    push r20",
+            f"    push r21",
+            f"    push r22",
+            f"    push r23",
+            f"    push r24",
+            f"    push r25",
+            f"    ; Preparar parâmetros para div16",
             f"    mov r18, r{op1_low}      ; Dividendo",
             f"    mov r19, r{op1_high}",
-            f"    ldi r20, 100             ; Scale factor (100)",
-            f"    ldi r21, 0",
-            f"    rcall mul16              ; R24:R25 = op1 * 100",
-            f"    ; Step 2: Divide scaled dividend by divisor",
-            f"    mov r18, r24             ; Move result to dividend registers",
-            f"    mov r19, r25",
             f"    mov r20, r{op2_low}      ; Divisor",
             f"    mov r21, r{op2_high}",
-            f"    rcall div16              ; R24:R25 = (op1 * 100) / op2",
-            f"    mov r{res_low}, r24      ; Copy result",
-            f"    mov r{res_high}, r25",
+            f"    rcall div16              ; R24:R25 = op1 / op2",
+            f"    ; Salvar resultado antes de restaurar contexto",
+            f"    mov r0, r24              ; Usar R0:R1 como temporário",
+            f"    mov r1, r25",
+            f"    ; Restaurar contexto (ordem inversa)",
+            f"    pop r25",
+            f"    pop r24",
+            f"    pop r23",
+            f"    pop r22",
+            f"    pop r21",
+            f"    pop r20",
+            f"    pop r19",
+            f"    pop r18",
+            f"    ; Mover resultado para destino",
+            f"    mov r{res_low}, r0       ; Copy result",
+            f"    mov r{res_high}, r1",
+            f"    clr r1                   ; Limpar R1 (boa prática)",
             ""
         ]
 
@@ -945,6 +1030,7 @@ class GeradorAssembly:
         line = instr.get("line", "?")
 
         skip_label = f"skip_le_{line}"
+        set_true_label = f"set_true_le_{line}"
 
         op1_low, op1_high = self._get_reg_pair(op1)
         op2_low, op2_high = self._get_reg_pair(op2)
@@ -958,7 +1044,7 @@ class GeradorAssembly:
             f"    cpc r{op2_high}, r{op1_high}",
             f"    ldi r{res_low}, 0               ; Assume false",
             f"    ldi r{res_high}, 0",
-            f"    brlo {skip_label}               ; If B < A, skip",
+            f"    brlo {skip_label}               ; If B < A, skip (branch curto)",
             f"    ldi r{res_low}, 1               ; Set true (B >= A, i.e., A <= B)",
             f"{skip_label}:",
             ""
@@ -1003,6 +1089,7 @@ class GeradorAssembly:
         Processa salto condicional (jump if TRUE): if condition goto target
 
         Jumps to target if condition is non-zero (true).
+        Usa long branch (inverter + rjmp) para suportar saltos distantes.
 
         Args:
             instr: {"type": "if_goto", "condition": "t5", "target": "L1", "line": 10}
@@ -1014,6 +1101,8 @@ class GeradorAssembly:
         target = instr["target"]
         line = instr.get("line", "?")
 
+        skip_label = f"skip_if_{line}"
+
         # Get register pair for condition variable
         cond_low, cond_high = self._get_reg_pair(condition)
 
@@ -1024,7 +1113,9 @@ class GeradorAssembly:
             f"    ldi r25, 0",
             f"    cp r{cond_low}, r24         ; Compare low byte with 0",
             f"    cpc r{cond_high}, r25       ; Compare high byte with carry",
-            f"    brne {target}               ; Branch if NOT equal (condition is true)",
+            f"    breq {skip_label}           ; Branch if equal (false) - inverter lógica",
+            f"    rjmp {target}               ; Long jump se true",
+            f"{skip_label}:",
             ""
         ]
 
@@ -1033,6 +1124,7 @@ class GeradorAssembly:
         Processa salto condicional (jump if FALSE): ifFalse condition goto target
 
         Jumps to target if condition is zero (false).
+        Usa long branch (inverter + rjmp) para suportar saltos distantes.
 
         Args:
             instr: {"type": "if_false_goto", "condition": "t5", "target": "L2", "line": 12}
@@ -1044,6 +1136,8 @@ class GeradorAssembly:
         target = instr["target"]
         line = instr.get("line", "?")
 
+        skip_label = f"skip_iffalse_{line}"
+
         # Get register pair for condition variable
         cond_low, cond_high = self._get_reg_pair(condition)
 
@@ -1054,7 +1148,9 @@ class GeradorAssembly:
             f"    ldi r25, 0",
             f"    cp r{cond_low}, r24         ; Compare low byte with 0",
             f"    cpc r{cond_high}, r25       ; Compare high byte with carry",
-            f"    breq {target}               ; Branch if equal (condition is false)",
+            f"    brne {skip_label}           ; Branch if NOT equal (true) - inverter lógica",
+            f"    rjmp {target}               ; Long jump se false",
+            f"{skip_label}:",
             ""
         ]
 
@@ -1118,26 +1214,87 @@ class GeradorAssembly:
             ""
         ]
 
-        # Detectar variável do resultado final (última instrução copy/assignment)
+        # Garantir que div16 esteja disponível para desnormalização
+        self._routines_needed.add("div16")
+
+        # Detectar variável do resultado final
+        # Estratégia: procurar pela última instrução que não seja label ou goto
         final_result_var = None
         if instructions:
-            last_instr = instructions[-1]
-            if last_instr.get("type") in ["copy", "assignment"]:
-                final_result_var = last_instr.get("dest")
+            # Iterar de trás para frente para encontrar a última instrução relevante
+            for instr in reversed(instructions):
+                instr_type = instr.get("type")
+                # Procurar por copy ou assignment (não label, goto, if_goto, if_false_goto)
+                if instr_type in ["copy", "assignment", "binary_op"]:
+                    if instr_type == "binary_op":
+                        final_result_var = instr.get("result")
+                    else:
+                        final_result_var = instr.get("dest")
+                    break
 
         # Enviar resultado via UART se identificado
-        if final_result_var and final_result_var in self._var_to_reg_pair:
-            res_low, res_high = self._var_to_reg_pair[final_result_var]
+        if final_result_var:
             epilogo.extend([
                 "    ; Enviar resultado final via UART",
-                f"    mov r24, r{res_low}    ; Copiar resultado para R24:R25",
-                f"    mov r25, r{res_high}",
+            ])
+            
+            # Caso 1: Variável está em registrador alocado
+            if final_result_var in self._var_to_reg_pair:
+                res_low, res_high = self._var_to_reg_pair[final_result_var]
+                epilogo.extend([
+                    f"    mov r24, r{res_low}    ; Copiar resultado para R24:R25",
+                    f"    mov r25, r{res_high}",
+                ])
+            # Caso 2: Variável está spillada na memória
+            elif final_result_var in self._spilled_vars:
+                mem_addr = self._spilled_vars[final_result_var]
+                epilogo.extend([
+                    f"    lds r24, 0x{mem_addr:04X}      ; Carregar resultado (low byte)",
+                    f"    lds r25, 0x{mem_addr + 1:04X}  ; Carregar resultado (high byte)",
+                ])
+            else:
+                # Fallback: tentar aloca registrador e carregar
+                res_low, res_high = self._get_reg_pair(final_result_var)
+                epilogo.extend([
+                    f"    mov r24, r{res_low}    ; Copiar resultado para R24:R25",
+                    f"    mov r25, r{res_high}",
+                ])
+
+            epilogo.extend([
+                "    ; Enviar resultado (sem desnormalização - valores já são inteiros normais)",
                 "    rcall send_number_16bit",
                 "    ldi r24, 13            ; CR",
                 "    rcall uart_transmit",
                 "    ldi r24, 10            ; LF",
                 "    rcall uart_transmit",
-                "    jmp fim                ; Saltar para loop infinito",
+                ""
+            ])
+        else:
+            # Fallback: Se não conseguiu identificar resultado, procurar em spilladas ou usar último registrador
+            # Primeiro tenta encontrar qualquer variável que possa ser o resultado
+            all_vars = list(self._var_to_reg_pair.keys()) + list(self._spilled_vars.keys())
+
+            if self._spilled_vars:
+                # Usar a última variável spillada (provavelmente o resultado)
+                last_spilled_var = list(self._spilled_vars.keys())[-1]
+                mem_addr = self._spilled_vars[last_spilled_var]
+                epilogo.extend([
+                    f"    ; Carregar resultado da memória (fallback)",
+                    f"    lds r24, 0x{mem_addr:04X}      ; Carregar resultado (low byte)",
+                    f"    lds r25, 0x{mem_addr + 1:04X}  ; Carregar resultado (high byte)",
+                ])
+            else:
+                epilogo.extend([
+                    "    ; Nenhuma variável identificada - enviando R24:R25",
+                ])
+
+            epilogo.extend([
+                "    ; Enviar resultado (sem desnormalização - valores já são inteiros normais)",
+                "    rcall send_number_16bit",
+                "    ldi r24, 13            ; CR",
+                "    rcall uart_transmit",
+                "    ldi r24, 10            ; LF",
+                "    rcall uart_transmit",
                 ""
             ])
 
@@ -1389,6 +1546,8 @@ class GeradorAssembly:
             "; send_number_16bit: Envia número 16-bit como decimal via UART",
             "; Entrada: R24:R25 (número 16-bit, 0-65535)",
             "; Saída: Nenhuma (envia via UART)",
+            "; Suprime zeros à esquerda, mas sempre imprime pelo menos um dígito",
+            "; Usa R22 como flag: 0 = ainda não imprimiu nada, 1 = já imprimiu",
             "; ====================================================================",
             "send_number_16bit:",
             "    push r20",
@@ -1402,7 +1561,17 @@ class GeradorAssembly:
             "",
             "    mov r20, r24",
             "    mov r21, r25",
+            "    clr r22              ; Flag: 0 = não imprimiu nada ainda",
             "",
+            "    ; Caso especial: número é zero",
+            "    cp r20, r1",
+            "    cpc r21, r1",
+            "    brne not_zero",
+            "    ldi r24, 48          ; ASCII '0'",
+            "    rcall uart_transmit",
+            "    rjmp send_done",
+            "",
+            "not_zero:",
             "    ; Dezenas de milhares (10000)",
             "    ldi r16, lo8(10000)",
             "    ldi r17, hi8(10000)",
@@ -1411,22 +1580,22 @@ class GeradorAssembly:
             "div_10000:",
             "    cp r20, r16",
             "    cpc r21, r17",
-            "    brlo div_1000",
+            "    brlo check_print_10000",
             "    sub r20, r16",
             "    sbc r21, r17",
             "    inc r18",
             "    rjmp div_10000",
             "",
-            "div_1000:",
-            "    ; Imprimir dezena de milhares se != 0",
+            "check_print_10000:",
             "    cpi r18, 0",
-            "    breq skip_10000",
+            "    breq div_1000        ; Se zero, pula",
             "    mov r24, r18",
             "    subi r24, -48",
             "    rcall uart_transmit",
-            "skip_10000:",
+            "    ldi r22, 1           ; Marca que já imprimiu algo",
             "",
             "    ; Milhares (1000)",
+            "div_1000:",
             "    ldi r16, lo8(1000)",
             "    ldi r17, hi8(1000)",
             "    clr r18",
@@ -1434,19 +1603,25 @@ class GeradorAssembly:
             "div_1000_loop:",
             "    cp r20, r16",
             "    cpc r21, r17",
-            "    brlo div_100",
+            "    brlo check_print_1000",
             "    sub r20, r16",
             "    sbc r21, r17",
             "    inc r18",
             "    rjmp div_1000_loop",
             "",
-            "div_100:",
-            "    ; Imprimir milhares",
+            "check_print_1000:",
+            "    cpi r22, 1           ; Já imprimiu algo?",
+            "    breq print_1000      ; Se sim, imprime (mesmo que zero)",
+            "    cpi r18, 0           ; Se não, verifica se é zero",
+            "    breq div_100         ; Se zero, pula",
+            "print_1000:",
             "    mov r24, r18",
             "    subi r24, -48",
             "    rcall uart_transmit",
+            "    ldi r22, 1           ; Marca que já imprimiu algo",
             "",
             "    ; Centenas (100)",
+            "div_100:",
             "    ldi r16, 100",
             "    clr r17",
             "    clr r18",
@@ -1454,19 +1629,25 @@ class GeradorAssembly:
             "div_100_loop:",
             "    cp r20, r16",
             "    cpc r21, r17",
-            "    brlo div_10",
+            "    brlo check_print_100",
             "    sub r20, r16",
             "    sbc r21, r17",
             "    inc r18",
             "    rjmp div_100_loop",
             "",
-            "div_10:",
-            "    ; Imprimir centenas",
+            "check_print_100:",
+            "    cpi r22, 1",
+            "    breq print_100",
+            "    cpi r18, 0",
+            "    breq div_10",
+            "print_100:",
             "    mov r24, r18",
             "    subi r24, -48",
             "    rcall uart_transmit",
+            "    ldi r22, 1",
             "",
             "    ; Dezenas (10)",
+            "div_10:",
             "    ldi r16, 10",
             "    clr r17",
             "    clr r18",
@@ -1474,23 +1655,29 @@ class GeradorAssembly:
             "div_10_loop:",
             "    cp r20, r16",
             "    cpc r21, r17",
-            "    brlo print_units",
+            "    brlo check_print_10",
             "    sub r20, r16",
             "    sbc r21, r17",
             "    inc r18",
             "    rjmp div_10_loop",
             "",
-            "print_units:",
-            "    ; Imprimir dezenas",
+            "check_print_10:",
+            "    cpi r22, 1",
+            "    breq print_10",
+            "    cpi r18, 0",
+            "    breq print_units",
+            "print_10:",
             "    mov r24, r18",
             "    subi r24, -48",
             "    rcall uart_transmit",
             "",
-            "    ; Imprimir unidades",
+            "    ; Unidades (sempre imprime)",
+            "print_units:",
             "    mov r24, r20",
             "    subi r24, -48",
             "    rcall uart_transmit",
             "",
+            "send_done:",
             "    pop r19",
             "    pop r18",
             "    pop r17",
