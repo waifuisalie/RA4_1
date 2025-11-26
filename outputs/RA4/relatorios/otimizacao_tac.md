@@ -1,9 +1,9 @@
 # Relatório de Otimizações TAC
 
 ## 1. Resumo Executivo
-- Instruções antes: 21
-- Instruções depois: 20
-- Redução: 4.8%
+- Instruções antes: 18
+- Instruções depois: 17
+- Redução: 5.6%
 - Temporários eliminados: 1
 
 ## 2. Técnicas Implementadas
@@ -91,10 +91,10 @@ t0 = 5
 **Impacto:** 0
 
 ## 3. Estatísticas Detalhadas
-- Número de instruções TAC antes: 21
-- Número de instruções TAC depois: 20
+- Número de instruções TAC antes: 18
+- Número de instruções TAC depois: 17
 - Número de temporários eliminados: 1
-- Redução percentual: 4.8%
+- Redução percentual: 5.6%
 - Número de iterações até convergência: 2
 
 ## 4. Análise do Impacto no Código Assembly Gerado

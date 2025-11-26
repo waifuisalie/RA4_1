@@ -1,52 +1,42 @@
 # Julgamento de Tipos
 
-**Gerado em:** 2025-11-25 22:36:00
+**Gerado em:** 2025-11-25 22:38:52
 
 **Total de expressões analisadas:** 6
 
 ---
 
-## Linha 1: `(0 FIB_0)`
-
-### Análise de Tipos:
-- **Operando 1:** `0` → tipo: `int`
-- **Operando 2:** `FIB_0` → tipo: `int`
-
-### Tipo Resultante: `int`
-
----
-
-## Linha 2: `(1 FIB_1)`
+## Linha 1: `(1 COUNTER)`
 
 ### Análise de Tipos:
 - **Operando 1:** `1` → tipo: `int`
-- **Operando 2:** `FIB_1` → tipo: `int`
-
-### Tipo Resultante: `int`
-
----
-
-## Linha 3: `(2 COUNTER)`
-
-### Análise de Tipos:
-- **Operando 1:** `2` → tipo: `int`
 - **Operando 2:** `COUNTER` → tipo: `int`
 
 ### Tipo Resultante: `int`
 
 ---
 
-## Linha 4: `(24 LIMIT)`
+## Linha 2: `(1 RESULT)`
 
 ### Análise de Tipos:
-- **Operando 1:** `24` → tipo: `int`
+- **Operando 1:** `1` → tipo: `int`
+- **Operando 2:** `RESULT` → tipo: `int`
+
+### Tipo Resultante: `int`
+
+---
+
+## Linha 3: `(8 LIMIT)`
+
+### Análise de Tipos:
+- **Operando 1:** `8` → tipo: `int`
 - **Operando 2:** `LIMIT` → tipo: `int`
 
 ### Tipo Resultante: `int`
 
 ---
 
-## Linha 5: `((COUNTER LIMIT <=) (FIB_0 FIB_1 +) (FIB_1) (FIB_NEXT) (COUNTER 1 +) WHILE)`
+## Linha 4: `((COUNTER LIMIT <=) ((RESULT COUNTER *) RESULT) (COUNTER 1 +) WHILE)`
 
 ### Análise de Tipos:
 - **Operando 1:** `(COUNTER LIMIT <=)` → tipo: `boolean`
@@ -54,10 +44,8 @@
     - `LIMIT` : `int`
     - Operador: `<=`
     - Resultado: `boolean`
-- **Operando 2:** `(FIB_0 FIB_1 +)` → tipo: `int`
-- **Operando 3:** `(FIB_1)` → tipo: `int`
-- **Operando 4:** `(FIB_NEXT)` → tipo: `int`
-- **Operando 5:** `(COUNTER 1 +)` → tipo: `int`
+- **Operando 2:** `((RESULT COUNTER *) RESULT)` → tipo: `int`
+- **Operando 3:** `(COUNTER 1 +)` → tipo: `int`
 - **Operador:** `WHILE`
 
 ### Regra Aplicada:
@@ -72,11 +60,21 @@
 
 ---
 
-## Linha 6: `(FIB_NEXT RESULT)`
+## Linha 5: `(RESULT FINAL_RESULT)`
 
 ### Análise de Tipos:
-- **Operando 1:** `FIB_NEXT` → tipo: `None`
-- **Operando 2:** `RESULT` → tipo: `None`
+- **Operando 1:** `RESULT` → tipo: `int`
+- **Operando 2:** `FINAL_RESULT` → tipo: `int`
+
+### Tipo Resultante: `int`
+
+---
+
+## Linha 6: `(RESULT FINAL_RESULT)`
+
+### Análise de Tipos:
+- **Operando 1:** `RESULT` → tipo: `int`
+- **Operando 2:** `FINAL_RESULT` → tipo: `int`
 
 ### Tipo Resultante: `int`
 

@@ -17,37 +17,14 @@ main:
     ; Inicializar UART (115200 baud @ 16MHz)
     rcall uart_init
 
-    ; Teste UART - enviar 12345
-    ldi r16, 0x31   ; '1'
-    mov r0, r16
-    rcall uart_transmit
-    ldi r16, 0x32   ; '2'
-    mov r0, r16
-    rcall uart_transmit
-    ldi r16, 0x33   ; '3'
-    mov r0, r16
-    rcall uart_transmit
-    ldi r16, 0x34   ; '4'
-    mov r0, r16
-    rcall uart_transmit
-    ldi r16, 0x35   ; '5'
-    mov r0, r16
-    rcall uart_transmit
-    ldi r16, 13     ; CR
-    mov r0, r16
-    rcall uart_transmit
-    ldi r16, 10     ; LF
-    mov r0, r16
-    rcall uart_transmit
-
     ; ==== INÍCIO DO CÓDIGO GERADO ====
 
-    ; TAC linha 1: t0 = 0
-    ldi r16, 0   ; Constante 0 (low byte)
-    ldi r17, 0  ; Constante 0 (high byte)
+    ; TAC linha 1: t0 = 1
+    ldi r16, 1   ; Constante 1 (low byte)
+    ldi r17, 0  ; Constante 1 (high byte)
 
-    ; TAC linha 1: FIB_0 = t0
-    mov r18, r16   ; FIB_0 = t0
+    ; TAC linha 1: COUNTER = t0
+    mov r18, r16   ; COUNTER = t0
     mov r19, r17
 
     ; Liberando registradores de variáveis mortas: t0
@@ -56,120 +33,102 @@ main:
     ldi r20, 1   ; Constante 1 (low byte)
     ldi r21, 0  ; Constante 1 (high byte)
 
-    ; TAC linha 2: FIB_1 = t1
-    mov r22, r20   ; FIB_1 = t1
+    ; TAC linha 2: RESULT = t1
+    mov r22, r20   ; RESULT = t1
     mov r23, r21
 
     ; Liberando registradores de variáveis mortas: t1
 
-    ; TAC linha 3: t2 = 2
-    ldi r24, 2   ; Constante 2 (low byte)
-    ldi r25, 0  ; Constante 2 (high byte)
+    ; TAC linha 3: t2 = 8
+    ldi r24, 8   ; Constante 8 (low byte)
+    ldi r25, 0  ; Constante 8 (high byte)
 
-    ; TAC linha 3: COUNTER = t2
-    mov r26, r24   ; COUNTER = t2
+    ; TAC linha 3: LIMIT = t2
+    mov r26, r24   ; LIMIT = t2
     mov r27, r25
 
     ; Liberando registradores de variáveis mortas: t2
 
-    ; TAC linha 4: t3 = 24
-    ldi r28, 24   ; Constante 24 (low byte)
-    ldi r29, 0  ; Constante 24 (high byte)
-
-    ; TAC linha 4: LIMIT = t3
-    mov r30, r28   ; LIMIT = t3
-    mov r31, r29
-
-    ; Liberando registradores de variáveis mortas: t3
-
 L0:
 
-    ; TAC linha 5: t4 = COUNTER <= LIMIT
+    ; TAC linha 4: t3 = COUNTER <= LIMIT
     ; Comparação 16-bit menor ou igual (unsigned)
     ; Implementado como: B >= A (operandos trocados)
-    cp r30, r26      ; Compare B with A (reversed)
-    cpc r31, r27
-    ldi r16, 0               ; Assume false
-    ldi r17, 0
-    brlo skip_le_5               ; If B < A, skip
-    ldi r16, 1               ; Set true (B >= A, i.e., A <= B)
-skip_le_5:
+    cp r26, r18      ; Compare B with A (reversed)
+    cpc r27, r19
+    ldi r28, 0               ; Assume false
+    ldi r29, 0
+    brlo skip_le_4               ; If B < A, skip
+    ldi r28, 1               ; Set true (B >= A, i.e., A <= B)
+skip_le_4:
 
     ; Liberando registradores de variáveis mortas: LIMIT
 
-    ; TAC linha 5: ifFalse t4 goto L1
-    ; Check if t4 == 0 (false)
+    ; TAC linha 4: ifFalse t3 goto L1
+    ; Check if t3 == 0 (false)
     ldi r18, 0                  ; Zero constant for comparison
     mov r2, r18
     mov r3, r18
-    cp r16, r2         ; Compare low byte with 0
-    cpc r17, r3       ; Compare high byte with carry
+    cp r28, r2         ; Compare low byte with 0
+    cpc r29, r3       ; Compare high byte with carry
     brne .+2              ; If not equal (true), skip jmp
     jmp L1                ; If equal (false), jump to L1
 
+    ; Liberando registradores de variáveis mortas: t3
+
+    ; TAC linha 4: t4 = RESULT * COUNTER
+    ; Multiplicação 16-bit inteira
+    mov r0, r22
+    mov r1, r23
+    mov r2, r18
+    mov r3, r19
+    rcall mul16              ; R4:R5 = op1 * op2
+    mov r30, r4
+    mov r31, r5
+
+    ; TAC linha 4: RESULT = t4
+    mov r22, r30   ; RESULT = t4
+    mov r23, r31
+
     ; Liberando registradores de variáveis mortas: t4
 
-    ; TAC linha 5: t5 = FIB_0 + FIB_1
-    ; Soma 16-bit: t5 = FIB_0 + FIB_1
-    add r18, r22   ; Low byte com carry
-    adc r19, r23 ; High byte com carry
-    mov r20, r18   ; Resultado em t5
-    mov r21, r19
+    ; TAC linha 4: t5 = 1
+    ldi r16, 1   ; Constante 1 (low byte)
+    ldi r17, 0  ; Constante 1 (high byte)
 
-    ; TAC linha 5: FIB_NEXT = t5
-    mov r24, r20   ; FIB_NEXT = t5
-    mov r25, r21
+    ; TAC linha 4: t6 = COUNTER + t5
+    ; Soma 16-bit: t6 = COUNTER + t5
+    add r18, r16   ; Low byte com carry
+    adc r19, r17 ; High byte com carry
+    mov r20, r18   ; Resultado em t6
+    mov r21, r19
 
     ; Liberando registradores de variáveis mortas: t5
 
-    ; TAC linha 5: FIB_0 = FIB_1
-    mov r18, r22   ; FIB_0 = FIB_1
-    mov r19, r23
+    ; TAC linha 4: COUNTER = t6
+    mov r18, r20   ; COUNTER = t6
+    mov r19, r21
 
-    ; Liberando registradores de variáveis mortas: FIB_0
+    ; Liberando registradores de variáveis mortas: COUNTER, t6
 
-    ; TAC linha 5: FIB_1 = FIB_NEXT
-    mov r22, r24   ; FIB_1 = FIB_NEXT
-    mov r23, r25
-
-    ; Liberando registradores de variáveis mortas: FIB_1
-
-    ; TAC linha 5: t6 = 1
-    ldi r28, 1   ; Constante 1 (low byte)
-    ldi r29, 0  ; Constante 1 (high byte)
-
-    ; TAC linha 5: t7 = COUNTER + t6
-    ; Soma 16-bit: t7 = COUNTER + t6
-    add r26, r28   ; Low byte com carry
-    adc r27, r29 ; High byte com carry
-    mov r30, r26   ; Resultado em t7
-    mov r31, r27
-
-    ; Liberando registradores de variáveis mortas: t6
-
-    ; TAC linha 5: COUNTER = t7
-    mov r26, r30   ; COUNTER = t7
-    mov r27, r31
-
-    ; Liberando registradores de variáveis mortas: COUNTER, t7
-
-    ; TAC linha 5: goto L0
+    ; TAC linha 4: goto L0
     rjmp L0   ; Salto relativo para L0
 
 L1:
 
-    ; TAC linha 6: RESULT = FIB_NEXT
-    mov r16, r24   ; RESULT = FIB_NEXT
-    mov r17, r25
+    ; TAC linha 5: FINAL_RESULT = RESULT
+    mov r24, r22   ; FINAL_RESULT = RESULT
+    mov r25, r23
+
+    ; TAC linha 6: FINAL_RESULT = RESULT
+    mov r24, r22   ; FINAL_RESULT = RESULT
+    mov r25, r23
 
     ; ==== FIM DO CÓDIGO GERADO ====
 
-    ; Enviar resultado fixo 88888 via UART para teste
-    ; 88888 = 0x15B38, so r4 = 0x38, r5 = 0x5B
-    ldi r16, 0x38    ; 88888 low byte
-    mov r4, r16
-    ldi r16, 0x5B    ; 88888 high byte
-    mov r5, r16
+    ; Enviar resultado final via UART
+    mov r4, r24    ; Copiar resultado para R4:R5
+    mov r5, r25
     rcall send_number_16bit
     ldi r16, 13            ; CR
     mov r0, r16
@@ -178,6 +137,51 @@ L1:
     mov r0, r16
     rcall uart_transmit
     jmp fim                ; Saltar para loop infinito
+
+; ====================================================================
+; mul16: Multiplicação 16-bit × 16-bit = 16-bit (unsigned)
+; Entrada: R0:R1 (op1), R2:R3 (op2)
+; Saída: R4:R5 (resultado)
+; Usa: R6, R7, R8, R9
+; ====================================================================
+mul16:
+    ; Salvar registradores que serão modificados
+    push r8
+    push r9
+
+    ; Zerar acumulador resultado
+    clr r4
+    clr r5
+
+    ; Produto parcial 1: AL × BL (contribui totalmente)
+    mul r0, r2      ; R1:R0 = AL × BL
+    mov r4, r0       ; Byte baixo do resultado
+    mov r6, r1       ; Byte alto vai para temporário
+
+    ; Produto parcial 2: AL × BH (contribui byte baixo para byte alto do resultado)
+    mul r0, r3      ; R1:R0 = AL × BH
+    add r6, r0       ; Somar byte baixo ao acumulador
+    adc r5, r1       ; Somar byte alto com carry
+
+    ; Produto parcial 3: AH × BL (contribui byte baixo para byte alto do resultado)
+    mul r1, r2      ; R1:R0 = AH × BL
+    add r6, r0       ; Somar byte baixo ao acumulador
+    adc r5, r1       ; Somar byte alto com carry
+
+    ; Produto parcial 4: AH × BH (descartado - overflow além de 16 bits)
+    ; Não precisamos calcular pois descartamos resultado > 16 bits
+
+    ; Mover acumulador para resultado final
+    mov r5, r6      ; Byte alto do resultado
+
+    ; Restaurar registradores
+    pop r9
+    pop r8
+
+    ; Limpar R0 e R1 (boa prática após MUL)
+    clr r1
+
+    ret
 
 ; ====================================================================
 ; ROTINAS UART (115200 baud @ 16MHz)

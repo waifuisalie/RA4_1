@@ -331,13 +331,15 @@ class GeradorAssembly:
         Usa instrução LDI (Load Immediate) - não consome do pool de registradores.
         Para inteiros, armazena em formato 16-bit little-endian.
 
+        Se o registrador não suportar LDI (r0-r15), usa MOV via r16 como intermediário.
+
         Args:
             value: Valor da constante (int ou float)
             reg_low: Registrador para byte baixo
             reg_high: Registrador para byte alto
 
         Returns:
-            Lista de linhas Assembly (comentário + 2x ldi)
+            Lista de linhas Assembly (comentário + instruções de carregamento)
 
         Note:
             Float de 16-bit (half-precision) será implementado em sub-issue 3.5
@@ -350,11 +352,38 @@ class GeradorAssembly:
         low_byte = int_value & 0xFF
         high_byte = (int_value >> 8) & 0xFF
 
-        return [
-            f"    ldi r{reg_low}, {low_byte}   ; Constante {int_value} (low byte)",
-            f"    ldi r{reg_high}, {high_byte}  ; Constante {int_value} (high byte)",
-            ""
-        ]
+        # Verificar se registradores suportam LDI (apenas r16-r31)
+        if reg_low >= 16 and reg_high >= 16:
+            # Ambos os registradores suportam LDI
+            return [
+                f"    ldi r{reg_low}, {low_byte}   ; Constante {int_value} (low byte)",
+                f"    ldi r{reg_high}, {high_byte}  ; Constante {int_value} (high byte)",
+                ""
+            ]
+        else:
+            # Pelo menos um registrador não suporta LDI - usar MOV via r16
+            lines = [f"    ; Carregar constante {int_value} (usando mov via r16)"]
+
+            # Carregar low byte
+            if reg_low >= 16:
+                lines.append(f"    ldi r{reg_low}, {low_byte}   ; Low byte")
+            else:
+                lines.extend([
+                    f"    ldi r16, {low_byte}   ; Low byte via r16",
+                    f"    mov r{reg_low}, r16"
+                ])
+
+            # Carregar high byte
+            if reg_high >= 16:
+                lines.append(f"    ldi r{reg_high}, {high_byte}  ; High byte")
+            else:
+                lines.extend([
+                    f"    ldi r16, {high_byte}  ; High byte via r16",
+                    f"    mov r{reg_high}, r16"
+                ])
+
+            lines.append("")
+            return lines
 
     # =========================================================================
     # PROCESSAMENTO DE INSTRUÇÕES TAC (PRIVADOS)
@@ -1115,24 +1144,9 @@ class GeradorAssembly:
 
         # Se for o label L1 (fim do programa), adicionar impressão do resultado
         if label_name == "L1":
-            # Detectar a última variável definida antes do L1
-            result_var = None
-            current_idx = None
-
-            # Encontrar o índice da instrução L1
-            for i, tac_instr in enumerate(self._all_instructions):
-                if tac_instr.get("type") == "label" and tac_instr.get("name") == "L1":
-                    current_idx = i
-                    break
-
-            if current_idx is not None:
-                # Procurar para trás pela última instrução de copy/assignment
-                for i in range(current_idx - 1, -1, -1):
-                    tac_instr = self._all_instructions[i]
-                    if tac_instr.get("type") in ["copy", "assignment"]:
-                        result_var = tac_instr.get("dest")
-                        break
-
+            # Procurar especificamente pela variável FINAL_RESULT
+            result_var = "FINAL_RESULT"
+            
             if result_var and result_var in self._var_to_reg_pair:
                 res_low, res_high = self._var_to_reg_pair[result_var]
                 lines.extend([
