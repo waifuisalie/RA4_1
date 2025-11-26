@@ -1085,6 +1085,7 @@ class GeradorAssembly:
         Processa salto condicional (jump if TRUE): if condition goto target
 
         Jumps to target if condition is non-zero (true).
+        Uses jmp for long jumps to avoid AVR branch distance limitations.
 
         Args:
             instr: {"type": "if_goto", "condition": "t5", "target": "L1", "line": 10}
@@ -1107,7 +1108,8 @@ class GeradorAssembly:
             f"    mov r3, r16",
             f"    cp r{cond_low}, r2         ; Compare low byte with 0",
             f"    cpc r{cond_high}, r3       ; Compare high byte with carry",
-            f"    brne {target}               ; Branch if NOT equal (condition is true)",
+            f"    breq .+2              ; If equal (false), skip jmp",
+            f"    jmp {target}                ; If not equal (true), jump to {target}",
             ""
         ]
 
@@ -1116,6 +1118,7 @@ class GeradorAssembly:
         Processa salto condicional (jump if FALSE): ifFalse condition goto target
 
         Jumps to target if condition is zero (false).
+        Uses jmp for long jumps to avoid AVR branch distance limitations.
 
         Args:
             instr: {"type": "if_false_goto", "condition": "t5", "target": "L2", "line": 12}
@@ -1138,7 +1141,8 @@ class GeradorAssembly:
             f"    mov r3, r16",
             f"    cp r{cond_low}, r2         ; Compare low byte with 0",
             f"    cpc r{cond_high}, r3       ; Compare high byte with carry",
-            f"    breq {target}               ; Branch if equal (condition is false)",
+            f"    brne .+2              ; If not equal (true), skip jmp",
+            f"    jmp {target}                ; If equal (false), jump to {target}",
             ""
         ]
 
