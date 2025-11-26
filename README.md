@@ -144,8 +144,6 @@ avrdude -v
 ```
 
 **Nota:** O compilador detecta automaticamente as ferramentas AVR instaladas no sistema (MSYS2, Arduino IDE, WinAVR) e adiciona os caminhos ao PATH temporariamente durante a execução
-
-
 ---
 
 ## Instruções de Compilação e Execução
