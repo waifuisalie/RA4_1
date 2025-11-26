@@ -497,7 +497,12 @@ class GeradorAssembly:
         elif operator == "-":
             return self._processar_subtracao_16bit(instr)
         elif operator == "*":
-            return self._processar_multiplicacao_16bit(instr)
+            # Distinguir entre multiplicação inteira e real
+            data_type = instr.get("data_type", "int")
+            if data_type == "real":
+                return self._processar_multiplicacao_real(instr)
+            else:
+                return self._processar_multiplicacao_inteira(instr)
         elif operator == "/":
             return self._processar_divisao_16bit(instr)
         elif operator == "%":
@@ -599,7 +604,7 @@ class GeradorAssembly:
 
         return asm
 
-    def _processar_multiplicacao_16bit(self, instr: Dict[str, Any]) -> List[str]:
+    def _processar_multiplicacao_real(self, instr: Dict[str, Any]) -> List[str]:
         """
         Processa multiplicação 16-bit com re-normalização de escala.
 
@@ -652,6 +657,50 @@ class GeradorAssembly:
             f"    ldi r16, 0",
             f"    mov r3, r16",
             f"    rcall div16              ; R4:R5 = result (scaled¹)",
+            f"    mov r{res_low}, r4",
+            f"    mov r{res_high}, r5",
+            ""
+        ])
+
+        return asm
+
+    def _processar_multiplicacao_inteira(self, instr: Dict[str, Any]) -> List[str]:
+        """
+        Processa multiplicação inteira 16-bit sem re-normalização de escala.
+
+        Para inteiros, multiplicação é direta: result = op1 * op2
+
+        Usa rotina auxiliar mul16.
+        Convenção: op1 em R0:R1, op2 em R2:R3, resultado em R4:R5
+
+        Args:
+            instr: Instrução TAC de multiplicação
+
+        Returns:
+            Linhas Assembly geradas
+        """
+        result = instr["result"]
+        op1 = instr["operand1"]
+        op2 = instr["operand2"]
+        line = instr.get("line", "?")
+
+        # Registrar que precisamos da rotina mul16
+        self._routines_needed.add("mul16")
+
+        asm = [f"    ; TAC linha {line}: {result} = {op1} * {op2}"]
+
+        # Obter registradores dos operandos
+        op1_low, op1_high = self._get_reg_pair(op1)
+        op2_low, op2_high = self._get_reg_pair(op2)
+        res_low, res_high = self._get_reg_pair(result)
+
+        asm.extend([
+            f"    ; Multiplicação 16-bit inteira",
+            f"    mov r0, r{op1_low}",
+            f"    mov r1, r{op1_high}",
+            f"    mov r2, r{op2_low}",
+            f"    mov r3, r{op2_high}",
+            f"    rcall mul16              ; R4:R5 = op1 * op2",
             f"    mov r{res_low}, r4",
             f"    mov r{res_high}, r5",
             ""

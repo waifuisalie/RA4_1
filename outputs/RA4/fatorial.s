@@ -39,9 +39,9 @@ main:
 
     ; Liberando registradores de variáveis mortas: t1
 
-    ; TAC linha 3: t2 = 12
-    ldi r24, 12   ; Constante 12 (low byte)
-    ldi r25, 0  ; Constante 12 (high byte)
+    ; TAC linha 3: t2 = 8
+    ldi r24, 8   ; Constante 8 (low byte)
+    ldi r25, 0  ; Constante 8 (high byte)
 
     ; TAC linha 3: LIMIT = t2
     mov r26, r24   ; LIMIT = t2
@@ -66,31 +66,23 @@ skip_le_4:
 
     ; TAC linha 4: ifFalse t3 goto L1
     ; Check if t3 == 0 (false)
-    ldi r16, 0                  ; Zero constant for comparison
-    mov r2, r16
-    mov r3, r16
+    ldi r18, 0                  ; Zero constant for comparison
+    mov r2, r18
+    mov r3, r18
     cp r28, r2         ; Compare low byte with 0
     cpc r29, r3       ; Compare high byte with carry
-    breq L1               ; Branch if equal (condition is false)
+    brne .+2              ; If not equal (true), skip jmp
+    jmp L1                ; If equal (false), jump to L1
 
     ; Liberando registradores de variáveis mortas: t3
 
     ; TAC linha 4: t4 = RESULT * COUNTER
-    ; Multiplicação 16-bit com re-normalização de escala
-    ; Preparar parâmetros para mul16
+    ; Multiplicação 16-bit inteira
     mov r0, r22
     mov r1, r23
     mov r2, r18
     mov r3, r19
-    rcall mul16              ; R4:R5 = op1 * op2 (scaled²)
-    ; Re-normalize: divide by 100 to restore 100x scaling
-    mov r0, r4
-    mov r1, r5
-    ldi r16, 100             ; Divide by scale factor
-    mov r2, r16
-    ldi r16, 0
-    mov r3, r16
-    rcall div16              ; R4:R5 = result (scaled¹)
+    rcall mul16              ; R4:R5 = op1 * op2
     mov r30, r4
     mov r31, r5
 
@@ -98,7 +90,7 @@ skip_le_4:
     mov r22, r30   ; RESULT = t4
     mov r23, r31
 
-    ; Liberando registradores de variáveis mortas: RESULT, t4
+    ; Liberando registradores de variáveis mortas: t4
 
     ; TAC linha 4: t5 = 1
     ldi r16, 1   ; Constante 1 (low byte)
@@ -124,7 +116,27 @@ skip_le_4:
 
 L1:
 
+    ; TAC linha 5: FINAL_RESULT = RESULT
+    mov r24, r22   ; FINAL_RESULT = RESULT
+    mov r25, r23
+
+    ; TAC linha 6: FINAL_RESULT = RESULT
+    mov r24, r22   ; FINAL_RESULT = RESULT
+    mov r25, r23
+
     ; ==== FIM DO CÓDIGO GERADO ====
+
+    ; Enviar resultado final via UART
+    mov r4, r24    ; Copiar resultado para R4:R5
+    mov r5, r25
+    rcall send_number_16bit
+    ldi r16, 13            ; CR
+    mov r0, r16
+    rcall uart_transmit
+    ldi r16, 10            ; LF
+    mov r0, r16
+    rcall uart_transmit
+    jmp fim                ; Saltar para loop infinito
 
 ; ====================================================================
 ; mul16: Multiplicação 16-bit × 16-bit = 16-bit (unsigned)
@@ -169,72 +181,6 @@ mul16:
     ; Limpar R0 e R1 (boa prática após MUL)
     clr r1
 
-    ret
-
-; ====================================================================
-; div16: Divisão 16-bit ÷ 16-bit = quociente e resto (unsigned)
-; Algoritmo: Restoring shift-subtract (17 iterações, resto corrigido)
-; Entrada: R0:R1 (dividendo), R2:R3 (divisor)
-; Saída: R4:R5 (quociente), R6:R7 (resto)
-; Usa: R8 (contador de loop)
-; Ciclos: ~232
-; ====================================================================
-div16:
-    push r8              ; Salvar registrador usado
-
-    ; Verificar divisão por zero
-    cp      r2, r1       ; Comparar divisor low com 0
-    cpc     r3, r1       ; Comparar divisor high com 0
-    breq    div16_by_zero ; Se zero, pular para tratamento de erro
-
-    ; Inicializar resto = 0
-    clr     r6           ; Resto low = 0
-    clr     r7           ; Resto high = 0
-
-    ; Inicializar contador de loop (16 iterações para divisão 16-bit)
-    ldi     r16, 16
-    mov     r8, r16
-
-div16_loop:
-    ; Deslocar dividendo/quociente para esquerda
-    lsl     r0           ; Logical shift left (LSB=0, no carry dependency)
-    rol     r1           ; Shift dividend/quotient high
-
-    ; Deslocar bit MSB do dividendo para o resto
-    rol     r6           ; Shift into remainder low
-    rol     r7           ; Shift into remainder high
-
-    ; Comparar resto com divisor
-    cp      r6, r2      ; Compare remainder with divisor (low)
-    cpc     r7, r3      ; Compare remainder with divisor (high)
-    brcs    div16_skip    ; If remainder < divisor, skip subtraction
-
-    ; Resto >= divisor: subtrair divisor do resto
-    sub     r6, r2      ; Subtract divisor from remainder (low)
-    sbc     r7, r3      ; Subtract divisor from remainder (high)
-    inc     r0           ; Set quotient LSB bit to 1
-
-div16_skip:
-    dec     r8           ; Decrementar contador
-    brne    div16_loop    ; Loop se não terminou
-
-    ; Mover quociente para registradores de saída
-    mov     r4, r0      ; Quotient to output (low)
-    mov     r5, r1      ; Quotient to output (high)
-
-    ; Resto já está em R6:R7 (correto)
-
-    pop r8
-    ret
-
-div16_by_zero:
-    ; Retornar valores de erro
-    ldi     r16, 0xFF     ; Quociente = 0xFFFF (indicador de erro)
-    mov     r4, r16
-    mov     r5, r16
-    mov     r6, r0      ; Resto = dividendo original (low)
-    mov     r7, r1      ; Resto = dividendo original (high)
-    pop r8
     ret
 
 ; ====================================================================

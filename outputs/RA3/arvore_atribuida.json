@@ -2,7 +2,7 @@
   "arvore_atribuida": [
     {
       "tipo_vertice": "LINHA",
-      "tipo_inferido": "real",
+      "tipo_inferido": "int",
       "numero_linha": 1,
       "filhos": [
         {
@@ -12,18 +12,18 @@
           "filhos": [
             {
               "tipo_vertice": "LINHA",
-              "tipo_inferido": "real",
+              "tipo_inferido": "int",
               "numero_linha": 1,
               "filhos": [],
-              "valor": "1.0",
-              "subtipo": "numero_real"
+              "valor": "0",
+              "subtipo": "numero_inteiro"
             },
             {
               "tipo_vertice": "LINHA",
-              "tipo_inferido": "real",
+              "tipo_inferido": "int",
               "numero_linha": 1,
               "filhos": [],
-              "valor": "X_VAL",
+              "valor": "FIB_0",
               "subtipo": "variavel"
             }
           ]
@@ -32,7 +32,7 @@
     },
     {
       "tipo_vertice": "LINHA",
-      "tipo_inferido": "real",
+      "tipo_inferido": "int",
       "numero_linha": 2,
       "filhos": [
         {
@@ -42,18 +42,18 @@
           "filhos": [
             {
               "tipo_vertice": "LINHA",
-              "tipo_inferido": "real",
+              "tipo_inferido": "int",
               "numero_linha": 2,
               "filhos": [],
-              "valor": "1.0",
-              "subtipo": "numero_real"
+              "valor": "1",
+              "subtipo": "numero_inteiro"
             },
             {
               "tipo_vertice": "LINHA",
-              "tipo_inferido": "real",
+              "tipo_inferido": "int",
               "numero_linha": 2,
               "filhos": [],
-              "valor": "TERM1",
+              "valor": "FIB_1",
               "subtipo": "variavel"
             }
           ]
@@ -75,7 +75,7 @@
               "tipo_inferido": "int",
               "numero_linha": 3,
               "filhos": [],
-              "valor": "1",
+              "valor": "2",
               "subtipo": "numero_inteiro"
             },
             {
@@ -92,23 +92,53 @@
     },
     {
       "tipo_vertice": "LINHA",
-      "tipo_inferido": "real",
+      "tipo_inferido": "int",
       "numero_linha": 4,
       "filhos": [
         {
-          "tipo_vertice": "CONTROL_OP",
+          "tipo_vertice": "LINHA",
           "tipo_inferido": null,
           "numero_linha": 4,
           "filhos": [
             {
+              "tipo_vertice": "LINHA",
+              "tipo_inferido": "int",
+              "numero_linha": 4,
+              "filhos": [],
+              "valor": "24",
+              "subtipo": "numero_inteiro"
+            },
+            {
+              "tipo_vertice": "LINHA",
+              "tipo_inferido": "int",
+              "numero_linha": 4,
+              "filhos": [],
+              "valor": "LIMIT",
+              "subtipo": "variavel"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "tipo_vertice": "LINHA",
+      "tipo_inferido": "int",
+      "numero_linha": 5,
+      "filhos": [
+        {
+          "tipo_vertice": "CONTROL_OP",
+          "tipo_inferido": null,
+          "numero_linha": 5,
+          "filhos": [
+            {
               "tipo_vertice": "COMP_OP",
               "tipo_inferido": "boolean",
-              "numero_linha": 4,
+              "numero_linha": 5,
               "filhos": [
                 {
                   "tipo_vertice": "LINHA",
                   "tipo_inferido": "int",
-                  "numero_linha": 4,
+                  "numero_linha": 5,
                   "filhos": [],
                   "valor": "COUNTER",
                   "subtipo": "variavel"
@@ -116,10 +146,10 @@
                 {
                   "tipo_vertice": "LINHA",
                   "tipo_inferido": "int",
-                  "numero_linha": 4,
+                  "numero_linha": 5,
                   "filhos": [],
-                  "valor": "1",
-                  "subtipo": "numero_inteiro"
+                  "valor": "LIMIT",
+                  "subtipo": "variavel"
                 }
               ],
               "operador": "<="
@@ -127,781 +157,102 @@
             {
               "tipo_vertice": "LINHA",
               "tipo_inferido": null,
-              "numero_linha": 4,
-              "filhos": [
-                {
-                  "tipo_vertice": "ARITH_OP",
-                  "tipo_inferido": "real",
-                  "numero_linha": 4,
-                  "filhos": [
-                    {
-                      "tipo_vertice": "LINHA",
-                      "tipo_inferido": "real",
-                      "numero_linha": 4,
-                      "filhos": [],
-                      "valor": "X_VAL",
-                      "subtipo": "variavel"
-                    },
-                    {
-                      "tipo_vertice": "LINHA",
-                      "tipo_inferido": "real",
-                      "numero_linha": 4,
-                      "filhos": [],
-                      "valor": "X_VAL",
-                      "subtipo": "variavel"
-                    }
-                  ],
-                  "operador": "*"
-                },
-                {
-                  "tipo_vertice": "LINHA",
-                  "tipo_inferido": null,
-                  "numero_linha": 4,
-                  "filhos": [],
-                  "valor": "X_SQUARE",
-                  "subtipo": "variavel"
-                }
-              ]
-            },
-            {
-              "tipo_vertice": "LINHA",
-              "tipo_inferido": null,
-              "numero_linha": 4,
-              "filhos": [
-                {
-                  "tipo_vertice": "LINHA",
-                  "tipo_inferido": "real",
-                  "numero_linha": 4,
-                  "filhos": [],
-                  "valor": "2.0",
-                  "subtipo": "numero_real"
-                },
-                {
-                  "tipo_vertice": "LINHA",
-                  "tipo_inferido": null,
-                  "numero_linha": 4,
-                  "filhos": [],
-                  "valor": "FACT_2",
-                  "subtipo": "variavel"
-                }
-              ]
-            },
-            {
-              "tipo_vertice": "LINHA",
-              "tipo_inferido": null,
-              "numero_linha": 4,
-              "filhos": [
-                {
-                  "tipo_vertice": "ARITH_OP",
-                  "tipo_inferido": null,
-                  "numero_linha": 4,
-                  "filhos": [
-                    {
-                      "tipo_vertice": "LINHA",
-                      "tipo_inferido": null,
-                      "numero_linha": 4,
-                      "filhos": [],
-                      "valor": "X_SQUARE",
-                      "subtipo": "variavel"
-                    },
-                    {
-                      "tipo_vertice": "LINHA",
-                      "tipo_inferido": null,
-                      "numero_linha": 4,
-                      "filhos": [],
-                      "valor": "FACT_2",
-                      "subtipo": "variavel"
-                    }
-                  ],
-                  "operador": "|"
-                },
-                {
-                  "tipo_vertice": "LINHA",
-                  "tipo_inferido": null,
-                  "numero_linha": 4,
-                  "filhos": [],
-                  "valor": "TEMP2",
-                  "subtipo": "variavel"
-                }
-              ]
-            },
-            {
-              "tipo_vertice": "LINHA",
-              "tipo_inferido": null,
-              "numero_linha": 4,
-              "filhos": [
-                {
-                  "tipo_vertice": "ARITH_OP",
-                  "tipo_inferido": "real",
-                  "numero_linha": 4,
-                  "filhos": [
-                    {
-                      "tipo_vertice": "LINHA",
-                      "tipo_inferido": "real",
-                      "numero_linha": 4,
-                      "filhos": [],
-                      "valor": "0.0",
-                      "subtipo": "numero_real"
-                    },
-                    {
-                      "tipo_vertice": "LINHA",
-                      "tipo_inferido": null,
-                      "numero_linha": 4,
-                      "filhos": [],
-                      "valor": "TEMP2",
-                      "subtipo": "variavel"
-                    }
-                  ],
-                  "operador": "-"
-                },
-                {
-                  "tipo_vertice": "LINHA",
-                  "tipo_inferido": null,
-                  "numero_linha": 4,
-                  "filhos": [],
-                  "valor": "TERM2",
-                  "subtipo": "variavel"
-                }
-              ]
-            },
-            {
-              "tipo_vertice": "LINHA",
-              "tipo_inferido": null,
-              "numero_linha": 4,
-              "filhos": [
-                {
-                  "tipo_vertice": "ARITH_OP",
-                  "tipo_inferido": null,
-                  "numero_linha": 4,
-                  "filhos": [
-                    {
-                      "tipo_vertice": "LINHA",
-                      "tipo_inferido": null,
-                      "numero_linha": 4,
-                      "filhos": [],
-                      "valor": "X_SQUARE",
-                      "subtipo": "variavel"
-                    },
-                    {
-                      "tipo_vertice": "LINHA",
-                      "tipo_inferido": null,
-                      "numero_linha": 4,
-                      "filhos": [],
-                      "valor": "X_SQUARE",
-                      "subtipo": "variavel"
-                    }
-                  ],
-                  "operador": "*"
-                },
-                {
-                  "tipo_vertice": "LINHA",
-                  "tipo_inferido": null,
-                  "numero_linha": 4,
-                  "filhos": [],
-                  "valor": "X_FOURTH",
-                  "subtipo": "variavel"
-                }
-              ]
-            },
-            {
-              "tipo_vertice": "LINHA",
-              "tipo_inferido": null,
-              "numero_linha": 4,
-              "filhos": [
-                {
-                  "tipo_vertice": "ARITH_OP",
-                  "tipo_inferido": "real",
-                  "numero_linha": 4,
-                  "filhos": [
-                    {
-                      "tipo_vertice": "LINHA",
-                      "tipo_inferido": "real",
-                      "numero_linha": 4,
-                      "filhos": [],
-                      "valor": "4.0",
-                      "subtipo": "numero_real"
-                    },
-                    {
-                      "tipo_vertice": "LINHA",
-                      "tipo_inferido": "real",
-                      "numero_linha": 4,
-                      "filhos": [],
-                      "valor": "3.0",
-                      "subtipo": "numero_real"
-                    }
-                  ],
-                  "operador": "*"
-                },
-                {
-                  "tipo_vertice": "LINHA",
-                  "tipo_inferido": null,
-                  "numero_linha": 4,
-                  "filhos": [],
-                  "valor": "TEMP4A",
-                  "subtipo": "variavel"
-                }
-              ]
-            },
-            {
-              "tipo_vertice": "LINHA",
-              "tipo_inferido": null,
-              "numero_linha": 4,
-              "filhos": [
-                {
-                  "tipo_vertice": "ARITH_OP",
-                  "tipo_inferido": "real",
-                  "numero_linha": 4,
-                  "filhos": [
-                    {
-                      "tipo_vertice": "LINHA",
-                      "tipo_inferido": null,
-                      "numero_linha": 4,
-                      "filhos": [],
-                      "valor": "TEMP4A",
-                      "subtipo": "variavel"
-                    },
-                    {
-                      "tipo_vertice": "LINHA",
-                      "tipo_inferido": "real",
-                      "numero_linha": 4,
-                      "filhos": [],
-                      "valor": "2.0",
-                      "subtipo": "numero_real"
-                    }
-                  ],
-                  "operador": "*"
-                },
-                {
-                  "tipo_vertice": "LINHA",
-                  "tipo_inferido": null,
-                  "numero_linha": 4,
-                  "filhos": [],
-                  "valor": "TEMP4B",
-                  "subtipo": "variavel"
-                }
-              ]
-            },
-            {
-              "tipo_vertice": "LINHA",
-              "tipo_inferido": null,
-              "numero_linha": 4,
-              "filhos": [
-                {
-                  "tipo_vertice": "ARITH_OP",
-                  "tipo_inferido": "real",
-                  "numero_linha": 4,
-                  "filhos": [
-                    {
-                      "tipo_vertice": "LINHA",
-                      "tipo_inferido": null,
-                      "numero_linha": 4,
-                      "filhos": [],
-                      "valor": "TEMP4B",
-                      "subtipo": "variavel"
-                    },
-                    {
-                      "tipo_vertice": "LINHA",
-                      "tipo_inferido": "real",
-                      "numero_linha": 4,
-                      "filhos": [],
-                      "valor": "1.0",
-                      "subtipo": "numero_real"
-                    }
-                  ],
-                  "operador": "*"
-                },
-                {
-                  "tipo_vertice": "LINHA",
-                  "tipo_inferido": null,
-                  "numero_linha": 4,
-                  "filhos": [],
-                  "valor": "FACT_4",
-                  "subtipo": "variavel"
-                }
-              ]
-            },
-            {
-              "tipo_vertice": "LINHA",
-              "tipo_inferido": null,
-              "numero_linha": 4,
-              "filhos": [
-                {
-                  "tipo_vertice": "ARITH_OP",
-                  "tipo_inferido": null,
-                  "numero_linha": 4,
-                  "filhos": [
-                    {
-                      "tipo_vertice": "LINHA",
-                      "tipo_inferido": null,
-                      "numero_linha": 4,
-                      "filhos": [],
-                      "valor": "X_FOURTH",
-                      "subtipo": "variavel"
-                    },
-                    {
-                      "tipo_vertice": "LINHA",
-                      "tipo_inferido": null,
-                      "numero_linha": 4,
-                      "filhos": [],
-                      "valor": "FACT_4",
-                      "subtipo": "variavel"
-                    }
-                  ],
-                  "operador": "|"
-                },
-                {
-                  "tipo_vertice": "LINHA",
-                  "tipo_inferido": null,
-                  "numero_linha": 4,
-                  "filhos": [],
-                  "valor": "TERM3",
-                  "subtipo": "variavel"
-                }
-              ]
-            },
-            {
-              "tipo_vertice": "LINHA",
-              "tipo_inferido": null,
-              "numero_linha": 4,
-              "filhos": [
-                {
-                  "tipo_vertice": "ARITH_OP",
-                  "tipo_inferido": null,
-                  "numero_linha": 4,
-                  "filhos": [
-                    {
-                      "tipo_vertice": "LINHA",
-                      "tipo_inferido": null,
-                      "numero_linha": 4,
-                      "filhos": [],
-                      "valor": "X_FOURTH",
-                      "subtipo": "variavel"
-                    },
-                    {
-                      "tipo_vertice": "LINHA",
-                      "tipo_inferido": null,
-                      "numero_linha": 4,
-                      "filhos": [],
-                      "valor": "X_SQUARE",
-                      "subtipo": "variavel"
-                    }
-                  ],
-                  "operador": "*"
-                },
-                {
-                  "tipo_vertice": "LINHA",
-                  "tipo_inferido": null,
-                  "numero_linha": 4,
-                  "filhos": [],
-                  "valor": "X_SIXTH",
-                  "subtipo": "variavel"
-                }
-              ]
-            },
-            {
-              "tipo_vertice": "LINHA",
-              "tipo_inferido": null,
-              "numero_linha": 4,
-              "filhos": [
-                {
-                  "tipo_vertice": "ARITH_OP",
-                  "tipo_inferido": "real",
-                  "numero_linha": 4,
-                  "filhos": [
-                    {
-                      "tipo_vertice": "LINHA",
-                      "tipo_inferido": "real",
-                      "numero_linha": 4,
-                      "filhos": [],
-                      "valor": "6.0",
-                      "subtipo": "numero_real"
-                    },
-                    {
-                      "tipo_vertice": "LINHA",
-                      "tipo_inferido": "real",
-                      "numero_linha": 4,
-                      "filhos": [],
-                      "valor": "5.0",
-                      "subtipo": "numero_real"
-                    }
-                  ],
-                  "operador": "*"
-                },
-                {
-                  "tipo_vertice": "LINHA",
-                  "tipo_inferido": null,
-                  "numero_linha": 4,
-                  "filhos": [],
-                  "valor": "TEMP6A",
-                  "subtipo": "variavel"
-                }
-              ]
-            },
-            {
-              "tipo_vertice": "LINHA",
-              "tipo_inferido": null,
-              "numero_linha": 4,
-              "filhos": [
-                {
-                  "tipo_vertice": "ARITH_OP",
-                  "tipo_inferido": "real",
-                  "numero_linha": 4,
-                  "filhos": [
-                    {
-                      "tipo_vertice": "LINHA",
-                      "tipo_inferido": null,
-                      "numero_linha": 4,
-                      "filhos": [],
-                      "valor": "TEMP6A",
-                      "subtipo": "variavel"
-                    },
-                    {
-                      "tipo_vertice": "LINHA",
-                      "tipo_inferido": "real",
-                      "numero_linha": 4,
-                      "filhos": [],
-                      "valor": "4.0",
-                      "subtipo": "numero_real"
-                    }
-                  ],
-                  "operador": "*"
-                },
-                {
-                  "tipo_vertice": "LINHA",
-                  "tipo_inferido": null,
-                  "numero_linha": 4,
-                  "filhos": [],
-                  "valor": "TEMP6B",
-                  "subtipo": "variavel"
-                }
-              ]
-            },
-            {
-              "tipo_vertice": "LINHA",
-              "tipo_inferido": null,
-              "numero_linha": 4,
-              "filhos": [
-                {
-                  "tipo_vertice": "ARITH_OP",
-                  "tipo_inferido": "real",
-                  "numero_linha": 4,
-                  "filhos": [
-                    {
-                      "tipo_vertice": "LINHA",
-                      "tipo_inferido": null,
-                      "numero_linha": 4,
-                      "filhos": [],
-                      "valor": "TEMP6B",
-                      "subtipo": "variavel"
-                    },
-                    {
-                      "tipo_vertice": "LINHA",
-                      "tipo_inferido": "real",
-                      "numero_linha": 4,
-                      "filhos": [],
-                      "valor": "3.0",
-                      "subtipo": "numero_real"
-                    }
-                  ],
-                  "operador": "*"
-                },
-                {
-                  "tipo_vertice": "LINHA",
-                  "tipo_inferido": null,
-                  "numero_linha": 4,
-                  "filhos": [],
-                  "valor": "TEMP6C",
-                  "subtipo": "variavel"
-                }
-              ]
-            },
-            {
-              "tipo_vertice": "LINHA",
-              "tipo_inferido": null,
-              "numero_linha": 4,
-              "filhos": [
-                {
-                  "tipo_vertice": "ARITH_OP",
-                  "tipo_inferido": "real",
-                  "numero_linha": 4,
-                  "filhos": [
-                    {
-                      "tipo_vertice": "LINHA",
-                      "tipo_inferido": null,
-                      "numero_linha": 4,
-                      "filhos": [],
-                      "valor": "TEMP6C",
-                      "subtipo": "variavel"
-                    },
-                    {
-                      "tipo_vertice": "LINHA",
-                      "tipo_inferido": "real",
-                      "numero_linha": 4,
-                      "filhos": [],
-                      "valor": "2.0",
-                      "subtipo": "numero_real"
-                    }
-                  ],
-                  "operador": "*"
-                },
-                {
-                  "tipo_vertice": "LINHA",
-                  "tipo_inferido": null,
-                  "numero_linha": 4,
-                  "filhos": [],
-                  "valor": "TEMP6D",
-                  "subtipo": "variavel"
-                }
-              ]
-            },
-            {
-              "tipo_vertice": "LINHA",
-              "tipo_inferido": null,
-              "numero_linha": 4,
-              "filhos": [
-                {
-                  "tipo_vertice": "ARITH_OP",
-                  "tipo_inferido": "real",
-                  "numero_linha": 4,
-                  "filhos": [
-                    {
-                      "tipo_vertice": "LINHA",
-                      "tipo_inferido": null,
-                      "numero_linha": 4,
-                      "filhos": [],
-                      "valor": "TEMP6D",
-                      "subtipo": "variavel"
-                    },
-                    {
-                      "tipo_vertice": "LINHA",
-                      "tipo_inferido": "real",
-                      "numero_linha": 4,
-                      "filhos": [],
-                      "valor": "1.0",
-                      "subtipo": "numero_real"
-                    }
-                  ],
-                  "operador": "*"
-                },
-                {
-                  "tipo_vertice": "LINHA",
-                  "tipo_inferido": null,
-                  "numero_linha": 4,
-                  "filhos": [],
-                  "valor": "FACT_6",
-                  "subtipo": "variavel"
-                }
-              ]
-            },
-            {
-              "tipo_vertice": "LINHA",
-              "tipo_inferido": null,
-              "numero_linha": 4,
-              "filhos": [
-                {
-                  "tipo_vertice": "ARITH_OP",
-                  "tipo_inferido": null,
-                  "numero_linha": 4,
-                  "filhos": [
-                    {
-                      "tipo_vertice": "LINHA",
-                      "tipo_inferido": null,
-                      "numero_linha": 4,
-                      "filhos": [],
-                      "valor": "X_SIXTH",
-                      "subtipo": "variavel"
-                    },
-                    {
-                      "tipo_vertice": "LINHA",
-                      "tipo_inferido": null,
-                      "numero_linha": 4,
-                      "filhos": [],
-                      "valor": "FACT_6",
-                      "subtipo": "variavel"
-                    }
-                  ],
-                  "operador": "|"
-                },
-                {
-                  "tipo_vertice": "LINHA",
-                  "tipo_inferido": null,
-                  "numero_linha": 4,
-                  "filhos": [],
-                  "valor": "TEMP8",
-                  "subtipo": "variavel"
-                }
-              ]
-            },
-            {
-              "tipo_vertice": "LINHA",
-              "tipo_inferido": null,
-              "numero_linha": 4,
-              "filhos": [
-                {
-                  "tipo_vertice": "ARITH_OP",
-                  "tipo_inferido": "real",
-                  "numero_linha": 4,
-                  "filhos": [
-                    {
-                      "tipo_vertice": "LINHA",
-                      "tipo_inferido": "real",
-                      "numero_linha": 4,
-                      "filhos": [],
-                      "valor": "0.0",
-                      "subtipo": "numero_real"
-                    },
-                    {
-                      "tipo_vertice": "LINHA",
-                      "tipo_inferido": null,
-                      "numero_linha": 4,
-                      "filhos": [],
-                      "valor": "TEMP8",
-                      "subtipo": "variavel"
-                    }
-                  ],
-                  "operador": "-"
-                },
-                {
-                  "tipo_vertice": "LINHA",
-                  "tipo_inferido": null,
-                  "numero_linha": 4,
-                  "filhos": [],
-                  "valor": "TERM4",
-                  "subtipo": "variavel"
-                }
-              ]
-            },
-            {
-              "tipo_vertice": "LINHA",
-              "tipo_inferido": null,
-              "numero_linha": 4,
-              "filhos": [
-                {
-                  "tipo_vertice": "ARITH_OP",
-                  "tipo_inferido": "real",
-                  "numero_linha": 4,
-                  "filhos": [
-                    {
-                      "tipo_vertice": "LINHA",
-                      "tipo_inferido": "real",
-                      "numero_linha": 4,
-                      "filhos": [],
-                      "valor": "TERM1",
-                      "subtipo": "variavel"
-                    },
-                    {
-                      "tipo_vertice": "LINHA",
-                      "tipo_inferido": null,
-                      "numero_linha": 4,
-                      "filhos": [],
-                      "valor": "TERM2",
-                      "subtipo": "variavel"
-                    }
-                  ],
-                  "operador": "+"
-                },
-                {
-                  "tipo_vertice": "LINHA",
-                  "tipo_inferido": null,
-                  "numero_linha": 4,
-                  "filhos": [],
-                  "valor": "SUM12",
-                  "subtipo": "variavel"
-                }
-              ]
-            },
-            {
-              "tipo_vertice": "LINHA",
-              "tipo_inferido": null,
-              "numero_linha": 4,
-              "filhos": [
-                {
-                  "tipo_vertice": "ARITH_OP",
-                  "tipo_inferido": null,
-                  "numero_linha": 4,
-                  "filhos": [
-                    {
-                      "tipo_vertice": "LINHA",
-                      "tipo_inferido": null,
-                      "numero_linha": 4,
-                      "filhos": [],
-                      "valor": "SUM12",
-                      "subtipo": "variavel"
-                    },
-                    {
-                      "tipo_vertice": "LINHA",
-                      "tipo_inferido": null,
-                      "numero_linha": 4,
-                      "filhos": [],
-                      "valor": "TERM3",
-                      "subtipo": "variavel"
-                    }
-                  ],
-                  "operador": "+"
-                },
-                {
-                  "tipo_vertice": "LINHA",
-                  "tipo_inferido": null,
-                  "numero_linha": 4,
-                  "filhos": [],
-                  "valor": "SUM123",
-                  "subtipo": "variavel"
-                }
-              ]
-            },
-            {
-              "tipo_vertice": "LINHA",
-              "tipo_inferido": null,
-              "numero_linha": 4,
-              "filhos": [
-                {
-                  "tipo_vertice": "ARITH_OP",
-                  "tipo_inferido": null,
-                  "numero_linha": 4,
-                  "filhos": [
-                    {
-                      "tipo_vertice": "LINHA",
-                      "tipo_inferido": null,
-                      "numero_linha": 4,
-                      "filhos": [],
-                      "valor": "SUM123",
-                      "subtipo": "variavel"
-                    },
-                    {
-                      "tipo_vertice": "LINHA",
-                      "tipo_inferido": null,
-                      "numero_linha": 4,
-                      "filhos": [],
-                      "valor": "TERM4",
-                      "subtipo": "variavel"
-                    }
-                  ],
-                  "operador": "+"
-                },
-                {
-                  "tipo_vertice": "LINHA",
-                  "tipo_inferido": null,
-                  "numero_linha": 4,
-                  "filhos": [],
-                  "valor": "RESULT_COS",
-                  "subtipo": "variavel"
-                }
-              ]
-            },
-            {
-              "tipo_vertice": "LINHA",
-              "tipo_inferido": null,
-              "numero_linha": 4,
+              "numero_linha": 5,
               "filhos": [
                 {
                   "tipo_vertice": "ARITH_OP",
                   "tipo_inferido": "int",
-                  "numero_linha": 4,
+                  "numero_linha": 5,
                   "filhos": [
                     {
                       "tipo_vertice": "LINHA",
                       "tipo_inferido": "int",
-                      "numero_linha": 4,
+                      "numero_linha": 5,
+                      "filhos": [],
+                      "valor": "FIB_0",
+                      "subtipo": "variavel"
+                    },
+                    {
+                      "tipo_vertice": "LINHA",
+                      "tipo_inferido": "int",
+                      "numero_linha": 5,
+                      "filhos": [],
+                      "valor": "FIB_1",
+                      "subtipo": "variavel"
+                    }
+                  ],
+                  "operador": "+"
+                },
+                {
+                  "tipo_vertice": "LINHA",
+                  "tipo_inferido": null,
+                  "numero_linha": 5,
+                  "filhos": [],
+                  "valor": "FIB_NEXT",
+                  "subtipo": "variavel"
+                }
+              ]
+            },
+            {
+              "tipo_vertice": "LINHA",
+              "tipo_inferido": null,
+              "numero_linha": 5,
+              "filhos": [
+                {
+                  "tipo_vertice": "LINHA",
+                  "tipo_inferido": "int",
+                  "numero_linha": 5,
+                  "filhos": [],
+                  "valor": "FIB_1",
+                  "subtipo": "variavel"
+                },
+                {
+                  "tipo_vertice": "LINHA",
+                  "tipo_inferido": "int",
+                  "numero_linha": 5,
+                  "filhos": [],
+                  "valor": "FIB_0",
+                  "subtipo": "variavel"
+                }
+              ]
+            },
+            {
+              "tipo_vertice": "LINHA",
+              "tipo_inferido": null,
+              "numero_linha": 5,
+              "filhos": [
+                {
+                  "tipo_vertice": "LINHA",
+                  "tipo_inferido": null,
+                  "numero_linha": 5,
+                  "filhos": [],
+                  "valor": "FIB_NEXT",
+                  "subtipo": "variavel"
+                },
+                {
+                  "tipo_vertice": "LINHA",
+                  "tipo_inferido": "int",
+                  "numero_linha": 5,
+                  "filhos": [],
+                  "valor": "FIB_1",
+                  "subtipo": "variavel"
+                }
+              ]
+            },
+            {
+              "tipo_vertice": "LINHA",
+              "tipo_inferido": null,
+              "numero_linha": 5,
+              "filhos": [
+                {
+                  "tipo_vertice": "ARITH_OP",
+                  "tipo_inferido": "int",
+                  "numero_linha": 5,
+                  "filhos": [
+                    {
+                      "tipo_vertice": "LINHA",
+                      "tipo_inferido": "int",
+                      "numero_linha": 5,
                       "filhos": [],
                       "valor": "COUNTER",
                       "subtipo": "variavel"
@@ -909,7 +260,7 @@
                     {
                       "tipo_vertice": "LINHA",
                       "tipo_inferido": "int",
-                      "numero_linha": 4,
+                      "numero_linha": 5,
                       "filhos": [],
                       "valor": "1",
                       "subtipo": "numero_inteiro"
@@ -920,7 +271,7 @@
                 {
                   "tipo_vertice": "LINHA",
                   "tipo_inferido": "int",
-                  "numero_linha": 4,
+                  "numero_linha": 5,
                   "filhos": [],
                   "valor": "COUNTER",
                   "subtipo": "variavel"
@@ -935,27 +286,27 @@
     {
       "tipo_vertice": "LINHA",
       "tipo_inferido": "int",
-      "numero_linha": 5,
+      "numero_linha": 6,
       "filhos": [
         {
           "tipo_vertice": "LINHA",
           "tipo_inferido": null,
-          "numero_linha": 5,
+          "numero_linha": 6,
           "filhos": [
             {
               "tipo_vertice": "LINHA",
               "tipo_inferido": null,
-              "numero_linha": 5,
+              "numero_linha": 6,
               "filhos": [],
-              "valor": "RESULT_COS",
+              "valor": "FIB_NEXT",
               "subtipo": "variavel"
             },
             {
               "tipo_vertice": "LINHA",
               "tipo_inferido": null,
-              "numero_linha": 5,
+              "numero_linha": 6,
               "filhos": [],
-              "valor": "FINAL_COS",
+              "valor": "RESULT",
               "subtipo": "variavel"
             }
           ]

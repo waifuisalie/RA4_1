@@ -1,49 +1,49 @@
 {
   "metadata": {
-    "generated_at": "2025-11-25T22:30:26.479965",
+    "generated_at": "2025-11-25T22:36:00.497787",
     "generator": "RA4 TAC Generator",
     "version": "1.0",
     "source_file": "C:\\Users\\Rafa Piveta\\Documents\\GitHub\\RA4_1\\outputs\\RA3\\arvore_atribuida.json"
   },
   "statistics": {
-    "total_instructions": 68,
-    "temp_count": 39,
+    "total_instructions": 21,
+    "temp_count": 8,
     "label_count": 2,
-    "result_history_size": 4
+    "result_history_size": 5
   },
   "instructions": [
     {
       "type": "assignment",
       "dest": "t0",
-      "source": 100,
+      "source": "0",
       "line": 1,
-      "data_type": "real"
+      "data_type": "int"
     },
     {
       "type": "copy",
-      "dest": "X_VAL",
+      "dest": "FIB_0",
       "source": "t0",
       "line": 1,
-      "data_type": "real"
+      "data_type": "int"
     },
     {
       "type": "assignment",
       "dest": "t1",
-      "source": 100,
+      "source": "1",
       "line": 2,
-      "data_type": "real"
+      "data_type": "int"
     },
     {
       "type": "copy",
-      "dest": "TERM1",
+      "dest": "FIB_1",
       "source": "t1",
       "line": 2,
-      "data_type": "real"
+      "data_type": "int"
     },
     {
       "type": "assignment",
       "dest": "t2",
-      "source": "1",
+      "source": "2",
       "line": 3,
       "data_type": "int"
     },
@@ -55,473 +55,108 @@
       "data_type": "int"
     },
     {
-      "type": "label",
-      "name": "L0",
-      "line": 4
-    },
-    {
       "type": "assignment",
       "dest": "t3",
-      "source": "1",
+      "source": "24",
       "line": 4,
       "data_type": "int"
+    },
+    {
+      "type": "copy",
+      "dest": "LIMIT",
+      "source": "t3",
+      "line": 4,
+      "data_type": "int"
+    },
+    {
+      "type": "label",
+      "name": "L0",
+      "line": 5
     },
     {
       "type": "binary_op",
       "result": "t4",
       "operand1": "COUNTER",
       "operator": "<=",
-      "operand2": "t3",
-      "line": 4,
+      "operand2": "LIMIT",
+      "line": 5,
       "data_type": "boolean"
     },
     {
       "type": "if_false_goto",
       "condition": "t4",
       "target": "L1",
-      "line": 4
+      "line": 5
     },
     {
       "type": "binary_op",
       "result": "t5",
-      "operand1": "X_VAL",
-      "operator": "*",
-      "operand2": "X_VAL",
-      "line": 4,
-      "data_type": "real"
+      "operand1": "FIB_0",
+      "operator": "+",
+      "operand2": "FIB_1",
+      "line": 5,
+      "data_type": "int"
     },
     {
       "type": "copy",
-      "dest": "X_SQUARE",
+      "dest": "FIB_NEXT",
       "source": "t5",
-      "line": 4,
-      "data_type": "real"
+      "line": 5,
+      "data_type": "int"
+    },
+    {
+      "type": "copy",
+      "dest": "FIB_0",
+      "source": "FIB_1",
+      "line": 5,
+      "data_type": "int"
+    },
+    {
+      "type": "copy",
+      "dest": "FIB_1",
+      "source": "FIB_NEXT",
+      "line": 5,
+      "data_type": "int"
     },
     {
       "type": "assignment",
       "dest": "t6",
-      "source": 200,
-      "line": 4,
-      "data_type": "real"
-    },
-    {
-      "type": "copy",
-      "dest": "FACT_2",
-      "source": "t6",
-      "line": 4,
-      "data_type": "real"
-    },
-    {
-      "type": "binary_op",
-      "result": "t7",
-      "operand1": "X_SQUARE",
-      "operator": "|",
-      "operand2": "FACT_2",
-      "line": 4,
-      "data_type": "real"
-    },
-    {
-      "type": "copy",
-      "dest": "TEMP2",
-      "source": "t7",
-      "line": 4,
-      "data_type": "real"
-    },
-    {
-      "type": "assignment",
-      "dest": "t8",
-      "source": 0,
-      "line": 4,
-      "data_type": "real"
-    },
-    {
-      "type": "binary_op",
-      "result": "t9",
-      "operand1": "t8",
-      "operator": "-",
-      "operand2": "TEMP2",
-      "line": 4,
-      "data_type": "real"
-    },
-    {
-      "type": "copy",
-      "dest": "TERM2",
-      "source": "t9",
-      "line": 4,
-      "data_type": "real"
-    },
-    {
-      "type": "binary_op",
-      "result": "t10",
-      "operand1": "X_SQUARE",
-      "operator": "*",
-      "operand2": "X_SQUARE",
-      "line": 4,
-      "data_type": "real"
-    },
-    {
-      "type": "copy",
-      "dest": "X_FOURTH",
-      "source": "t10",
-      "line": 4,
-      "data_type": "real"
-    },
-    {
-      "type": "assignment",
-      "dest": "t11",
-      "source": 400,
-      "line": 4,
-      "data_type": "real"
-    },
-    {
-      "type": "assignment",
-      "dest": "t12",
-      "source": 300,
-      "line": 4,
-      "data_type": "real"
-    },
-    {
-      "type": "binary_op",
-      "result": "t13",
-      "operand1": "t11",
-      "operator": "*",
-      "operand2": "t12",
-      "line": 4,
-      "data_type": "real"
-    },
-    {
-      "type": "copy",
-      "dest": "TEMP4A",
-      "source": "t13",
-      "line": 4,
-      "data_type": "real"
-    },
-    {
-      "type": "assignment",
-      "dest": "t14",
-      "source": 200,
-      "line": 4,
-      "data_type": "real"
-    },
-    {
-      "type": "binary_op",
-      "result": "t15",
-      "operand1": "TEMP4A",
-      "operator": "*",
-      "operand2": "t14",
-      "line": 4,
-      "data_type": "real"
-    },
-    {
-      "type": "copy",
-      "dest": "TEMP4B",
-      "source": "t15",
-      "line": 4,
-      "data_type": "real"
-    },
-    {
-      "type": "assignment",
-      "dest": "t16",
-      "source": 100,
-      "line": 4,
-      "data_type": "real"
-    },
-    {
-      "type": "binary_op",
-      "result": "t17",
-      "operand1": "TEMP4B",
-      "operator": "*",
-      "operand2": "t16",
-      "line": 4,
-      "data_type": "real"
-    },
-    {
-      "type": "copy",
-      "dest": "FACT_4",
-      "source": "t17",
-      "line": 4,
-      "data_type": "real"
-    },
-    {
-      "type": "binary_op",
-      "result": "t18",
-      "operand1": "X_FOURTH",
-      "operator": "|",
-      "operand2": "FACT_4",
-      "line": 4,
-      "data_type": "real"
-    },
-    {
-      "type": "copy",
-      "dest": "TERM3",
-      "source": "t18",
-      "line": 4,
-      "data_type": "real"
-    },
-    {
-      "type": "binary_op",
-      "result": "t19",
-      "operand1": "X_FOURTH",
-      "operator": "*",
-      "operand2": "X_SQUARE",
-      "line": 4,
-      "data_type": "real"
-    },
-    {
-      "type": "copy",
-      "dest": "X_SIXTH",
-      "source": "t19",
-      "line": 4,
-      "data_type": "real"
-    },
-    {
-      "type": "assignment",
-      "dest": "t20",
-      "source": 600,
-      "line": 4,
-      "data_type": "real"
-    },
-    {
-      "type": "assignment",
-      "dest": "t21",
-      "source": 500,
-      "line": 4,
-      "data_type": "real"
-    },
-    {
-      "type": "binary_op",
-      "result": "t22",
-      "operand1": "t20",
-      "operator": "*",
-      "operand2": "t21",
-      "line": 4,
-      "data_type": "real"
-    },
-    {
-      "type": "copy",
-      "dest": "TEMP6A",
-      "source": "t22",
-      "line": 4,
-      "data_type": "real"
-    },
-    {
-      "type": "assignment",
-      "dest": "t23",
-      "source": 400,
-      "line": 4,
-      "data_type": "real"
-    },
-    {
-      "type": "binary_op",
-      "result": "t24",
-      "operand1": "TEMP6A",
-      "operator": "*",
-      "operand2": "t23",
-      "line": 4,
-      "data_type": "real"
-    },
-    {
-      "type": "copy",
-      "dest": "TEMP6B",
-      "source": "t24",
-      "line": 4,
-      "data_type": "real"
-    },
-    {
-      "type": "assignment",
-      "dest": "t25",
-      "source": 300,
-      "line": 4,
-      "data_type": "real"
-    },
-    {
-      "type": "binary_op",
-      "result": "t26",
-      "operand1": "TEMP6B",
-      "operator": "*",
-      "operand2": "t25",
-      "line": 4,
-      "data_type": "real"
-    },
-    {
-      "type": "copy",
-      "dest": "TEMP6C",
-      "source": "t26",
-      "line": 4,
-      "data_type": "real"
-    },
-    {
-      "type": "assignment",
-      "dest": "t27",
-      "source": 200,
-      "line": 4,
-      "data_type": "real"
-    },
-    {
-      "type": "binary_op",
-      "result": "t28",
-      "operand1": "TEMP6C",
-      "operator": "*",
-      "operand2": "t27",
-      "line": 4,
-      "data_type": "real"
-    },
-    {
-      "type": "copy",
-      "dest": "TEMP6D",
-      "source": "t28",
-      "line": 4,
-      "data_type": "real"
-    },
-    {
-      "type": "assignment",
-      "dest": "t29",
-      "source": 100,
-      "line": 4,
-      "data_type": "real"
-    },
-    {
-      "type": "binary_op",
-      "result": "t30",
-      "operand1": "TEMP6D",
-      "operator": "*",
-      "operand2": "t29",
-      "line": 4,
-      "data_type": "real"
-    },
-    {
-      "type": "copy",
-      "dest": "FACT_6",
-      "source": "t30",
-      "line": 4,
-      "data_type": "real"
-    },
-    {
-      "type": "binary_op",
-      "result": "t31",
-      "operand1": "X_SIXTH",
-      "operator": "|",
-      "operand2": "FACT_6",
-      "line": 4,
-      "data_type": "real"
-    },
-    {
-      "type": "copy",
-      "dest": "TEMP8",
-      "source": "t31",
-      "line": 4,
-      "data_type": "real"
-    },
-    {
-      "type": "assignment",
-      "dest": "t32",
-      "source": 0,
-      "line": 4,
-      "data_type": "real"
-    },
-    {
-      "type": "binary_op",
-      "result": "t33",
-      "operand1": "t32",
-      "operator": "-",
-      "operand2": "TEMP8",
-      "line": 4,
-      "data_type": "real"
-    },
-    {
-      "type": "copy",
-      "dest": "TERM4",
-      "source": "t33",
-      "line": 4,
-      "data_type": "real"
-    },
-    {
-      "type": "binary_op",
-      "result": "t34",
-      "operand1": "TERM1",
-      "operator": "+",
-      "operand2": "TERM2",
-      "line": 4,
-      "data_type": "real"
-    },
-    {
-      "type": "copy",
-      "dest": "SUM12",
-      "source": "t34",
-      "line": 4,
-      "data_type": "real"
-    },
-    {
-      "type": "binary_op",
-      "result": "t35",
-      "operand1": "SUM12",
-      "operator": "+",
-      "operand2": "TERM3",
-      "line": 4,
-      "data_type": "real"
-    },
-    {
-      "type": "copy",
-      "dest": "SUM123",
-      "source": "t35",
-      "line": 4,
-      "data_type": "real"
-    },
-    {
-      "type": "binary_op",
-      "result": "t36",
-      "operand1": "SUM123",
-      "operator": "+",
-      "operand2": "TERM4",
-      "line": 4,
-      "data_type": "real"
-    },
-    {
-      "type": "copy",
-      "dest": "RESULT_COS",
-      "source": "t36",
-      "line": 4,
-      "data_type": "real"
-    },
-    {
-      "type": "assignment",
-      "dest": "t37",
       "source": "1",
-      "line": 4,
+      "line": 5,
       "data_type": "int"
     },
     {
       "type": "binary_op",
-      "result": "t38",
+      "result": "t7",
       "operand1": "COUNTER",
       "operator": "+",
-      "operand2": "t37",
-      "line": 4,
+      "operand2": "t6",
+      "line": 5,
       "data_type": "int"
     },
     {
       "type": "copy",
       "dest": "COUNTER",
-      "source": "t38",
-      "line": 4,
+      "source": "t7",
+      "line": 5,
       "data_type": "int"
     },
     {
       "type": "goto",
       "target": "L0",
-      "line": 4
+      "line": 5
     },
     {
       "type": "label",
       "name": "L1",
-      "line": 4
+      "line": 5
     },
     {
       "type": "copy",
-      "dest": "FINAL_COS",
-      "source": "RESULT_COS",
-      "line": 5,
-      "data_type": "real"
+      "dest": "RESULT",
+      "source": "FIB_NEXT",
+      "line": 6,
+      "data_type": "int"
     }
   ]
 }
