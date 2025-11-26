@@ -1,0 +1,5 @@
+# Simple Subtraction Test: 2000 - 1000 = 1000
+(2000 A)
+(1000 B)
+((A B -) RESULT)
+(RESULT FINAL)

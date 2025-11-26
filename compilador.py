@@ -458,13 +458,12 @@ def executar_ra4_geracao_assembly(arquivo_entrada):
         base_filename = Path(arquivo_entrada).stem
 
         # TEMPORARY WORKAROUND: Use unoptimized TAC because optimizer removes constant assignments
-        # TODO: Fix TAC optimizer to preserve constant assignments or apply constant propagation
-        # tac_otimizado_path = BASE_DIR / "relatorios" / "RA4" / "TAC_otimizado_tac_instructions.json"
-        tac_path = BASE_DIR / "outputs" / "RA4" / "tac_instructions.json"
+        # Load optimized TAC for assembly generation
+        tac_otimizado_path = BASE_DIR / "outputs" / "RA4" / "tac_otimizado.json"
         output_dir = BASE_DIR / "outputs" / "RA4"
 
-        # Carregar TAC (unoptimized for now due to optimizer bug)
-        with open(str(tac_path), 'r', encoding='utf-8') as f:
+        # Carregar TAC otimizado
+        with open(str(tac_otimizado_path), 'r', encoding='utf-8') as f:
             tac_data = json.load(f)
             # Extract just the instructions from the metadata wrapper
             if "instructions" in tac_data:
