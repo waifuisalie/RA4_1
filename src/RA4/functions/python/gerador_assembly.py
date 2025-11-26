@@ -451,6 +451,12 @@ class GeradorAssembly:
 
         Usa instruções ADD (low byte) e ADC (high byte com carry).
 
+        CRITICAL: Copy operands to result FIRST to avoid destroying source operands.
+        This is essential for loops where operands may be reused (e.g., COUNTER + 1).
+
+        Handles constants efficiently: if op2 is constant, uses temporary registers
+        instead of allocating from register pool.
+
         Args:
             instr: {"type": "binary_op", "result": "t2", "operand1": "t0",
                     "operator": "+", "operand2": "t1", "line": 2}
@@ -465,19 +471,39 @@ class GeradorAssembly:
 
         asm = [f"    ; TAC linha {line}: {result} = {op1} + {op2}"]
 
-        # Obter registradores dos operandos
+        # Get op1 and result register pairs
         op1_low, op1_high = self._get_reg_pair(op1)
-        op2_low, op2_high = self._get_reg_pair(op2)
         res_low, res_high = self._get_reg_pair(result)
 
-        asm.extend([
-            f"    ; Soma 16-bit: {result} = {op1} + {op2}",
-            f"    add r{op1_low}, r{op2_low}   ; Low byte com carry",
-            f"    adc r{op1_high}, r{op2_high} ; High byte com carry",
-            f"    mov r{res_low}, r{op1_low}   ; Resultado em {result}",
-            f"    mov r{res_high}, r{op1_high}",
-            ""
-        ])
+        # Check if op2 is a constant
+        if self._is_constant(op2):
+            # Use temporary registers R24:R25 for constant
+            int_value = int(float(op2))
+            low_byte = int_value & 0xFF
+            high_byte = (int_value >> 8) & 0xFF
+
+            asm.extend([
+                f"    ; Soma 16-bit: {result} = {op1} + {op2} (op2 is constant)",
+                f"    mov r{res_low}, r{op1_low}   ; Copy op1 to result FIRST",
+                f"    mov r{res_high}, r{op1_high}",
+                f"    ldi r24, {low_byte}          ; Load constant low byte",
+                f"    ldi r25, {high_byte}         ; Load constant high byte",
+                f"    add r{res_low}, r24          ; Add constant to result (low byte with carry)",
+                f"    adc r{res_high}, r25         ; Add constant to result (high byte with carry)",
+                ""
+            ])
+        else:
+            # op2 is a variable, get its register pair
+            op2_low, op2_high = self._get_reg_pair(op2)
+
+            asm.extend([
+                f"    ; Soma 16-bit: {result} = {op1} + {op2}",
+                f"    mov r{res_low}, r{op1_low}   ; Copy op1 to result FIRST",
+                f"    mov r{res_high}, r{op1_high}",
+                f"    add r{res_low}, r{op2_low}   ; Add op2 to result (low byte with carry)",
+                f"    adc r{res_high}, r{op2_high} ; Add op2 to result (high byte with carry)",
+                ""
+            ])
 
         return asm
 
@@ -486,6 +512,12 @@ class GeradorAssembly:
         Processa subtração 16-bit: result = op1 - op2
 
         Usa instruções SUB (low byte) e SBC (high byte com carry/borrow).
+
+        CRITICAL: Copy operands to result FIRST to avoid destroying source operands.
+        This is essential for loops where operands may be reused.
+
+        Handles constants efficiently: if op2 is constant, uses temporary registers
+        instead of allocating from register pool.
 
         Args:
             instr: {"type": "binary_op", "result": "t2", "operand1": "t0",
@@ -501,33 +533,57 @@ class GeradorAssembly:
 
         asm = [f"    ; TAC linha {line}: {result} = {op1} - {op2}"]
 
-        # Obter registradores dos operandos
+        # Get op1 and result register pairs
         op1_low, op1_high = self._get_reg_pair(op1)
-        op2_low, op2_high = self._get_reg_pair(op2)
         res_low, res_high = self._get_reg_pair(result)
 
-        asm.extend([
-            f"    ; Subtração 16-bit: {result} = {op1} - {op2}",
-            f"    sub r{op1_low}, r{op2_low}   ; Low byte com borrow",
-            f"    sbc r{op1_high}, r{op2_high} ; High byte com borrow",
-            f"    mov r{res_low}, r{op1_low}   ; Resultado em {result}",
-            f"    mov r{res_high}, r{op1_high}",
-            ""
-        ])
+        # Check if op2 is a constant
+        if self._is_constant(op2):
+            # Use temporary registers R24:R25 for constant
+            int_value = int(float(op2))
+            low_byte = int_value & 0xFF
+            high_byte = (int_value >> 8) & 0xFF
+
+            asm.extend([
+                f"    ; Subtração 16-bit: {result} = {op1} - {op2} (op2 is constant)",
+                f"    mov r{res_low}, r{op1_low}   ; Copy op1 to result FIRST",
+                f"    mov r{res_high}, r{op1_high}",
+                f"    ldi r24, {low_byte}          ; Load constant low byte",
+                f"    ldi r25, {high_byte}         ; Load constant high byte",
+                f"    sub r{res_low}, r24          ; Subtract constant from result (low byte with borrow)",
+                f"    sbc r{res_high}, r25         ; Subtract constant from result (high byte with borrow)",
+                ""
+            ])
+        else:
+            # op2 is a variable, get its register pair
+            op2_low, op2_high = self._get_reg_pair(op2)
+
+            asm.extend([
+                f"    ; Subtração 16-bit: {result} = {op1} - {op2}",
+                f"    mov r{res_low}, r{op1_low}   ; Copy op1 to result FIRST",
+                f"    mov r{res_high}, r{op1_high}",
+                f"    sub r{res_low}, r{op2_low}   ; Subtract op2 from result (low byte with borrow)",
+                f"    sbc r{res_high}, r{op2_high} ; Subtract op2 from result (high byte with borrow)",
+                ""
+            ])
 
         return asm
 
     def _processar_multiplicacao_16bit(self, instr: Dict[str, Any]) -> List[str]:
         """
-        Processa multiplicação 16-bit com re-normalização de escala.
+        Processa multiplicação 16-bit com re-normalização de escala SOMENTE para reais.
 
-        Quando multiplicando dois valores escalados (ambos 100x):
-          (A * 100) * (B * 100) = (A * B) * 10,000
+        INTEGERS (data_type="int"):
+          result = op1 * op2  (direct multiplication)
 
-        Para manter escala 100x, dividimos por 100:
-          result = (A * B * 10,000) / 100 = (A * B) * 100
+        REALS (data_type="real"):
+          Quando multiplicando dois valores escalados (ambos 100x):
+            (A * 100) * (B * 100) = (A * B) * 10,000
+          Para manter escala 100x, dividimos por 100:
+            result = (A * B * 10,000) / 100 = (A * B) * 100
 
-        Exemplo: 50 * 50 = 2500, então 2500 / 100 = 25 (representa 0.5 * 0.5 = 0.25)
+        Exemplo INTEGER: 5 * 6 = 30 (no scaling)
+        Exemplo REAL: 50 * 50 = 2500, então 2500 / 100 = 25 (representa 0.5 * 0.5 = 0.25)
 
         Usa rotinas auxiliares mul16 e div16 que serão geradas no epílogo.
         Convenção: op1 em R18:R19, op2 em R20:R21, resultado em R24:R25
@@ -542,32 +598,69 @@ class GeradorAssembly:
         op1 = instr["operand1"]
         op2 = instr["operand2"]
         line = instr.get("line", "?")
+        data_type = instr.get("data_type", "int")  # Default to int if not specified
 
-        # Registrar que precisamos das rotinas mul16 e div16
+        # Registrar que precisamos da rotina mul16
         self._routines_needed.add("mul16")
-        self._routines_needed.add("div16")
 
-        asm = [f"    ; TAC linha {line}: {result} = {op1} * {op2}"]
+        asm = [f"    ; TAC linha {line}: {result} = {op1} * {op2} (type: {data_type})"]
 
-        # Obter registradores dos operandos
-        op1_low, op1_high = self._get_reg_pair(op1)
-        op2_low, op2_high = self._get_reg_pair(op2)
+        # Get result register pair
         res_low, res_high = self._get_reg_pair(result)
 
+        # Prepare operands for mul16 (R18:R19 = op1, R20:R21 = op2)
+        # Handle constants efficiently
+        if self._is_constant(op1):
+            int_value = int(float(op1))
+            low_byte = int_value & 0xFF
+            high_byte = (int_value >> 8) & 0xFF
+            asm.extend([
+                f"    ; Load op1 constant {op1}",
+                f"    ldi r18, {low_byte}",
+                f"    ldi r19, {high_byte}",
+            ])
+        else:
+            op1_low, op1_high = self._get_reg_pair(op1)
+            asm.extend([
+                f"    ; Load op1 variable {op1}",
+                f"    mov r18, r{op1_low}",
+                f"    mov r19, r{op1_high}",
+            ])
+
+        if self._is_constant(op2):
+            int_value = int(float(op2))
+            low_byte = int_value & 0xFF
+            high_byte = (int_value >> 8) & 0xFF
+            asm.extend([
+                f"    ; Load op2 constant {op2}",
+                f"    ldi r20, {low_byte}",
+                f"    ldi r21, {high_byte}",
+            ])
+        else:
+            op2_low, op2_high = self._get_reg_pair(op2)
+            asm.extend([
+                f"    ; Load op2 variable {op2}",
+                f"    mov r20, r{op2_low}",
+                f"    mov r21, r{op2_high}",
+            ])
+
+        asm.append(f"    rcall mul16              ; R24:R25 = op1 * op2")
+
+        # Only apply scale renormalization for REAL numbers
+        if data_type == "real":
+            # Need div16 for scale renormalization
+            self._routines_needed.add("div16")
+            asm.extend([
+                f"    ; Re-normalize: divide by 100 to restore 100x scaling",
+                f"    mov r18, r24",
+                f"    mov r19, r25",
+                f"    ldi r20, 100             ; Divide by scale factor",
+                f"    ldi r21, 0",
+                f"    rcall div16              ; R24:R25 = result (scaled¹)",
+            ])
+
+        # Copy result to destination
         asm.extend([
-            f"    ; Multiplicação 16-bit com re-normalização de escala",
-            f"    ; Preparar parâmetros para mul16",
-            f"    mov r18, r{op1_low}",
-            f"    mov r19, r{op1_high}",
-            f"    mov r20, r{op2_low}",
-            f"    mov r21, r{op2_high}",
-            f"    rcall mul16              ; R24:R25 = op1 * op2 (scaled²)",
-            f"    ; Re-normalize: divide by 100 to restore 100x scaling",
-            f"    mov r18, r24",
-            f"    mov r19, r25",
-            f"    ldi r20, 100             ; Divide by scale factor",
-            f"    ldi r21, 0",
-            f"    rcall div16              ; R24:R25 = result (scaled¹)",
             f"    mov r{res_low}, r24",
             f"    mov r{res_high}, r25",
             ""
@@ -1118,20 +1211,57 @@ class GeradorAssembly:
             ""
         ]
 
-        # Detectar variável do resultado final (última instrução copy/assignment)
+        # Detectar variável do resultado final
+        # Strategy: Look for variables named RESULT, FIB_NEXT, or last copy/assignment
         final_result_var = None
-        if instructions:
-            last_instr = instructions[-1]
-            if last_instr.get("type") in ["copy", "assignment"]:
-                final_result_var = last_instr.get("dest")
+
+        # First, search for common result variable names
+        result_candidates = ["RESULT", "FIB_NEXT", "FINAL_COS"]
+        for candidate in result_candidates:
+            if candidate in self._var_to_reg_pair or candidate in self._spilled_vars:
+                final_result_var = candidate
+                break
+
+        # Fallback: search backwards for last copy/assignment
+        if not final_result_var and instructions:
+            for instr in reversed(instructions):
+                if instr.get("type") in ["copy", "assignment"]:
+                    dest = instr.get("dest")
+                    # Skip temporary variables (t0, t1, etc.)
+                    if dest and not dest.startswith("t"):
+                        final_result_var = dest
+                        break
 
         # Enviar resultado via UART se identificado
-        if final_result_var and final_result_var in self._var_to_reg_pair:
-            res_low, res_high = self._var_to_reg_pair[final_result_var]
+        # Check both register-allocated and spilled variables
+        if final_result_var:
+            if final_result_var in self._var_to_reg_pair:
+                res_low, res_high = self._var_to_reg_pair[final_result_var]
+            elif final_result_var in self._spilled_vars:
+                # Variable was spilled - load it first
+                mem_addr = self._spilled_vars[final_result_var]
+                epilogo.extend([
+                    f"    ; Load final result {final_result_var} from memory 0x{mem_addr:04X}",
+                    f"    lds r24, 0x{mem_addr:04X}      ; Load low byte",
+                    f"    lds r25, 0x{mem_addr + 1:04X}  ; Load high byte",
+                ])
+                res_low, res_high = 24, 25  # Already in R24:R25
+            else:
+                final_result_var = None  # Not found
+
+        if final_result_var and (final_result_var in self._var_to_reg_pair or final_result_var in self._spilled_vars):
+            # If in registers, copy to R24:R25
+            if final_result_var in self._var_to_reg_pair:
+                res_low, res_high = self._var_to_reg_pair[final_result_var]
+                epilogo.extend([
+                    "    ; Enviar resultado final via UART",
+                    f"    mov r24, r{res_low}    ; Copiar resultado para R24:R25",
+                    f"    mov r25, r{res_high}",
+                ])
+            # If spilled, already loaded above into R24:R25
+
+            # Send via UART
             epilogo.extend([
-                "    ; Enviar resultado final via UART",
-                f"    mov r24, r{res_low}    ; Copiar resultado para R24:R25",
-                f"    mov r25, r{res_high}",
                 "    rcall send_number_16bit",
                 "    ldi r24, 13            ; CR",
                 "    rcall uart_transmit",
