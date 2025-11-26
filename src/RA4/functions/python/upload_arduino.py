@@ -7,7 +7,10 @@ Uso: python upload_arduino.py <arquivo.s>
 import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).parent / 'src' / 'RA4' / 'functions' / 'python'))
+# Path: src/RA4/functions/python/upload_arduino.py
+# Adiciona o diretório raiz do projeto ao sys.path
+base_dir = Path(__file__).parent.parent.parent.parent  # RA4_1/
+sys.path.insert(0, str(base_dir))
 
 try:
     from src.RA4.functions.python.arduino_tools import (
@@ -23,7 +26,7 @@ except ImportError as e:
 
 def find_assembly_file(filename: str) -> Path:
     """Busca arquivo Assembly em outputs/RA4/."""
-    base_dir = Path(__file__).parent
+    # base_dir já aponta para RA4_1/
     asm_dir = base_dir / 'outputs' / 'RA4'
     asm_path = asm_dir / filename
 
