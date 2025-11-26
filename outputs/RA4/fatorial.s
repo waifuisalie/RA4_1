@@ -63,10 +63,10 @@ skip_le_4:
     breq L1               ; Branch if equal (condition is false)
 
     ; TAC linha 4: t4 = RESULT * COUNTER (type: int)
-    ; Load op1 variable RESULT
+    ; Carrega variável op1=RESULT
     mov r18, r14
     mov r19, r15
-    ; Load op2 variable COUNTER
+    ; Carrega variável op2=COUNTER
     mov r20, r12
     mov r21, r13
     rcall mul16              ; R24:R25 = op1 * op2
@@ -77,13 +77,13 @@ skip_le_4:
     mov r15, r25
 
     ; TAC linha 4: t6 = COUNTER + 1
-    ; Soma 16-bit: t6 = COUNTER + 1 (op2 is constant)
-    mov r24, r12   ; Copy op1 to result FIRST
+    ; Soma 16-bit: t6 = COUNTER + 1 (constante)
+    mov r24, r12   ; Copia op1 pro resultado
     mov r25, r13
-    ldi r22, 1          ; Load constant low byte into temp
-    ldi r23, 0         ; Load constant high byte into temp
-    add r24, r22          ; Add constant to result (low byte with carry)
-    adc r25, r23         ; Add constant to result (high byte with carry)
+    ldi r22, 1          ; Carrega constante (byte baixo)
+    ldi r23, 0         ; Carrega constante (byte alto)
+    add r24, r22          ; Soma constante (byte baixo)
+    adc r25, r23         ; Soma constante (byte alto com carry)
 
     ; TAC linha 4: COUNTER = t6
     mov r12, r24   ; COUNTER = t6
