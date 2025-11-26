@@ -589,33 +589,22 @@ skip_le_4:
 
     ; Liberando registradores de variáveis mortas: t36
 
-    ; TAC linha 4: FINAL_COS = RESULT_COS
-    mov r30, r16   ; FINAL_COS = RESULT_COS
-    mov r31, r17
-
-    ; Imprimir resultado final via UART
-    mov r4, r30    ; Copiar FINAL_COS para parâmetros da função
-    mov r5, r31
-    rcall send_number_16bit
-
-    ; Liberando registradores de variáveis mortas: RESULT_COS, FINAL_COS
-
     ; TAC linha 4: t37 = 1
-    ldi r24, 1   ; Constante 1 (low byte)
-    ldi r25, 0  ; Constante 1 (high byte)
+    ldi r30, 1   ; Constante 1 (low byte)
+    ldi r31, 0  ; Constante 1 (high byte)
 
     ; TAC linha 4: t38 = COUNTER + t37
     ; Soma 16-bit: t38 = COUNTER + t37
-    add r26, r24   ; Low byte com carry
-    adc r27, r25 ; High byte com carry
-    mov r20, r26   ; Resultado em t38
-    mov r21, r27
+    add r26, r30   ; Low byte com carry
+    adc r27, r31 ; High byte com carry
+    mov r24, r26   ; Resultado em t38
+    mov r25, r27
 
     ; Liberando registradores de variáveis mortas: t37
 
     ; TAC linha 4: COUNTER = t38
-    mov r26, r20   ; COUNTER = t38
-    mov r27, r21
+    mov r26, r24   ; COUNTER = t38
+    mov r27, r25
 
     ; Liberando registradores de variáveis mortas: COUNTER, t38
 
@@ -624,7 +613,23 @@ skip_le_4:
 
 L1:
 
+    ; TAC linha 5: FINAL_COS = RESULT_COS
+    mov r20, r16   ; FINAL_COS = RESULT_COS
+    mov r21, r17
+
     ; ==== FIM DO CÓDIGO GERADO ====
+
+    ; Enviar resultado final via UART
+    mov r4, r20    ; Copiar resultado para R4:R5
+    mov r5, r21
+    rcall send_number_16bit
+    ldi r16, 13            ; CR
+    mov r0, r16
+    rcall uart_transmit
+    ldi r16, 10            ; LF
+    mov r0, r16
+    rcall uart_transmit
+    jmp fim                ; Saltar para loop infinito
 
 ; ====================================================================
 ; mul16: Multiplicação 16-bit × 16-bit = 16-bit (unsigned)
@@ -897,5 +902,4 @@ fim:
 
 ; ====================================================================
 ; Fim do programa
-; ====================================================================
 ; ====================================================================

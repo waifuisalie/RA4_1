@@ -36,7 +36,7 @@ def test_register_allocator_basic():
     # Verificações básicas
     assert "main:" in assembly
     assert "rjmp fim" in assembly
-    assert "ldi r16" in assembly  # Constante carregada
+    assert "ldi r16" in assembly  # Constante carregada (usando r16 ao invés de r0)
     assert "add r" in assembly    # Operação de soma
     print("✓ Verificações de conteúdo passaram!")
 
@@ -45,16 +45,38 @@ def test_register_allocator_with_spill():
     """Testa alocação com spilling (mais de 4 pares de variáveis)"""
     print("\n=== Teste 2: Alocação com Spilling ===")
 
-    # TAC que requer mais de 4 pares de registradores
+    # TAC que requer mais de 8 pares de registradores simultaneamente
     tac_with_spill = {
         "instructions": [
             {"type": "assignment", "dest": "t0", "source": "1", "line": 1},
             {"type": "assignment", "dest": "t1", "source": "2", "line": 2},
             {"type": "assignment", "dest": "t2", "source": "3", "line": 3},
             {"type": "assignment", "dest": "t3", "source": "4", "line": 4},
-            {"type": "assignment", "dest": "t4", "source": "5", "line": 5},  # Deve spillar t0
-            {"type": "binary_op", "result": "t5", "operand1": "t4",
-             "operator": "+", "operand2": "t1", "line": 6}
+            {"type": "assignment", "dest": "t4", "source": "5", "line": 5},
+            {"type": "assignment", "dest": "t5", "source": "6", "line": 6},
+            {"type": "assignment", "dest": "t6", "source": "7", "line": 7},
+            {"type": "assignment", "dest": "t7", "source": "8", "line": 8},
+            {"type": "assignment", "dest": "t8", "source": "9", "line": 9},  # Deve forçar spilling
+            {"type": "assignment", "dest": "t9", "source": "10", "line": 10}, # Deve forçar spilling
+            # Todas as variáveis são usadas no final para evitar liberação
+            {"type": "binary_op", "result": "result", "operand1": "t0",
+             "operator": "+", "operand2": "t1", "line": 11},
+            {"type": "binary_op", "result": "result", "operand1": "result",
+             "operator": "+", "operand2": "t2", "line": 12},
+            {"type": "binary_op", "result": "result", "operand1": "result",
+             "operator": "+", "operand2": "t3", "line": 13},
+            {"type": "binary_op", "result": "result", "operand1": "result",
+             "operator": "+", "operand2": "t4", "line": 14},
+            {"type": "binary_op", "result": "result", "operand1": "result",
+             "operator": "+", "operand2": "t5", "line": 15},
+            {"type": "binary_op", "result": "result", "operand1": "result",
+             "operator": "+", "operand2": "t6", "line": 16},
+            {"type": "binary_op", "result": "result", "operand1": "result",
+             "operator": "+", "operand2": "t7", "line": 17},
+            {"type": "binary_op", "result": "result", "operand1": "result",
+             "operator": "+", "operand2": "t8", "line": 18},
+            {"type": "binary_op", "result": "result", "operand1": "result",
+             "operator": "+", "operand2": "t9", "line": 19}
         ]
     }
 
@@ -197,9 +219,9 @@ def test_division():
     # Verificar chamada para rotina div16
     assert "rcall div16" in assembly
     assert "div16:" in assembly  # Rotina deve ser gerada
-    assert "mov r18" in assembly  # Parameter setup (dividend)
-    assert "mov r20" in assembly  # Parameter setup (divisor)
-    assert "mov r24" in assembly or "r24" in assembly  # Result (quotient)
+    assert "mov r0" in assembly  # Parameter setup (dividend)
+    assert "mov r2" in assembly  # Parameter setup (divisor)
+    assert "mov r4" in assembly or "r4" in assembly  # Result (quotient)
     print("✓ Teste 7 passou: Divisão implementada com rotina div16!")
 
 
@@ -224,9 +246,9 @@ def test_modulo():
     # Verificar chamada para rotina div16 (mesma rotina!)
     assert "rcall div16" in assembly
     assert "div16:" in assembly  # Rotina deve ser gerada
-    assert "mov r18" in assembly  # Parameter setup (dividend)
-    assert "mov r20" in assembly  # Parameter setup (divisor)
-    assert "r22" in assembly  # Result (remainder, not quotient!)
+    assert "mov r0" in assembly  # Parameter setup (dividend)
+    assert "mov r2" in assembly  # Parameter setup (divisor)
+    assert "r6" in assembly  # Result (remainder, not quotient!)
     print("✓ Teste 8 passou: Módulo implementado usando rotina div16 (retorna resto)!")
 
 
@@ -407,9 +429,10 @@ def test_if_goto():
     # Verificar instruções de salto condicional
     assert "cp r" in assembly       # Compare instruction
     assert "cpc r" in assembly      # Compare with carry
-    assert "brne L2" in assembly    # Branch if not equal (true)
+    assert "breq .+2" in assembly   # Branch if equal (false), skip jmp
+    assert "jmp L2" in assembly     # Jump if not equal (true)
     assert "L2:" in assembly        # Target label
-    print("✓ Teste 15 passou: if_goto implementado (brne)!")
+    print("✓ Teste 15 passou: if_goto implementado (jmp para saltos longos)!")
 
 
 def test_if_false_goto():
@@ -433,9 +456,10 @@ def test_if_false_goto():
     # Verificar instruções de salto condicional
     assert "cp r" in assembly       # Compare instruction
     assert "cpc r" in assembly      # Compare with carry
-    assert "breq L1" in assembly    # Branch if equal (false)
+    assert "brne .+2" in assembly   # Branch if not equal (true), skip jmp
+    assert "jmp L1" in assembly     # Jump if equal (false)
     assert "L1:" in assembly        # Target label
-    print("✓ Teste 16 passou: if_false_goto implementado (breq)!")
+    print("✓ Teste 16 passou: if_false_goto implementado (jmp para saltos longos)!")
 
 
 def test_simple_while_loop():
@@ -476,7 +500,8 @@ def test_simple_while_loop():
     # Verify loop structure
     assert "L0:" in assembly         # Loop start label
     assert "L1:" in assembly         # Loop exit label
-    assert "breq L1" in assembly     # ifFalse exit
+    assert "brne .+2" in assembly    # ifFalse exit (skip jmp)
+    assert "jmp L1" in assembly      # ifFalse exit (long jump)
     assert "rjmp L0" in assembly     # goto loop start
     assert "brsh skip_lt_2" in assembly  # Comparison branch
     print("✓ Teste 17 passou: WHILE loop completo funciona!")
@@ -500,14 +525,12 @@ def test_real_division_scaled():
 
     print(assembly)
 
-    # Verificar que rotina div_scaled foi chamada
-    assert "rcall div_scaled" in assembly
-    # Verificar que rotina foi incluída
-    assert "div_scaled:" in assembly
-    # Verificar que usa mul16 e div16
+    # Verificar que rotinas mul16 e div16 foram chamadas (divisão real usa (op1 * 100) / op2)
     assert "rcall mul16" in assembly
     assert "rcall div16" in assembly
-    # Verificar que mul16 e div16 foram incluídos
+    # Verificar que rotinas foram incluídas
+    assert "mul16:" in assembly
+    assert "div16:" in assembly
     assert "mul16:" in assembly
     assert "div16:" in assembly
     print("✓ Teste 18 passou: Divisão real escalada (|) implementada!")

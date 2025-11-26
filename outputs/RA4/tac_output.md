@@ -1,61 +1,87 @@
-# TAC Output - /home/waifuisalie/Documents/RA4_Compiladores/RA4_1/outputs/RA3/arvore_atribuida.json
+# TAC Output - C:\Users\Rafa Piveta\Documents\GitHub\RA4_1\outputs\RA3\arvore_atribuida.json
 
-**Generated:** 2025-11-25 01:39:53
+**Generated:** 2025-11-25 22:23:46
 
 ---
 
 ## Instructions
 
 ```
-Line  1: t0 = 50                  [type: real]
+Line  1: t0 = 100                 [type: real]
 Line  1: X_VAL = t0               [type: real]
 Line  2: t1 = 100                 [type: real]
 Line  2: TERM1 = t1               [type: real]
-Line  3: t2 = X_VAL * X_VAL       [type: real]
-Line  3: TEMP1 = t2               [type: real]
-Line  4: t3 = 200                 [type: real]
-Line  4: t4 = TEMP1 | t3          [type: real]
-Line  4: TEMP2 = t4               [type: real]
-Line  5: t5 = 0                   [type: int]
-Line  5: t6 = t5 - TEMP2          [type: real]
-Line  5: TERM2 = t6               [type: real]
-Line  6: t7 = X_VAL * X_VAL       [type: real]
-Line  6: TEMP3 = t7               [type: real]
-Line  7: t8 = TEMP3 * X_VAL       [type: real]
-Line  7: t9 = t8 * X_VAL          [type: real]
-Line  7: t10 = t9 * TEMP4         [type: real]
-Line  7: TEMP4 = t10              [type: real]
-Line  8: t11 = 2400               [type: real]
-Line  8: t12 = TEMP4 | t11        [type: real]
-Line  8: TERM3 = t12              [type: real]
-Line  9: t13 = X_VAL * X_VAL      [type: real]
-Line  9: TEMP5 = t13              [type: real]
-Line 10: t14 = TEMP5 * X_VAL      [type: real]
-Line 10: t15 = t14 * X_VAL        [type: real]
-Line 10: t16 = t15 * TEMP4        [type: real]
-Line 10: TEMP6 = t16              [type: real]
-Line 11: t17 = TEMP6 * X_VAL      [type: real]
-Line 11: t18 = t17 * X_VAL        [type: real]
-Line 11: t19 = t18 * TEMP4        [type: real]
-Line 11: TEMP7 = t19              [type: real]
-Line 12: t20 = 72000              [type: real]
-Line 12: t21 = TEMP7 | t20        [type: real]
-Line 12: TEMP8 = t21              [type: real]
-Line 13: t22 = 0                  [type: int]
-Line 13: t23 = t22 - TEMP8        [type: real]
-Line 13: TERM4 = t23              [type: real]
-Line 14: t24 = TERM1 + TERM2      [type: real]
-Line 14: t25 = t24 + TERM3        [type: real]
-Line 14: t26 = t25 + TERM3        [type: real]
-Line 14: RESULT_COS = t26         [type: real]
-Line 15: FINAL_COS = RESULT_COS   [type: real]
+Line  3: t2 = 1                   [type: int]
+Line  3: COUNTER = t2             [type: int]
+Line  4: L0:                      
+Line  4: t3 = 1                   [type: int]
+Line  4: t4 = COUNTER <= t3       [type: boolean]
+Line  4: ifFalse t4 goto L1       
+Line  4: t5 = X_VAL * X_VAL       [type: real]
+Line  4: X_SQUARE = t5            [type: real]
+Line  4: t6 = 200                 [type: real]
+Line  4: FACT_2 = t6              [type: real]
+Line  4: t7 = X_SQUARE | FACT_2   [type: real]
+Line  4: TEMP2 = t7               [type: real]
+Line  4: t8 = 0                   [type: real]
+Line  4: t9 = t8 - TEMP2          [type: real]
+Line  4: TERM2 = t9               [type: real]
+Line  4: t10 = X_SQUARE * X_SQUARE[type: real]
+Line  4: X_FOURTH = t10           [type: real]
+Line  4: t11 = 400                [type: real]
+Line  4: t12 = 300                [type: real]
+Line  4: t13 = t11 * t12          [type: real]
+Line  4: TEMP4A = t13             [type: real]
+Line  4: t14 = 200                [type: real]
+Line  4: t15 = TEMP4A * t14       [type: real]
+Line  4: TEMP4B = t15             [type: real]
+Line  4: t16 = 100                [type: real]
+Line  4: t17 = TEMP4B * t16       [type: real]
+Line  4: FACT_4 = t17             [type: real]
+Line  4: t18 = X_FOURTH | FACT_4  [type: real]
+Line  4: TERM3 = t18              [type: real]
+Line  4: t19 = X_FOURTH * X_SQUARE[type: real]
+Line  4: X_SIXTH = t19            [type: real]
+Line  4: t20 = 600                [type: real]
+Line  4: t21 = 500                [type: real]
+Line  4: t22 = t20 * t21          [type: real]
+Line  4: TEMP6A = t22             [type: real]
+Line  4: t23 = 400                [type: real]
+Line  4: t24 = TEMP6A * t23       [type: real]
+Line  4: TEMP6B = t24             [type: real]
+Line  4: t25 = 300                [type: real]
+Line  4: t26 = TEMP6B * t25       [type: real]
+Line  4: TEMP6C = t26             [type: real]
+Line  4: t27 = 200                [type: real]
+Line  4: t28 = TEMP6C * t27       [type: real]
+Line  4: TEMP6D = t28             [type: real]
+Line  4: t29 = 100                [type: real]
+Line  4: t30 = TEMP6D * t29       [type: real]
+Line  4: FACT_6 = t30             [type: real]
+Line  4: t31 = X_SIXTH | FACT_6   [type: real]
+Line  4: TEMP8 = t31              [type: real]
+Line  4: t32 = 0                  [type: real]
+Line  4: t33 = t32 - TEMP8        [type: real]
+Line  4: TERM4 = t33              [type: real]
+Line  4: t34 = TERM1 + TERM2      [type: real]
+Line  4: SUM12 = t34              [type: real]
+Line  4: t35 = SUM12 + TERM3      [type: real]
+Line  4: SUM123 = t35             [type: real]
+Line  4: t36 = SUM123 + TERM4     [type: real]
+Line  4: RESULT_COS = t36         [type: real]
+Line  4: t37 = 1                  [type: int]
+Line  4: t38 = COUNTER + t37      [type: int]
+Line  4: COUNTER = t38            [type: int]
+Line  4: goto L0                  
+Line  4: L1:                      
+Line  5: FINAL_COS = RESULT_COS   [type: real]
 ```
 
 ---
 
 ## Statistics
 
-- **total_instructions:** 42
-- **temp_count:** 27
-- **label_count:** 0
-- **result_history_size:** 15
+- **total_instructions:** 68
+- **temp_count:** 39
+- **label_count:** 2
+- **result_history_size:** 4

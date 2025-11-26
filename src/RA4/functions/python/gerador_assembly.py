@@ -49,6 +49,9 @@ class GeradorAssembly:
         # Ex: {"mul16", "div16", "exp16"}
         self._routines_needed: set = set()
 
+        # Lista completa de instruções TAC (para detectar resultado final)
+        self._all_instructions: List[Dict[str, Any]] = []
+
     # =========================================================================
     # FUNÇÃO PRINCIPAL - INTERFACE PÚBLICA
     # =========================================================================
@@ -82,6 +85,7 @@ class GeradorAssembly:
             raise KeyError("TAC otimizado deve conter chave 'instructions'")
 
         instructions = tac_otimizado["instructions"]
+        self._all_instructions = instructions  # Armazenar para uso posterior
 
         # Análise de vida útil das variáveis para otimizar alocação
         self._analisar_vida_util(instructions)
@@ -1062,14 +1066,33 @@ class GeradorAssembly:
 
         # Se for o label L1 (fim do programa), adicionar impressão do resultado
         if label_name == "L1":
-            # Assumir que FINAL_COS está nos registradores r30:r31
-            lines.extend([
-                "    ; Imprimir resultado final via UART",
-                "    mov r4, r30    ; Copiar FINAL_COS para parâmetros da função",
-                "    mov r5, r31",
-                "    rcall send_number_16bit",
-                ""
-            ])
+            # Detectar a última variável definida antes do L1
+            result_var = None
+            current_idx = None
+
+            # Encontrar o índice da instrução L1
+            for i, tac_instr in enumerate(self._all_instructions):
+                if tac_instr.get("type") == "label" and tac_instr.get("name") == "L1":
+                    current_idx = i
+                    break
+
+            if current_idx is not None:
+                # Procurar para trás pela última instrução de copy/assignment
+                for i in range(current_idx - 1, -1, -1):
+                    tac_instr = self._all_instructions[i]
+                    if tac_instr.get("type") in ["copy", "assignment"]:
+                        result_var = tac_instr.get("dest")
+                        break
+
+            if result_var and result_var in self._var_to_reg_pair:
+                res_low, res_high = self._var_to_reg_pair[result_var]
+                lines.extend([
+                    "    ; Imprimir resultado final via UART",
+                    f"    mov r4, r{res_low}    ; Copiar {result_var} para parâmetros da função",
+                    f"    mov r5, r{res_high}",
+                    "    rcall send_number_16bit",
+                    ""
+                ])
 
         lines.append("")
         return lines

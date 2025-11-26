@@ -1,0 +1,617 @@
+
+=== PÁGINA 1 ===
+User Manual
+SKU: A000066
+Description
+The Ar duino® UNO R3 is the perfect boar d to get familiar with electr onics and coding. This versatile de velopment
+boar d is equipped with the well-kno wn A Tmega328P and the A TMega 16U2 Pr ocessor.
+This boar d will give you a gr eat ﬁrst e xperience within the world of Ar duino.
+Target areas:
+Mak er, intr oduction, industriesArduino® UNO R3
+1 / 26 Arduino® UNO R3 Modiﬁed: 24/11/2025
+
+=== PÁGINA 2 ===
+Features
+ATMega328P  Processor
+Memory
+AVR CPU at up to 16 MHz
+32 kB Flash
+2 kB SRAM
+1 kB EEPROM
+Security
+Power On Reset (POR)
+Brown Out Detection (BOD)
+Peripher als
+2x 8-bit Timer/Counter with a dedicated period r egister and compar e channels
+1x 16-bit Timer/Counter with a dedicated period r egister, input captur e and compar e channels
+1x USART with fr actional baud r ate gener ator and start-of-fr ame detection
+1x contr oller/peripher al Serial Peripher al Interface (SPI)
+1x Dual mode contr oller/peripher al I2C
+1x Analog Compar ator (A C) with a scalable r eference input
+Watchdog Timer with separ ate on-chip oscillator
+Six PWM channels
+Interrupt and wak e-up on pin change
+ATMega16U2 Pr ocessor
+8-bit A VR® RISC-based micr ocontr oller
+Memory
+16 kB ISP Flash
+512B EEPROM
+512B SRAM
+debugWIRE interface for on-chip debugging and pr ogramming
+Power
+2.7-5.5 voltsArduino® UNO R3
+2 / 26 Arduino® UNO R3 Modiﬁed: 24/11/2025
+
+=== PÁGINA 3 ===
+5
+5
+5
+6
+6
+6
+6
+6
+7
+8
+9
+9
+9
+9
+9
+10
+11
+11
+12
+12
+13
+13
+13
+14
+14
+15
+15
+15CONTENTS
+1 The Boar d
+1.1 Application Examples
+1.2 Related Pr oducts
+2 Ratings
+2.1 Recommended Oper ating Conditions
+2.2 Po wer Consumption
+3 Functional Overvie w
+3.1 Boar d Topology
+3.2 Pr ocessor
+3.3 Po wer T ree
+4 Boar d Oper ation
+4.1 Getting Started - IDE
+4.2 Getting Started - Ar duino Cloud Editor
+4.3 Sample Sk etches
+4.4 Online Resour ces
+5 Connector Pinouts
+5.1 JANAL OG
+5.2 JDIGIT AL
+5.3 Mechanical Information
+5.4 Boar d Outline & Mounting Holes
+6 Certiﬁcations
+6.1 Declar ation of Conformity CE DoC (EU)
+6.2 Declar ation of Conformity to EU RoHS & REA CH 211 01/19/2021
+6.3 Conﬂict Miner als Declar ation
+7 FC C Caution
+8 Company Information
+9 Refer ence Documentation
+10 Re vision History
+11 电路板简介
+11.1 应⽤⽰例
+11.2 相关产品
+12 额定值
+12.1 建议运⾏条件Arduino® UNO R3
+3 / 26 Arduino® UNO R3 Modiﬁed: 24/11/2025
+
+=== PÁGINA 4 ===
+22
+2212.2 功耗
+13 功能概述
+13.1 电路板拓扑结构
+13.2 处理器
+13.3 电源树
+14 电路板操作
+14.1 ⼊⻔指南  - IDE
+14.2 ⼊⻔指南  - Arduino Cloud Editor
+14.3 ⽰例程序
+14.4 在线资源
+15 连接器引脚布局
+15.1 JANAL OG
+15.2 JDIGIT AL
+15.3 机械层信息
+15.4 电路板外形图和安装孔
+16 认证
+16.1 符合性声明  CE DoC （欧盟）
+16.2 声明符合欧盟  RoHS 和  REA CH 211 01/19/2021
+16.3 冲突矿产声明
+17 FC C 警告
+18 公司信息
+19 参考资料
+20 修订记录Arduino® UNO R3
+4 / 26 Arduino® UNO R3 Modiﬁed: 24/11/2025
+
+=== PÁGINA 5 ===
+1 The Board
+1.1 Application Examples
+The UNO boar d is the ﬂagship pr oduct of Ar duino. Regar dless if you ar e ne w to the world of electr onics or will use
+the UNO R3 as a tool for education purposes or industry-r elated tasks, the UNO R3 is lik ely to meet your needs.
+First entry to electr onics:  If this is your ﬁrst pr oject within coding and electr onics, get started with our most used
+and documented boar d; UNO . It is equipped with the well-kno wn A Tmega328P pr ocessor, 14 digital input/output
+pins, 6 analog inputs, USB connections, ICSP header and r eset button. This boar d includes e verything you will need
+for a gr eat ﬁrst e xperience with Ar duino.
+Industry-standar d de velopment boar d: Using the UNO R3 boar d in industries, ther e are a r ange of companies
+using the UNO R3 boar d as the br ain for their PL C’s.
+Education purposes:  Although the UNO R3 boar d has been with us for about ten years, it is still widely used for
+various education purposes and scientiﬁc pr ojects. The boar d's high standar d and top quality performance mak es it
+a great r esour ce to captur e real time fr om sensors and to trigger comple x labor atory equipment to mention a fe w
+examples.
+1.2 Related Products
+Arduino Starter Kit
+Arduino UNO R4 Minima
+Arduino UNO R4 WiFi
+Tinkerkit Br accio RobotArduino® UNO R3
+5 / 26 Arduino® UNO R3 Modiﬁed: 24/11/2025
+
+=== PÁGINA 6 ===
+2 Ratings
+2.1 Recommended Operating Conditions
+Symbol Description Min Max
+Conservative thermal limits for the whole boar d: -40 °C (-40 °F) 85 °C ( 185 °F)
+NOTE: In e xtreme temper atures, EEPROM, voltage r egulator, and the crystal oscillator, might not
+work as e xpected.
+2.2 Power Consumption
+Symbol Description Min Typ Max Unit
+VINMax Maximum input voltage fr om VIN pad 6 - 20 V
+VUSBMax Maximum input voltage fr om USB connector - 5.5 V
+PMax Maximum Po wer Consumption - - xx mA
+3 Functional Overview
+3.1 Board Topology
+Top vie w
+Board topologyArduino® UNO R3
+6 / 26 Arduino® UNO R3 Modiﬁed: 24/11/2025
+
+=== PÁGINA 7 ===
+Ref. Description Ref. Description
+X1 Power jack 2.1x5.5mm U1 SPX1117M3-L-5 Regulator
+X2 USB B Connector U3 ATMEGA16U2 Module
+PC1 EEE-1EA470WP 25V SMD Capacitor U5 LMV358LIST -A.9 IC
+PC2 EEE-1EA470WP 25V SMD Capacitor F1 Chip Capacitor, High Density
+D1 CGRA4007-G Rectiﬁer ICSP Pin header connector (thr ough hole 6)
+J-ZU4 ATMEGA328P Module ICSP1 Pin header connector (thr ough hole 6)
+Y1 ECS-160-20-4X-DU Oscillator
+3.2 Processor
+The Main Pr ocessor is a A Tmega328P running at up to 20 MHz. Most of its pins ar e connected to the e xternal
+headers, ho wever some ar e reserved for internal communication with the USB Bridge copr ocessor.Arduino® UNO R3
+7 / 26 Arduino® UNO R3 Modiﬁed: 24/11/2025
+
+=== PÁGINA 8 ===
+3.3 Power Tree
+Power treeArduino® UNO R3
+8 / 26 Arduino® UNO R3 Modiﬁed: 24/11/2025
+
+=== PÁGINA 9 ===
+4 Board Operation
+4.1 Getting Started - IDE
+If you want to pr ogram your UNO R3 while oﬄine you need to install the Ar duino Desktop IDE [1] T o connect the
+UNO R3 to your computer, you’ll need a USB-B cable. This also pr ovides po wer to the boar d, as indicated b y the
+LED.
+4.2 Getting Started - Arduino Cloud Editor
+All Ar duino boar ds, including this one, work out-of-the-bo x on the Ar duino Cloud Editor [2], b y just installing a
+simple plugin.
+The Ar duino Cloud Editor is hosted online, ther efore it will always be up-to-date with the latest featur es and support
+for all boar ds. Follo w [3] to start coding on the br owser and upload your sk etches onto your boar d.
+4.3 Sample Sketches
+Sample sk etches for the UNO R3 can be found either in the “Examples” menu in the Ar duino IDE or in the
+“Documentation ” section of the Arduino website  [4].
+4.4 Online Resources
+Now that you have gone thr ough the basics of what you can do with the boar d you can e xplor e the endless
+possibilities it pr ovides b y checking e xciting pr ojects on Ar duino Pr oject Hub [5], the Ar duino Libr ary Refer ence [6]
+and the online Ar duino stor e [7] wher e you will be able to complement your boar d with sensors, actuators and
+more.Arduino® UNO R3
+9 / 26 Arduino® UNO R3 Modiﬁed: 24/11/2025
+
+=== PÁGINA 10 ===
+5 Connector Pinouts
+PinoutArduino® UNO R3
+10 / 26 Arduino® UNO R3 Modiﬁed: 24/11/2025
+
+=== PÁGINA 11 ===
+5.1 JANALOG
+Pin Function Type Description
+1 NC NC Not connected
+2 IOREF IOREF Refer ence for digital logic V - connected to 5V
+3 Reset Reset Reset
+4 +3V3 Power +3V3 Po wer Rail
+5 +5V Power +5V Po wer Rail
+6 GND Power Ground
+7 GND Power Ground
+8 VIN Power Voltage Input
+9 A0 Analog/GPIO Analog input 0 /GPIO
+10 A1 Analog/GPIO Analog input 1 /GPIO
+11 A2 Analog/GPIO Analog input 2 /GPIO
+12 A3 Analog/GPIO Analog input 3 /GPIO
+13 A4/SD A Analog input/I2C Analog input 4/I2C Data line
+14 A5/SCL Analog input/I2C Analog input 5/I2C Clock line
+5.2 JDIGITAL
+Pin Function Type Description
+1 D0 Digital/GPIO Digital pin 0/GPIO
+2 D1 Digital/GPIO Digital pin 1/GPIO
+3 D2 Digital/GPIO Digital pin 2/GPIO
+4 D3 Digital/GPIO Digital pin 3/GPIO
+5 D4 Digital/GPIO Digital pin 4/GPIO
+6 D5 Digital/GPIO Digital pin 5/GPIO
+7 D6 Digital/GPIO Digital pin 6/GPIO
+8 D7 Digital/GPIO Digital pin 7/GPIO
+9 D8 Digital/GPIO Digital pin 8/GPIO
+10 D9 Digital/GPIO Digital pin 9/GPIO
+11 SS Digital SPI Chip Select
+12 MOSI Digital SPI1 Main Out Secondary In
+13 MISO Digital SPI Main In Secondary Out
+14 SCK Digital SPI serial clock output
+15 GND Power Ground
+16 AREF Digital Analog r eference voltage
+17 A4/SD4 Digital Analog input 4/I2C Data line (duplicated)
+18 A5/SD5 Digital Analog input 5/I2C Clock line (duplicated)Arduino® UNO R3
+11 / 26 Arduino® UNO R3 Modiﬁed: 24/11/2025
+
+=== PÁGINA 12 ===
+5.3 Mechanical Information
+5.4 Board Outline & Mounting Holes
+Board outlineArduino® UNO R3
+12 / 26 Arduino® UNO R3 Modiﬁed: 24/11/2025
+
+=== PÁGINA 13 ===
+6 Certifications
+6.1 Declaration of Conformity CE DoC (EU)
+We declar e under our sole r esponsibility that the pr oducts abo ve ar e in conformity with the essential r equir ements
+of the follo wing EU Dir ectives and ther efore qualify for fr ee mo vement within mark ets comprising the Eur opean
+Union (EU) and Eur opean Economic Ar ea (EEA).
+ROHS 2 Dir ective 2011/65/EU
+Conforms to: EN50581:2012
+Directive 2014/35/EU . (LVD)
+Conforms to: EN 60950-1:2006/A11:2009/A1:2010/A12:2011/A C:2011
+Directive 2004/40/EC & 2008/46/EC & 2013/35/EU , EMF
+Conforms to: EN 62311:2008
+6.2 Declaration of Conformity to EU RoHS & REACH 211 01/19/2021
+Arduino boar ds ar e in compliance with RoHS 2 Dir ective 2011/65/EU of the Eur opean Parliament and RoHS 3
+Directive 2015/863/EU of the Council of 4 June 2015 on the r estriction of the use of certain hazar dous substances in
+electrical and electr onic equipment.
+Substance Maximum limit (ppm)
+Lead (Pb) 1000
+Cadmium (Cd) 100
+Mercury (Hg) 1000
+Hexavalent Chr omium (Cr6+) 1000
+Poly Br ominated Biphenyls (PBB) 1000
+Poly Br ominated Diphenyl ethers (PBDE) 1000
+Bis(2-Ethylhe xyl} phthalate (DEHP) 1000
+Benzyl butyl phthalate (BBP) 1000
+Dibutyl phthalate (DBP) 1000
+Diisobutyl phthalate (DIBP) 1000
+Exemptions: No e xemptions ar e claimed.
+Arduino Boar ds ar e fully compliant with the r elated r equir ements of Eur opean Union Regulation (EC) 1907 /2006
+concerning the Registr ation, Evaluation, Authorization and Restriction of Chemicals (REA CH). W e declar e none of the
+SVHCs ( https://echa.eur opa.eu/web/guest/candidate-list-table ), the Candidate List of Substances of V ery High
+Concern for authorization curr ently r eleased b y ECHA, is pr esent in all pr oducts (and also package) in quantities
+totaling in a concentr ation equal or abo ve 0.1%. T o the best of our kno wledge, we also declar e that our pr oducts do
+not contain any of the substances listed on the " Authorization List " (Anne x XIV of the REA CH r egulations) and
+Substances of V ery High Concern (SVHC) in any signiﬁcant amounts as speciﬁed b y the Anne x XVII of Candidate list
+published b y ECHA (Eur opean Chemical Agency) 1907 /2006/EC.Arduino® UNO R3
+13 / 26 Arduino® UNO R3 Modiﬁed: 24/11/2025
+
+=== PÁGINA 14 ===
+6.3 Conflict Minerals Declaration
+As a global supplier of electr onic and electrical components, Ar duino is awar e of our obligations with r egar ds to
+laws and r egulations r egar ding Conﬂict Miner als, speciﬁcally the Dodd-Fr ank W all Str eet Reform and Consumer
+Protection Act, Section 1502. Ar duino does not dir ectly sour ce or pr ocess conﬂict miner als such as Tin, T antalum,
+Tungsten, or Gold. Conﬂict miner als ar e contained in our pr oducts in the form of solder, or as a component in metal
+alloys. As part of our r easonable due diligence Ar duino has contacted component suppliers within our supply chain
+to verify their continued compliance with the r egulations. Based on the information r eceived thus far we declar e
+that our pr oducts contain Conﬂict Miner als sour ced fr om conﬂict-fr ee ar eas.
+7 FCC Caution
+Any Changes or modiﬁcations not e xpressly appr oved b y the party r esponsible for compliance could void the user ’s
+authority to oper ate the equipment.
+This de vice complies with part 15 of the FC C Rules. Oper ation is subject to the follo wing two conditions:
+(1) This de vice may not cause harmful interfer ence
+(2) this de vice must accept any interfer ence r eceived, including interfer ence that may cause undesir ed oper ation.
+FCC RF Radiation Exposur e Statement:
+1. This T ransmitter must not be co-located or oper ating in conjunction with any other antenna or tr ansmitter.
+2. This equipment complies with RF r adiation e xposur e limits set forth for an uncontr olled envir onment.
+3. This equipment should be installed and oper ated with minimum distance 20cm between the r adiator & your
+body .
+English: User manuals for license-e xempt r adio appar atus shall contain the follo wing or equivalent notice in a
+conspicuous location in the user manual or alternatively on the de vice or both. This de vice complies with Industry
+Canada license-e xempt RSS standar d(s). Oper ation is subject to the follo wing two conditions:
+(1) this de vice may not cause interfer ence
+(2) this de vice must accept any interfer ence, including interfer ence that may cause undesir ed oper ation of the
+device.
+French: Le pr ésent appar eil est conforme aux CNR d’Industrie Canada applicables aux appar eils r adio e xempts de
+licence. L ’exploitation est autorisée aux deux conditions suivantes :
+(1) l’ appar eil nedoit pas pr oduir e de br ouillage
+(2) l’utilisateur de l’ appar eil doit accepter tout br ouillage r adioélectrique subi, même si le br ouillage est susceptible
+d’en compr omettr e le fonctionnement.
+IC SAR W arning:
+English This equipment should be installed and oper ated with minimum distance 20 cm between the r adiator and
+your body .Arduino® UNO R3
+14 / 26 Arduino® UNO R3 Modiﬁed: 24/11/2025
+
+=== PÁGINA 15 ===
+French: Lors de l’ installation et de l’ e xploitation de ce dispositif, la distance entr e le r adiateur et le corps est d ’ au
+moins 20 cm.
+Important:  The oper ating temper ature of the EUT can ’t exceed 85 ℃  and shouldn ’t be lo wer than -40 ℃ .
+Hereby, Arduino S.r.l. declar es that this pr oduct is in compliance with essential r equir ements and other r elevant
+provisions of Dir ective 2014/53/EU . This pr oduct is allo wed to be used in all EU member states.
+8 Company Information
+Company name Arduino S.r.l
+Company Addr ess Via Andr ea Appiani 25 20900 MONZA Italy
+9 Reference Documentation
+Refer ence Link
+Arduino IDE (Desktop) https://www .arduino.cc/en/Main/Softwar e
+Arduino Cloud Editor https://cr eate.ar duino.cc/editor
+Arduino Cloud Editor - Getting
+Startedhttps://docs.ar duino.cc/ar duino-cloud/guides/editor/
+Arduino W ebsite https://www .arduino.cc/
+Arduino Pr oject Hubhttps://cr eate.ar duino.cc/pr ojecthub?
+by=part&part_id=11332&sort=tr ending
+Library Refer ence https://www .arduino.cc/r eference/en/
+Arduino Stor e https://stor e.arduino.cc/
+10 Revision History
+Date Revision Changes
+25/04/2024 3 Updated link to ne w Cloud Editor
+26/07/2023 2 Gener al Update
+06/2021 1 Datasheet r eleaseArduino® UNO R3
+15 / 26 Arduino® UNO R3 Modiﬁed: 24/11/2025
+
+=== PÁGINA 16 ===
+中⽂ (ZH)
+描述
+Arduino UNO R3 是熟悉电⼦技术和编码的完美开发板。这款多功能开发板配备了著名的  ATmega 328P 和  ATMega 16U2
+处理器。该开发板将为您带来  Arduino 世界绝佳的初次体验。
+⽬标领域：
+创客、介绍、⼯业领域
+特点
+ATMega328P  处理器
+内存
+AVR CPU 频率⾼达  16 MHz
+32KB 闪存
+2KB SRAM
+1KB EEPROM
+安全性
+上电复位  (POR)
+⽋压检测  (BOD)
+外设
+2x 8 位定时器 / 计数器，带专⽤周期寄存器和⽐较通道
+1x 16 位定时器 / 计数器，带专⽤周期寄存器、输⼊捕获和⽐较通道
+1x USART ，带分数波特率发⽣器和起始帧信号检测功能
+1x 控制器 / 外设串⾏外设接⼝  (SPI)
+1x 双模控制器 / 外设  I2C
+1 个模拟⽐较器  (AC) ，带可扩展参考输⼊
+看⻔狗定时器，带独⽴的⽚上振荡器
+6 通道  PWM
+引脚变化时的中断和唤醒
+ATMega16U2 处理器
+基于  AVR® RISC 的  8 位微控制器
+内存
+16 KB ISP 闪存
+512B EEPROM
+512B SRAMArduino® UNO R3
+16 / 26 Arduino® UNO R3 Modiﬁed: 24/11/2025
+
+=== PÁGINA 17 ===
+⽤于⽚上调试和编程的  debugWIRE 接⼝
+电源
+2.7-5.5 伏特
+⽬录
+11 电路板简介
+11.1 应⽤⽰例
+UNO 电路板是  Arduino 的旗舰产品。⽆论您是初次接触电路板产品，还是将  UNO ⽤作教育或⼯业相关任务的⼯具， UNO
+都能满⾜您的需求。
+初次接触电⼦技术 : 如果这是您第⼀次参与编码和电⼦技术项⽬，那么就从我们最常⽤、记录最多的电路板  Arduino UNO
+开始吧。它配备了著名的  ATmega328P 处理器、 14 个数字输⼊ / 输出引脚、 6 个模拟输⼊、 USB 连接、 ICSP 接头和复位按
+钮。该电路板包含了您获得良好的  Arduino 初次体验所需的⼀切。
+** ⾏业标准开发板 :** 在⼯业领域使⽤  Arduino UNO R3 开发板，有许多公司使⽤  UNO 开发板作为其  PLC 的⼤脑。
+教育⽤途 : 尽管我们推出  UNO R3 电路板已有⼤约⼗年之久，但它仍被⼴泛⽤于各种教育⽤途和科学项⽬。该电路板的⾼标
+准和⼀流性能使其成为从传感器采集实时数据和触发复杂实验室设备等各种应⽤场合的绝佳资源。
+11.2 相关产品
+Starter Kit
+Arduino UNO R4 Minima
+Arduino UNO R4 WiFi
+Tinkerkit Br accio RobotArduino® UNO R3
+17 / 26 Arduino® UNO R3 Modiﬁed: 24/11/2025
+
+=== PÁGINA 18 ===
+12 额定值
+12.1 建议运⾏条件
+符号 描述 最⼩值 最⼤值
+整个电路板的保守温度极限值： -40 °C (-40°F) 85 °C ( 185°F)
+注意： 在极端温度下， EEPROM 、电压调节器和晶体振荡器可能⽆法正常⼯作。
+12.2 功耗
+符号 描述 最⼩值 典型值 最⼤值 单位
+VINMax 来⾃  VIN 焊盘的最⼤输⼊电压 6 - 20 V
+VUSBMax 来⾃  USB 连接器的最⼤输⼊电压 - 5.5 V
+PMax 最⼤功耗 - - xx mA
+13 功能概述
+13.1 电路板拓扑结构
+俯视图
+电路板拓扑结构
+编号 描述 编号 描述
+X1 电源插孔  2.1x5.5 毫⽶ U1 SPX1117M3-L-5 调节器Arduino® UNO R3
+18 / 26 Arduino® UNO R3 Modiﬁed: 24/11/2025
+
+=== PÁGINA 19 ===
+编号 描述 编号 描述
+X2 USB B 连接器 U3 ATMEGA16U2 模块
+PC1 EEE-1EA470WP 25V SMD 电容器 U5 LMV358LIST -A.9 IC
+PC2 EEE-1EA470WP 25V SMD 电容器 F1 ⽚式电容器，⾼密度
+D1 CGRA4007-G 整流器 ICSP引脚接头连接器（通过  6 号孔）
+J-ZU4 ATMEGA328P 模块 ICSP1引脚接头连接器（通过  6 号孔）
+Y1 ECS-160-20-4X-DU 振荡器
+13.2 处理器
+主处理器是  ATmega328P ，运⾏频率⾼达  20 MHz 。它的⼤部分引脚都与外部接头相连，但也有⼀些引脚⽤于与  USB 桥协
+处理器进⾏内部通信。
+13.3 电源树
+电源树Arduino® UNO R3
+19 / 26 Arduino® UNO R3 Modiﬁed: 24/11/2025
+
+=== PÁGINA 20 ===
+14 电路板操作
+14.1 ⼊⻔指南  - IDE
+如需在离线状态下对  Arduino UNO R3 进⾏编程，则需要安装  Arduino Desktop IDE  [1] 若要将  Arduino UNO 连接到计算
+机，需要使⽤  USB-B 电缆。如  LED 指⽰灯所⽰，该电缆还可以为电路板供电。
+14.2 ⼊⻔指南  - Arduino Cloud Editor
+包括本电路板在内的所有  Arduino 电路板，都可以在  Arduino Cloud Editor  [2] 上开箱即⽤，只需安装⼀个简单的插件即
+可。
+Arduino Cloud Editor 是在线托管的，因此它将始终提供最新功能并⽀持所有电路板。接下来 **[3 ]** 开始在浏览器上编码
+并将程序上传到您的电路板上。
+14.3 ⽰例程序
+Arduino UNO R3 的⽰例程序可以在  Arduino IDE 的 “ ⽰例 ” 菜单或  Arduino ⽹站 [4] 的 “⽂档 ” 部分找到
+14.4 在线资源
+现在，您已经了解该电路板的基本功能，就可以通过查看  Arduino Project Hub  **[5]**、Arduino Libr ary Refer ence  [6]
+以及在线  Arduino 商店 **[7]**上的精彩项⽬来探索它所提供的⽆限可能性；在这些项⽬中，您可以为电路板配备传感
+器、执⾏器等。Arduino® UNO R3
+20 / 26 Arduino® UNO R3 Modiﬁed: 24/11/2025
+
+=== PÁGINA 21 ===
+15 连接器引脚布局
+布局Arduino® UNO R3
+21 / 26 Arduino® UNO R3 Modiﬁed: 24/11/2025
+
+=== PÁGINA 22 ===
+15.1 JANALOG
+引脚 功能 类型 描述
+1 NC NC 未连接
+2 IOREF IOREF 数字逻辑参考电压  V - 连接⾄  5V
+3 复位 复位 复位
+4 +3V3 电源 +3V3 电源轨
+5 +5V 电源 +5V 电源轨
+6 GND 电源 接地
+7 GND 电源 接地
+8 VIN 电源 电压输⼊
+9 A0 模拟 /GPIO 模拟输⼊ 0 / GPIO
+10 A1 模拟 /GPIO 模拟输⼊ 1 / GPIO
+11 A2 模拟 /GPIO 模拟输⼊ 2 / GPIO
+12 A3 模拟 /GPIO 模拟输⼊ 3 / GPIO
+13 A4/SD A 模拟输⼊ /I2C 模拟输⼊  4/I2C 数据线
+14 A5/SCL 模拟输⼊ /I2C 模拟输⼊  5/I2C 时钟线
+15.2 JDIGITAL
+引脚 功能 类型 描述
+1 D0 数字引脚 /GPIO 数字引脚  0/GPIO
+2 D1 数字引脚 /GPIO 数字引脚  1/GPIO
+3 D2 数字引脚 /GPIO 数字引脚  2/GPIO
+4 D3 数字引脚 /GPIO 数字引脚  3/GPIO
+5 D4 数字引脚 /GPIO 数字引脚  4/GPIO
+6 D5 数字引脚 /GPIO 数字引脚  5/GPIO
+7 D6 数字引脚 /GPIO 数字引脚  6/GPIO
+8 D7 数字引脚 /GPIO 数字引脚  7/GPIO
+9 D8 数字引脚 /GPIO 数字引脚  8/GPIO
+10 D9 数字引脚 /GPIO 数字引脚  9/GPIO
+11 SS 数字 SPI 芯⽚选择
+12 MOSI 数字 SPI1 主输出副输⼊
+13 MISO 数字 SPI 主输⼊副输出
+14 SCK 数字 SPI 串⾏时钟输出
+15 GND 电源 接地
+16 AREF 数字 模拟参考电压
+17 A4/SD4 数字 模拟输⼊  4/I2C 数据线（重复）
+18 A5/SD5 数字 模拟输⼊  5/I2C 时钟线（重复）Arduino® UNO R3
+22 / 26 Arduino® UNO R3 Modiﬁed: 24/11/2025
+
+=== PÁGINA 23 ===
+15.3 机械层信息
+15.4 电路板外形图和安装孔
+电路板外形图Arduino® UNO R3
+23 / 26 Arduino® UNO R3 Modiﬁed: 24/11/2025
+
+=== PÁGINA 24 ===
+16 认证
+16.1 符合性声明  CE DoC （欧盟）
+我们在此郑重声明，上述产品符合以下欧盟指令的基本要求，因此有资格在包括欧盟（ EU ）和欧洲经济区（ EEA ）在内的
+市场内⾃由流通。
+RoHS 2 指令  2011/65/EU
+符合： EN50581:2012
+指令  2014/35/EU 。  (LVD)
+符合： EN 60950-1:2006/A11:2009/A1:2010/A12:2011/A C:2011
+指令  2004/40/EC & 2008/46/EC & 2013/35/EU , EMF
+符合： EN 62311:2008
+16.2 声明符合欧盟  RoHS 和  REACH 211 01/19/2021
+Arduino 电路板符合欧洲议会关于限制在电⼦电⽓设备中使⽤某些有害物质的  RoHS 2 指令  2011/65/EU 和欧盟理事会于
+2015 年  6 ⽉  4 ⽇颁布的关于限制在电⼦电⽓设备中使⽤某些有害物质的  RoHS 3 指令  2015/863/E U 。
+物质 最⼤限值  (ppm)
+铅 (Pb) 1000
+镉 (Cd) 100
+汞 (Hg) 1000
+六价铬（ Cr6+ ） 1000
+多溴联苯（ PBB ） 1000
+多溴联苯醚（ PBDE ） 1000
+邻苯⼆甲酸⼆ (2- ⼄基⼰ ) 酯  (DEHP) 1000
+邻苯⼆甲酸丁苄酯  (BBP) 1000
+邻苯⼆甲酸⼆丁酯（ DBP ） 1000
+邻苯⼆甲酸⼆异丁酯（ DIBP ） 1000
+豁免：未申请任何豁免。
+Arduino 电路板完全符合欧盟法规  (EC) 1907/2006 中关于化学品注册、评估、许可和限制  (REA CH) 的相关要求。我们声
+明，所有产品（包括包装）中的  SVHC ( https://echa.eur opa.eu/web/guest/candidate-list-table ), （欧洲化学品管理局⽬
+前发布的《⾼度关注物质候选授权清单》）含量总浓度均未超过  0.1% 。据我们所知，我们还声明，我们的产品不含  ECHA
+（欧洲化学品管理局） 1907/2006/EC 公布的候选清单附件  XVII 中规定的 “ 授权清单 ” （ REACH 法规附件  XIV ）和⾼度关注物
+质 (SVHC) 所列的任何物质。Arduino® UNO R3
+24 / 26 Arduino® UNO R3 Modiﬁed: 24/11/2025
+
+=== PÁGINA 25 ===
+16.3 冲突矿产声明
+作为电⼦和电⽓元件的全球供应商， Arduino 意识到我们有义务遵守有关冲突矿产的法律法规，特别是《多德 - 弗兰克华尔
+街改⾰与消费者保护法案》第  1502 条。 Arduino 不直接采购或加⼯锡、钽、钨或⾦等冲突矿物。冲突矿物以焊料的形式或
+作为⾦属合⾦的组成部分存在于我们的产品中。作为我们合理尽职调查的⼀部分， Arduino 已联系供应链中的元件供应
+商，以核实他们是否始终遵守法规的相关规定。根据迄今收到的信息，我们声明我们的产品中含有来⾃⾮冲突地区的冲突
+矿物。
+17 FCC 警告
+任何未经合规性负责⽅明确批准的更改或修改都可能导致⽤⼾⽆权操作设备。
+本设备符合  FCC 规则第  15 部分的规定。操作须满⾜以下两个条件：
+(1) 此设备不会造成有害⼲扰
+(2) 此设备必须接受接收到的任何⼲扰，包括可能导致不良操作的⼲扰。
+FCC 射频辐射暴露声明 :
+1. 此发射器不得与任何其他天线或发射器放置在同⼀位置或同时运⾏。
+2. 此设备符合为⾮受控环境规定的射频辐射暴露限值。
+3. 安装和操作本设备时，辐射源与您的⾝体之间⾄少应保持  20 厘⽶的距离。
+English: User manuals for license-e xempt r adio appar atus shall contain the follo wing or equivalent notice in a
+conspicuous location in the user manual or alternatively on the de vice or both. This de vice complies with Industry
+Canada license-e xempt RSS standar d(s). Oper ation is subject to the follo wing two conditions:
+(1) this de vice may not cause interfer ence
+(2) this de vice must accept any interfer ence, including interfer ence that may cause undesir ed oper ation of the
+device.
+French: Le pr ésent appar eil est conforme aux CNR d’Industrie Canada applicables aux appar eils r adio e xempts de
+licence. L ’exploitation est autorisée aux deux conditions suivantes :
+(1) l’ appar eil nedoit pas pr oduir e de br ouillage
+(2) l’utilisateur de l’ appar eil doit accepter tout br ouillage r adioélectrique subi, même si le br ouillage est susceptible
+d’en compr omettr e le fonctionnement.
+IC SAR警告 :
+English This equipment should be installed and oper ated with a minimum distance of 20 cm between the r adiator
+and your body .
+French: Lors de l’ installation et de l’ e xploitation de ce dispositif, la distance entr e le r adiateur et le corps est d ’ au
+moins 20 cm.
+重要提⽰： EUT 的⼯作温度不能超过  85°C ，也不能低于  -40°C 。
+Arduino S.r.l. 特此声明，本产品符合  2014/53/EU 指令的基本要求和其他相关规定。本产品允许在所有欧盟成员国使⽤。Arduino® UNO R3
+25 / 26 Arduino® UNO R3 Modiﬁed: 24/11/2025
+
+=== PÁGINA 26 ===
+18 公司信息
+公司名称 Arduino S.r.l
+公司地址 Via Andr ea Appiani 25 20900 MONZA Italy
+19 参考资料
+参考资料 链接
+Arduino IDE
+(Desktop)https://www .arduino.cc/en/Main/Softwar e
+Arduino IDE
+(Cloud)https://cr eate.ar duino.cc/editor
+Cloud IDE ⼊⻔指
+南https://cr eate.ar duino.cc/pr ojecthub/Ar duino_Genuino/getting-started-with-ar duino-web-
+editor-4b3e4a
+Arduino ⽹站 https://www .arduino.cc/
+Arduino Pr oject
+Hubhttps://cr eate.ar duino.cc/pr ojecthub?b y=part&part_id=11332&sort=tr ending
+库参考 https://www .arduino.cc/r eference/en/
+在线商店 https://stor e.arduino.cc/
+20 修订记录
+⽇期 版次 变更
+2023/07/26 2 ⼀般更新
+2021/06 1 数据表发布Arduino® UNO R3
+26 / 26 Arduino® UNO R3 Modiﬁed: 24/11/2025
